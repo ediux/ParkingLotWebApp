@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkingLotWebApp", "ParkingLotWebApp\ParkingLotWebApp.csproj", "{BE043214-4F18-4D20-9053-C4392EF8CA6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkingLotWebApp.Tests", "ParkingLotWebApp.Tests\ParkingLotWebApp.Tests.csproj", "{47FE4EBB-81B8-4B43-9079-BF909A00C324}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BE043214-4F18-4D20-9053-C4392EF8CA6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE043214-4F18-4D20-9053-C4392EF8CA6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE043214-4F18-4D20-9053-C4392EF8CA6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE043214-4F18-4D20-9053-C4392EF8CA6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47FE4EBB-81B8-4B43-9079-BF909A00C324}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47FE4EBB-81B8-4B43-9079-BF909A00C324}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47FE4EBB-81B8-4B43-9079-BF909A00C324}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47FE4EBB-81B8-4B43-9079-BF909A00C324}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
