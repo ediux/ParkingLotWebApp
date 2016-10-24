@@ -1,0 +1,81 @@
+﻿@model IEnumerable<ParkingLotWebApp.Models.News_Header>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Caption)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Void)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreateUserId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreateUTCTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastUpdateUserId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastUpdateUTCTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.News_Body.Content)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Caption)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EndTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Void)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreateUserId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreateUTCTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastUpdateUserId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastUpdateUTCTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.News_Body.Content)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

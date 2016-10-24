@@ -5,8 +5,14 @@ using Microsoft.Owin.Security;
 
 namespace ParkingLotWebApp.Models
 {
+    public class HomeIndexViewModel
+    {
+        public Dictionary<string, IEnumerable<vw_ParkingLotGridRemain>> RemainSummary { get; set; } 
+    }
+
     public class IndexViewModel
     {
+       
         public bool HasPassword { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }
         public string PhoneNumber { get; set; }

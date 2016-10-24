@@ -7,7 +7,7 @@
     <title>@ViewBag.Title - 我的 ASP.NET 應用程式</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    @RenderSection("pagecss",false)
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -23,8 +23,12 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("首頁", "Index", "Home")</li>
+                    <li>@Html.ActionLink("停車區域維護", "Index", "ParkingLotAreas")</li>
+                    <li>@Html.ActionLink("車輛維護", "Index", "Cars")</li>
+                    <li>@Html.ActionLink("員工資料維護", "Index", "Employees")</li>
+                    <li>@Html.ActionLink("ETC對應維護", "Index", "ETAs")</li>
+                    <li>@Html.ActionLink("公告維護", "Index", "News")</li>
                     <li>@Html.ActionLink("關於", "About", "Home")</li>
-                    <li>@Html.ActionLink("連絡方式", "Contact", "Home")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

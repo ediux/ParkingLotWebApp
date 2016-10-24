@@ -43,6 +43,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -169,14 +171,115 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CarsController.cs" />
+    <Compile Include="Controllers\EmployeesController.cs" />
+    <Compile Include="Controllers\ETAsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\NewsContextController.cs" />
+    <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\ParkingGridsController.cs" />
+    <Compile Include="Controllers\ParkingLotAreasController.cs" />
+    <Compile Include="Controllers\ParkingLotFloorsController.cs" />
+    <Compile Include="Controllers\SensorsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Cars.cs">
+      <DependentUpon>ParkingLotModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Cars.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CarsInParkingLotPath_Body.cs">
+      <DependentUpon>ParkingLotModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CarsInParkingLotPath_Body.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CarsInParkingLotPath_Header.cs">
+      <DependentUpon>ParkingLotModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CarsInParkingLotPath_Header.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EFGeneratePartialClass.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Employee.cs">
+      <DependentUpon>ParkingLotModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Employee.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ETAs.cs">
+      <DependentUpon>ParkingLotModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ETAs.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\News_Body.cs">
+      <DependentUpon>ParkingLotModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\News_Body.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\News_Header.cs">
+      <DependentUpon>ParkingLotModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\News_Header.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingGrid.cs">
+      <DependentUpon>ParkingLotModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingGrid.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingLotAreas.cs">
+      <DependentUpon>ParkingLotModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingLotAreas.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingLotFloors.cs">
+      <DependentUpon>ParkingLotModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingLotFloors.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingLotModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ParkingLotModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingLotModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ParkingLotModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingLotModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ParkingLotModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Sensors.cs">
+      <DependentUpon>ParkingLotModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Sensors.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\vw_ParkingLotGridRemain.cs">
+      <DependentUpon>ParkingLotModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\vw_ParkingLotGridRemain.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -187,8 +290,29 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Models\EFGeneratePartialClass.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EFGeneratePartialClass.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ParkingLotModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ParkingLotModel.edmx</DependentUpon>
+      <LastGenOutput>ParkingLotModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ParkingLotModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ParkingLotModel.edmx</DependentUpon>
+      <LastGenOutput>ParkingLotModel.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <EntityDeploy Include="Models\ParkingLotModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ParkingLotModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ParkingLotModel.edmx.diagram">
+      <DependentUpon>ParkingLotModel.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -213,7 +337,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
@@ -236,6 +359,51 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\ParkingLotAreas\Create.cshtml" />
+    <Content Include="Views\ParkingLotAreas\Delete.cshtml" />
+    <Content Include="Views\ParkingLotAreas\Details.cshtml" />
+    <Content Include="Views\ParkingLotAreas\Edit.cshtml" />
+    <Content Include="Views\ParkingLotAreas\Index.cshtml" />
+    <Content Include="Views\ParkingLotFloors\Create.cshtml" />
+    <Content Include="Views\ParkingLotFloors\Delete.cshtml" />
+    <Content Include="Views\ParkingLotFloors\Details.cshtml" />
+    <Content Include="Views\ParkingLotFloors\Edit.cshtml" />
+    <Content Include="Views\ParkingLotFloors\Index.cshtml" />
+    <Content Include="Views\ParkingGrids\Create.cshtml" />
+    <Content Include="Views\ParkingGrids\Delete.cshtml" />
+    <Content Include="Views\ParkingGrids\Details.cshtml" />
+    <Content Include="Views\ParkingGrids\Edit.cshtml" />
+    <Content Include="Views\ParkingGrids\Index.cshtml" />
+    <Content Include="Views\Employees\Create.cshtml" />
+    <Content Include="Views\Employees\Delete.cshtml" />
+    <Content Include="Views\Employees\Details.cshtml" />
+    <Content Include="Views\Employees\Edit.cshtml" />
+    <Content Include="Views\Employees\Index.cshtml" />
+    <Content Include="Views\Cars\Create.cshtml" />
+    <Content Include="Views\Cars\Delete.cshtml" />
+    <Content Include="Views\Cars\Details.cshtml" />
+    <Content Include="Views\Cars\Edit.cshtml" />
+    <Content Include="Views\Cars\Index.cshtml" />
+    <Content Include="Views\ETAs\Create.cshtml" />
+    <Content Include="Views\ETAs\Delete.cshtml" />
+    <Content Include="Views\ETAs\Details.cshtml" />
+    <Content Include="Views\ETAs\Edit.cshtml" />
+    <Content Include="Views\ETAs\Index.cshtml" />
+    <Content Include="Views\Sensors\Create.cshtml" />
+    <Content Include="Views\Sensors\Delete.cshtml" />
+    <Content Include="Views\Sensors\Details.cshtml" />
+    <Content Include="Views\Sensors\Edit.cshtml" />
+    <Content Include="Views\Sensors\Index.cshtml" />
+    <Content Include="Views\News\Create.cshtml" />
+    <Content Include="Views\News\Delete.cshtml" />
+    <Content Include="Views\News\Details.cshtml" />
+    <Content Include="Views\News\Edit.cshtml" />
+    <Content Include="Views\News\Index.cshtml" />
+    <Content Include="Views\NewsContext\Create.cshtml" />
+    <Content Include="Views\NewsContext\Delete.cshtml" />
+    <Content Include="Views\NewsContext\Details.cshtml" />
+    <Content Include="Views\NewsContext\Edit.cshtml" />
+    <Content Include="Views\NewsContext\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -246,6 +414,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
