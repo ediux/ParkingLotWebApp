@@ -1,0 +1,16 @@
+﻿@{ ViewData[ViewData.TemplateInfo.HtmlFieldPrefix] = ViewData.TemplateInfo.FormattedModelValue;
+
+    DateTime OriTime;
+
+    if (ViewData.TemplateInfo.FormattedModelValue is System.DateTime)
+    {
+        OriTime = (System.DateTime)ViewData.TemplateInfo.FormattedModelValue;
+    }
+    else
+    {
+        OriTime = DateTime.Parse((string)ViewData.TemplateInfo.FormattedModelValue);
+    }
+
+    DateTime UTCTime = new DateTime(OriTime.Ticks, DateTimeKind.Utc).ToLocalTime();
+}
+@UTCTime.ToString("yyyy/MM/dd tt hh:mm")

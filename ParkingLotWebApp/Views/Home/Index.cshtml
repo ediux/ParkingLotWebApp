@@ -2,21 +2,31 @@
     ViewBag.Title = "Home Page";
 
     var AreaIds = new Dictionary<string, int>();
+    var HasFloor = new Dictionary<string, bool>();
     var SelectedIds = (int[])ViewBag.Selected;
     Dictionary<string, bool> objSelected = new Dictionary<string, bool>();
-    
+
     foreach (var key in Model.RemainSummary.Keys)
     {
         var _area = Model.RemainSummary[key].FirstOrDefault();
-        
+
         if (_area == null)
         {
             continue;
         }
 
         AreaIds.Add(key, _area.Id);
-        
-        if(SelectedIds.Contains(_area.Id)){
+        if (_area.NoneFloor != null){
+            HasFloor.Add(key, (_area.NoneFloor.HasValue) ? _area.NoneFloor.Value : false);
+        }
+        else
+        {
+            HasFloor.Add(key, false);
+        }
+
+
+        if (SelectedIds.Contains(_area.Id))
+        {
             objSelected.Add(key, true);
         }
         else
@@ -24,7 +34,7 @@
             objSelected.Add(key, false);
         }
     }
-    
+
 }
 @model ParkingLotWebApp.Models.HomeIndexViewModel
 
@@ -59,7 +69,10 @@
                                 <th colspan="2">@key</th>
                             </tr>
                             <tr>
-                                <th>樓層</th>
+                                @if (HasFloor[key] == false)
+                                {
+                                    <th>樓層</th>
+                                }
                                 <th>剩餘車格位</th>
                             </tr>
                         </thead>
@@ -67,11 +80,22 @@
                             @foreach (var item_n in Model.RemainSummary[key])
                             {
                                 <tr>
+                                    @if (item_n.NoneFloor != null)
+                                    {
+                                        if (item_n.NoneFloor.HasValue && item_n.NoneFloor.Value)
+                                        {
+                                            continue;
+                                        }
+                                    }
+                                    
                                     <td>@item_n.樓層名稱</td>
                                     <td>@item_n.剩餘停車格數</td>
                                 </tr>
                             }
                         </tbody>
+
+
+
                     </table>
                 </div>
             }

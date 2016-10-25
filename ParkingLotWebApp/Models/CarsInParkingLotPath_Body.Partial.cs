@@ -18,6 +18,7 @@ namespace ParkingLotWebApp.Models
         [Required]
         public int SensorId { get; set; }
         [Required]
+        [UIHint("UTCLocalTimeDisplay")]
         public System.DateTime CreateUTCTime { get; set; }
     
         public virtual Sensors Sensors { get; set; }

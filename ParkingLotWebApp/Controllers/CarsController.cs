@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ParkingLotWebApp.Models;
+using Microsoft.AspNet.Identity;
 
 namespace ParkingLotWebApp.Controllers
 {
@@ -18,7 +19,7 @@ namespace ParkingLotWebApp.Controllers
         public ActionResult Index()
         {
             var cars = db.Cars.Include(c => c.Employee).Include(c => c.ETAs);
-            return View(cars.ToList());
+            return View(cars.Where(w=>w.Void==false).ToList());
         }
 
         // GET: Cars/Details/5
@@ -39,8 +40,8 @@ namespace ParkingLotWebApp.Controllers
         // GET: Cars/Create
         public ActionResult Create()
         {
-            ViewBag.EmpId = new SelectList(db.Employee, "Id", "Name");
-            ViewBag.ETAId = new SelectList(db.ETAs, "Id", "Code");
+            ViewBag.EmpId = new SelectList(db.Employee.Where(w => w.Void == false), "Id", "Name");
+            ViewBag.ETAId = new SelectList(db.ETAs.Where(w => w.Void == false), "Id", "Code");
             return View();
         }
 
@@ -58,8 +59,8 @@ namespace ParkingLotWebApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.EmpId = new SelectList(db.Employee, "Id", "Name", cars.EmpId);
-            ViewBag.ETAId = new SelectList(db.ETAs, "Id", "Code", cars.ETAId);
+            ViewBag.EmpId = new SelectList(db.Employee.Where(w => w.Void == false), "Id", "Name", cars.EmpId);
+            ViewBag.ETAId = new SelectList(db.ETAs.Where(w => w.Void == false), "Id", "Code", cars.ETAId);
             return View(cars);
         }
 
@@ -75,8 +76,8 @@ namespace ParkingLotWebApp.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.EmpId = new SelectList(db.Employee, "Id", "Name", cars.EmpId);
-            ViewBag.ETAId = new SelectList(db.ETAs, "Id", "Code", cars.ETAId);
+            ViewBag.EmpId = new SelectList(db.Employee.Where(w => w.Void == false), "Id", "Name", cars.EmpId);
+            ViewBag.ETAId = new SelectList(db.ETAs.Where(w => w.Void == false), "Id", "Code", cars.ETAId);
             return View(cars);
         }
 
@@ -93,8 +94,8 @@ namespace ParkingLotWebApp.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.EmpId = new SelectList(db.Employee, "Id", "Name", cars.EmpId);
-            ViewBag.ETAId = new SelectList(db.ETAs, "Id", "Code", cars.ETAId);
+            ViewBag.EmpId = new SelectList(db.Employee.Where(w => w.Void == false), "Id", "Name", cars.EmpId);
+            ViewBag.ETAId = new SelectList(db.ETAs.Where(w => w.Void == false), "Id", "Code", cars.ETAId);
             return View(cars);
         }
 
@@ -119,7 +120,9 @@ namespace ParkingLotWebApp.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Cars cars = db.Cars.Find(id);
-            db.Cars.Remove(cars);
+            cars.Void = true;
+            cars.LastUpdateUserId = User.Identity.GetUserId<int>();
+            cars.LastUpdateUTCTime = DateTime.Now;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -1,0 +1,22 @@
+﻿@functions{
+    public static string GetUserName(int id)
+    {
+
+        var userrepo = ParkingLotWebApp.Models.ApplicationDbContext.Create();
+
+        var usr = userrepo.Users.Find(id);
+
+        if (usr!=null)
+        {
+         
+            return usr.UserName;
+        }
+
+        return "";
+    }
+
+    public static string GetRoleName(int RoleId)
+    {
+        return "";
+    }
+}

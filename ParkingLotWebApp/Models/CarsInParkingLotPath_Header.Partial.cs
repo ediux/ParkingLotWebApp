@@ -18,6 +18,7 @@ namespace ParkingLotWebApp.Models
         [Required]
         public int Direction { get; set; }
         [Required]
+        [UIHint("UTCLocalTimeDisplay")]
         public System.DateTime CreateUTCTime { get; set; }
     
         public virtual Cars Cars { get; set; }

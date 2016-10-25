@@ -133,6 +133,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AreaId" Type="int" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NoneFloor" Type="bit" Nullable="false" />
           <Property Name="Void" Type="bit" Nullable="false" />
           <Property Name="GridAmout" Type="int" Nullable="false" />
           <Property Name="GridRemainAmount" Type="int" Nullable="false" />
@@ -181,6 +182,7 @@
           <Property Name="停車格數" Type="int" Nullable="false" />
           <Property Name="剩餘停車格數" Type="int" Nullable="false" />
           <Property Name="最後更新時間" Type="smalldatetime" Nullable="false" />
+          <Property Name="NoneFloor" Type="bit" />
         </EntityType>
         <Association Name="FK_CarParkingInGrid_Cars">
           <End Role="Cars" Type="Self.Cars" Multiplicity="1" />
@@ -360,7 +362,8 @@
     [vw_ParkingLotGridRemain].[樓層名稱] AS [樓層名稱], 
     [vw_ParkingLotGridRemain].[停車格數] AS [停車格數], 
     [vw_ParkingLotGridRemain].[剩餘停車格數] AS [剩餘停車格數], 
-    [vw_ParkingLotGridRemain].[最後更新時間] AS [最後更新時間]
+    [vw_ParkingLotGridRemain].[最後更新時間] AS [最後更新時間], 
+    [vw_ParkingLotGridRemain].[NoneFloor] AS [NoneFloor]
     FROM [dbo].[vw_ParkingLotGridRemain] AS [vw_ParkingLotGridRemain]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_CarParkingInGrid_Cars" Association="Self.FK_CarParkingInGrid_Cars">
@@ -514,6 +517,7 @@
           <NavigationProperty Name="Sensors" Relationship="ParkingLotModel.SensorsInParkingLotFloors" FromRole="ParkingLotFloors" ToRole="Sensors" />
           <Property Name="GridAmout" Type="Int32" Nullable="false" />
           <Property Name="GridRemainAmount" Type="Int32" Nullable="false" />
+          <Property Name="NoneFloor" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_Cars_ToEmployee">
           <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
@@ -733,6 +737,7 @@
           <Property Name="停車格數" Type="Int32" Nullable="false" />
           <Property Name="剩餘停車格數" Type="Int32" Nullable="false" />
           <Property Name="最後更新時間" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="NoneFloor" Type="Boolean" />
         </EntityType>
         <EntityType Name="News_Body">
           <Key>
@@ -856,6 +861,7 @@
           <EntitySetMapping Name="ParkingLotFloors">
             <EntityTypeMapping TypeName="ParkingLotModel.ParkingLotFloors">
               <MappingFragment StoreEntitySet="ParkingLotFloors">
+                <ScalarProperty Name="NoneFloor" ColumnName="NoneFloor" />
                 <ScalarProperty Name="GridRemainAmount" ColumnName="GridRemainAmount" />
                 <ScalarProperty Name="GridAmout" ColumnName="GridAmout" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -923,6 +929,7 @@
           <EntitySetMapping Name="vw_ParkingLotGridRemain">
             <EntityTypeMapping TypeName="ParkingLotModel.vw_ParkingLotGridRemain">
               <MappingFragment StoreEntitySet="vw_ParkingLotGridRemain">
+                <ScalarProperty Name="NoneFloor" ColumnName="NoneFloor" />
                 <ScalarProperty Name="最後更新時間" ColumnName="最後更新時間" />
                 <ScalarProperty Name="剩餘停車格數" ColumnName="剩餘停車格數" />
                 <ScalarProperty Name="停車格數" ColumnName="停車格數" />

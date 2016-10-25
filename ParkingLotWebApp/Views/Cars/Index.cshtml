@@ -12,13 +12,20 @@
 <table class="table">
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.ETAs.Code)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.CarNumber)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CarType)
         </th>
+
         <th>
-            @Html.DisplayNameFor(model => model.Void)
+            @Html.DisplayNameFor(x=>x.Employee.Code)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Employee.Name)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CreateUserId)
@@ -32,12 +39,8 @@
         <th>
             @Html.DisplayNameFor(model => model.LastUpdateUTCTime)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Employee.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ETAs.Code)
-        </th>
+
+
         <th></th>
     </tr>
 

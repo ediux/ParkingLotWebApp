@@ -21,5 +21,6 @@ namespace ParkingLotWebApp.Models
         public int 停車格數 { get; set; }
         public int 剩餘停車格數 { get; set; }
         public System.DateTime 最後更新時間 { get; set; }
+        public Nullable<bool> NoneFloor { get; set; }
     }
 }

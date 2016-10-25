@@ -31,6 +31,7 @@ namespace ParkingLotWebApp.Models
         public System.DateTime LastUpdateUtcTime { get; set; }
         public int GridAmout { get; set; }
         public int GridRemainAmount { get; set; }
+        public bool NoneFloor { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParkingGrid> ParkingGrid { get; set; }

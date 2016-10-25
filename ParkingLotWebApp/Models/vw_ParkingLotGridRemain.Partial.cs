@@ -19,7 +19,8 @@ namespace ParkingLotWebApp.Models
         [Display(Name = "區域名稱")]
         public string Name { get; set; }
         [Required]
-        [Display(Name = "是否刪除")]
+        [Display(Name = "狀態")]
+        [UIHint("VoidDisplay")]
         public bool Void { get; set; }
         
         [StringLength(50, ErrorMessage="欄位長度不得大於 50 個字元")]
@@ -34,6 +35,7 @@ namespace ParkingLotWebApp.Models
         public int 剩餘停車格數 { get; set; }
         [Required]
         [Display(Name = "最後更新時間")]
+        [UIHint("UTCLocalTimeDisplay")]
         public System.DateTime 最後更新時間 { get; set; }
     }
 }

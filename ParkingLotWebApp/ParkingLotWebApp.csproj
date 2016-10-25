@@ -313,6 +313,7 @@
     <Content Include="Models\ParkingLotModel.edmx.diagram">
       <DependentUpon>ParkingLotModel.edmx</DependentUpon>
     </Content>
+    <Content Include="App_Code\RazorHelpFunctions.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -404,6 +405,16 @@
     <Content Include="Views\NewsContext\Details.cshtml" />
     <Content Include="Views\NewsContext\Edit.cshtml" />
     <Content Include="Views\NewsContext\Index.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\LockedStateDispaly.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\RoleIDMappingDisplay.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\UserIDMappingDisplay.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\UTCLocalTimeDisplay.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\VoidDisplay.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\LockedStateDispaly.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\RoleIDMappingDisplay.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\UserIDMappingDisplay.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\VoidDisplay.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\UTCLocalTimeDisplay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -22,15 +22,19 @@ namespace ParkingLotWebApp.Models
         public int Version { get; set; }
         [Required]
         [Display(Name="建立者")]
+        [UIHint("UserIDMappingDisplay")]
         public int CreateUserId { get; set; }
         [Required]
         [Display(Name = "建立時間")]
+        [UIHint("UTCLocalTimeDisplay")]
         public System.DateTime CreateUTCTime { get; set; }
         [Required]
         [Display(Name = "最後更新者")]
+        [UIHint("UserIDMappingDisplay")]
         public int LastUpdateUserId { get; set; }
         [Required]
         [Display(Name = "最後更新時間")]
+        [UIHint("UTCLocalTimeDisplay")]
         public System.DateTime LastUpdateUTCTime { get; set; }
     
         public virtual News_Header News_Header { get; set; }
