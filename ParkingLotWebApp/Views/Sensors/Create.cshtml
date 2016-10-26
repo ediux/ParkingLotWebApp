@@ -1,7 +1,10 @@
 ﻿@model ParkingLotWebApp.Models.Sensors
-
+@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Create";
+    Model.Void = false;
+    Model.LastUpdateUserId = Model.CreateUserId = User.Identity.GetUserId<int>();
+    Model.LastUpdateUTCTime = Model.CreateUTCTime = DateTime.Now.ToUniversalTime();
 }
 
 <h2>Create</h2>
@@ -31,45 +34,11 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Void, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Void, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Void, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreateUserId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreateUserId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreateUserId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreateUTCTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreateUTCTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreateUTCTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.LastUserId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.LastUserId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LastUserId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.LastUpdateUtcTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.LastUpdateUtcTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LastUpdateUtcTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        @Html.HiddenFor(model => model.Void)
+        @Html.EditorFor(model => model.CreateUserId, null)
+        @Html.EditorFor(model => model.CreateUTCTime, null)
+        @Html.EditorFor(model => model.LastUpdateUserId, null)
+        @Html.EditorFor(model => model.LastUpdateUTCTime, null)
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

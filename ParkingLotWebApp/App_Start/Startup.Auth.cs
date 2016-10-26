@@ -6,6 +6,8 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using ParkingLotWebApp.Models;
+using My.Core.Infrastructures.Implementations.Models;
+using My.Core.Infrastructures.Implementations;
 
 namespace ParkingLotWebApp
 {
@@ -15,7 +17,7 @@ namespace ParkingLotWebApp
         public void ConfigureAuth(IAppBuilder app)
         {
             // 設定資料庫內容、使用者管理員和登入管理員，以針對每個要求使用單一執行個體
-            app.CreatePerOwinContext(ApplicationDbContext.Create);
+            app.CreatePerOwinContext(OpenWebSiteEntities.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
 
@@ -30,9 +32,11 @@ namespace ParkingLotWebApp
                 {
                     // 讓應用程式在使用者登入時驗證安全性戳記。
                     // 這是您變更密碼或將外部登入新增至帳戶時所使用的安全性功能。  
-                    OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, ApplicationUser>(
-                        validateInterval: TimeSpan.FromMinutes(30),
-                        regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
+                    OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, ApplicationUser,int>(
+                        validateInterval: TimeSpan.FromMinutes(30)
+                        ,regenerateIdentityCallback: (manager, user) => user.GenerateUserIdentityAsync(manager),getUserIdCallback:
+                        (claim)=> claim.GetUserId<int>())
+                     
                 }
             });            
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);

@@ -1,0 +1,167 @@
+﻿@model ParkingLotWebApp.Models.HomeIndexViewModel
+
+@{
+    ViewBag.Title = "ListRemainParkingGridAmounts";
+
+    var AreaIds = new Dictionary<string, int>();
+    var HasFloor = new Dictionary<string, bool>();
+    var SelectedIds = (int[])ViewBag.Selected;
+    Dictionary<string, bool> objSelected = new Dictionary<string, bool>();
+
+    foreach (var key in Model.RemainSummary.Keys)
+    {
+        var _area = Model.RemainSummary[key].FirstOrDefault();
+
+        if (_area == null)
+        {
+            continue;
+        }
+
+        AreaIds.Add(key, _area.Id);
+        HasFloor.Add(key, _area.NoneFloor);
+        if (SelectedIds.Contains(_area.Id))
+        {
+            objSelected.Add(key, true);
+        }
+        else
+        {
+            objSelected.Add(key, false);
+        }
+    }
+}
+
+<h2>ListRemainParkingGridAmounts</h2>
+
+<div class="row" style="margin-top:20px;">
+
+    <div class="col-xs-4 col-md-2">
+        @using (Html.BeginForm("ListRemainParkingGridAmounts", "ParkingLotFloors", FormMethod.Post, new { @id = "selectlocationform", @class = "form-horizontal", @role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            foreach (var key in Model.RemainSummary.Keys)
+            {
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="areaId" value="@AreaIds[key]" @((objSelected[key]) ? Html.Raw("checked") : Html.Raw("")) />
+                            @key
+                        </label>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    <div class="col-xs-8 col-md-10">
+        @foreach (string key in Model.RemainSummary.Keys)
+        {
+            if (objSelected[key])
+            {
+                <div class="col-xs-12 col-md-4">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th colspan="2">@key</th>
+                            </tr>
+                            <tr>
+                                @if (HasFloor[key] == false)
+                                {
+                                    <th>樓層</th>
+                                }
+                                <th>剩餘車格位</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item_n in Model.RemainSummary[key])
+                            {
+                                <tr id="@Html.Raw(item_n.Id.ToString()+"_"+item_n.樓層名稱)">
+                                    @if (item_n.NoneFloor == false)
+                                    {
+                                        <td><a href="javascript:showEditModal(@item_n.Id,'@item_n.樓層名稱',@item_n.停車格數,@item_n.剩餘停車格數);">@item_n.樓層名稱</a></td>
+                                        <td>@item_n.剩餘停車格數</td>
+                                    }
+                                    else
+                                    {
+                                        <td><a href="javascript:showEditModal(@item_n.Id,'@item_n.樓層名稱',@item_n.停車格數,@item_n.剩餘停車格數);">@item_n.剩餘停車格數</a></td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+
+
+
+                    </table>
+                </div>
+            }
+
+        }
+    </div>
+</div>
+<div class="modal fade" id="EditRemainGridModal" tabindex="-1" role="dialog" aria-labelledby="EditRemainGridModal-label">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="EditRemainGridModal-label">編輯</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <label class="control-label col-sm-6" for="form-group-input">目前剩餘車格位數:</label>
+                            <div class="col-sm-6">
+                                <label class="control-label form-control-static" for="form-group-input" id="currentValue">1</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <label class="control-label col-sm-6" for="form-group-input">修改剩餘車格位數:</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" placeholder="Placecholder" id="targetValue">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btnSave">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        function showEditModal(areaId, floorname, limitamount, remainamount) {
+            $('#currentValue').html(remainamount);
+            $('#targetValue').val(remainamount);
+            $('#targetValue').attr('placeholder',remainamount);
+            $('#EditRemainGridModal').modal('show');
+            $('#btnSave').click(function () {
+                $.ajax({
+                    type: 'POST',
+                    url:'@Url.Action("EditRemainParkingGridAmounts")',
+                    data:  {
+                        'AreaId': areaId,
+                        'Name': floorname,
+                        'GridAmout': limitamount,
+                        'GridRemainAmount': $('#targetValue').val()
+                    },
+                    dataType: 'json',
+                    headers:{'RequestVerificationToken': '@RazorHelpFunctions.GetAntiForgeryToken()'
+                    },
+                    success: function (response) {
+                        $('#EditRemainGridModal').modal('hide');
+                        window.location.reload();   //重新載入
+                    }
+                });
+            });
+
+        }
+        $(document).ready(function () {
+            $('#selectlocationform').on('click', ':checkbox', function () {
+                $('#selectlocationform').submit();
+            });
+        });
+    </script>
+}

@@ -17,6 +17,7 @@ namespace ParkingLotWebApp.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParkingLotFloors()
         {
+            this.NoneFloor = false;
             this.ParkingGrid = new HashSet<ParkingGrid>();
             this.Sensors = new HashSet<Sensors>();
         }
@@ -27,8 +28,8 @@ namespace ParkingLotWebApp.Models
         public bool Void { get; set; }
         public int CreateUserId { get; set; }
         public System.DateTime CreateUTCTime { get; set; }
-        public int LastUserId { get; set; }
-        public System.DateTime LastUpdateUtcTime { get; set; }
+        public int LastUpdateUserId { get; set; }
+        public System.DateTime LastUpdateUTCTime { get; set; }
         public int GridAmout { get; set; }
         public int GridRemainAmount { get; set; }
         public bool NoneFloor { get; set; }

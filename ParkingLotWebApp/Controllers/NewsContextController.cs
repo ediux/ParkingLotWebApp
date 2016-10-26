@@ -40,7 +40,7 @@ namespace ParkingLotWebApp.Controllers
         public ActionResult Create()
         {
             ViewBag.Id = new SelectList(db.News_Header, "Id", "Caption");
-            return View();
+            return View(new News_Body());
         }
 
         // POST: NewsContext/Create

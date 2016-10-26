@@ -37,11 +37,11 @@ namespace ParkingLotWebApp.Models
         [Required]
         [Display(Name = "最後更新者")]
         [UIHint("UserIDMappingDisplay")]
-        public int LastUserId { get; set; }
+        public int LastUpdateUserId { get; set; }
         [Required]
         [Display(Name = "最後更新時間")]
         [UIHint("UTCLocalTimeDisplay")]
-        public System.DateTime LastUpdateUtcTime { get; set; }
+        public System.DateTime LastUpdateUTCTime { get; set; }
 
         public virtual ICollection<CarsInParkingLotPath_Body> CarsInParkingLotPath_Body { get; set; }
         public virtual ICollection<ParkingLotFloors> ParkingLotFloors { get; set; }

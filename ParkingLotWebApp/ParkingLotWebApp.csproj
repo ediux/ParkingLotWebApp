@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -164,9 +165,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Code\AjaxValidateAntiForgeryTokenAttribute.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -185,7 +186,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Cars.cs">
       <DependentUpon>ParkingLotModel.tt</DependentUpon>
     </Compile>
@@ -221,7 +221,6 @@
     <Compile Include="Models\ETAs.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\News_Body.cs">
       <DependentUpon>ParkingLotModel.tt</DependentUpon>
@@ -415,6 +414,7 @@
     <Content Include="Views\Shared\EditorTemplates\UserIDMappingDisplay.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\VoidDisplay.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\UTCLocalTimeDisplay.cshtml" />
+    <Content Include="Views\ParkingLotFloors\ListRemainParkingGridAmounts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -428,6 +428,16 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\My.Core.Infrastructures.Implementations\My.Core.Infrastructures.Implementations.csproj">
+      <Project>{4cf6dbdf-3cf6-4647-bdde-f1260b1ee419}</Project>
+      <Name>My.Core.Infrastructures.Implementations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\My.Core.Infrastructures\My.Core.Infrastructures.csproj">
+      <Project>{d164eb90-ea2e-4bbb-b781-e55635a96a04}</Project>
+      <Name>My.Core.Infrastructures</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

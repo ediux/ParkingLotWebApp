@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ParkingLotWebApp.Models;
+using ParkingLotWebApp;
 
 namespace ParkingLotWebApp.Controllers
 {
@@ -17,12 +18,16 @@ namespace ParkingLotWebApp.Controllers
         // GET: ParkingLotFloors
         public ActionResult Index(int? id)
         {
+
+
             if (id.HasValue)
             {
-                var parkingLotFloorsByFiliter = db.ParkingLotFloors.Include(p => p.ParkingLotAreas);
-                return View(parkingLotFloorsByFiliter.Where(w => w.AreaId == id).ToList());
+                ViewBag.AreaId = id.Value;
+                ViewBag.returnUrl = Url.Action("Index", "ParkingLotAreas", new { id = id.Value });
+                var parkingLotFloorsByFiliter = db.ParkingLotFloors.Where(w => w.AreaId == id && w.Void == false).Include(p => p.ParkingLotAreas);
+                return View(parkingLotFloorsByFiliter.ToList());
             }
-            var parkingLotFloors = db.ParkingLotFloors.Include(p => p.ParkingLotAreas);
+            var parkingLotFloors = db.ParkingLotFloors.Where(w => w.Void == false).Include(p => p.ParkingLotAreas);
             return View(parkingLotFloors.ToList());
         }
 
@@ -42,10 +47,21 @@ namespace ParkingLotWebApp.Controllers
         }
 
         // GET: ParkingLotFloors/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
-            ViewBag.AreaId = new SelectList(db.ParkingLotAreas, "Id", "Name");
-            return View();
+
+            if (id != null && id.HasValue)
+            {
+                ViewBag.returnUrl = Url.Action("Index", "ParkingLotFloors", new { id = id.Value });
+                ViewBag.AreaId = new SelectList(db.ParkingLotAreas.Where(w => w.Id == id.Value && w.Void == false), "Id", "Name");
+            }
+            else
+            {
+                ViewBag.AreaId = new SelectList(db.ParkingLotAreas.Where(w => w.Void == false), "Id", "Name");
+
+            }
+
+            return View(new ParkingLotFloors());
         }
 
         // POST: ParkingLotFloors/Create
@@ -53,16 +69,23 @@ namespace ParkingLotWebApp.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,AreaId,Name,Void,CreateUserId,CreateUTCTime,LastUserId,LastUpdateUtcTime")] ParkingLotFloors parkingLotFloors)
+        public ActionResult Create([Bind(Include = "Id,AreaId,Name,Void,CreateUserId,CreateUTCTime,LastUserId,LastUpdateUtcTime,GridAmout,GridRemainAmount")] ParkingLotFloors parkingLotFloors)
         {
             if (ModelState.IsValid)
             {
                 db.ParkingLotFloors.Add(parkingLotFloors);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = parkingLotFloors.AreaId });
             }
-
-            ViewBag.AreaId = new SelectList(db.ParkingLotAreas, "Id", "Name", parkingLotFloors.AreaId);
+            if (parkingLotFloors.AreaId != null && parkingLotFloors.AreaId.HasValue)
+            {
+                ViewBag.returnUrl = Url.Action("Index", "ParkingLotFloors", new { id = parkingLotFloors.AreaId.HasValue });
+                ViewBag.AreaId = new SelectList(db.ParkingLotAreas.Where(w => w.Id == parkingLotFloors.AreaId.Value && w.Void == false), "Id", "Name");
+            }
+            else
+            {
+                ViewBag.AreaId = new SelectList(db.ParkingLotAreas.Where(w => w.Void == false), "Id", "Name");
+            }
             return View(parkingLotFloors);
         }
 
@@ -78,7 +101,7 @@ namespace ParkingLotWebApp.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.AreaId = new SelectList(db.ParkingLotAreas, "Id", "Name", parkingLotFloors.AreaId);
+            ViewBag.AreaId = new SelectList(db.ParkingLotAreas.Where(w => w.Void == false), "Id", "Name", parkingLotFloors.AreaId);
             return View(parkingLotFloors);
         }
 
@@ -87,7 +110,7 @@ namespace ParkingLotWebApp.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,AreaId,Name,Void,CreateUserId,CreateUTCTime,LastUserId,LastUpdateUtcTime")] ParkingLotFloors parkingLotFloors)
+        public ActionResult Edit([Bind(Include = "Id,AreaId,Name,Void,CreateUserId,CreateUTCTime,LastUserId,LastUpdateUtcTime,GridAmout,GridRemainAmount")] ParkingLotFloors parkingLotFloors)
         {
             if (ModelState.IsValid)
             {
@@ -124,6 +147,60 @@ namespace ParkingLotWebApp.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        public ActionResult ListRemainParkingGridAmounts()
+        {
+            var model = new HomeIndexViewModel();
+            model.RemainSummary = new Dictionary<string, IEnumerable<vw_ParkingLotGridRemain>>();
+
+            var result = db.vw_ParkingLotGridRemain.Where(w => w.Void == false);
+            var keys = result.Select(d => new { d.Id, d.Name }).Distinct().ToList();
+
+            foreach (var key in keys)
+            {
+                model.RemainSummary.Add(key.Name, result.Where(w => w.Id == key.Id).ToList());
+            }
+
+            ViewBag.Selected = new int[] { };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ListRemainParkingGridAmounts(FormCollection collection)
+        {
+            string selects = collection["areaId"];
+            int[] sId = new int[] { };
+
+            if (!string.IsNullOrEmpty(selects))
+            {
+                sId = selects.Split(',').ToList().ConvertAll(c => int.Parse(c)).ToArray();
+            }
+
+            var model = new HomeIndexViewModel();
+
+            model.RemainSummary = new Dictionary<string, IEnumerable<vw_ParkingLotGridRemain>>();
+
+            var result = db.vw_ParkingLotGridRemain.Where(w => w.Void == false);
+            var keys = result.Select(d => new { d.Id, d.Name }).Distinct().ToList();
+
+            foreach (var key in keys)
+            {
+                model.RemainSummary.Add(key.Name, result.Where(w => w.Id == key.Id).ToList());
+            }
+
+            ViewBag.Selected = sId;
+            return View(model);
+        }
+
+        [HttpPost]
+        [AjaxValidateAntiForgeryToken]
+        public ActionResult EditRemainParkingGridAmounts([Bind(Include = "AreaId,Name,GridAmout,GridRemainAmount")]ParkingLotFloors parkinglotFloors)
+        {
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+
 
         protected override void Dispose(bool disposing)
         {

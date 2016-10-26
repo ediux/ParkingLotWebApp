@@ -16,7 +16,7 @@ namespace ParkingLotWebApp.Controllers
             var model = new HomeIndexViewModel();
             model.RemainSummary = new Dictionary<string, IEnumerable<vw_ParkingLotGridRemain>>();
 
-            var result = db.vw_ParkingLotGridRemain;
+            var result = db.vw_ParkingLotGridRemain.Where(w=>w.Void==false);
             var keys = result.Select(d => new { d.Id, d.Name }).Distinct().ToList();
 
             foreach (var key in keys)
@@ -44,7 +44,7 @@ namespace ParkingLotWebApp.Controllers
 
             model.RemainSummary = new Dictionary<string, IEnumerable<vw_ParkingLotGridRemain>>();
 
-            var result = db.vw_ParkingLotGridRemain;
+            var result = db.vw_ParkingLotGridRemain.Where(w => w.Void == false);
             var keys = result.Select(d => new { d.Id, d.Name }).Distinct().ToList();
 
             foreach (var key in keys)

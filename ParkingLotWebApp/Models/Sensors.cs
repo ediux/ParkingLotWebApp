@@ -24,11 +24,11 @@ namespace ParkingLotWebApp.Models
         public int Id { get; set; }
         public string SerialNumber { get; set; }
         public System.Data.Entity.Spatial.DbGeography GPS { get; set; }
-        public string Void { get; set; }
+        public bool Void { get; set; }
         public int CreateUserId { get; set; }
         public System.DateTime CreateUTCTime { get; set; }
-        public int LastUserId { get; set; }
-        public System.DateTime LastUpdateUtcTime { get; set; }
+        public int LastUpdateUserId { get; set; }
+        public System.DateTime LastUpdateUTCTime { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CarsInParkingLotPath_Body> CarsInParkingLotPath_Body { get; set; }

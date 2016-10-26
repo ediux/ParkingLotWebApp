@@ -26,7 +26,7 @@ namespace ParkingLotWebApp.Models
         public bool Void { get; set; }
         public int CreateUserId { get; set; }
         public System.DateTime CreateUTCTime { get; set; }
-        public int LastUserId { get; set; }
+        public int LastUpdateUserId { get; set; }
         public System.DateTime LastUpdateUTCTime { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -17,7 +17,8 @@ namespace ParkingLotWebApp.Controllers
         // GET: ParkingLotAreas
         public ActionResult Index()
         {
-            return View(db.ParkingLotAreas.ToList());
+            return View(db.ParkingLotAreas.Where(w=>w.Void==false)
+                .ToList());
         }
 
         // GET: ParkingLotAreas/Details/5
@@ -38,7 +39,7 @@ namespace ParkingLotWebApp.Controllers
         // GET: ParkingLotAreas/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new ParkingLotAreas());
         }
 
         // POST: ParkingLotAreas/Create
@@ -113,6 +114,12 @@ namespace ParkingLotWebApp.Controllers
             db.ParkingLotAreas.Remove(parkingLotAreas);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult RemainIndex()
+        {
+            return View(db.ParkingLotAreas.Where(w => w.Void == false)
+                .ToList());
         }
 
         protected override void Dispose(bool disposing)

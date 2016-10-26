@@ -38,7 +38,7 @@ namespace ParkingLotWebApp.Controllers
         // GET: Sensors/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new Sensors());
         }
 
         // POST: Sensors/Create

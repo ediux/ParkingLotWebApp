@@ -1,7 +1,10 @@
 ﻿@model ParkingLotWebApp.Models.ParkingLotAreas
-
+@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Edit";
+    Model.GPS = null;
+    Model.LastUpdateUserId = User.Identity.GetUserId<int>();
+    Model.LastUpdateUTCTime = DateTime.Now;
 }
 
 <h2>Edit</h2>
@@ -10,7 +13,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+    @Html.HiddenFor(model => model.GPS)
     <div class="form-horizontal">
         <h4>ParkingLotAreas</h4>
         <hr />
@@ -25,55 +28,29 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.GPS, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.GPS, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.GPS, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        @*
+            WARNING: 此欄位當地理資訊需要使用時後才須解除註解
+                <div class="form-group">
+                @Html.LabelFor(model => model.GPS, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.GPS, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.GPS, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Void, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.Void)
-                    @Html.ValidationMessageFor(model => model.Void, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreateUserId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreateUserId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreateUserId, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                @Html.EditorFor(model => model.Void)
+                @Html.ValidationMessageFor(model => model.Void, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreateUTCTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreateUTCTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreateUTCTime, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.LastUpdateUserId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.LastUpdateUserId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LastUpdateUserId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.LastUpdateUTCTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.LastUpdateUTCTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LastUpdateUTCTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        @Html.EditorFor(model => model.CreateUserId, null)
+        @Html.EditorFor(model => model.CreateUTCTime, null)
+        @Html.EditorFor(model => model.LastUpdateUserId, null)
+        @Html.EditorFor(model => model.LastUpdateUTCTime, null)
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

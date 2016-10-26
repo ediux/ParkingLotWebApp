@@ -1,4 +1,4 @@
-﻿@model ParkingLotWebApp.Models.IndexViewModel
+﻿@model My.Core.Infrastructures.Implementations.Models.IndexViewModel
 @{
     ViewBag.Title = "管理";
 }
@@ -85,7 +85,11 @@
     <h4>停車場維護作業</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>停車區域</dt>
-        <dd></dd>
+        <dt>停車區域:</dt>
+        <dd>[ @Html.ActionLink("維護", "Index", "ParkingLotAreas") ]</dd>
+        <dt>員工資料:</dt>
+        <dd>[ @Html.ActionLink("維護", "Index", "Employees") ]</dd>
+        <dt>ETC對應:</dt>
+        <dd>[ @Html.ActionLink("維護", "Index", "ETAs") ]</dd>
     </dl>
 </div>

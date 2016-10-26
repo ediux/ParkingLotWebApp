@@ -17,7 +17,7 @@ namespace ParkingLotWebApp.Controllers
         // GET: Employees
         public ActionResult Index()
         {
-            return View(db.Employee.ToList());
+            return View(db.Employee.Where(w=>w.Void==false).ToList());
         }
 
         // GET: Employees/Details/5
@@ -38,7 +38,7 @@ namespace ParkingLotWebApp.Controllers
         // GET: Employees/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new Employee());
         }
 
         // POST: Employees/Create

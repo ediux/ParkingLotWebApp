@@ -17,7 +17,7 @@ namespace ParkingLotWebApp.Controllers
         // GET: ETAs
         public ActionResult Index()
         {
-            return View(db.ETAs.ToList());
+            return View(db.ETAs.Where(w=>w.Void==false).ToList());
         }
 
         // GET: ETAs/Details/5
@@ -38,7 +38,7 @@ namespace ParkingLotWebApp.Controllers
         // GET: ETAs/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new ETAs());
         }
 
         // POST: ETAs/Create

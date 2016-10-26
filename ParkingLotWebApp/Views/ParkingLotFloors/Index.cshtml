@@ -6,9 +6,19 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@if (ViewBag.returnUrl != null)
+{
+    @Html.ActionLink("Create New", "Create", new { id = ViewBag.AreaId })
+    @Html.Raw("|")
+    @Html.ActionLink("返回區域維護", "Index", "ParkingLotAreas",null, null)
+}
+else
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}
+
 <table class="table">
     <tr>
         <th>
@@ -24,10 +34,10 @@
             @Html.DisplayNameFor(model => model.CreateUTCTime)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LastUserId)
+            @Html.DisplayNameFor(model => model.LastUpdateUserId)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LastUpdateUtcTime)
+            @Html.DisplayNameFor(model => model.LastUpdateUTCTime)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ParkingLotAreas.Name)
@@ -35,35 +45,36 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Void)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreateUserId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreateUTCTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastUserId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastUpdateUtcTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ParkingLotAreas.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Void)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateUserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateUTCTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastUpdateUserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastUpdateUTCTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParkingLotAreas.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>

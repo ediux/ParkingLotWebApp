@@ -133,7 +133,6 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AreaId" Type="int" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="NoneFloor" Type="bit" Nullable="false" />
           <Property Name="Void" Type="bit" Nullable="false" />
           <Property Name="GridAmout" Type="int" Nullable="false" />
           <Property Name="GridRemainAmount" Type="int" Nullable="false" />
@@ -141,6 +140,7 @@
           <Property Name="CreateUTCTime" Type="smalldatetime" Nullable="false" />
           <Property Name="LastUserId" Type="int" Nullable="false" />
           <Property Name="LastUpdateUtcTime" Type="smalldatetime" Nullable="false" />
+          <Property Name="NoneFloor" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Sensors">
           <Key>
@@ -149,7 +149,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SerialNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="GPS" Type="geography" />
-          <Property Name="Void" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Void" Type="bit" Nullable="false" />
           <Property Name="CreateUserId" Type="int" Nullable="false" />
           <Property Name="CreateUTCTime" Type="smalldatetime" Nullable="false" />
           <Property Name="LastUserId" Type="int" Nullable="false" />
@@ -174,6 +174,7 @@
             <PropertyRef Name="停車格數" />
             <PropertyRef Name="剩餘停車格數" />
             <PropertyRef Name="最後更新時間" />
+            
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -182,7 +183,7 @@
           <Property Name="停車格數" Type="int" Nullable="false" />
           <Property Name="剩餘停車格數" Type="int" Nullable="false" />
           <Property Name="最後更新時間" Type="smalldatetime" Nullable="false" />
-          <Property Name="NoneFloor" Type="bit" />
+          <Property Name="NoneFloor" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_CarParkingInGrid_Cars">
           <End Role="Cars" Type="Self.Cars" Multiplicity="1" />
@@ -452,7 +453,7 @@
           <Property Name="Void" Type="Boolean" Nullable="false" />
           <Property Name="CreateUserId" Type="Int32" Nullable="false" />
           <Property Name="CreateUTCTime" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="LastUserId" Type="Int32" Nullable="false" />
+          <Property Name="LastUpdateUserId" Type="Int32" Nullable="false" />
           <Property Name="LastUpdateUTCTime" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="Cars" Relationship="Self.FK_Cars_ToEmployee" FromRole="Employee" ToRole="Cars" />
         </EntityType>
@@ -510,14 +511,14 @@
           <Property Name="Void" Type="Boolean" Nullable="false" />
           <Property Name="CreateUserId" Type="Int32" Nullable="false" />
           <Property Name="CreateUTCTime" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="LastUserId" Type="Int32" Nullable="false" />
-          <Property Name="LastUpdateUtcTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="LastUpdateUserId" Type="Int32" Nullable="false" />
+          <Property Name="LastUpdateUTCTime" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="ParkingGrid" Relationship="Self.FK_ParkingGrid_ToParkingLotFloors" FromRole="ParkingLotFloors" ToRole="ParkingGrid" />
           <NavigationProperty Name="ParkingLotAreas" Relationship="Self.FK_ParkingLotFloors_ToParkingLotAreas" FromRole="ParkingLotFloors" ToRole="ParkingLotAreas" />
-          <NavigationProperty Name="Sensors" Relationship="ParkingLotModel.SensorsInParkingLotFloors" FromRole="ParkingLotFloors" ToRole="Sensors" />
           <Property Name="GridAmout" Type="Int32" Nullable="false" />
           <Property Name="GridRemainAmount" Type="Int32" Nullable="false" />
-          <Property Name="NoneFloor" Type="Boolean" Nullable="false" />
+          <Property Name="NoneFloor" Type="Boolean" Nullable="false" DefaultValue="false" />
+          <NavigationProperty Name="Sensors" Relationship="ParkingLotModel.SensorsInParkingLotFloors" FromRole="ParkingLotFloors" ToRole="Sensors" />
         </EntityType>
         <Association Name="FK_Cars_ToEmployee">
           <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
@@ -595,15 +596,6 @@
             <End Role="ParkingGrid" EntitySet="ParkingGrid" />
           </AssociationSet>
           <EntitySet Name="CarsInParkingLotPath_Body" EntityType="ParkingLotModel.CarsInParkingLotPath_Body" />
-          <EntitySet Name="Sensors" EntityType="ParkingLotModel.Sensors" />
-          <AssociationSet Name="FK_CarsInParkingLotPath_Body_Sensors" Association="ParkingLotModel.FK_CarsInParkingLotPath_Body_Sensors">
-            <End Role="Sensors" EntitySet="Sensors" />
-            <End Role="CarsInParkingLotPath_Body" EntitySet="CarsInParkingLotPath_Body" />
-          </AssociationSet>
-          <AssociationSet Name="SensorsInParkingLotFloors" Association="ParkingLotModel.SensorsInParkingLotFloors">
-            <End Role="ParkingLotFloors" EntitySet="ParkingLotFloors" />
-            <End Role="Sensors" EntitySet="Sensors" />
-          </AssociationSet>
           <EntitySet Name="CarsInParkingLotPath_Header" EntityType="ParkingLotModel.CarsInParkingLotPath_Header" />
           <AssociationSet Name="FK_CarsInParkingLotPath_Header_Cars" Association="ParkingLotModel.FK_CarsInParkingLotPath_Header_Cars">
             <End Role="Cars" EntitySet="Cars" />
@@ -624,6 +616,15 @@
             <End Role="News_Header" EntitySet="News_Header" />
             <End Role="News_Body" EntitySet="News_Body" />
           </AssociationSet>
+          <EntitySet Name="Sensors" EntityType="ParkingLotModel.Sensors" />
+          <AssociationSet Name="FK_CarsInParkingLotPath_Body_Sensors" Association="ParkingLotModel.FK_CarsInParkingLotPath_Body_Sensors">
+            <End Role="Sensors" EntitySet="Sensors" />
+            <End Role="CarsInParkingLotPath_Body" EntitySet="CarsInParkingLotPath_Body" />
+          </AssociationSet>
+          <AssociationSet Name="SensorsInParkingLotFloors" Association="ParkingLotModel.SensorsInParkingLotFloors">
+            <End Role="ParkingLotFloors" EntitySet="ParkingLotFloors" />
+            <End Role="Sensors" EntitySet="Sensors" />
+          </AssociationSet>
           </EntityContainer>
         <Association Name="CarParkingInGrid">
           <End Type="ParkingLotModel.Cars" Role="Cars" Multiplicity="*" />
@@ -637,40 +638,9 @@
           <Property Name="HeaderId" Type="Int32" Nullable="false" />
           <Property Name="SensorId" Type="Int32" Nullable="false" />
           <Property Name="CreateUTCTime" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Sensors" Relationship="ParkingLotModel.FK_CarsInParkingLotPath_Body_Sensors" FromRole="CarsInParkingLotPath_Body" ToRole="Sensors" />
           <NavigationProperty Name="CarsInParkingLotPath_Header" Relationship="ParkingLotModel.FK_CarsInParkingLotPath_Body_CarsInParkingLotPath_Header" FromRole="CarsInParkingLotPath_Body" ToRole="CarsInParkingLotPath_Header" />
+          <NavigationProperty Name="Sensors" Relationship="ParkingLotModel.FK_CarsInParkingLotPath_Body_Sensors" FromRole="CarsInParkingLotPath_Body" ToRole="Sensors" />
         </EntityType>
-        <EntityType Name="Sensors">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SerialNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="GPS" Type="Geography" />
-          <Property Name="Void" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="CreateUserId" Type="Int32" Nullable="false" />
-          <Property Name="CreateUTCTime" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="LastUserId" Type="Int32" Nullable="false" />
-          <Property Name="LastUpdateUtcTime" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="CarsInParkingLotPath_Body" Relationship="ParkingLotModel.FK_CarsInParkingLotPath_Body_Sensors" FromRole="Sensors" ToRole="CarsInParkingLotPath_Body" />
-          <NavigationProperty Name="ParkingLotFloors" Relationship="ParkingLotModel.SensorsInParkingLotFloors" FromRole="Sensors" ToRole="ParkingLotFloors" />
-        </EntityType>
-        <Association Name="FK_CarsInParkingLotPath_Body_Sensors">
-          <End Type="ParkingLotModel.Sensors" Role="Sensors" Multiplicity="1" />
-          <End Type="ParkingLotModel.CarsInParkingLotPath_Body" Role="CarsInParkingLotPath_Body" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Sensors">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CarsInParkingLotPath_Body">
-              <PropertyRef Name="SensorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="SensorsInParkingLotFloors">
-          <End Type="ParkingLotModel.ParkingLotFloors" Role="ParkingLotFloors" Multiplicity="*" />
-          <End Type="ParkingLotModel.Sensors" Role="Sensors" Multiplicity="*" />
-        </Association>
         <EntityType Name="CarsInParkingLotPath_Header">
           <Key>
             <PropertyRef Name="Id" />
@@ -737,7 +707,7 @@
           <Property Name="停車格數" Type="Int32" Nullable="false" />
           <Property Name="剩餘停車格數" Type="Int32" Nullable="false" />
           <Property Name="最後更新時間" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="NoneFloor" Type="Boolean" />
+          <Property Name="NoneFloor" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="News_Body">
           <Key>
@@ -780,6 +750,37 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Sensors">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SerialNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GPS" Type="Geography" />
+          <Property Name="Void" Type="Boolean" Nullable="false" />
+          <Property Name="CreateUserId" Type="Int32" Nullable="false" />
+          <Property Name="CreateUTCTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="LastUpdateUserId" Type="Int32" Nullable="false" />
+          <Property Name="LastUpdateUTCTime" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="CarsInParkingLotPath_Body" Relationship="ParkingLotModel.FK_CarsInParkingLotPath_Body_Sensors" FromRole="Sensors" ToRole="CarsInParkingLotPath_Body" />
+          <NavigationProperty Name="ParkingLotFloors" Relationship="ParkingLotModel.SensorsInParkingLotFloors" FromRole="Sensors" ToRole="ParkingLotFloors" />
+        </EntityType>
+        <Association Name="FK_CarsInParkingLotPath_Body_Sensors">
+          <End Type="ParkingLotModel.Sensors" Role="Sensors" Multiplicity="1" />
+          <End Type="ParkingLotModel.CarsInParkingLotPath_Body" Role="CarsInParkingLotPath_Body" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sensors">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarsInParkingLotPath_Body">
+              <PropertyRef Name="SensorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SensorsInParkingLotFloors">
+          <End Type="ParkingLotModel.ParkingLotFloors" Role="ParkingLotFloors" Multiplicity="*" />
+          <End Type="ParkingLotModel.Sensors" Role="Sensors" Multiplicity="*" />
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -811,7 +812,7 @@
                 <ScalarProperty Name="Void" ColumnName="Void" />
                 <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
                 <ScalarProperty Name="CreateUTCTime" ColumnName="CreateUTCTime" />
-                <ScalarProperty Name="LastUserId" ColumnName="LastUserId" />
+                <ScalarProperty Name="LastUpdateUserId" ColumnName="LastUserId" />
                 <ScalarProperty Name="LastUpdateUTCTime" ColumnName="LastUpdateUTCTime" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -870,8 +871,8 @@
                 <ScalarProperty Name="Void" ColumnName="Void" />
                 <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
                 <ScalarProperty Name="CreateUTCTime" ColumnName="CreateUTCTime" />
-                <ScalarProperty Name="LastUserId" ColumnName="LastUserId" />
-                <ScalarProperty Name="LastUpdateUtcTime" ColumnName="LastUpdateUtcTime" />
+                <ScalarProperty Name="LastUpdateUserId" ColumnName="LastUserId" />
+                <ScalarProperty Name="LastUpdateUTCTime" ColumnName="LastUpdateUtcTime" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -893,28 +894,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Sensors">
-            <EntityTypeMapping TypeName="ParkingLotModel.Sensors">
-              <MappingFragment StoreEntitySet="Sensors">
-                <ScalarProperty Name="LastUpdateUtcTime" ColumnName="LastUpdateUtcTime" />
-                <ScalarProperty Name="LastUserId" ColumnName="LastUserId" />
-                <ScalarProperty Name="CreateUTCTime" ColumnName="CreateUTCTime" />
-                <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
-                <ScalarProperty Name="Void" ColumnName="Void" />
-                <ScalarProperty Name="GPS" ColumnName="GPS" />
-                <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="SensorsInParkingLotFloors" TypeName="ParkingLotModel.SensorsInParkingLotFloors" StoreEntitySet="SensorsInParkingLotFloors">
-            <EndProperty Name="Sensors">
-              <ScalarProperty Name="Id" ColumnName="SensorId" />
-            </EndProperty>
-            <EndProperty Name="ParkingLotFloors">
-              <ScalarProperty Name="Id" ColumnName="FloorId" />
-            </EndProperty>
-          </AssociationSetMapping>
           <EntitySetMapping Name="CarsInParkingLotPath_Header">
             <EntityTypeMapping TypeName="ParkingLotModel.CarsInParkingLotPath_Header">
               <MappingFragment StoreEntitySet="CarsInParkingLotPath_Header">
@@ -969,6 +948,28 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Sensors">
+            <EntityTypeMapping TypeName="ParkingLotModel.Sensors">
+              <MappingFragment StoreEntitySet="Sensors">
+                <ScalarProperty Name="LastUpdateUTCTime" ColumnName="LastUpdateUtcTime" />
+                <ScalarProperty Name="LastUpdateUserId" ColumnName="LastUserId" />
+                <ScalarProperty Name="CreateUTCTime" ColumnName="CreateUTCTime" />
+                <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
+                <ScalarProperty Name="Void" ColumnName="Void" />
+                <ScalarProperty Name="GPS" ColumnName="GPS" />
+                <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="SensorsInParkingLotFloors" TypeName="ParkingLotModel.SensorsInParkingLotFloors" StoreEntitySet="SensorsInParkingLotFloors">
+            <EndProperty Name="Sensors">
+              <ScalarProperty Name="Id" ColumnName="SensorId" />
+            </EndProperty>
+            <EndProperty Name="ParkingLotFloors">
+              <ScalarProperty Name="Id" ColumnName="FloorId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -17,7 +17,7 @@ namespace ParkingLotWebApp.Controllers
         // GET: News
         public ActionResult Index()
         {
-            var news_Header = db.News_Header.Include(n => n.News_Body);
+            var news_Header = db.News_Header.Where(w=>w.Void==false).Include(n => n.News_Body);
             return View(news_Header.ToList());
         }
 
@@ -40,7 +40,7 @@ namespace ParkingLotWebApp.Controllers
         public ActionResult Create()
         {
             ViewBag.Id = new SelectList(db.News_Body, "Id", "Content");
-            return View();
+            return View(new News_Header());
         }
 
         // POST: News/Create

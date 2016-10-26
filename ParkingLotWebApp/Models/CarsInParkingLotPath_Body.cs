@@ -19,7 +19,7 @@ namespace ParkingLotWebApp.Models
         public int SensorId { get; set; }
         public System.DateTime CreateUTCTime { get; set; }
     
-        public virtual Sensors Sensors { get; set; }
         public virtual CarsInParkingLotPath_Header CarsInParkingLotPath_Header { get; set; }
+        public virtual Sensors Sensors { get; set; }
     }
 }

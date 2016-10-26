@@ -18,8 +18,15 @@ namespace ParkingLotWebApp.Controllers
         // GET: Cars
         public ActionResult Index()
         {
-            var cars = db.Cars.Include(c => c.Employee).Include(c => c.ETAs);
-            return View(cars.Where(w=>w.Void==false).ToList());
+            var cars = db.Cars.Where(w=>w.Void==false).Include(c => c.Employee).Include(c => c.ETAs);
+            return View(cars
+                .OrderBy(o=>o.CarNumber)
+                .OrderBy(o=>o.CarType)
+                .OrderBy(o=>o.Employee.Code)
+                .OrderBy(o=>o.Employee.Name)
+                .OrderBy(o=>o.ETAs.Code)
+                .OrderByDescending(o=>o.CreateUTCTime)
+                .ToList());
         }
 
         // GET: Cars/Details/5
@@ -40,9 +47,13 @@ namespace ParkingLotWebApp.Controllers
         // GET: Cars/Create
         public ActionResult Create()
         {
-            ViewBag.EmpId = new SelectList(db.Employee.Where(w => w.Void == false), "Id", "Name");
-            ViewBag.ETAId = new SelectList(db.ETAs.Where(w => w.Void == false), "Id", "Code");
-            return View();
+            var selectemp = db.Employee.Where(w => w.Void == false).ToList();
+            selectemp.Insert(0, null);
+            ViewBag.EmpId = new SelectList(selectemp , "Id", "Name");
+            var selectetc = db.ETAs.Where(w => w.Void == false).ToList();
+            selectetc.Insert(0, null);
+            ViewBag.ETAId = new SelectList(selectetc, "Id", "Code");
+            return View(new Cars());
         }
 
         // POST: Cars/Create
@@ -76,8 +87,12 @@ namespace ParkingLotWebApp.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.EmpId = new SelectList(db.Employee.Where(w => w.Void == false), "Id", "Name", cars.EmpId);
-            ViewBag.ETAId = new SelectList(db.ETAs.Where(w => w.Void == false), "Id", "Code", cars.ETAId);
+            var selectemp = db.Employee.Where(w => w.Void == false).ToList();
+            selectemp.Insert(0,null);
+            var selectetc = db.ETAs.Where(w => w.Void == false).ToList();
+            selectetc.Insert(0,null);
+            ViewBag.EmpId = new SelectList(selectemp, "Id", "Name", cars.EmpId);
+            ViewBag.ETAId = new SelectList(selectetc, "Id", "Code", cars.ETAId);
             return View(cars);
         }
 
@@ -94,8 +109,12 @@ namespace ParkingLotWebApp.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.EmpId = new SelectList(db.Employee.Where(w => w.Void == false), "Id", "Name", cars.EmpId);
-            ViewBag.ETAId = new SelectList(db.ETAs.Where(w => w.Void == false), "Id", "Code", cars.ETAId);
+            var selectemp = db.Employee.Where(w => w.Void == false).ToList();
+            selectemp.Insert(0, new Employee() { Id = -1, Name = "(無)" });
+            var selectetc = db.ETAs.Where(w => w.Void == false).ToList();
+            selectetc.Insert(0, new ETAs() { Id = -1, Code = "(無)" });
+            ViewBag.EmpId = new SelectList(selectemp, "Id", "Name", cars.EmpId);
+            ViewBag.ETAId = new SelectList(selectetc, "Id", "Code", cars.ETAId);
             return View(cars);
         }
 
@@ -122,7 +141,7 @@ namespace ParkingLotWebApp.Controllers
             Cars cars = db.Cars.Find(id);
             cars.Void = true;
             cars.LastUpdateUserId = User.Identity.GetUserId<int>();
-            cars.LastUpdateUTCTime = DateTime.Now;
+            cars.LastUpdateUTCTime = DateTime.Now.ToUniversalTime();
             db.SaveChanges();
             return RedirectToAction("Index");
         }

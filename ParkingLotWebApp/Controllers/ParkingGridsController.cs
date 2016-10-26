@@ -19,10 +19,10 @@ namespace ParkingLotWebApp.Controllers
         {
             if (id.HasValue)
             {
-                var parkingGridByFloorId = db.ParkingGrid.Include(p => p.ParkingLotFloors);
-                return View(parkingGridByFloorId.Where(w => w.FloorId == id.Value).ToList());
+                var parkingGridByFloorId = db.ParkingGrid.Where(w => w.FloorId == id.Value && w.Void==false).Include(p => p.ParkingLotFloors);
+                return View(parkingGridByFloorId.ToList());
             }
-            var parkingGrid = db.ParkingGrid.Include(p => p.ParkingLotFloors);
+            var parkingGrid = db.ParkingGrid.Where(w=>w.Void==false).Include(p => p.ParkingLotFloors);
             return View(parkingGrid.ToList());
         }
 
@@ -44,8 +44,8 @@ namespace ParkingLotWebApp.Controllers
         // GET: ParkingGrids/Create
         public ActionResult Create()
         {
-            ViewBag.FloorId = new SelectList(db.ParkingLotFloors, "Id", "Name");
-            return View();
+            ViewBag.FloorId = new SelectList(db.ParkingLotFloors.Where(w => w.Void == false), "Id", "Name");
+            return View(new ParkingGrid());
         }
 
         // POST: ParkingGrids/Create
@@ -62,7 +62,7 @@ namespace ParkingLotWebApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.FloorId = new SelectList(db.ParkingLotFloors, "Id", "Name", parkingGrid.FloorId);
+            ViewBag.FloorId = new SelectList(db.ParkingLotFloors.Where(w => w.Void == false), "Id", "Name", parkingGrid.FloorId);
             return View(parkingGrid);
         }
 
@@ -78,7 +78,7 @@ namespace ParkingLotWebApp.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.FloorId = new SelectList(db.ParkingLotFloors, "Id", "Name", parkingGrid.FloorId);
+            ViewBag.FloorId = new SelectList(db.ParkingLotFloors.Where(w => w.Void == false), "Id", "Name", parkingGrid.FloorId);
             return View(parkingGrid);
         }
 
@@ -95,7 +95,7 @@ namespace ParkingLotWebApp.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.FloorId = new SelectList(db.ParkingLotFloors, "Id", "Name", parkingGrid.FloorId);
+            ViewBag.FloorId = new SelectList(db.ParkingLotFloors.Where(w => w.Void == false), "Id", "Name", parkingGrid.FloorId);
             return View(parkingGrid);
         }
 
