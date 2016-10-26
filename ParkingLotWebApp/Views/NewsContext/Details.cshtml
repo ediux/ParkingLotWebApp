@@ -24,6 +24,7 @@
 
         <dd>
             @Html.DisplayFor(model => model.Content)
+            @Html.TextAreaFor(model=>model.Content,new { id=Html.IdFor(p=>p.Content) , @name=Html.NameFor(p=>p.Content) })
         </dd>
 
         <dt>
@@ -80,3 +81,11 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+@section scripts{
+    <script src="@Url.Content("/Scripts/ckeditor/ckeditor.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#@Html.IdFor(p=>p.Content)').ckeditor().replace();
+        });
+    </script>
+}

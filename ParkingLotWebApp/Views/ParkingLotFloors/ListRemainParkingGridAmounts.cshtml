@@ -138,6 +138,7 @@
             $('#targetValue').attr('placeholder',remainamount);
             $('#EditRemainGridModal').modal('show');
             $('#btnSave').click(function () {
+               
                 $.ajax({
                     type: 'POST',
                     url:'@Url.Action("EditRemainParkingGridAmounts")',

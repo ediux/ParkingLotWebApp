@@ -4,78 +4,36 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>公告列表</h2>
+<div class="row">
+    <div class="col-xs-12 col-md-4">
+        <ul class="list-group">
+            @foreach (var item in Model)
+            {
+                <li class="list-group-item"><a href="javascript:ShowDetails('@Url.Action("Details","NewsContext",new { id=item.News_Body.Id })');">@Html.DisplayFor(modelItem => item.Caption) @Html.DisplayFor(modelItem => item.CreateUTCTime)</a></li>
+            }
+        </ul>
+    </div>
+    <div class="col-xs-12 col-md-8" id="replacepageholder">
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Caption)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StartTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EndTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Void)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreateUserId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreateUTCTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastUpdateUserId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastUpdateUTCTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.News_Body.Content)
-        </th>
-        <th></th>
-    </tr>
+    </div>
+</div>
+<a href="javascript:ShowCreateNewPost('/News/Create');">Create New</a>
+   
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Caption)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Void)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreateUserId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreateUTCTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastUpdateUserId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastUpdateUTCTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.News_Body.Content)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
+@section scripts{
+    <script src="~/Scripts/ckeditor/ckeditor.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function ShowDetails(url) {
+            $('#replacepageholder').empty();
+            $('#replacepageholder').load(url);
+        }
+        function ShowCreateNewPost(url) {
+            $('#replacepageholder').empty();
+            $('#replacepageholder').load(url);
+        }
+        $(document).ready(function () {
+
+        });
+    </script>
 }
-
-</table>
