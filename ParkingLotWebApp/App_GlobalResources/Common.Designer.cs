@@ -142,6 +142,15 @@ namespace Resources.MUI {
         }
         
         /// <summary>
+        ///   查詢類似 此公告無內容!! 的當地語系化字串。
+        /// </summary>
+        public static string News_NoMessage {
+            get {
+                return ResourceManager.GetString("News_NoMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 確認 的當地語系化字串。
         /// </summary>
         public static string OK {
