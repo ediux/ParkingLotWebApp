@@ -33,6 +33,9 @@ namespace ParkingLotWebApp
             bundles.Add(new ScriptBundle("~/bundles/bootstrap-datetimepicker").Include(
           "~/Scripts/bootstrap-datetimepicker.min.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap-datepicker").Include(
+"~/Scripts/bootstrap-datepicker.min.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.min.css",
                       "~/Content/site.css"));
@@ -42,6 +45,9 @@ namespace ParkingLotWebApp
 
             bundles.Add(new StyleBundle("~/Content/bootstrap-datetimepicker").Include(
                 "~/Content/bootstrap-datetimepicker.min.css"));
+
+            bundles.Add(new StyleBundle("~/Content/bootstrap3-datepicker").Include(
+    "~/Content/bootstrap-datepicker3.min.css"));
         }
     }
 }

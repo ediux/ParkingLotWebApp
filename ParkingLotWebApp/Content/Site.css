@@ -17,8 +17,28 @@
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
+/* Warning: 此設定與bootstrap布局衝突 改回原設定並依據相對大小設定
 input,
 select,
 textarea {
     max-width: 280px;
+}
+*/
+
+.m-t-5{
+    margin-top: 5px;
+}
+
+.m-t-10{
+    margin-top: 10px;
+}
+
+.m-t-15{
+    margin-top: 15px;
+}
+
+.height-600{
+    height: 600px;
+    min-height:600px;
+    max-width: 2048px;
 }
