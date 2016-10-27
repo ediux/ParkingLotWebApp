@@ -10,63 +10,46 @@
     Model.LastUpdateUTCTime = DateTime.Now.ToUniversalTime();
 }
 
-<h2>Edit</h2>
-
-
-@using (Html.BeginForm())
+@if (!IsAjax)
+{
+    <h2>Edit</h2>
+}
+@using (Ajax.BeginForm("Edit","NewsContext",null,new AjaxOptions() { HttpMethod="Post", UpdateTargetId= "editorplaceholder", OnComplete = "saveCaption" }))
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>News_Body</h4>
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Header_Id, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Header_Id, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Header_Id, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        @Html.TextAreaFor(model => model.Content)
-        <div class="form-group">
-            @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Content, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Version, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Version, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Version, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
+        @Html.HiddenFor(model => model.Header_Id)
        
+        @Html.TextAreaFor(model => model.Content)
+        @Html.HiddenFor(model=>model.Version)       
         @Html.EditorFor(model => model.CreateUserId, null)
         @Html.EditorFor(model => model.CreateUTCTime, null)
         @Html.EditorFor(model => model.LastUpdateUserId, null)
-        @Html.EditorFor(model => model.LastUpdateUTCTime, null)
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
+        @Html.EditorFor(model => model.LastUpdateUTCTime, null)       
     </div>
 }
 
 @Styles.Render("~/Content/ckeditor/css")
 @Scripts.Render("~/bundles/ckeditor/js")
 <script src="~/Scripts/ckeditor/lang/@(System.Globalization.CultureInfo.CurrentUICulture.Name.ToLowerInvariant()).js" type="text/javascript"></script>
-<script src="~/Scripts/ckeditor/config.js" type="text/javascript"></script>
 <script type="text/javascript">
+    function saveCaption() {
+        $('#newsHeaderEditor').submit();
+    }
+    function handleAfterCommandExec(event) {
+        var commandName = event.data.name;
+        // For 'bold' commmand
+        console.log(commandName);
+        if (commandName == 'save')
+            alert("Bold button pressed!");
+    }
     $(function () {
-        CKEDITOR.editor.replace('@Html.IdFor(model => model.Content)', {});
+        CKEDITOR.editor.replace('@Html.IdFor(model => model.Content)', {
+
+        });
+       
     });
 </script>

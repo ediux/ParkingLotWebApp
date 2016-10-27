@@ -11,7 +11,7 @@
     Model.LastUpdateUTCTime = DateTime.Now.ToUniversalTime();
 }
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "News", FormMethod.Post, new { @id = "newsHeaderEditor" }))
 {
     @Html.AntiForgeryToken()
 
@@ -46,24 +46,23 @@
 
     </div>
 }
-@{
-    if (Model.News_Body != null)
-    {
-        var bodycurrentver = Model.News_Body.Where(w => w.Void == false).SingleOrDefault();
-        if (bodycurrentver != null)
-        {
-            Html.RenderAction("Edit", "NewsContext", new { id = bodycurrentver.Id });
-        }
-    }
-}
 
 @Styles.Render("~/Content/ckeditor/css")
 @Scripts.Render("~/bundles/ckeditor/js")
 <script src="~/Scripts/ckeditor/lang/@(System.Globalization.CultureInfo.CurrentUICulture.Name.ToLowerInvariant()).js" type="text/javascript"></script>
-<script type="text/javascript">
-    $(function () {
-        @*CKEDITOR.editor.replace('@Html.IdFor(model => model.News_Body.Content)', {
-            skin: 'BootstrapCK-Skin', language: 'zh'
-        });*@
-    });
-</script>
+
+@if (Model.News_Body != null)
+{
+    var bodycurrentver = Model.News_Body.Where(w => w.Void == false).SingleOrDefault();
+    if (bodycurrentver != null)
+    {
+        <script type="text/javascript">
+            $(function () {
+                $('#replacepageholder1').empty();
+                $('#replacepageholder1').load('@Url.Action("Edit","NewsContext",new { id= bodycurrentver.Id })');           
+            });
+        </script>
+    }
+}
+
+

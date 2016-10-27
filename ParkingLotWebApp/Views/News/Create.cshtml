@@ -13,7 +13,7 @@
 
 @*<h2>@Resources.MUI.WebPages.News_Create_New</h2>
     <form class="form-horizontal"></form>*@
-@using (Ajax.BeginForm("Create",null,new AjaxOptions() { HttpMethod="Post", UpdateTargetId= "replacepageholder" }, htmlAttributes: new { @class = "form-horizontal" }))
+@using (Ajax.BeginForm("Create",null,new AjaxOptions() { HttpMethod="Post", UpdateTargetId= "EditArea" }, htmlAttributes: new { @class = "form-horizontal" }))
 {
     @Html.AntiForgeryToken()
     <div class="form-group">
@@ -50,6 +50,9 @@
         <input type="button" value="Cancel" class="btn btn-default pull-right" />
     </div>
 }
+<div class="row" id="EditArea">
+
+</div>
 @*<div>
         @Html.ActionLink("Back to List", "Index")
     </div>*@

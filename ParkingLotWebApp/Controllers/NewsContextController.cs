@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using ParkingLotWebApp.Models;
 using Microsoft.AspNet.Identity;
+using System.Threading.Tasks;
 
 namespace ParkingLotWebApp.Controllers
 {
@@ -38,13 +39,15 @@ namespace ParkingLotWebApp.Controllers
         }
 
         // GET: NewsContext/Create
-        public ActionResult Create(int? id)
+        public async Task<ActionResult> Create(int? id)
         {
             if (id != null && id.HasValue)
             {
+                var passbyAction = await db.News_Header.FindAsync(id.Value);
+
                 var News_Body = new Models.News_Body()
                 {
-                    Header_Id = id.Value,
+                    Header_Id = passbyAction.Id,
                     Content = string.Empty,
                     CreateUserId = User.Identity.GetUserId<int>(),
                     CreateUTCTime = DateTime.Now.ToUniversalTime(),
@@ -53,9 +56,11 @@ namespace ParkingLotWebApp.Controllers
                     Version = 0,
                     Void = false
                 };
+
                 db.News_Body.Add(News_Body);
-                db.SaveChanges();
-                return RedirectToAction("Edit", "News", new { id = id.Value });
+                await db.SaveChangesAsync();
+
+                return RedirectToAction("Edit", "News", new { id = passbyAction.Id });
             }
 
             ViewBag.Id = new SelectList(db.News_Header, "Id", "Caption");
@@ -67,12 +72,12 @@ namespace ParkingLotWebApp.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Header_Id,Content,Version,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime")] News_Body news_Body)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Header_Id,Content,Version,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime")] News_Body news_Body)
         {
             if (ModelState.IsValid)
             {
                 db.News_Body.Add(news_Body);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
@@ -88,6 +93,7 @@ namespace ParkingLotWebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             News_Body news_Body = db.News_Body.Find(id);
+            news_Body.Content = HttpUtility.HtmlDecode(news_Body.Content);
             if (news_Body == null)
             {
                 return HttpNotFound();
@@ -109,7 +115,7 @@ namespace ParkingLotWebApp.Controllers
                 db.Entry(news_Body).State = EntityState.Modified;
 
                 var newversion_body = new News_Body();
-                newversion_body.Content = news_Body.Content;
+                newversion_body.Content = HttpUtility.HtmlDecode(news_Body.Content);
                 newversion_body.Void = false;
                 newversion_body.Header_Id = news_Body.Header_Id;
                 newversion_body.Version = news_Body.Version + 1;
@@ -117,10 +123,10 @@ namespace ParkingLotWebApp.Controllers
                 newversion_body.LastUpdateUTCTime = newversion_body.CreateUTCTime = news_Body.LastUpdateUTCTime;
 
                 db.News_Body.Add(newversion_body);
-           
+
                 db.SaveChanges();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "News", new { id = newversion_body.Header_Id });
             }
             ViewBag.Id = new SelectList(db.News_Header, "Id", "Caption", news_Body.Id);
             return View(news_Body);

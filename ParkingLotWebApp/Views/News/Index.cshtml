@@ -19,16 +19,20 @@
                     @foreach (var item in Model)
                     {
                         <li class="list-group-item">
-                            @Ajax.ActionLink(Html.DisplayFor(modelItem => item.Caption).ToString(), "Edit", new  { id=item.Id }, new AjaxOptions() { HttpMethod = "Get", UpdateTargetId = "replacepageholder" })
+                            @Ajax.ActionLink(Html.DisplayFor(modelItem => item.Caption).ToString(), "Edit", new { id = item.Id },
+                           new AjaxOptions() { HttpMethod = "Get", UpdateTargetId = "replacepageholder" })
                             @Html.DisplayFor(modelItem => item.CreateUTCTime)
-                        </li>                       
+                        </li>
                     }
                 </ul>
             </div>
         </div>
     </div>
-    <div class="col-xs-12 col-md-8 right" id="replacepageholder">
-
+    <div class="col-xs-12 col-md-8 right" >
+        <div class="row" id="replacepageholder">
+        </div>
+        <div class="row" id="replacepageholder1">
+        </div>
     </div>
 </div>
 <div class="clearfix"></div>
