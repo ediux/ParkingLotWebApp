@@ -36,7 +36,11 @@ namespace ParkingLotWebApp.Models
         [Display(Name = "最後更新時間")]
         [UIHint("UTCLocalTimeDisplay")]
         public System.DateTime LastUpdateUTCTime { get; set; }
-    
+        [Required]
+        [Display(Name = "狀態")]
+        [UIHint("VoidDisplay")]
+        public bool Void { get; set; }
+
         public virtual News_Header News_Header { get; set; }
     }
 }

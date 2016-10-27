@@ -22,6 +22,7 @@ namespace ParkingLotWebApp.Models
         public System.DateTime CreateUTCTime { get; set; }
         public int LastUpdateUserId { get; set; }
         public System.DateTime LastUpdateUTCTime { get; set; }
+        public bool Void { get; set; }
     
         public virtual News_Header News_Header { get; set; }
     }

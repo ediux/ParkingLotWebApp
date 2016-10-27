@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ParkingLotWebApp.Models;
+using Microsoft.AspNet.Identity;
 
 namespace ParkingLotWebApp.Controllers
 {
@@ -37,8 +38,26 @@ namespace ParkingLotWebApp.Controllers
         }
 
         // GET: NewsContext/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
+            if (id != null && id.HasValue)
+            {
+                var News_Body = new Models.News_Body()
+                {
+                    Header_Id = id.Value,
+                    Content = string.Empty,
+                    CreateUserId = User.Identity.GetUserId<int>(),
+                    CreateUTCTime = DateTime.Now.ToUniversalTime(),
+                    LastUpdateUserId = User.Identity.GetUserId<int>(),
+                    LastUpdateUTCTime = DateTime.Now.ToUniversalTime(),
+                    Version = 0,
+                    Void = false
+                };
+                db.News_Body.Add(News_Body);
+                db.SaveChanges();
+                return RedirectToAction("Edit", "News", new { id = id.Value });
+            }
+
             ViewBag.Id = new SelectList(db.News_Header, "Id", "Caption");
             return View(new News_Body());
         }
@@ -86,8 +105,21 @@ namespace ParkingLotWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                news_Body.Void = true;
                 db.Entry(news_Body).State = EntityState.Modified;
+
+                var newversion_body = new News_Body();
+                newversion_body.Content = news_Body.Content;
+                newversion_body.Void = false;
+                newversion_body.Header_Id = news_Body.Header_Id;
+                newversion_body.Version = news_Body.Version + 1;
+                newversion_body.LastUpdateUserId = newversion_body.CreateUserId = news_Body.LastUpdateUserId;
+                newversion_body.LastUpdateUTCTime = newversion_body.CreateUTCTime = news_Body.LastUpdateUTCTime;
+
+                db.News_Body.Add(newversion_body);
+           
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
             ViewBag.Id = new SelectList(db.News_Header, "Id", "Caption", news_Body.Id);
@@ -115,7 +147,11 @@ namespace ParkingLotWebApp.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             News_Body news_Body = db.News_Body.Find(id);
-            db.News_Body.Remove(news_Body);
+            news_Body.Void = false;
+            news_Body.LastUpdateUserId = User.Identity.GetUserId<int>();
+            news_Body.LastUpdateUTCTime = DateTime.Now.ToUniversalTime();
+
+            //db.News_Body.Remove(news_Body);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

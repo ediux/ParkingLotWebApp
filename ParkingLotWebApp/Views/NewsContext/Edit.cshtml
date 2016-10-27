@@ -2,6 +2,10 @@
 @using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Edit";
+    if (IsAjax || ViewContext.IsChildAction)
+    {
+        Layout = null;
+    }
     Model.LastUpdateUserId = User.Identity.GetUserId<int>();
     Model.LastUpdateUTCTime = DateTime.Now.ToUniversalTime();
 }
@@ -26,7 +30,7 @@
                 @Html.ValidationMessageFor(model => model.Header_Id, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        @Html.TextAreaFor(model => model.Content)
         <div class="form-group">
             @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -57,10 +61,12 @@
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+@Styles.Render("~/Content/ckeditor/css")
+@Scripts.Render("~/bundles/ckeditor/js")
+<script src="~/Scripts/ckeditor/lang/@(System.Globalization.CultureInfo.CurrentUICulture.Name.ToLowerInvariant()).js" type="text/javascript"></script>
+<script src="~/Scripts/ckeditor/config.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        CKEDITOR.editor.replace('@Html.IdFor(model => model.Content)', {});
+    });
+</script>

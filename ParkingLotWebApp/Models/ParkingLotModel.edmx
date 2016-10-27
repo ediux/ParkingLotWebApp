@@ -84,6 +84,7 @@
           <Property Name="CreateUTCTime" Type="smalldatetime" Nullable="false" />
           <Property Name="LastUpdateUserId" Type="int" Nullable="false" />
           <Property Name="LastUpdateUTCTime" Type="smalldatetime" Nullable="false" />
+          <Property Name="Void" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="News_Header">
           <Key>
@@ -282,14 +283,14 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_News_Body_News_Header">
-          <End Role="News_Header" Type="Self.News_Header" Multiplicity="1" />
-          <End Role="News_Body" Type="Self.News_Body" Multiplicity="0..1" />
+          <End Role="News_Header" Type="Self.News_Header" Multiplicity="0..1" />
+          <End Role="News_Body" Type="Self.News_Body" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="News_Header">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="News_Body">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="Header_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -610,12 +611,7 @@
             <End Role="CarsInParkingLotPath_Header" EntitySet="CarsInParkingLotPath_Header" />
           </AssociationSet>
           <EntitySet Name="vw_ParkingLotGridRemain" EntityType="ParkingLotModel.vw_ParkingLotGridRemain" />
-          <EntitySet Name="News_Body" EntityType="ParkingLotModel.News_Body" />
           <EntitySet Name="News_Header" EntityType="ParkingLotModel.News_Header" />
-          <AssociationSet Name="FK_News_Body_News_Header" Association="ParkingLotModel.FK_News_Body_News_Header">
-            <End Role="News_Header" EntitySet="News_Header" />
-            <End Role="News_Body" EntitySet="News_Body" />
-          </AssociationSet>
           <EntitySet Name="Sensors" EntityType="ParkingLotModel.Sensors" />
           <AssociationSet Name="FK_CarsInParkingLotPath_Body_Sensors" Association="ParkingLotModel.FK_CarsInParkingLotPath_Body_Sensors">
             <End Role="Sensors" EntitySet="Sensors" />
@@ -624,6 +620,11 @@
           <AssociationSet Name="SensorsInParkingLotFloors" Association="ParkingLotModel.SensorsInParkingLotFloors">
             <End Role="ParkingLotFloors" EntitySet="ParkingLotFloors" />
             <End Role="Sensors" EntitySet="Sensors" />
+          </AssociationSet>
+          <EntitySet Name="News_Body" EntityType="ParkingLotModel.News_Body" />
+          <AssociationSet Name="FK_News_Body_News_Header" Association="ParkingLotModel.FK_News_Body_News_Header">
+            <End Role="News_Header" EntitySet="News_Header" />
+            <End Role="News_Body" EntitySet="News_Body" />
           </AssociationSet>
           </EntityContainer>
         <Association Name="CarParkingInGrid">
@@ -709,20 +710,6 @@
           <Property Name="最後更新時間" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="NoneFloor" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="News_Body">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Header_Id" Type="Int32" />
-          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Version" Type="Int32" Nullable="false" />
-          <Property Name="CreateUserId" Type="Int32" Nullable="false" />
-          <Property Name="CreateUTCTime" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="LastUpdateUserId" Type="Int32" Nullable="false" />
-          <Property Name="LastUpdateUTCTime" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="News_Header" Relationship="ParkingLotModel.FK_News_Body_News_Header" FromRole="News_Body" ToRole="News_Header" />
-        </EntityType>
         <EntityType Name="News_Header">
           <Key>
             <PropertyRef Name="Id" />
@@ -738,18 +725,6 @@
           <Property Name="LastUpdateUTCTime" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="News_Body" Relationship="ParkingLotModel.FK_News_Body_News_Header" FromRole="News_Header" ToRole="News_Body" />
         </EntityType>
-        <Association Name="FK_News_Body_News_Header">
-          <End Type="ParkingLotModel.News_Header" Role="News_Header" Multiplicity="1" />
-          <End Type="ParkingLotModel.News_Body" Role="News_Body" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="News_Header">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="News_Body">
-              <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Sensors">
           <Key>
             <PropertyRef Name="Id" />
@@ -780,6 +755,33 @@
         <Association Name="SensorsInParkingLotFloors">
           <End Type="ParkingLotModel.ParkingLotFloors" Role="ParkingLotFloors" Multiplicity="*" />
           <End Type="ParkingLotModel.Sensors" Role="Sensors" Multiplicity="*" />
+        </Association>
+        <EntityType Name="News_Body">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Header_Id" Type="Int32" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Version" Type="Int32" Nullable="false" />
+          <Property Name="CreateUserId" Type="Int32" Nullable="false" />
+          <Property Name="CreateUTCTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="LastUpdateUserId" Type="Int32" Nullable="false" />
+          <Property Name="LastUpdateUTCTime" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="News_Header" Relationship="ParkingLotModel.FK_News_Body_News_Header" FromRole="News_Body" ToRole="News_Header" />
+          <Property Name="Void" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_News_Body_News_Header">
+          <End Type="ParkingLotModel.News_Header" Role="News_Header" Multiplicity="0..1" />
+          <End Type="ParkingLotModel.News_Body" Role="News_Body" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="News_Header">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="News_Body">
+              <PropertyRef Name="Header_Id" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -919,20 +921,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="News_Body">
-            <EntityTypeMapping TypeName="ParkingLotModel.News_Body">
-              <MappingFragment StoreEntitySet="News_Body">
-                <ScalarProperty Name="LastUpdateUTCTime" ColumnName="LastUpdateUTCTime" />
-                <ScalarProperty Name="LastUpdateUserId" ColumnName="LastUpdateUserId" />
-                <ScalarProperty Name="CreateUTCTime" ColumnName="CreateUTCTime" />
-                <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
-                <ScalarProperty Name="Version" ColumnName="Version" />
-                <ScalarProperty Name="Content" ColumnName="Content" />
-                <ScalarProperty Name="Header_Id" ColumnName="Header_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="News_Header">
             <EntityTypeMapping TypeName="ParkingLotModel.News_Header">
               <MappingFragment StoreEntitySet="News_Header">
@@ -970,6 +958,21 @@
               <ScalarProperty Name="Id" ColumnName="FloorId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="News_Body">
+            <EntityTypeMapping TypeName="ParkingLotModel.News_Body">
+              <MappingFragment StoreEntitySet="News_Body">
+                <ScalarProperty Name="Void" ColumnName="Void" />
+                <ScalarProperty Name="LastUpdateUTCTime" ColumnName="LastUpdateUTCTime" />
+                <ScalarProperty Name="LastUpdateUserId" ColumnName="LastUpdateUserId" />
+                <ScalarProperty Name="CreateUTCTime" ColumnName="CreateUTCTime" />
+                <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Header_Id" ColumnName="Header_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

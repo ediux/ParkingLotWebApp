@@ -2,89 +2,41 @@
 
 @{
     ViewBag.Title = "Details";
+    Layout = null;
 }
+<dl class="dl-horizontal m-t-15">
+    <dt>
+        @Html.DisplayNameFor(model => model.Caption)
+    </dt>
 
-<h2>Details</h2>
+    <dd>
+        @Html.DisplayFor(model => model.Caption)
+    </dd>
 
-<div>
-    <h4>News_Header</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Caption)
-        </dt>
+    <dt>
+        @Resources.WebPages.NewsDurtion
+    </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Caption)
-        </dd>
+    <dd>
+        @Html.DisplayFor(model => model.StartTime) @Resources.Common.To @Html.DisplayFor(model => model.EndTime)
+    </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.StartTime)
-        </dt>
+    <dt>
+        @Resources.WebPages.NewsPoster
+    </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.StartTime)
-        </dd>
+    <dd>
+        @Html.DisplayFor(model => model.CreateUserId)
+    </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.EndTime)
-        </dt>
+    <dt>
+        @ReslangMUI.MUI.CreateTime
+    </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.EndTime)
-        </dd>
+    <dd>
+        @Html.DisplayFor(model => model.CreateUTCTime)
+    </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Void)
-        </dt>
+</dl>
 
-        <dd>
-            @Html.DisplayFor(model => model.Void)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.CreateUserId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreateUserId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreateUTCTime)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreateUTCTime)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.LastUpdateUserId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LastUpdateUserId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.LastUpdateUTCTime)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LastUpdateUTCTime)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.News_Body.Content)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.News_Body.Content)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

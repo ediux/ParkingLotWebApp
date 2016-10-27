@@ -16,13 +16,13 @@ namespace ParkingLotWebApp.Models
         
         [StringLength(500, ErrorMessage="欄位長度不得大於 500 個字元")]
         [Required]
-        [Display(Name = "公告標題")]
+        [Display(Name = "標題")]
         public string Caption { get; set; }
         [Required]
-        [Display(Name = "公告起始時間")]
+        [Display(Name = "起始時間")]
         public System.DateTime StartTime { get; set; }
         [Required]
-        [Display(Name = "公告結束時間")]
+        [Display(Name = "結束時間")]
         public System.DateTime EndTime { get; set; }
         [Required]
         [Display(Name = "狀態")]

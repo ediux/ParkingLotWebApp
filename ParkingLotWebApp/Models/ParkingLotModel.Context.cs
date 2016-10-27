@@ -34,8 +34,8 @@ namespace ParkingLotWebApp.Models
         public virtual DbSet<CarsInParkingLotPath_Body> CarsInParkingLotPath_Body { get; set; }
         public virtual DbSet<CarsInParkingLotPath_Header> CarsInParkingLotPath_Header { get; set; }
         public virtual DbSet<vw_ParkingLotGridRemain> vw_ParkingLotGridRemain { get; set; }
-        public virtual DbSet<News_Body> News_Body { get; set; }
         public virtual DbSet<News_Header> News_Header { get; set; }
         public virtual DbSet<Sensors> Sensors { get; set; }
+        public virtual DbSet<News_Body> News_Body { get; set; }
     }
 }

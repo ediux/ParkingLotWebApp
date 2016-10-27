@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ParkingLotWebApp.Models;
+using System.Threading.Tasks;
 
 namespace ParkingLotWebApp.Controllers
 {
@@ -15,9 +16,9 @@ namespace ParkingLotWebApp.Controllers
         private ParkingLotModelEntities db = new ParkingLotModelEntities();
 
         // GET: ETAs
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View(db.ETAs.Where(w=>w.Void==false).ToList());
+            return View(await db.ETAs.Where(w=>w.Void==false).ToListAsync());
         }
 
         // GET: ETAs/Details/5

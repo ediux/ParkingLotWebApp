@@ -22,12 +22,12 @@
         <AssociationConnector Association="ParkingLotModel.FK_CarsInParkingLotPath_Body_CarsInParkingLotPath_Header" />
         <AssociationConnector Association="ParkingLotModel.FK_CarsInParkingLotPath_Header_ParkingGrid" />
         <EntityTypeShape EntityType="ParkingLotModel.vw_ParkingLotGridRemain" Width="1.5" PointX="6" PointY="0.75" />
-        <EntityTypeShape EntityType="ParkingLotModel.News_Body" Width="1.5" PointX="7.625" PointY="9" />
         <EntityTypeShape EntityType="ParkingLotModel.News_Header" Width="1.5" PointX="5.375" PointY="9" />
-        <AssociationConnector Association="ParkingLotModel.FK_News_Body_News_Header" />
         <EntityTypeShape EntityType="ParkingLotModel.Sensors" Width="1.5" PointX="3.25" PointY="17.625" />
         <AssociationConnector Association="ParkingLotModel.FK_CarsInParkingLotPath_Body_Sensors" />
         <AssociationConnector Association="ParkingLotModel.SensorsInParkingLotFloors" />
+        <EntityTypeShape EntityType="ParkingLotModel.News_Body" Width="1.5" PointX="7.625" PointY="9.125" />
+        <AssociationConnector Association="ParkingLotModel.FK_News_Body_News_Header" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -14,6 +14,12 @@ namespace ParkingLotWebApp.Models
     
     public partial class News_Header
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public News_Header()
+        {
+            this.News_Body = new HashSet<News_Body>();
+        }
+    
         public int Id { get; set; }
         public string Caption { get; set; }
         public System.DateTime StartTime { get; set; }
@@ -24,6 +30,7 @@ namespace ParkingLotWebApp.Models
         public int LastUpdateUserId { get; set; }
         public System.DateTime LastUpdateUTCTime { get; set; }
     
-        public virtual News_Body News_Body { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<News_Body> News_Body { get; set; }
     }
 }

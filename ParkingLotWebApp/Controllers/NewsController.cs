@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ParkingLotWebApp.Models;
+using Microsoft.AspNet.Identity;
 
 namespace ParkingLotWebApp.Controllers
 {
@@ -17,8 +18,8 @@ namespace ParkingLotWebApp.Controllers
         // GET: News
         public ActionResult Index()
         {
-            var news_Header = db.News_Header.Where(w=>w.Void==false).Include(n => n.News_Body);
-            return View(news_Header.ToList());
+            var news_Header = db.News_Header.Where(w => w.Void == false).Include(n => n.News_Body);
+            return View(news_Header.OrderBy(o => o.CreateUTCTime).ToList());
         }
 
         // GET: News/Details/5
@@ -52,9 +53,9 @@ namespace ParkingLotWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.News_Header.Add(news_Header);
+                news_Header = db.News_Header.Add(news_Header);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Create", "NewsContext", new { id = news_Header.Id });
             }
 
             ViewBag.Id = new SelectList(db.News_Body, "Id", "Content", news_Header.Id);
@@ -82,7 +83,7 @@ namespace ParkingLotWebApp.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Caption,StartTime,EndTime,Void,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime")] News_Header news_Header)
+        public ActionResult Edit([Bind(Include = "Id,Caption,StartTime,EndTime,Void,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime,Content")] News_Header news_Header)
         {
             if (ModelState.IsValid)
             {
@@ -115,7 +116,16 @@ namespace ParkingLotWebApp.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             News_Header news_Header = db.News_Header.Find(id);
-            db.News_Header.Remove(news_Header);
+            news_Header.Void = false;
+            news_Header.LastUpdateUserId = User.Identity.GetUserId<int>();
+            news_Header.LastUpdateUTCTime = DateTime.Now.ToUniversalTime();
+
+            foreach (var item in news_Header.News_Body.Where(w => w.Void == false))
+            {
+                item.Void = false;
+            }
+
+           // db.News_Header.Remove(news_Header);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
