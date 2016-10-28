@@ -1,4 +1,4 @@
-﻿@model ParkingLotWebApp.Models.News_Header
+﻿@model ParkingLotWebApp.Models.NewsPostViewModel
 
 @{
     ViewBag.Title = "Delete";
@@ -76,18 +76,18 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.News_Body.Content)
+            @Html.DisplayNameFor(model => model.Content)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.News_Body.Content)
+            @Html.DisplayFor(model => model.Content)
         </dd>
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm("Delete","News",FormMethod.Post)) {
         @Html.AntiForgeryToken()
-
+        @Html.HiddenFor(model=>model.Id)
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
             @Html.ActionLink("Back to List", "Index")

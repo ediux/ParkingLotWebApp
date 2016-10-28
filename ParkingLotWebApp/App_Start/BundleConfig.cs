@@ -27,7 +27,7 @@ namespace ParkingLotWebApp
           "~/Scripts/moment-with-locales.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/ckeditor/js").Include(
-          "~/Scripts/ckeditor/ckeditor.min.js"));
+          "~/Scripts/ckeditor/ckeditor.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap-datetimepicker").Include(
                 "~/Scripts/bootstrap-datetimepicker.min.js"));

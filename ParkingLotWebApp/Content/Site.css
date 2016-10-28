@@ -25,20 +25,72 @@ textarea {
 }
 */
 
-.m-t-5{
+.m-5 {
+    margin: 5px 5px;
+}
+
+.m-10 {
+    margin: 10px 10px;
+}
+
+.m-15 {
+    margin: 15px 15px;
+}
+
+.m-20 {
+    margin: 20px 20px;
+}
+
+.m-t-5 {
     margin-top: 5px;
 }
 
-.m-t-10{
+.m-t-10 {
     margin-top: 10px;
 }
 
-.m-t-15{
+.m-t-15 {
     margin-top: 15px;
 }
 
-.height-600{
+.m-t-20 {
+    margin-top: 20px;
+}
+
+.m-l-5 {
+    margin-left: 5px;
+}
+
+.m-l-10 {
+    margin-left: 10px;
+}
+
+.m-l-15 {
+    margin-left: 15px;
+}
+
+.m-l-20 {
+    margin-left: 20px;
+}
+
+.m-r-5 {
+    margin-right: 5px;
+}
+
+.m-r-10 {
+    margin-right: 10px;
+}
+
+.m-r-15 {
+    margin-right: 15px;
+}
+
+.m-r-20 {
+    margin-right: 20px;
+}
+
+.height-600 {
     height: 600px;
-    min-height:600px;
+    min-height: 600px;
     max-width: 2048px;
 }

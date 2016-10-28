@@ -24,19 +24,19 @@ namespace ParkingLotWebApp.Controllers
         }
 
         // GET: NewsContext/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            News_Body news_Body = db.News_Body.Find(id);
-            if (news_Body == null)
-            {
-                return HttpNotFound();
-            }
-            return View(news_Body);
-        }
+        //public ActionResult Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    News_Body news_Body = db.News_Body.Find(id);
+        //    if (news_Body == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(news_Body);
+        //}
 
         // GET: NewsContext/Create
         public async Task<ActionResult> Create(int? id)
@@ -60,30 +60,30 @@ namespace ParkingLotWebApp.Controllers
                 db.News_Body.Add(News_Body);
                 await db.SaveChangesAsync();
 
-                return RedirectToAction("Edit", "News", new { id = passbyAction.Id });
+                return RedirectToAction("Index", "News", new { id = passbyAction.Id });
             }
 
             ViewBag.Id = new SelectList(db.News_Header, "Id", "Caption");
-            return View(new News_Body());
+            return View(new NewsPostViewModel());
         }
 
         // POST: NewsContext/Create
         // 若要免於過量張貼攻擊，請啟用想要繫結的特定屬性，如需
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Header_Id,Content,Version,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime")] News_Body news_Body)
-        {
-            if (ModelState.IsValid)
-            {
-                db.News_Body.Add(news_Body);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> Create([Bind(Include = "Id,Header_Id,Content,Version,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime")] News_Body news_Body)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.News_Body.Add(news_Body);
+        //        await db.SaveChangesAsync();
+        //        return RedirectToAction("Index");
+        //    }
 
-            ViewBag.Id = new SelectList(db.News_Header, "Id", "Caption", news_Body.Id);
-            return View(news_Body);
-        }
+        //    ViewBag.Id = new SelectList(db.News_Header, "Id", "Caption", news_Body.Id);
+        //    return View(news_Body);
+        //}
 
         // GET: NewsContext/Edit/5
         public ActionResult Edit(int? id)
@@ -105,32 +105,32 @@ namespace ParkingLotWebApp.Controllers
         // POST: NewsContext/Edit/5
         // 若要免於過量張貼攻擊，請啟用想要繫結的特定屬性，如需
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Header_Id,Content,Version,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime")] News_Body news_Body)
-        {
-            if (ModelState.IsValid)
-            {
-                news_Body.Void = true;
-                db.Entry(news_Body).State = EntityState.Modified;
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit([Bind(Include = "Id,Header_Id,Content,Version,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime")] News_Body news_Body)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        news_Body.Void = true;
+        //        db.Entry(news_Body).State = EntityState.Modified;
 
-                var newversion_body = new News_Body();
-                newversion_body.Content = HttpUtility.HtmlDecode(news_Body.Content);
-                newversion_body.Void = false;
-                newversion_body.Header_Id = news_Body.Header_Id;
-                newversion_body.Version = news_Body.Version + 1;
-                newversion_body.LastUpdateUserId = newversion_body.CreateUserId = news_Body.LastUpdateUserId;
-                newversion_body.LastUpdateUTCTime = newversion_body.CreateUTCTime = news_Body.LastUpdateUTCTime;
+        //        var newversion_body = new News_Body();
+        //        newversion_body.Content = HttpUtility.HtmlDecode(news_Body.Content);
+        //        newversion_body.Void = false;
+        //        newversion_body.Header_Id = news_Body.Header_Id;
+        //        newversion_body.Version = news_Body.Version + 1;
+        //        newversion_body.LastUpdateUserId = newversion_body.CreateUserId = news_Body.LastUpdateUserId;
+        //        newversion_body.LastUpdateUTCTime = newversion_body.CreateUTCTime = news_Body.LastUpdateUTCTime;
 
-                db.News_Body.Add(newversion_body);
+        //        db.News_Body.Add(newversion_body);
 
-                db.SaveChanges();
+        //        db.SaveChanges();
 
-                return RedirectToAction("Index", "News", new { id = newversion_body.Header_Id });
-            }
-            ViewBag.Id = new SelectList(db.News_Header, "Id", "Caption", news_Body.Id);
-            return View(news_Body);
-        }
+        //        return RedirectToAction("Index", "News", new { id = newversion_body.Header_Id });
+        //    }
+        //    ViewBag.Id = new SelectList(db.News_Header, "Id", "Caption", news_Body.Id);
+        //    return View(news_Body);
+        //}
 
         // GET: NewsContext/Delete/5
         public ActionResult Delete(int? id)
@@ -148,19 +148,19 @@ namespace ParkingLotWebApp.Controllers
         }
 
         // POST: NewsContext/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            News_Body news_Body = db.News_Body.Find(id);
-            news_Body.Void = false;
-            news_Body.LastUpdateUserId = User.Identity.GetUserId<int>();
-            news_Body.LastUpdateUTCTime = DateTime.Now.ToUniversalTime();
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    News_Body news_Body = db.News_Body.Find(id);
+        //    news_Body.Void = false;
+        //    news_Body.LastUpdateUserId = User.Identity.GetUserId<int>();
+        //    news_Body.LastUpdateUTCTime = DateTime.Now.ToUniversalTime();
 
-            //db.News_Body.Remove(news_Body);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        //    //db.News_Body.Remove(news_Body);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
         protected override void Dispose(bool disposing)
         {

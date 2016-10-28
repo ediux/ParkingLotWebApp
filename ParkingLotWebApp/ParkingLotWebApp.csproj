@@ -188,7 +188,6 @@
     <Compile Include="Controllers\ETAsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\NewsContextController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\ParkingGridsController.cs" />
     <Compile Include="Controllers\ParkingLotAreasController.cs" />
@@ -233,6 +232,7 @@
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\NewsPostViewModel.cs" />
     <Compile Include="Models\News_Body.cs">
       <DependentUpon>ParkingLotModel.tt</DependentUpon>
     </Compile>
@@ -898,14 +898,8 @@
     <Content Include="Views\Sensors\Index.cshtml" />
     <Content Include="Views\News\Create.cshtml" />
     <Content Include="Views\News\Delete.cshtml" />
-    <Content Include="Views\News\Details.cshtml" />
     <Content Include="Views\News\Edit.cshtml" />
     <Content Include="Views\News\Index.cshtml" />
-    <Content Include="Views\NewsContext\Create.cshtml" />
-    <Content Include="Views\NewsContext\Delete.cshtml" />
-    <Content Include="Views\NewsContext\Details.cshtml" />
-    <Content Include="Views\NewsContext\Edit.cshtml" />
-    <Content Include="Views\NewsContext\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\LockedStateDispaly.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\RoleIDMappingDisplay.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\UserIDMappingDisplay.cshtml" />
@@ -918,6 +912,8 @@
     <Content Include="Views\Shared\EditorTemplates\UTCLocalTimeDisplay.cshtml" />
     <Content Include="Views\ParkingLotFloors\ListRemainParkingGridAmounts.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Html.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\UTCLocalDateDisplay.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\UTCLocalDateDisplay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,16 +1,30 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
+
 namespace ParkingLotWebApp.Models
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
-    [MetadataType(typeof(News_HeaderMetaData))]
-    public partial class News_Header
+    public class NewsPostViewModel
     {
-    }
+        public NewsPostViewModel()
+        {
+              
+        }
 
-    public partial class News_HeaderMetaData
-    {
+        public NewsPostViewModel(News_Header source)
+        {
+            this.Id = source.Id;
+            this.Caption = source.Caption;
+            this.CreateUserId = source.CreateUserId;
+            this.CreateUTCTime = source.CreateUTCTime;
+            this.EndTime = source.EndTime;
+            this.LastUpdateUserId = source.LastUpdateUserId;
+            this.LastUpdateUTCTime = source.LastUpdateUTCTime;
+            this.StartTime = source.StartTime;
+            this.Void = source.Void;
+        }
         [Required]
         public int Id { get; set; }
 
@@ -51,6 +65,11 @@ namespace ParkingLotWebApp.Models
         [UIHint("UTCLocalTimeDisplay")]
         public System.DateTime LastUpdateUTCTime { get; set; }
 
-        public virtual News_Body News_Body { get; set; }
+        public int Body_Id { get; set; }
+        [Display(Name = "公告內容")]
+        public string Content { get; set; }
+        [Required]
+        [Display(Name = "版本號")]
+        public int Version { get; set; }
     }
 }
