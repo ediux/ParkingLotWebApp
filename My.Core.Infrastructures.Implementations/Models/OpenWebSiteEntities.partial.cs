@@ -9,12 +9,62 @@ using System.Threading.Tasks;
 
 namespace My.Core.Infrastructures.Implementations.Models
 {
-    public partial class OpenWebSiteEntities : IUnitofWork
+    public partial class OpenWebSiteEntities : IUnitOfWork
     {
-        private bool _requireuniqueEmail=false;
+        private bool _requireuniqueEmail = false;
         public bool RequireUniqueEmail { get { return _requireuniqueEmail; } set { _requireuniqueEmail = value; } }
 
-        private Hashtable _repositories;
+        public DbContext Context
+        {
+            get
+            {
+                return this;
+            }
+
+            set
+            {
+                
+            }
+        }
+
+        public bool LazyLoadingEnabled
+        {
+            get
+            {
+                return Configuration.LazyLoadingEnabled;
+            }
+
+            set
+            {
+                Configuration.LazyLoadingEnabled = value;
+            }
+        }
+
+        public bool ProxyCreationEnabled
+        {
+            get
+            {
+                return Configuration.ProxyCreationEnabled;
+            }
+
+            set
+            {
+                Configuration.ProxyCreationEnabled = value;
+            }
+        }
+
+        public string ConnectionString
+        {
+            get
+            {
+               return Database.Connection.ConnectionString;
+            }
+
+            set
+            {
+                Database.Connection.ConnectionString = value;
+            }
+        }
 
         public OpenWebSiteEntities(string nameorconnectionstring)
             : base(nameorconnectionstring)
@@ -27,43 +77,14 @@ namespace My.Core.Infrastructures.Implementations.Models
             return new OpenWebSiteEntities();
         }
 
-      
-
-        public System.Data.Entity.Infrastructure.DbEntityEntry<TEntity> GetEntry<TEntity>(TEntity entity) where TEntity : class
+        public void Commit()
         {
-            return this.Entry<TEntity>(entity);
+            SaveChanges();
         }
 
-
-        public TRepository GetRepository<TRepository, TEntity>()
-            where TRepository : IRepositoryBase<TEntity>
-            where TEntity : class
+        public async Task CommitAsync()
         {
-            if (_repositories == null)
-            {
-                _repositories = new Hashtable();
-            }
-
-            var type = typeof(TRepository).Name;
-
-            if (!_repositories.ContainsKey(type))
-            {
-                var repositoryType = typeof(TRepository);
-
-                var repositoryInstance =
-                    Activator.CreateInstance(repositoryType
-                    , this);
-
-                _repositories.Add(type, repositoryInstance);
-            }
-
-            return (TRepository)_repositories[type];
-        }
-
-
-        public IDbSet<TEntity> GetEntity<TEntity>() where TEntity : class
-        {
-           return base.Set<TEntity>();
+            await SaveChangesAsync();
         }
     }
 }
