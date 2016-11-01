@@ -1,5 +1,6 @@
 namespace My.Core.Infrastructures.Implementations.Models
 {
+    using Resources;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -12,16 +13,16 @@ namespace My.Core.Infrastructures.Implementations.Models
     public partial class ApplicationUserRoleMetaData
     {
         [Required]
-        [Display(Name = "UserName", ResourceType = typeof(Resources.MUI))]
+        [Display(Name = "UserName", ResourceType = typeof(MUI))]
         [UIHint("UserIDMappingDisplay")]
         public int UserId { get; set; }
-        [Display(Name = "RoleName", ResourceType = typeof(Resources.MUI))]
+        [Display(Name = "RoleName", ResourceType = typeof(MUI))]
         [Required]
         [UIHint("RoleIDMappingDisplay")]
         public int RoleId { get; set; }
         [Required]
         [UIHint("VoidDisplay")]
-        [Display(Name = "Void", ResourceType = typeof(Resources.MUI))]
+        [Display(Name = "Void", ResourceType = typeof(MUI))]
         public bool Void { get; set; }
 
         public virtual ApplicationRole ApplicationRole { get; set; }

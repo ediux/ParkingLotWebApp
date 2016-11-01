@@ -6,7 +6,7 @@ namespace My.Core.Infrastructures.Implementations.Models
 	{
 		public static IUnitOfWork GetUnitOfWork()
 		{
-			return GetUnitOfWork<OpenWebSiteEntities>();
+			return new EFUnitOfWork();
 		}
 
 		public static TUnitOfWork GetUnitOfWork<TUnitOfWork>() where TUnitOfWork : IUnitOfWork

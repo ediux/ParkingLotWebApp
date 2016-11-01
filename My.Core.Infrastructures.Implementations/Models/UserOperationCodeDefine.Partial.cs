@@ -1,9 +1,10 @@
 namespace My.Core.Infrastructures.Implementations.Models
 {
+    using Resources;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    
+
     [MetadataType(typeof(UserOperationCodeDefineMetaData))]
     public partial class UserOperationCodeDefine
     {
@@ -12,16 +13,16 @@ namespace My.Core.Infrastructures.Implementations.Models
     public partial class UserOperationCodeDefineMetaData
     {
         [Required]
-        [Display(Name = "OpreationCode", ResourceType = typeof(Resources.MUI))]
+        [Display(Name = "OpreationCode", ResourceType = typeof(MUI))]
         public int OpreationCode { get; set; }
         
         [StringLength(512, ErrorMessage="欄位長度不得大於 512 個字元")]
         [Required]
-        [Display(Name = "Description", ResourceType = typeof(Resources.MUI))]
+        [Display(Name = "Description", ResourceType = typeof(MUI))]
         public string Description { get; set; }
         
         [StringLength(256, ErrorMessage="欄位長度不得大於 256 個字元")]
-        [Display(Name = "MessageResourceKey", ResourceType = typeof(Resources.MUI))]
+        [Display(Name = "MessageResourceKey", ResourceType = typeof(MUI))]
         public string MessageResourceKey { get; set; }
     
         public virtual ICollection<UserOperationLog> UserOperationLog { get; set; }

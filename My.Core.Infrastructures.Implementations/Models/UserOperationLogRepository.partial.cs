@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace My.Core.Infrastructures.Implementations.Models
 {
@@ -22,9 +26,9 @@ namespace My.Core.Infrastructures.Implementations.Models
                         OpreationCode = entity.OpreationCode
                     });
                 }
-                entity = base.Add(entity);
+                base.Add(entity);                
                 UnitOfWork.Commit();
-                return entity;
+                return Reload(entity);          
             }
             catch (Exception)
             {

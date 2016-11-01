@@ -1,6 +1,7 @@
 namespace My.Core.Infrastructures.Implementations.Models
 {
     using Microsoft.AspNet.Identity;
+    using Resources;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -26,35 +27,35 @@ namespace My.Core.Infrastructures.Implementations.Models
 
     public partial class ApplicationRoleMetaData
     {
-        [Display(Name="Id", ResourceType = typeof(Resources.MUI))]
+        [Display(Name="Id", ResourceType = typeof(MUI))]
         [Required]
         public int Id { get; set; }
 
-        [Display(Name = "RoleName", ResourceType = typeof(Resources.MUI))]
+        [Display(Name = "RoleName", ResourceType = typeof(MUI))]
         [StringLength(50, ErrorMessage = "欄位長度不得大於 50 個字元")]
         [Required]
         public string Name { get; set; }
-        [Display(Name = "CreateUserId", ResourceType = typeof(Resources.MUI))]
+        [Display(Name = "CreateUserId", ResourceType = typeof(MUI))]
         [Required]
         [UIHint("UserIDMappingDisplay")]
         public int CreateUserId { get; set; }
         [Required]
-        [Display(Name = "CreateTime", ResourceType = typeof(Resources.MUI))]
+        [Display(Name = "CreateTime", ResourceType = typeof(MUI))]
         [DisplayFormat(DataFormatString="{0:yyyy/MM/dd hh:mm}")]
         [UIHint("UTCLocalTimeDisplay")]
         public System.DateTime CreateTime { get; set; }
         [Required]
-        [Display(Name = "LastUpdateUserId", ResourceType = typeof(Resources.MUI))]
+        [Display(Name = "LastUpdateUserId", ResourceType = typeof(MUI))]
         [UIHint("UserIDMappingDisplay")]
         public int LastUpdateUserId { get; set; }
         [Required]
-        [Display(Name = "LastUpdateTime", ResourceType = typeof(Resources.MUI))]
+        [Display(Name = "LastUpdateTime", ResourceType = typeof(MUI))]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd hh:mm}")]
         [UIHint("UTCLocalTimeDisplay")]
         public System.DateTime LastUpdateTime { get; set; }
         [UIHint("VoidDisplay")]
         [Required]
-        [Display(Name = "Void", ResourceType = typeof(Resources.MUI))]
+        [Display(Name = "Void", ResourceType = typeof(MUI))]
         public bool Void { get; set; }
 
         public virtual ICollection<ApplicationUserRole> ApplicationUserRole { get; set; }
