@@ -22,6 +22,7 @@ namespace ParkingLotWebApp.Models
         [StringLength(1, ErrorMessage="欄位長度不得大於 1 個字元")]
         [Required]
         [Display(Name="車種")]
+        [UIHint("CarTypeDisplay")]
         public string CarType { get; set; }
         [Display(Name="ETC號碼")]
         public Nullable<int> ETAId { get; set; }
