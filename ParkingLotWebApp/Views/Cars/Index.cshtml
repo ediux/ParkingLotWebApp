@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<ParkingLotWebApp.Models.Cars>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = Resources.WebPages.Cars_Lists;
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink(Resources.WebPages.Cars_Create_New, "Create")
 </p>
 <table class="table">
     <tr>
@@ -61,9 +61,9 @@
                 @Html.DisplayFor(modelItem => item.LastUpdateUTCTime)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @Html.ActionLink(Resources.Common.Edit, "Edit", new { id = item.Id }) |
+                @Html.ActionLink(Resources.Common.Details, "Details", new { id = item.Id }) |
+                @Html.ActionLink(Resources.Common.Delete, "Delete", new { id = item.Id })
             </td>
         </tr>
     }

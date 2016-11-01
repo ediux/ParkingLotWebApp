@@ -1,7 +1,7 @@
 ﻿@model ParkingLotWebApp.Models.NewsPostViewModel
 @using Microsoft.AspNet.Identity
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = Resources.WebPages.News_Edit;
     if (IsAjax || ViewContext.IsChildAction)
     {
         Layout = null;
@@ -49,7 +49,7 @@
             <div class="col-md-10">
                 <div class="input-daterange input-group" id="datepicker">
                     @Html.TextBoxFor(model => model.StartTime, "{0:yyyy/MM/dd}", new { @class = "input-sm form-control" })
-                    <span class="input-group-addon">@Resources.MUI.Common.To</span>
+                    <span class="input-group-addon">@Resources.Common.To</span>
                     @Html.TextBoxFor(model => model.EndTime, "{0:yyyy/MM/dd}", new { @class = "input-sm form-control" })
 
                 </div>
