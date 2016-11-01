@@ -79,63 +79,63 @@ namespace My.Core.Infrastructures.Implementations.Models
 
     public partial class ApplicationUserMetaData
     {
-        [Display(Name = "Id", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "Id", ResourceType = typeof(Resources.MUI))]
         [Required]
         public int Id { get; set; }
 
-        [Display(Name = "UserName", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "UserName", ResourceType = typeof(Resources.MUI))]
         [StringLength(50, ErrorMessage = "欄位長度不得大於 50 個字元")]
         [Required]
         public string UserName { get; set; }
-        [Display(Name = "Password", ResourceType = typeof(ReslangMUI.MUI))]
-        [StringLength(50, ErrorMessageResourceType = typeof(ReslangMUI.ErrorMessage), ErrorMessageResourceName = "StringLength")]
+        [Display(Name = "Password", ResourceType = typeof(Resources.MUI))]
+        [StringLength(50, ErrorMessageResourceType = typeof(Resources.ErrorMessage), ErrorMessageResourceName = "StringLength")]
         public string Password { get; set; }
-        [Display(Name = "PasswordHash", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "PasswordHash", ResourceType = typeof(Resources.MUI))]
         public string PasswordHash { get; set; }
-        [Display(Name = "SecurityStamp", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "SecurityStamp", ResourceType = typeof(Resources.MUI))]
         public string SecurityStamp { get; set; }
         [Required]
-        [Display(Name = "TwoFactorEnabled", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "TwoFactorEnabled", ResourceType = typeof(Resources.MUI))]
         [UIHint("VoidDisplay")]
         public bool TwoFactorEnabled { get; set; }
         [Required]
-        [Display(Name = "Void", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "Void", ResourceType = typeof(Resources.MUI))]
         [UIHint("VoidDisplay")]
         public bool Void { get; set; }
         [Required]
-        [Display(Name = "CreateUserId", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "CreateUserId", ResourceType = typeof(Resources.MUI))]
         [UIHint("UserIDMappingDisplay")]
         public int CreateUserId { get; set; }
         [Required]
-        [Display(Name = "CreateTime", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "CreateTime", ResourceType = typeof(Resources.MUI))]
         public System.DateTime CreateTime { get; set; }
         [Required]
-        [Display(Name = "LastUpdateUserId", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "LastUpdateUserId", ResourceType = typeof(Resources.MUI))]
         [UIHint("UserIDMappingDisplay")]
         public int LastUpdateUserId { get; set; }
         [Required]
-        [Display(Name = "LastUpdateTime", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "LastUpdateTime", ResourceType = typeof(Resources.MUI))]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd hh:mm}")]
         public System.DateTime LastUpdateTime { get; set; }
-        [Display(Name = "LastActivityTime", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "LastActivityTime", ResourceType = typeof(Resources.MUI))]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd hh:mm}")]
         public Nullable<System.DateTime> LastActivityTime { get; set; }
-        [Display(Name = "LastUnlockedTime", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "LastUnlockedTime", ResourceType = typeof(Resources.MUI))]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd hh:mm}")]
         public Nullable<System.DateTime> LastUnlockedTime { get; set; }
-        [Display(Name = "LastLoginFailTime", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "LastLoginFailTime", ResourceType = typeof(Resources.MUI))]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd hh:mm}")]
         public Nullable<System.DateTime> LastLoginFailTime { get; set; }
         [Required]
-        [Display(Name = "AccessFailedCount", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "AccessFailedCount", ResourceType = typeof(Resources.MUI))]
         public int AccessFailedCount { get; set; }
-        [Display(Name = "LockoutEnabled", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "LockoutEnabled", ResourceType = typeof(Resources.MUI))]
         [UIHint("LockedStateDisplay")]
         public Nullable<bool> LockoutEnabled { get; set; }
-        [Display(Name = "LockoutEndDate", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "LockoutEndDate", ResourceType = typeof(Resources.MUI))]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}")]
         public Nullable<System.DateTime> LockoutEndDate { get; set; }
-        [Display(Name = "ResetPasswordToken", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "ResetPasswordToken", ResourceType = typeof(Resources.MUI))]
         [StringLength(512, ErrorMessage = "欄位長度不得大於 512 個字元")]
         public string ResetPasswordToken { get; set; }
 

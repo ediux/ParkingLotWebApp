@@ -12,16 +12,16 @@ namespace My.Core.Infrastructures.Implementations.Models
     public partial class ApplicationUserGroupMetaData
     {
         [Required]
-        [Display(Name = "UserName", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "UserName", ResourceType = typeof(Resources.MUI))]
         [UIHint("UserIDMappingDisplay")]
         public int UserId { get; set; }
         [Required]
-        [Display(Name = "GroupName", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "GroupName", ResourceType = typeof(Resources.MUI))]
         [UIHint("GroupIDMappingDisplay")]
         public int GroupId { get; set; }
         [Required]
         [UIHint("VoidDisplay")]
-        [Display(Name = "Void", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "Void", ResourceType = typeof(Resources.MUI))]
         public bool Void { get; set; }
 
         public virtual ApplicationGroup ApplicationGroup { get; set; }

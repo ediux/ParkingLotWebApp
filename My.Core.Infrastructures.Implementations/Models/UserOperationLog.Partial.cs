@@ -11,23 +11,23 @@ namespace My.Core.Infrastructures.Implementations.Models
 
     public partial class UserOperationLogMetaData
     {
-        [Display(Name = "Id", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "Id", ResourceType = typeof(Resources.MUI))]
         [Required]
         public long Id { get; set; }
-        [Display(Name = "Body", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "Body", ResourceType = typeof(Resources.MUI))]
         public string Body { get; set; }
         [Required]
-        [Display(Name = "LogTime", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "LogTime", ResourceType = typeof(Resources.MUI))]
         [UIHint("UTCLocalTimeDisplay")]
         public System.DateTime LogTime { get; set; }
         [Required]
-        [Display(Name = "OpreationCode", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "OpreationCode", ResourceType = typeof(Resources.MUI))]
         public int OpreationCode { get; set; }
-        [Display(Name = "URL", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "URL", ResourceType = typeof(Resources.MUI))]
         [Url]
         public string URL { get; set; }
         [Required]
-        [Display(Name = "LogUserName", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "LogUserName", ResourceType = typeof(Resources.MUI))]
         [UIHint("UserIDMappingDisplay")]
         public int UserId { get; set; }
 

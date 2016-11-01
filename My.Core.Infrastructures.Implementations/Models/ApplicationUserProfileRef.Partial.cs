@@ -12,23 +12,23 @@ namespace My.Core.Infrastructures.Implementations.Models
     public partial class ApplicationUserProfileRefMetaData
     {
         [Required]
-        [Display(Name = "UserName", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "UserName", ResourceType = typeof(Resources.MUI))]
         [UIHint("UserIDMappingDisplay")]
         public int UserId { get; set; }
         [Required]
-        [Display(Name = "ProfileId", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "ProfileId", ResourceType = typeof(Resources.MUI))]
         public int ProfileId { get; set; }
         [Required]
         [UIHint("VoidDisplay")]
-        [Display(Name = "Void", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "Void", ResourceType = typeof(Resources.MUI))]
         public bool Void { get; set; }
         [Required]
-        [Display(Name = "CreateTime", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "CreateTime", ResourceType = typeof(Resources.MUI))]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd hh:mm}")]
         [UIHint("UTCLocalTimeDisplay")]
         public System.DateTime CreateTime { get; set; }
         [Required]
-        [Display(Name = "LastUpdateTime", ResourceType = typeof(ReslangMUI.MUI))]
+        [Display(Name = "LastUpdateTime", ResourceType = typeof(Resources.MUI))]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd hh:mm}")]
         [UIHint("UTCLocalTimeDisplay")]
         public System.DateTime LastUpdateTime { get; set; }
