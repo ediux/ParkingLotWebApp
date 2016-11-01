@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ReslangMUI {
+namespace My.Core.Infrastructures.Implementations.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace ReslangMUI {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("My.Core.Infrastructures.Implementations.MUI", typeof(MUI).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("My.Core.Infrastructures.Implementations.Resources.MUI", typeof(MUI).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

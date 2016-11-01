@@ -94,7 +94,7 @@
   <ItemGroup>
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="Base\OpenCoreWebExtensions.cs" />
-    <Compile Include="ErrorMessage.Designer.cs">
+    <Compile Include="Resources\ErrorMessage.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ErrorMessage.resx</DependentUpon>
@@ -188,7 +188,7 @@
     <Compile Include="Models\UserOperationLog.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
-    <Compile Include="MUI.Designer.cs">
+    <Compile Include="Resources\MUI.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MUI.resx</DependentUpon>
@@ -217,15 +217,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ErrorMessage.resx">
+    <EmbeddedResource Include="Resources\ErrorMessage.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ErrorMessage.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>ReslangMUI</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="MUI.resx">
+    <EmbeddedResource Include="Resources\MUI.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MUI.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>ReslangMUI</CustomToolNamespace>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
