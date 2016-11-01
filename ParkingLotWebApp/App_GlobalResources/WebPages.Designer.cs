@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources.MUI {
+namespace ParkingLotWebApp.App_GlobalResources {
     using System;
     
     
@@ -61,6 +61,69 @@ namespace Resources.MUI {
         }
         
         /// <summary>
+        ///   查詢類似 車輛資訊 的當地語系化字串。
+        /// </summary>
+        public static string Cars {
+            get {
+                return ResourceManager.GetString("Cars", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 新增車輛 的當地語系化字串。
+        /// </summary>
+        public static string Cars_Create_New {
+            get {
+                return ResourceManager.GetString("Cars_Create_New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 刪除車輛 的當地語系化字串。
+        /// </summary>
+        public static string Cars_Delete {
+            get {
+                return ResourceManager.GetString("Cars_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 車輛詳細資訊 的當地語系化字串。
+        /// </summary>
+        public static string Cars_Details {
+            get {
+                return ResourceManager.GetString("Cars_Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 車輛清單 的當地語系化字串。
+        /// </summary>
+        public static string Cars_Lists {
+            get {
+                return ResourceManager.GetString("Cars_Lists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 這台車 的當地語系化字串。
+        /// </summary>
+        public static string Cars_This {
+            get {
+                return ResourceManager.GetString("Cars_This", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 系統公告 的當地語系化字串。
+        /// </summary>
+        public static string News {
+            get {
+                return ResourceManager.GetString("News", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 新增公告 的當地語系化字串。
         /// </summary>
         public static string News_Create_New {
@@ -70,11 +133,29 @@ namespace Resources.MUI {
         }
         
         /// <summary>
+        ///   查詢類似 刪除公告 的當地語系化字串。
+        /// </summary>
+        public static string News_Delete {
+            get {
+                return ResourceManager.GetString("News_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 公告標題 的當地語系化字串。
         /// </summary>
         public static string News_Header {
             get {
                 return ResourceManager.GetString("News_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 這則公告 的當地語系化字串。
+        /// </summary>
+        public static string News_This {
+            get {
+                return ResourceManager.GetString("News_This", resourceCulture);
             }
         }
         

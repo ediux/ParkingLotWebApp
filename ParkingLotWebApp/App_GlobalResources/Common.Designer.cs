@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources.MUI {
+namespace ParkingLotWebApp.App_GlobalResources {
     using System;
     
     
@@ -57,6 +57,15 @@ namespace Resources.MUI {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 返回到{0} 的當地語系化字串。
+        /// </summary>
+        public static string Back_To {
+            get {
+                return ResourceManager.GetString("Back_To", resourceCulture);
             }
         }
         
@@ -115,7 +124,7 @@ namespace Resources.MUI {
         }
         
         /// <summary>
-        ///   查詢類似 您確定要刪除這個角色? 的當地語系化字串。
+        ///   查詢類似 您確定要刪除{0}? 的當地語系化字串。
         /// </summary>
         public static string DeleteConfirmMessage {
             get {
