@@ -49,7 +49,9 @@
     <Compile Include="Logs\ILogWriter.cs" />
     <Compile Include="Base\IServiceBase.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
