@@ -10,7 +10,8 @@ namespace ParkingLotWebApp.Models
     {
         public NewsPostViewModel()
         {
-              
+            LastUpdateUserId = CreateUserId = -1;
+            LastUpdateUTCTime = CreateUTCTime = DateTime.Now.ToUniversalTime();
         }
 
         public NewsPostViewModel(News_Header source)

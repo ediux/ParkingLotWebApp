@@ -208,16 +208,36 @@
     <Compile Include="Models\CarsInParkingLotPath_Body.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CarsInParkingLotPath_BodyRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CarsInParkingLotPath_Header.cs">
       <DependentUpon>ParkingLotModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CarsInParkingLotPath_Header.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CarsInParkingLotPath_HeaderRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CarsRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Edward.IRepository.EF6.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\EFGeneratePartialClass.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EFRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EFUnitOfWork.cs">
+      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Employee.cs">
       <DependentUpon>ParkingLotModel.tt</DependentUpon>
@@ -225,11 +245,20 @@
     <Compile Include="Models\Employee.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EmployeeRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ETAs.cs">
       <DependentUpon>ParkingLotModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ETAs.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ETAsRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IUnitOfWork.cs">
+      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\NewsPostViewModel.cs" />
@@ -239,11 +268,17 @@
     <Compile Include="Models\News_Body.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\News_BodyRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\News_Header.cs">
       <DependentUpon>ParkingLotModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\News_Header.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\News_HeaderRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ParkingGrid.cs">
       <DependentUpon>ParkingLotModel.tt</DependentUpon>
@@ -251,17 +286,26 @@
     <Compile Include="Models\ParkingGrid.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ParkingGridRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ParkingLotAreas.cs">
       <DependentUpon>ParkingLotModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ParkingLotAreas.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ParkingLotAreasRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ParkingLotFloors.cs">
       <DependentUpon>ParkingLotModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ParkingLotFloors.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingLotFloorsRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ParkingLotModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -278,17 +322,26 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ParkingLotModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\RepositoryHelper.cs">
+      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Sensors.cs">
       <DependentUpon>ParkingLotModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Sensors.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SensorsRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\vw_ParkingLotGridRemain.cs">
       <DependentUpon>ParkingLotModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\vw_ParkingLotGridRemain.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\vw_ParkingLotGridRemainRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -312,6 +365,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Models\Edward.IRepository.EF6.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Edward.IRepository.EF6.cs</LastGenOutput>
+    </Content>
     <Content Include="Models\EFGeneratePartialClass.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EFGeneratePartialClass.cs</LastGenOutput>

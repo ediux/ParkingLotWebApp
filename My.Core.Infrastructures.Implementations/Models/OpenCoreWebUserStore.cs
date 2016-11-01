@@ -14,7 +14,7 @@ using My.Core.Infrastructures;
 namespace My.Core.Infrastructures.Implementations.Models
 {
     // 您可以在 ApplicationUser 類別新增更多屬性，為使用者新增設定檔資料，請造訪 http://go.microsoft.com/fwlink/?LinkID=317594 以深入了解。
-    
+
     public class OpenCoreWebUserStore : IUserStore<ApplicationUser, int>
         , IUserRoleStore<ApplicationUser, int>, IRoleStore<ApplicationRole, int>
         , IUserEmailStore<ApplicationUser, int>, IUserLockoutStore<ApplicationUser, int>
@@ -26,62 +26,44 @@ namespace My.Core.Infrastructures.Implementations.Models
 
         private bool disposed = false;
         SafeHandle handle = new SafeFileHandle(IntPtr.Zero, true);
-        IUnitofWork uow;
-        IApplicationUserRepository<ApplicationUser> accountrepo;
-        IApplicationRoleRepository<ApplicationRole, ApplicationUserRole> rolerepo;
+
+        IApplicationUserRoleRepository userrolerepo;
 
 
-        public OpenCoreWebUserStore(DbContext context)
+        public OpenCoreWebUserStore(IUnitOfWork unitofwork)
         {
-            uow = (OpenWebSiteEntities)context;
-            accountrepo = uow.GetRepository<ApplicationUserRepository, ApplicationUser>();
-            rolerepo = uow.GetRepository<ApplicationRoleRepository, ApplicationRole>();
+            userrolerepo = RepositoryHelper.GetApplicationUserRoleRepository();
+            userrolerepo.UnitOfWork = unitofwork;           
         }
 
         #region 使用者
-        public Task CreateAsync(ApplicationUser user)
+        public async Task CreateAsync(ApplicationUser user)
         {
-            return Task.Run(() =>
-            {
-                accountrepo.Create(user);
-                accountrepo.SaveChanges();
-            });
-
+            userrolerepo.ApplicationUserRepository.Add(user);
+            await userrolerepo.UnitOfWork.CommitAsync();
         }
 
-        public Task DeleteAsync(ApplicationUser user)
+        public async Task DeleteAsync(ApplicationUser user)
         {
-            return Task.Run(() =>
-            {
-                user.Void = true;
-                accountrepo.Update(user);
-                accountrepo.SaveChanges();
-            });
+            user.Void = true;
+            userrolerepo.UnitOfWork.Context.Entry<ApplicationUser>(user).State = EntityState.Modified;
+            await userrolerepo.UnitOfWork.CommitAsync();
         }
 
-        public Task<ApplicationUser> FindByIdAsync(int userId)
+        public async Task<ApplicationUser> FindByIdAsync(int userId)
         {
-            return Task<ApplicationUser>.Run(() =>
-            {
-                return accountrepo.FindUserById(userId, false);
-            });
+            return await userrolerepo.ApplicationUserRepository.FindUserByIdAsync(userId, false);
         }
 
-        public Task<ApplicationUser> FindByNameAsync(string userName)
+        public async Task<ApplicationUser> FindByNameAsync(string userName)
         {
-            return Task<ApplicationUser>.Run(() =>
-            {
-                return accountrepo.FindUserByLoginAccount(userName, false);
-            });
+            return await userrolerepo.ApplicationUserRepository.FindUserByLoginAccountAsync(userName, false);
         }
 
-        public Task UpdateAsync(ApplicationUser user)
+        public async Task UpdateAsync(ApplicationUser user)
         {
-            return Task.Run(() =>
-            {
-                accountrepo.Update(user);
-                accountrepo.SaveChanges();
-            });
+            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
+            await userrolerepo.UnitOfWork.CommitAsync();
         }
 
         public void Dispose()
@@ -110,19 +92,16 @@ namespace My.Core.Infrastructures.Implementations.Models
         #endregion
 
         #region User Role Store
-        public Task AddToRoleAsync(ApplicationUser user, string roleName)
+        public async Task AddToRoleAsync(ApplicationUser user, string roleName)
         {
-            return Task.Run(() =>
-            {
-                int roleid = rolerepo.FindByName(roleName).Id;
-                rolerepo.AddUserToRole(roleid, user.Id);
-                rolerepo.SaveChanges();
-            });
+            int roleid = userrolerepo.ApplicationRoleRepository.FindByName(roleName).Id;
+            userrolerepo.Add(new ApplicationUserRole() { UserId = user.Id, RoleId = roleid, Void = false });
+            await userrolerepo.UnitOfWork.CommitAsync();
         }
 
         public Task<System.Collections.Generic.IList<string>> GetRolesAsync(ApplicationUser user)
         {
-            return Task<System.Collections.Generic.IList<string>>.Run(() =>
+            return Task.Run(() =>
             {
                 var roles = from q in user.ApplicationUserRole
                             select q.ApplicationRole.Name;
@@ -133,7 +112,7 @@ namespace My.Core.Infrastructures.Implementations.Models
 
         public Task<bool> IsInRoleAsync(ApplicationUser user, string roleName)
         {
-            return Task<bool>.Run(() =>
+            return Task.Run(() =>
             {
                 var userinroles = from q in user.ApplicationUserRole
                                   where q.ApplicationRole.Name.Equals(roleName, StringComparison.InvariantCultureIgnoreCase)
@@ -142,34 +121,39 @@ namespace My.Core.Infrastructures.Implementations.Models
             });
         }
 
-        public Task RemoveFromRoleAsync(ApplicationUser user, string roleName)
+        public async Task RemoveFromRoleAsync(ApplicationUser user, string roleName)
         {
-            return Task.Run(() =>
-            {
-                var userinroles = (from q in user.ApplicationUserRole
-                                   where q.ApplicationRole.Name.Equals(roleName, StringComparison.InvariantCultureIgnoreCase)
-                                   select q).Single();
+            var role = userrolerepo.ApplicationRoleRepository.FindByName(roleName);
 
-                userinroles.Void = true;
-                accountrepo.Update(user);
-                accountrepo.SaveChanges();
-            });
+            if (role == null)
+            {
+                throw new ArgumentException(string.Format("Role {0} not existed.", roleName), "roleName");
+            }
+
+            if (user == null)
+                throw new ArgumentNullException("user");
+
+            var r = userrolerepo.Get(user.Id, role.Id);
+            userrolerepo.Delete(r);
+            await userrolerepo.UnitOfWork.CommitAsync();
         }
         #endregion
 
         #region EMail Stroe
-        public Task<ApplicationUser> FindByEmailAsync(string email)
+        public async Task<ApplicationUser> FindByEmailAsync(string email)
         {
-            return Task<ApplicationUser>.Run(() =>
-            {
-                var findemail = accountrepo.FindByEmail(email);
-                return findemail;
-            });
+            var findemail = await userrolerepo
+                               .ApplicationUserRepository
+                               .ApplicationUserProfileRefRepository
+                               .UserProfileRepository
+                               .FindByEmailAsync(email);
+            return findemail;
+
         }
 
         public Task<string> GetEmailAsync(ApplicationUser user)
         {
-            return Task<string>.Run(() =>
+            return Task.Run(() =>
             {
                 try
                 {
@@ -181,13 +165,13 @@ namespace My.Core.Infrastructures.Implementations.Models
                 {
                     return string.Empty;
                 }
-             
+
             });
         }
 
         public Task<bool> GetEmailConfirmedAsync(ApplicationUser user)
         {
-            return Task<bool>.Run(() =>
+            return Task.Run(() =>
             {
                 var userinroles = (from q in user.ApplicationUserProfileRef
                                    select q.ApplicationUserProfile.EMailConfirmed);
@@ -195,33 +179,30 @@ namespace My.Core.Infrastructures.Implementations.Models
             });
         }
 
-        public Task SetEmailAsync(ApplicationUser user, string email)
+        public async Task SetEmailAsync(ApplicationUser user, string email)
         {
-            return Task.Run(() =>
-            {
-                var useremail = user.ApplicationUserProfileRef.Single();
-                useremail.ApplicationUserProfile.EMail = email;
-                accountrepo.Update(user);
-                accountrepo.SaveChanges();
-            });
+            //userrolerepo.ApplicationUserRepository.ApplicationUserProfileRefRepository.UserProfileRepository.
+            var useremail = user.ApplicationUserProfileRef.Single();
+            useremail.ApplicationUserProfile.EMail = email;
+            useremail.ApplicationUserProfile.LastUpdateTime = DateTime.Now.ToUniversalTime();
+            userrolerepo.UnitOfWork.Context.Entry(useremail).State = EntityState.Modified;
+            await userrolerepo.UnitOfWork.CommitAsync();
         }
 
-        public Task SetEmailConfirmedAsync(ApplicationUser user, bool confirmed)
+        public async Task SetEmailConfirmedAsync(ApplicationUser user, bool confirmed)
         {
-            return Task.Run(() =>
-            {
-                var useremail = user.ApplicationUserProfileRef.Single();
-                useremail.ApplicationUserProfile.EMailConfirmed = confirmed;
-                accountrepo.Update(user);
-                accountrepo.SaveChanges();
-            });
+            var useremail = user.ApplicationUserProfileRef.Single();
+            useremail.ApplicationUserProfile.EMailConfirmed = confirmed;
+            useremail.ApplicationUserProfile.LastUpdateTime = DateTime.Now.ToUniversalTime();
+            userrolerepo.UnitOfWork.Context.Entry(useremail).State = EntityState.Modified;
+            await userrolerepo.UnitOfWork.CommitAsync();
         }
         #endregion
 
         #region Lockout Store
         public Task<int> GetAccessFailedCountAsync(ApplicationUser user)
         {
-            return Task<int>.Run(() =>
+            return Task.Run(() =>
             {
                 return user.AccessFailedCount;
             });
@@ -229,7 +210,7 @@ namespace My.Core.Infrastructures.Implementations.Models
 
         public Task<bool> GetLockoutEnabledAsync(ApplicationUser user)
         {
-            return Task<bool>.Run(() =>
+            return Task.Run(() =>
             {
                 return user.LockoutEnabled.HasValue ? user.LockoutEnabled.Value : false;
             });
@@ -237,90 +218,77 @@ namespace My.Core.Infrastructures.Implementations.Models
 
         public Task<System.DateTimeOffset> GetLockoutEndDateAsync(ApplicationUser user)
         {
-            return Task<System.DateTimeOffset>.Run(() =>
+            return Task.Run(() =>
             {
                 return user.LockoutEndDate.HasValue ? user.LockoutEndDate.Value : new System.DateTimeOffset(new DateTime(1754, 1, 1).ToUniversalTime());
             });
         }
 
-        public Task<int> IncrementAccessFailedCountAsync(ApplicationUser user)
+        public async Task<int> IncrementAccessFailedCountAsync(ApplicationUser user)
         {
-            return Task<int>.Run(() =>
-            {
-                user.AccessFailedCount += 1;
-                user.LastActivityTime = DateTime.Now;
+            user.AccessFailedCount += 1;
+            user.LastActivityTime = DateTime.Now;
+            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
+            await userrolerepo.UnitOfWork.CommitAsync();
+            user = userrolerepo.ApplicationUserRepository.Reload(user);
 
-                user = accountrepo.Update(user);
-                accountrepo.SaveChanges();
-                return user.AccessFailedCount;
-            });
+            return user.AccessFailedCount;
+
         }
 
-        public Task ResetAccessFailedCountAsync(ApplicationUser user)
+        public async Task ResetAccessFailedCountAsync(ApplicationUser user)
         {
-            return Task.Run(() =>
-            {
-                user.AccessFailedCount = 0;
-                user.LastActivityTime = DateTime.Now;
+            user.AccessFailedCount = 0;
+            user.LastActivityTime = DateTime.Now;
 
-                user.LockoutEnabled = false;
-                user.LockoutEndDate = DateTime.Now;
-
-                accountrepo.Update(user);
-                accountrepo.SaveChanges();
-            });
+            user.LockoutEnabled = false;
+            user.LockoutEndDate = DateTime.Now;
+            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
+            await userrolerepo.UnitOfWork.CommitAsync();
         }
 
-        public Task SetLockoutEnabledAsync(ApplicationUser user, bool enabled)
+        public async Task SetLockoutEnabledAsync(ApplicationUser user, bool enabled)
         {
-            return Task.Run(() =>
-            {
-                user.AccessFailedCount = 0;
-                user.LastActivityTime = DateTime.Now;
-                user.LastUpdateUserId = user.Id;
-                user.LockoutEnabled = enabled;
+            user.AccessFailedCount = 0;
+            user.LastActivityTime = DateTime.Now;
+            user.LastUpdateUserId = user.Id;
+            user.LockoutEnabled = enabled;
 
-                accountrepo.Update(user);
-                accountrepo.SaveChanges();
-            });
+            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
+            await userrolerepo.UnitOfWork.CommitAsync();
         }
 
-        public Task SetLockoutEndDateAsync(ApplicationUser user, System.DateTimeOffset lockoutEnd)
+        public async Task SetLockoutEndDateAsync(ApplicationUser user, System.DateTimeOffset lockoutEnd)
         {
-            return Task.Run(() =>
-            {
-                user.AccessFailedCount = 0;
-                user.LastActivityTime = DateTime.Now;
+            user.AccessFailedCount = 0;
+            user.LastActivityTime = DateTime.Now;
 
-                user.LockoutEndDate = new DateTime(lockoutEnd.Ticks);
-                accountrepo.Update(user);
-                accountrepo.SaveChanges();
-            });
+            user.LockoutEndDate = new DateTime(lockoutEnd.Ticks);
+            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
+            await userrolerepo.UnitOfWork.CommitAsync();
         }
         #endregion
 
         #region Login Store
-        public Task AddLoginAsync(ApplicationUser user, UserLoginInfo login)
+        public async Task AddLoginAsync(ApplicationUser user, UserLoginInfo login)
         {
-            return Task.Run(() =>
+            user.ApplicationUserLogin.Add(new ApplicationUserLogin()
             {
-                user.ApplicationUserLogin.Add(new ApplicationUserLogin()
-                {
-                    LoginProvider = login.LoginProvider,
-                    ProviderKey = login.ProviderKey,
-                    UserId = user.Id
-                });
-
-                accountrepo.Update(user);
-                accountrepo.SaveChanges();
+                LoginProvider = login.LoginProvider,
+                ProviderKey = login.ProviderKey,
+                UserId = user.Id
             });
+
+            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
+            await userrolerepo.UnitOfWork.CommitAsync();
+
         }
 
         public Task<ApplicationUser> FindAsync(UserLoginInfo login)
         {
             return Task<ApplicationUser>.Run(() =>
             {
-                var founduser = from q in accountrepo.FindAll()
+                var founduser = from q in userrolerepo.ApplicationUserRepository.All()
                                 from l in q.ApplicationUserLogin
                                 where l.LoginProvider == login.LoginProvider
                                 && l.ProviderKey == login.ProviderKey
@@ -332,9 +300,9 @@ namespace My.Core.Infrastructures.Implementations.Models
 
         public Task<System.Collections.Generic.IList<UserLoginInfo>> GetLoginsAsync(ApplicationUser user)
         {
-            return Task<System.Collections.Generic.IList<UserLoginInfo>>.Run(() =>
+            return Task.Run(() =>
             {
-                var founduser = from q in accountrepo.FindAll()
+                var founduser = from q in userrolerepo.ApplicationUserRepository.All()
                                 from l in q.ApplicationUserLogin
                                 select l;
 
@@ -343,26 +311,24 @@ namespace My.Core.Infrastructures.Implementations.Models
             });
         }
 
-        public Task RemoveLoginAsync(ApplicationUser user, UserLoginInfo login)
+        public async Task RemoveLoginAsync(ApplicationUser user, UserLoginInfo login)
         {
-            return Task.Run(() =>
-            {
-                var foundlogininfo = (from q in user.ApplicationUserLogin
-                                      where q.LoginProvider == login.LoginProvider
-                                      && q.ProviderKey == login.ProviderKey
-                                      select q).Single();
+            var foundlogininfo = (from q in user.ApplicationUserLogin
+                                  where q.LoginProvider == login.LoginProvider
+                                  && q.ProviderKey == login.ProviderKey
+                                  select q).Single();
 
-                user.ApplicationUserLogin.Remove(foundlogininfo);
-                accountrepo.Update(user);
-                accountrepo.SaveChanges();
-            });
+            user.ApplicationUserLogin.Remove(foundlogininfo);
+            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
+            await userrolerepo.UnitOfWork.CommitAsync();
+
         }
         #endregion
 
         #region Password Store
         public Task<string> GetPasswordHashAsync(ApplicationUser user)
         {
-            return Task<string>.Run(() =>
+            return Task.Run(() =>
             {
                 return user.PasswordHash;
             });
@@ -370,7 +336,7 @@ namespace My.Core.Infrastructures.Implementations.Models
 
         public Task<bool> HasPasswordAsync(ApplicationUser user)
         {
-            return Task<bool>.Run(() =>
+            return Task.Run(() =>
             {
                 if (!string.IsNullOrEmpty(user.Password))
                     return true;
@@ -380,25 +346,23 @@ namespace My.Core.Infrastructures.Implementations.Models
             });
         }
 
-        public Task SetPasswordHashAsync(ApplicationUser user, string passwordHash)
+        public async Task SetPasswordHashAsync(ApplicationUser user, string passwordHash)
         {
-            return Task.Run(() =>
-            {
-                user.PasswordHash = passwordHash;
-                user.LastActivityTime = user.LastUpdateTime = DateTime.Now.ToUniversalTime();
-                accountrepo.Update(user);
-                accountrepo.SaveChanges();
-            });
+            user.PasswordHash = passwordHash;
+            user.LastActivityTime = user.LastUpdateTime = DateTime.Now.ToUniversalTime();
+            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
+            await userrolerepo.UnitOfWork.CommitAsync();
+
         }
         #endregion
 
         #region Phone Number Store
         public Task<string> GetPhoneNumberAsync(ApplicationUser user)
         {
-            return Task<string>.Run(() =>
+            return Task.Run(() =>
             {
                 var result = (from q in user.ApplicationUserProfileRef
-                             select q.ApplicationUserProfile.PhoneNumber).SingleOrDefault();
+                              select q.ApplicationUserProfile.PhoneNumber).SingleOrDefault();
 
                 return result;
             });
@@ -406,7 +370,7 @@ namespace My.Core.Infrastructures.Implementations.Models
 
         public Task<bool> GetPhoneNumberConfirmedAsync(ApplicationUser user)
         {
-            return Task<bool>.Run(() =>
+            return Task.Run(() =>
             {
                 var result = (from q in user.ApplicationUserProfileRef
                               select q.ApplicationUserProfile.PhoneConfirmed).Single();
@@ -414,157 +378,136 @@ namespace My.Core.Infrastructures.Implementations.Models
             });
         }
 
-        public Task SetPhoneNumberAsync(ApplicationUser user, string phoneNumber)
+        public async Task SetPhoneNumberAsync(ApplicationUser user, string phoneNumber)
         {
-            return Task.Run(() =>
-            {
-                var profile = (from q in user.ApplicationUserProfileRef
-                               select q.ApplicationUserProfile).Single();
+            var profile = (from q in user.ApplicationUserProfileRef
+                           select q.ApplicationUserProfile).Single();
 
-                profile.PhoneNumber = phoneNumber;
-                profile.PhoneConfirmed = true;
+            profile.PhoneNumber = phoneNumber;
+            profile.PhoneConfirmed = true;
 
-                if (GetTwoFactorEnabledAsync(user).Result)
-                    profile.PhoneConfirmed = false;
+            if (GetTwoFactorEnabledAsync(user).Result)
+                profile.PhoneConfirmed = false;
 
-                accountrepo.Update(user);
-                accountrepo.SaveChanges();
-            });
+            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
+            await userrolerepo.UnitOfWork.CommitAsync();
+
         }
 
-        public Task SetPhoneNumberConfirmedAsync(ApplicationUser user, bool confirmed)
+        public async Task SetPhoneNumberConfirmedAsync(ApplicationUser user, bool confirmed)
         {
-            return Task.Run(() =>
-            {
-                var profile = (from q in user.ApplicationUserProfileRef
-                               select q.ApplicationUserProfile).Single();
+            var profile = (from q in user.ApplicationUserProfileRef
+                           select q.ApplicationUserProfile).Single();
 
-                profile.PhoneConfirmed = confirmed;
+            profile.PhoneConfirmed = confirmed;
 
-                accountrepo.Update(user);
-                accountrepo.SaveChanges();
-            });
+            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
+            await userrolerepo.UnitOfWork.CommitAsync();
+
+
         }
         #endregion
 
         #region Security Stamp Store
         public Task<string> GetSecurityStampAsync(ApplicationUser user)
         {
-            return Task<string>.Run(() =>
+            return Task.Run(() =>
             {
                 return user.SecurityStamp;
             });
         }
 
-        public Task SetSecurityStampAsync(ApplicationUser user, string stamp)
+        public async Task SetSecurityStampAsync(ApplicationUser user, string stamp)
         {
-            return Task.Run(() =>
-            {
-                user.SecurityStamp = stamp;
-                accountrepo.Update(user);
-                accountrepo.SaveChanges();
-            });
+            user.SecurityStamp = stamp;
+            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
+            await userrolerepo.UnitOfWork.CommitAsync();
         }
         #endregion
 
         #region TwoFactor
         public Task<bool> GetTwoFactorEnabledAsync(ApplicationUser user)
         {
-            return Task<bool>.Run(() =>
+            return Task.Run(() =>
             {
                 return user.TwoFactorEnabled;
             });
         }
 
-        public Task SetTwoFactorEnabledAsync(ApplicationUser user, bool enabled)
+        public async Task SetTwoFactorEnabledAsync(ApplicationUser user, bool enabled)
         {
-            return Task.Run(() =>
-            {
-                user.TwoFactorEnabled = enabled;
-                accountrepo.Update(user);
-                accountrepo.SaveChanges();
-            });
+            user.TwoFactorEnabled = enabled;
+            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
+            await userrolerepo.UnitOfWork.CommitAsync();
         }
         #endregion
 
         #region Role Store
-        public Task CreateAsync(ApplicationRole role)
+        public async Task CreateAsync(ApplicationRole role)
         {
-            return Task.Run(() =>
-            {
-                rolerepo.Create(role);
-                rolerepo.SaveChanges();
-            });
+            userrolerepo.ApplicationRoleRepository.Add(role);
+            await userrolerepo.UnitOfWork.CommitAsync();
         }
 
-        public Task DeleteAsync(ApplicationRole role)
+        public async Task DeleteAsync(ApplicationRole role)
         {
-            return Task.Run(() =>
-            {
-                role.Void = true;
-                UpdateAsync(role);
-            });
+            role.Void = true;
+            await UpdateAsync(role);
         }
 
         Task<ApplicationRole> IRoleStore<ApplicationRole, int>.FindByIdAsync(int roleId)
         {
-            return Task<ApplicationRole>.Run(() =>
+            return Task.Run(() =>
             {
-                return rolerepo.FindById(roleId);
+                return userrolerepo.ApplicationRoleRepository.FindById(roleId);
             });
         }
 
         Task<ApplicationRole> IRoleStore<ApplicationRole, int>.FindByNameAsync(string roleName)
         {
-            return Task<ApplicationRole>.Run(() =>
+            return Task.Run(() =>
             {
-                return rolerepo.FindByName(roleName);
+                return userrolerepo.ApplicationRoleRepository.FindByName(roleName);
             });
         }
 
-        public Task UpdateAsync(ApplicationRole role)
+        public async Task UpdateAsync(ApplicationRole role)
         {
-            return Task.Run(() =>
-            {
-                rolerepo.Update(role);
-                rolerepo.SaveChanges();
-            });
+            userrolerepo.UnitOfWork.Context.Entry(role).State = EntityState.Modified;
+            await userrolerepo.UnitOfWork.CommitAsync();
         }
         #endregion
 
         #region 可用來查詢的使用者清單屬性
         public System.Linq.IQueryable<ApplicationUser> Users
         {
-            get { return uow.GetEntity<ApplicationUser>(); }
+            get { return userrolerepo.ApplicationUserRepository.All(); }
         }
         #endregion
 
         #region 可用來查詢的角色清單
         public System.Linq.IQueryable<ApplicationRole> Roles
         {
-            get { return uow.GetEntity<ApplicationRole>(); }
+            get { return userrolerepo.ApplicationRoleRepository.All(); }
         }
         #endregion
 
-        public Task AddClaimAsync(ApplicationUser user, Claim claim)
+        public async Task AddClaimAsync(ApplicationUser user, Claim claim)
         {
-            return Task.Run(() =>
+            user.ApplicationUserClaim.Add(new ApplicationUserClaim()
             {
-                user.ApplicationUserClaim.Add(new ApplicationUserClaim()
-                {
-                    ClaimType = claim.ValueType,
-                    ClaimValue = claim.Value,
-                    UserId = user.Id
-                });
-
-                accountrepo.Update(user);
-                accountrepo.SaveChanges();
+                ClaimType = claim.ValueType,
+                ClaimValue = claim.Value,
+                UserId = user.Id
             });
+
+            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
+            await userrolerepo.UnitOfWork.CommitAsync();
         }
 
         public Task<System.Collections.Generic.IList<Claim>> GetClaimsAsync(ApplicationUser user)
         {
-            return Task<System.Collections.Generic.IList<Claim>>.Run(() =>
+            return Task.Run(() =>
             {
                 return user.ApplicationUserClaim.ToList().ConvertAll<Claim>(c => new Claim(c.ClaimType, c.ClaimValue)) as System.Collections.Generic.IList<Claim>;
             });
