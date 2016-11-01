@@ -97,6 +97,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 修改車輛資訊 的當地語系化字串。
+        /// </summary>
+        public static string Cars_Edit {
+            get {
+                return ResourceManager.GetString("Cars_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 車輛清單 的當地語系化字串。
         /// </summary>
         public static string Cars_Lists {
@@ -138,6 +147,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         public static string News_Delete {
             get {
                 return ResourceManager.GetString("News_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 編輯公告 的當地語系化字串。
+        /// </summary>
+        public static string News_Edit {
+            get {
+                return ResourceManager.GetString("News_Edit", resourceCulture);
             }
         }
         

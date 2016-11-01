@@ -131,6 +131,9 @@
   <data name="Cars_Details" xml:space="preserve">
     <value>車輛詳細資訊</value>
   </data>
+  <data name="Cars_Edit" xml:space="preserve">
+    <value>修改車輛資訊</value>
+  </data>
   <data name="Cars_Lists" xml:space="preserve">
     <value>車輛清單</value>
   </data>
@@ -154,6 +157,9 @@
   </data>
   <data name="News_Delete" xml:space="preserve">
     <value>刪除公告</value>
+  </data>
+  <data name="News_Edit" xml:space="preserve">
+    <value>編輯公告</value>
   </data>
   <data name="News_Header" xml:space="preserve">
     <value>公告標題</value>
