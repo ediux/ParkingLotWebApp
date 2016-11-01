@@ -914,6 +914,7 @@
     <Content Include="Views\Shared\EditorTemplates\Html.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\UTCLocalDateDisplay.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\UTCLocalDateDisplay.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\CarTypeDisplay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -939,12 +940,10 @@
     <EmbeddedResource Include="App_GlobalResources\Common.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Common.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources.MUI</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\WebPages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>WebPages.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources.MUI</CustomToolNamespace>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
