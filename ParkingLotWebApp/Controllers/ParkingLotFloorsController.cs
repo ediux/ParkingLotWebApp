@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using ParkingLotWebApp.Models;
+using Microsoft.AspNet.Identity;
 
 namespace ParkingLotWebApp.Controllers
 {
@@ -51,11 +52,13 @@ namespace ParkingLotWebApp.Controllers
         // GET: ParkingLotFloors/Create
         public ActionResult Create(int? id)
         {
-
+            var viewmodel = ParkingLotFloors.Create(User.Identity.GetUserId<int>());
             if (id != null && id.HasValue)
             {
                 ViewBag.returnUrl = Url.Action("Index", "ParkingLotFloors", new { id = id.Value });
-                ViewBag.AreaId = new SelectList(db.Where(w => w.Id == id.Value && w.Void == false), "Id", "Name");
+                ViewBag.AreaId = new SelectList(db_area.Where(w => w.Id == id.Value && w.Void == false), "Id", "Name");
+                viewmodel.AreaId = id.Value;
+                viewmodel.ParkingLotAreas = db_area.Get(id.Value);
             }
             else
             {
@@ -63,7 +66,7 @@ namespace ParkingLotWebApp.Controllers
 
             }
 
-            return View(new ParkingLotFloors());
+            return View(viewmodel);
         }
 
         // POST: ParkingLotFloors/Create
