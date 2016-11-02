@@ -394,7 +394,7 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
-        ///   查詢類似 新增 {0} 的樓層 的當地語系化字串。
+        ///   查詢類似 新增{0}的樓層 的當地語系化字串。
         /// </summary>
         public static string ParkingLotFloors_Create_FromArea {
             get {

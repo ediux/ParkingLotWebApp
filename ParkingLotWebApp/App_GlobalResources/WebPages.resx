@@ -235,7 +235,7 @@
     <value>停車場區域樓層維護</value>
   </data>
   <data name="ParkingLotFloors_Create_FromArea" xml:space="preserve">
-    <value>新增 {0} 的樓層</value>
+    <value>新增{0}的樓層</value>
   </data>
   <data name="ParkingLotFloors_Create_New" xml:space="preserve">
     <value>新增樓層</value>
