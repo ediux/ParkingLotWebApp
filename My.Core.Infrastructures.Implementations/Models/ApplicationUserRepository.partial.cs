@@ -27,26 +27,26 @@ namespace My.Core.Infrastructures.Implementations.Models
             set { _userOperationLogRepository = value; }
         }
 
-        public ApplicationUser ChangePassword(ApplicationUser UpdatedUserData)
+        public async Task<ApplicationUser> ChangePassword(ApplicationUser UpdatedUserData)
         {
             var currentLoginedUser = getCurrentLoginedUser();
 
             try
             {
-                Task.Run(() => WriteUserOperationLogAsync(OperationCodeEnum.Account_ChangePassword_Start, currentLoginedUser));
+                await WriteUserOperationLogAsync(OperationCodeEnum.Account_ChangePassword_Start, currentLoginedUser);
 
                 UnitOfWork.Context.Entry<ApplicationUser>(UpdatedUserData).State = System.Data.Entity.EntityState.Modified;
 
                 UnitOfWork.Commit();
 
-                Task.Run(() => WriteUserOperationLogAsync(OperationCodeEnum.Account_ChangePassword_End_Success, currentLoginedUser));
+                await WriteUserOperationLogAsync(OperationCodeEnum.Account_ChangePassword_End_Success, currentLoginedUser);
 
                 return Reload(UpdatedUserData);
             }
             catch (Exception ex)
             {
                 WriteErrorLog(ex);
-                Task.Run(() => WriteUserOperationLogAsync(OperationCodeEnum.Account_ChangePassword_End_Fail, currentLoginedUser));
+                await WriteUserOperationLogAsync(OperationCodeEnum.Account_ChangePassword_End_Fail, currentLoginedUser);
                 throw ex;
             }
         }
@@ -70,7 +70,7 @@ namespace My.Core.Infrastructures.Implementations.Models
             catch (Exception ex)
             {
                 WriteErrorLog(ex);
-                Task.Run(() => WriteUserOperationLogAsync(OperationCodeEnum.Account_ChangePassword_End_Fail, currentLoginedUser));
+                await WriteUserOperationLogAsync(OperationCodeEnum.Account_ChangePassword_End_Fail, currentLoginedUser);
                 throw ex;
             }
         }
@@ -101,14 +101,14 @@ namespace My.Core.Infrastructures.Implementations.Models
             }
         }
 
-        public async Task<ApplicationUser> FindByEmailAsync(string email)
+        public Task<ApplicationUser> FindByEmailAsync(string email)
         {
             var currentLoginedUser = getCurrentLoginedUser();
 
             try
             {
 
-                IQueryable<ApplicationUser> queryset = ObjectSet.Include(i => i.ApplicationUserProfileRef);
+                IQueryable<ApplicationUser> queryset = All().Include(i => i.ApplicationUserProfileRef);
 
                 var result = from q in queryset
                              from profilerefs in q.ApplicationUserProfileRef
@@ -118,7 +118,7 @@ namespace My.Core.Infrastructures.Implementations.Models
 
                 ApplicationUser founduser = result.SingleOrDefault();
 
-                return founduser;
+                return Task.FromResult(founduser);
             }
             catch (Exception ex)
             {
@@ -495,6 +495,11 @@ namespace My.Core.Infrastructures.Implementations.Models
                 WriteErrorLog(ex);
                 throw ex;
             }
+        }
+
+        ApplicationUser IApplicationUserRepository.ChangePassword(ApplicationUser UpdatedUserData)
+        {
+            throw new NotImplementedException();
         }
         #endregion
 
