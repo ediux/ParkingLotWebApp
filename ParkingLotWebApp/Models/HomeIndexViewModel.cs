@@ -4,13 +4,19 @@ namespace ParkingLotWebApp.Models
 {
     public class HomeIndexViewModel
     {
-        public Dictionary<string, IEnumerable<vw_ParkingLotGridRemain>> RemainSummary { get; set; }
+        private Dictionary<int, string> areas;
+        public Dictionary<int, string> Areas { get { return areas; } }
 
-        private Dictionary<string, bool> objSelected;
-        public  Dictionary<string,bool> SelectedTowers { get { return objSelected; } }
+        private Dictionary<int, List<vw_ParkingLotGridRemain>> reminsummary;
+        public Dictionary<int, List<vw_ParkingLotGridRemain>> RemainSummary { get { return reminsummary; } }
+
+        private Dictionary<int, bool> objSelected;
+        public Dictionary<int, bool> SelectedAreas { get { return objSelected; } }
         public HomeIndexViewModel()
         {
-            objSelected = new Dictionary<string, bool>();
+            reminsummary = new Dictionary<int, List<vw_ParkingLotGridRemain>>();
+            areas = new Dictionary<int, string>();
+            objSelected = new Dictionary<int, bool>();
         }
     }
 }
