@@ -204,6 +204,27 @@
   <data name="News_This" xml:space="preserve">
     <value>這則公告</value>
   </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>資訊看板</value>
+  </data>
+  <data name="HomePage_Title" xml:space="preserve">
+    <value>首頁-[資訊看板]</value>
+  </data>
+  <data name="ParkingLotAreas" xml:space="preserve">
+    <value>停車場停車區域資料維護</value>
+  </data>
+  <data name="ParkingLotAreas_Create_New" xml:space="preserve">
+    <value>新增停車場區域</value>
+  </data>
+  <data name="ParkingLotAreas_Delete" xml:space="preserve">
+    <value>刪除停車場區域</value>
+  </data>
+  <data name="ParkingLotAreas_Edit" xml:space="preserve">
+    <value>編輯停車場區域</value>
+  </data>
+  <data name="ParkingLotAreas_Index" xml:space="preserve">
+    <value>停車場區域列表</value>
+  </data>
   <data name="ParkingLotFloors_ListRemainParkingGridAmounts" xml:space="preserve">
     <value>維護剩餘車位數量</value>
   </data>

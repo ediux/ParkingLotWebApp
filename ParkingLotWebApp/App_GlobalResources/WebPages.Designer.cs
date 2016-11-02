@@ -232,6 +232,24 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 資訊看板 的當地語系化字串。
+        /// </summary>
+        public static string HomePage {
+            get {
+                return ResourceManager.GetString("HomePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 首頁-[資訊看板] 的當地語系化字串。
+        /// </summary>
+        public static string HomePage_Title {
+            get {
+                return ResourceManager.GetString("HomePage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 系統公告 的當地語系化字串。
         /// </summary>
         public static string News {
@@ -300,6 +318,51 @@ namespace ParkingLotWebApp.App_GlobalResources {
         public static string NewsPoster {
             get {
                 return ResourceManager.GetString("NewsPoster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 停車場停車區域資料維護 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotAreas {
+            get {
+                return ResourceManager.GetString("ParkingLotAreas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 新增停車場區域 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotAreas_Create_New {
+            get {
+                return ResourceManager.GetString("ParkingLotAreas_Create_New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 刪除停車場區域 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotAreas_Delete {
+            get {
+                return ResourceManager.GetString("ParkingLotAreas_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 編輯停車場區域 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotAreas_Edit {
+            get {
+                return ResourceManager.GetString("ParkingLotAreas_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 停車場區域列表 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotAreas_Index {
+            get {
+                return ResourceManager.GetString("ParkingLotAreas_Index", resourceCulture);
             }
         }
         
