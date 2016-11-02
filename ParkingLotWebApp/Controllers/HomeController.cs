@@ -9,22 +9,18 @@ namespace ParkingLotWebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private ParkingLotModelEntities db = new ParkingLotModelEntities();
+        private IParkingLotAreasRepository db;
+        private IParkingLotFloorsRepository db_floor;
+
+        public HomeController()
+        {
+            db = RepositoryHelper.GetParkingLotAreasRepository();
+            db_floor = RepositoryHelper.GetParkingLotFloorsRepository(db.UnitOfWork);
+        }
 
         public ActionResult Index()
         {
-            var model = new HomeIndexViewModel();
-            model.RemainSummary = new Dictionary<string, IEnumerable<vw_ParkingLotGridRemain>>();
-
-            var result = db.vw_ParkingLotGridRemain.Where(w=>w.Void==false);
-            var keys = result.Select(d => new { d.Id, d.Name }).Distinct().ToList();
-
-            foreach (var key in keys)
-            {
-                model.RemainSummary.Add(key.Name, result.Where(w => w.Id == key.Id).ToList());
-            }
-
-            ViewBag.Selected = new int[] { };
+            var model = db_floor.GetListRemainParkingGridAmounts();
             return View(model);
         }
 
@@ -39,20 +35,14 @@ namespace ParkingLotWebApp.Controllers
             {
                 sId = selects.Split(',').ToList().ConvertAll(c => int.Parse(c)).ToArray();
             }
-              
-            var model = new HomeIndexViewModel();
 
-            model.RemainSummary = new Dictionary<string, IEnumerable<vw_ParkingLotGridRemain>>();
+            var model = db_floor.GetListRemainParkingGridAmounts();
 
-            var result = db.vw_ParkingLotGridRemain.Where(w => w.Void == false);
-            var keys = result.Select(d => new { d.Id, d.Name }).Distinct().ToList();
-
-            foreach (var key in keys)
+            foreach (var key in sId)
             {
-                model.RemainSummary.Add(key.Name, result.Where(w => w.Id == key.Id).ToList());
+                model.SelectedAreas[key] = true;
             }
 
-            ViewBag.Selected = sId;
             return View(model);
         }
 

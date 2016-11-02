@@ -1,33 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using ParkingLotWebApp.Models;
-using ParkingLotWebApp;
 
 namespace ParkingLotWebApp.Controllers
 {
     public class ParkingLotFloorsController : Controller
     {
-        private ParkingLotModelEntities db = new ParkingLotModelEntities();
+        private IParkingLotFloorsRepository db = RepositoryHelper.GetParkingLotFloorsRepository();
+        private IParkingLotAreasRepository db_area = RepositoryHelper.GetParkingLotAreasRepository();
+
+        public ParkingLotFloorsController()
+        {
+            db_area.UnitOfWork = db.UnitOfWork;
+        }
 
         // GET: ParkingLotFloors
         public ActionResult Index(int? id)
         {
 
-
+           
             if (id.HasValue)
             {
                 ViewBag.AreaId = id.Value;
                 ViewBag.returnUrl = Url.Action("Index", "ParkingLotAreas", new { id = id.Value });
-                var parkingLotFloorsByFiliter = db.ParkingLotFloors.Where(w => w.AreaId == id && w.Void == false).Include(p => p.ParkingLotAreas);
+                var parkingLotFloorsByFiliter = db.Where(w => w.AreaId == id && w.Void == false).Include(p => p.ParkingLotAreas);
                 return View(parkingLotFloorsByFiliter.ToList());
             }
-            var parkingLotFloors = db.ParkingLotFloors.Where(w => w.Void == false).Include(p => p.ParkingLotAreas);
+            var parkingLotFloors = db.Where(w => w.Void == false).Include(p => p.ParkingLotAreas);
             return View(parkingLotFloors.ToList());
         }
 
@@ -38,7 +39,7 @@ namespace ParkingLotWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ParkingLotFloors parkingLotFloors = db.ParkingLotFloors.Find(id);
+            ParkingLotFloors parkingLotFloors = db.Get(id);
             if (parkingLotFloors == null)
             {
                 return HttpNotFound();
@@ -53,11 +54,11 @@ namespace ParkingLotWebApp.Controllers
             if (id != null && id.HasValue)
             {
                 ViewBag.returnUrl = Url.Action("Index", "ParkingLotFloors", new { id = id.Value });
-                ViewBag.AreaId = new SelectList(db.ParkingLotAreas.Where(w => w.Id == id.Value && w.Void == false), "Id", "Name");
+                ViewBag.AreaId = new SelectList(db.Where(w => w.Id == id.Value && w.Void == false), "Id", "Name");
             }
             else
             {
-                ViewBag.AreaId = new SelectList(db.ParkingLotAreas.Where(w => w.Void == false), "Id", "Name");
+                ViewBag.AreaId = new SelectList(db.Where(w => w.Void == false), "Id", "Name");
 
             }
 
@@ -73,18 +74,18 @@ namespace ParkingLotWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.ParkingLotFloors.Add(parkingLotFloors);
-                db.SaveChanges();
+                db.Add(parkingLotFloors);
+                db.UnitOfWork.Commit();
                 return RedirectToAction("Index", new { id = parkingLotFloors.AreaId });
             }
             if (parkingLotFloors.AreaId != null && parkingLotFloors.AreaId.HasValue)
             {
                 ViewBag.returnUrl = Url.Action("Index", "ParkingLotFloors", new { id = parkingLotFloors.AreaId.HasValue });
-                ViewBag.AreaId = new SelectList(db.ParkingLotAreas.Where(w => w.Id == parkingLotFloors.AreaId.Value && w.Void == false), "Id", "Name");
+                ViewBag.AreaId = new SelectList(db.Where(w => w.Id == parkingLotFloors.AreaId.Value && w.Void == false), "Id", "Name");
             }
             else
             {
-                ViewBag.AreaId = new SelectList(db.ParkingLotAreas.Where(w => w.Void == false), "Id", "Name");
+                ViewBag.AreaId = new SelectList(db.Where(w => w.Void == false), "Id", "Name");
             }
             return View(parkingLotFloors);
         }
@@ -96,12 +97,12 @@ namespace ParkingLotWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ParkingLotFloors parkingLotFloors = db.ParkingLotFloors.Find(id);
+            ParkingLotFloors parkingLotFloors = db.Get(id);
             if (parkingLotFloors == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.AreaId = new SelectList(db.ParkingLotAreas.Where(w => w.Void == false), "Id", "Name", parkingLotFloors.AreaId);
+            ViewBag.AreaId = new SelectList(db.Where(w => w.Void == false), "Id", "Name", parkingLotFloors.AreaId);
             return View(parkingLotFloors);
         }
 
@@ -114,11 +115,11 @@ namespace ParkingLotWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(parkingLotFloors).State = EntityState.Modified;
-                db.SaveChanges();
+                db.UnitOfWork.Context.Entry(parkingLotFloors).State = EntityState.Modified;
+                db.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
-            ViewBag.AreaId = new SelectList(db.ParkingLotAreas, "Id", "Name", parkingLotFloors.AreaId);
+            ViewBag.AreaId = new SelectList(db_area.Where(w=>w.Void==false), "Id", "Name", parkingLotFloors.AreaId);
             return View(parkingLotFloors);
         }
 
@@ -129,7 +130,7 @@ namespace ParkingLotWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ParkingLotFloors parkingLotFloors = db.ParkingLotFloors.Find(id);
+            ParkingLotFloors parkingLotFloors = db.Get(id);
             if (parkingLotFloors == null)
             {
                 return HttpNotFound();
@@ -142,26 +143,15 @@ namespace ParkingLotWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ParkingLotFloors parkingLotFloors = db.ParkingLotFloors.Find(id);
-            db.ParkingLotFloors.Remove(parkingLotFloors);
-            db.SaveChanges();
+            ParkingLotFloors parkingLotFloors = db.Get(id);
+            db.Delete(parkingLotFloors);
+            db.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
 
         public ActionResult ListRemainParkingGridAmounts()
         {
-            var model = new HomeIndexViewModel();
-            model.RemainSummary = new Dictionary<string, IEnumerable<vw_ParkingLotGridRemain>>();
-
-            var result = db.vw_ParkingLotGridRemain.Where(w => w.Void == false);
-            var keys = result.Select(d => new { d.Id, d.Name }).Distinct().ToList();
-
-            foreach (var key in keys)
-            {
-                model.RemainSummary.Add(key.Name, result.Where(w => w.Id == key.Id).ToList());
-            }
-
-            ViewBag.Selected = new int[] { };
+            var model = db.GetListRemainParkingGridAmounts();
             return View(model);
         }
 
@@ -177,19 +167,13 @@ namespace ParkingLotWebApp.Controllers
                 sId = selects.Split(',').ToList().ConvertAll(c => int.Parse(c)).ToArray();
             }
 
-            var model = new HomeIndexViewModel();
+            var model = db.GetListRemainParkingGridAmounts();
 
-            model.RemainSummary = new Dictionary<string, IEnumerable<vw_ParkingLotGridRemain>>();
-
-            var result = db.vw_ParkingLotGridRemain.Where(w => w.Void == false);
-            var keys = result.Select(d => new { d.Id, d.Name }).Distinct().ToList();
-
-            foreach (var key in keys)
+            foreach(var selected in sId)
             {
-                model.RemainSummary.Add(key.Name, result.Where(w => w.Id == key.Id).ToList());
+                model.SelectedAreas[selected] = true;
             }
-
-            ViewBag.Selected = sId;
+           
             return View(model);
         }
 

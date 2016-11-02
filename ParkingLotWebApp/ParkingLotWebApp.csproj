@@ -260,7 +260,7 @@
     <Compile Include="Models\IUnitOfWork.cs">
       <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\HomeIndexViewModel.cs" />
     <Compile Include="Models\NewsPostViewModel.cs" />
     <Compile Include="Models\News_Body.cs">
       <DependentUpon>ParkingLotModel.tt</DependentUpon>

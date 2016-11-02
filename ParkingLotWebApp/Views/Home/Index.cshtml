@@ -1,32 +1,5 @@
 ﻿@{
     ViewBag.Title = "Home Page";
-
-    var AreaIds = new Dictionary<string, int>();
-    var HasFloor = new Dictionary<string, bool>();
-    var SelectedIds = (int[])ViewBag.Selected;
-    Dictionary<string, bool> objSelected = new Dictionary<string, bool>();
-
-    foreach (var key in Model.RemainSummary.Keys)
-    {
-        var _area = Model.RemainSummary[key].FirstOrDefault();
-
-        if (_area == null)
-        {
-            continue;
-        }
-
-        AreaIds.Add(key, _area.Id);
-        HasFloor.Add(key, _area.NoneFloor);
-        if (SelectedIds.Contains(_area.Id))
-        {
-            objSelected.Add(key, true);
-        }
-        else
-        {
-            objSelected.Add(key, false);
-        }
-    }
-
 }
 @model ParkingLotWebApp.Models.HomeIndexViewModel
 
@@ -36,13 +9,13 @@
         @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @id = "selectlocationform", @class = "form-horizontal", @role = "form" }))
         {
             @Html.AntiForgeryToken()
-            foreach (var key in Model.RemainSummary.Keys)
+            foreach (var key in Model.Areas.Keys)
             {
                 <div class="form-group">
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="areaId" value="@AreaIds[key]" @((objSelected[key]) ? Html.Raw("checked") : Html.Raw("")) />
-                            @key
+                            <input type="checkbox" name="areaId" value="@key" @((Model.SelectedAreas[key]) ? Html.Raw("checked") : Html.Raw("")) />
+                            @Model.Areas[key]
                         </label>
                     </div>
                 </div>
@@ -50,18 +23,18 @@
         }
     </div>
     <div class="col-xs-8 col-md-10">
-        @foreach (string key in Model.RemainSummary.Keys)
+        @foreach (int key in Model.Areas.Keys)
         {
-            if (objSelected[key])
+            if (Model.SelectedAreas[key])
             {
                 <div class="col-xs-12 col-md-4">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th colspan="2">@key</th>
+                                <th colspan="2">@Model.Areas[key]</th>
                             </tr>
                             <tr>
-                                @if (HasFloor[key] == false)
+                                @if (Model.RemainSummary[key].All(p => p.NoneFloor == false))
                                 {
                                     <th>樓層</th>
                                 }
