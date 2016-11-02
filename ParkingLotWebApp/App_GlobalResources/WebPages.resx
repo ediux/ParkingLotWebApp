@@ -140,6 +140,42 @@
   <data name="Cars_This" xml:space="preserve">
     <value>這台車</value>
   </data>
+  <data name="Employees" xml:space="preserve">
+    <value>員工</value>
+  </data>
+  <data name="Employees_Create" xml:space="preserve">
+    <value>建立基本資料</value>
+  </data>
+  <data name="Employees_Delete" xml:space="preserve">
+    <value>刪除 {0}</value>
+  </data>
+  <data name="Employees_Details" xml:space="preserve">
+    <value>關於 {0}</value>
+  </data>
+  <data name="Employees_Edit" xml:space="preserve">
+    <value>編輯 {0} 的基本資料</value>
+  </data>
+  <data name="Employees_Index" xml:space="preserve">
+    <value>基本資料列表</value>
+  </data>
+  <data name="ETAs" xml:space="preserve">
+    <value>遠通eTag掃描資料維護</value>
+  </data>
+  <data name="ETAs_Create" xml:space="preserve">
+    <value>建立eTag資料</value>
+  </data>
+  <data name="ETAs_Delete" xml:space="preserve">
+    <value>刪除號碼 '{0}' 的資料</value>
+  </data>
+  <data name="ETAs_Details" xml:space="preserve">
+    <value>號碼 {0} 的資料</value>
+  </data>
+  <data name="ETAs_Edit" xml:space="preserve">
+    <value>編輯號碼 {0} 的資料</value>
+  </data>
+  <data name="ETAs_Index" xml:space="preserve">
+    <value>eTag識別清單</value>
+  </data>
   <data name="News" xml:space="preserve">
     <value>系統公告</value>
   </data>

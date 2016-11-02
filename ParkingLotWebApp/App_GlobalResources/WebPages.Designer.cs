@@ -124,6 +124,114 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 員工 的當地語系化字串。
+        /// </summary>
+        public static string Employees {
+            get {
+                return ResourceManager.GetString("Employees", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 建立基本資料 的當地語系化字串。
+        /// </summary>
+        public static string Employees_Create {
+            get {
+                return ResourceManager.GetString("Employees_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 刪除 {0} 的當地語系化字串。
+        /// </summary>
+        public static string Employees_Delete {
+            get {
+                return ResourceManager.GetString("Employees_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 關於 {0} 的當地語系化字串。
+        /// </summary>
+        public static string Employees_Details {
+            get {
+                return ResourceManager.GetString("Employees_Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 編輯 {0} 的基本資料 的當地語系化字串。
+        /// </summary>
+        public static string Employees_Edit {
+            get {
+                return ResourceManager.GetString("Employees_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 基本資料列表 的當地語系化字串。
+        /// </summary>
+        public static string Employees_Index {
+            get {
+                return ResourceManager.GetString("Employees_Index", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 遠通eTag掃描資料維護 的當地語系化字串。
+        /// </summary>
+        public static string ETAs {
+            get {
+                return ResourceManager.GetString("ETAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 建立eTag資料 的當地語系化字串。
+        /// </summary>
+        public static string ETAs_Create {
+            get {
+                return ResourceManager.GetString("ETAs_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 刪除號碼 &apos;{0}&apos; 的資料 的當地語系化字串。
+        /// </summary>
+        public static string ETAs_Delete {
+            get {
+                return ResourceManager.GetString("ETAs_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 號碼 {0} 的資料 的當地語系化字串。
+        /// </summary>
+        public static string ETAs_Details {
+            get {
+                return ResourceManager.GetString("ETAs_Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 編輯號碼 {0} 的資料 的當地語系化字串。
+        /// </summary>
+        public static string ETAs_Edit {
+            get {
+                return ResourceManager.GetString("ETAs_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 eTag識別清單 的當地語系化字串。
+        /// </summary>
+        public static string ETAs_Index {
+            get {
+                return ResourceManager.GetString("ETAs_Index", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 系統公告 的當地語系化字串。
         /// </summary>
         public static string News {
