@@ -7,6 +7,14 @@ namespace ParkingLotWebApp.Models
     [MetadataType(typeof(SensorsMetaData))]
     public partial class Sensors
     {
+        public static Sensors Create(int UserId)
+        {
+            var model = new Sensors();
+            model.Void = false;
+            model.LastUpdateUserId = model.CreateUserId = UserId;
+            model.LastUpdateUTCTime = model.CreateUTCTime = DateTime.Now.ToUniversalTime();
+            return model;
+        }
     }
 
     public partial class SensorsMetaData
