@@ -1,10 +1,11 @@
-﻿@{
+﻿@model bool
+@{
     var dropdownlistitems = new List<SelectListItem>();
-    if (ViewData.TemplateInfo.FormattedModelValue == null)
-    {
-        ViewData.TemplateInfo.FormattedModelValue = false;
-    }
-    ViewData[ViewData.TemplateInfo.HtmlFieldPrefix] = ViewData.TemplateInfo.FormattedModelValue;
+    //if (ViewData.TemplateInfo.FormattedModelValue == null)
+    //{
+    //    ViewData.TemplateInfo.FormattedModelValue = false;
+    //}
+    ViewData[ViewData.TemplateInfo.HtmlFieldPrefix] = Model;
     bool flag;
     if (bool.TryParse(ViewData.TemplateInfo.FormattedModelValue as string, out flag))
     {
@@ -13,6 +14,5 @@
     dropdownlistitems.Add(new SelectListItem() { Text = "啟用", Value = "false", Selected = (flag == false) });
     dropdownlistitems.Add(new SelectListItem() { Text = "停用", Value = "true", Selected = (flag == true) });
 }
-@Html.Raw(ViewData.TemplateInfo.FormattedModelValue)
 @Html.DropDownList("",
     dropdownlistitems, new { @class = "form-control" })
