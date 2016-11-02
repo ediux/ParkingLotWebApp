@@ -149,6 +149,9 @@
   <data name="Edit" xml:space="preserve">
     <value>編輯</value>
   </data>
+  <data name="HelloWorld" xml:space="preserve">
+    <value>嗨, {0} !</value>
+  </data>
   <data name="News_NoMessage" xml:space="preserve">
     <value>此公告無內容!!</value>
   </data>
