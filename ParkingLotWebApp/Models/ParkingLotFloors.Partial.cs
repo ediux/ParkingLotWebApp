@@ -21,6 +21,7 @@ namespace ParkingLotWebApp.Models
     {
         [Required]
         public int Id { get; set; }
+        [Display(Name = "區域名稱")]
         public Nullable<int> AreaId { get; set; }
         
         [StringLength(50, ErrorMessage="欄位長度不得大於 50 個字元")]
