@@ -204,4 +204,7 @@
   <data name="News_This" xml:space="preserve">
     <value>這則公告</value>
   </data>
+  <data name="ParkingLotFloors_ListRemainParkingGridAmounts" xml:space="preserve">
+    <value>維護剩餘車位數量</value>
+  </data>
 </root>

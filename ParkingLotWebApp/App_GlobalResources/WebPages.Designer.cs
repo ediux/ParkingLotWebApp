@@ -302,5 +302,14 @@ namespace ParkingLotWebApp.App_GlobalResources {
                 return ResourceManager.GetString("NewsPoster", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   查詢類似 維護剩餘車位數量 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotFloors_ListRemainParkingGridAmounts {
+            get {
+                return ResourceManager.GetString("ParkingLotFloors_ListRemainParkingGridAmounts", resourceCulture);
+            }
+        }
     }
 }
