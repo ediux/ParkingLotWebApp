@@ -367,6 +367,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 這個區域嗎 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotAreas_This {
+            get {
+                return ResourceManager.GetString("ParkingLotAreas_This", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 維護剩餘車位數量 的當地語系化字串。
         /// </summary>
         public static string ParkingLotFloors_ListRemainParkingGridAmounts {
