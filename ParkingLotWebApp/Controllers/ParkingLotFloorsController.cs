@@ -24,6 +24,7 @@ namespace ParkingLotWebApp.Controllers
             if (id.HasValue)
             {
                 ViewBag.AreaId = id.Value;
+                ViewBag.AreaName = db_area.Get(id.Value).Name;
                 ViewBag.returnUrl = Url.Action("Index", "ParkingLotAreas", new { id = id.Value });
                 var parkingLotFloorsByFiliter = db.Where(w => w.AreaId == id && w.Void == false).Include(p => p.ParkingLotAreas);
                 return View(parkingLotFloorsByFiliter.ToList());
