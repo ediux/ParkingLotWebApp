@@ -469,13 +469,10 @@ namespace My.Core.Infrastructures.Implementations.Models
             await userrolerepo.UnitOfWork.CommitAsync();
         }
 
-        public Task DeleteAsync(ApplicationRole role)
+        public async Task DeleteAsync(ApplicationRole role)
         {
-            return Task.Run(() =>
-            {
-                role.Void = true;
-                UpdateAsync(role);
-            });
+            role.Void = true;
+            await UpdateAsync(role);
         }
 
         Task<ApplicationRole> IRoleStore<ApplicationRole, int>.FindByIdAsync(int roleId)
