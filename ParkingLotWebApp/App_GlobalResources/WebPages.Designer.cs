@@ -376,6 +376,51 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 停車場區域樓層維護 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotFloors {
+            get {
+                return ResourceManager.GetString("ParkingLotFloors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 新增 {0} 的樓層 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotFloors_Create_FromArea {
+            get {
+                return ResourceManager.GetString("ParkingLotFloors_Create_FromArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 新增樓層 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotFloors_Create_New {
+            get {
+                return ResourceManager.GetString("ParkingLotFloors_Create_New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 所有區域樓層總覽 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotFloors_Index {
+            get {
+                return ResourceManager.GetString("ParkingLotFloors_Index", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 {0}的樓層總覽 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotFloors_Index_fromArea {
+            get {
+                return ResourceManager.GetString("ParkingLotFloors_Index_fromArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 維護剩餘車位數量 的當地語系化字串。
         /// </summary>
         public static string ParkingLotFloors_ListRemainParkingGridAmounts {

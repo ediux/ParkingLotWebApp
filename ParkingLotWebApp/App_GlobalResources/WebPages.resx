@@ -228,6 +228,21 @@
   <data name="ParkingLotAreas_This" xml:space="preserve">
     <value>這個區域嗎</value>
   </data>
+  <data name="ParkingLotFloors" xml:space="preserve">
+    <value>停車場區域樓層維護</value>
+  </data>
+  <data name="ParkingLotFloors_Create_FromArea" xml:space="preserve">
+    <value>新增 {0} 的樓層</value>
+  </data>
+  <data name="ParkingLotFloors_Create_New" xml:space="preserve">
+    <value>新增樓層</value>
+  </data>
+  <data name="ParkingLotFloors_Index" xml:space="preserve">
+    <value>所有區域樓層總覽</value>
+  </data>
+  <data name="ParkingLotFloors_Index_fromArea" xml:space="preserve">
+    <value>{0}的樓層總覽</value>
+  </data>
   <data name="ParkingLotFloors_ListRemainParkingGridAmounts" xml:space="preserve">
     <value>維護剩餘車位數量</value>
   </data>
