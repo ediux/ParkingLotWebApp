@@ -7,6 +7,14 @@ namespace ParkingLotWebApp.Models
     [MetadataType(typeof(ParkingLotFloorsMetaData))]
     public partial class ParkingLotFloors
     {
+        public static ParkingLotFloors Create(int UserId)
+        {
+            var model = new ParkingLotFloors();
+            model.Void = false;
+            model.LastUpdateUserId = model.CreateUserId = UserId;
+            model.LastUpdateUTCTime = model.CreateUTCTime = DateTime.Now.ToUniversalTime();
+            return model;
+        }
     }
     
     public partial class ParkingLotFloorsMetaData
