@@ -222,6 +222,9 @@
   <data name="ParkingLotAreas_Edit" xml:space="preserve">
     <value>編輯停車場區域</value>
   </data>
+  <data name="ParkingLotAreas_FloorsLink" xml:space="preserve">
+    <value>樓層總覽</value>
+  </data>
   <data name="ParkingLotAreas_Index" xml:space="preserve">
     <value>停車場區域列表</value>
   </data>

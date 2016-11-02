@@ -358,6 +358,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 樓層總覽 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotAreas_FloorsLink {
+            get {
+                return ResourceManager.GetString("ParkingLotAreas_FloorsLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 停車場區域列表 的當地語系化字串。
         /// </summary>
         public static string ParkingLotAreas_Index {
