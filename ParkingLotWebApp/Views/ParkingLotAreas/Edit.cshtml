@@ -1,13 +1,13 @@
 ﻿@model ParkingLotWebApp.Models.ParkingLotAreas
 @using Microsoft.AspNet.Identity
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = Resources.WebPages.ParkingLotAreas_Edit;
     Model.GPS = null;
     Model.LastUpdateUserId = User.Identity.GetUserId<int>();
     Model.LastUpdateUTCTime = DateTime.Now;
 }
 
-<h2>Edit</h2>
+<h2>@ViewBag.Title</h2>
 
 
 @using (Html.BeginForm())
@@ -15,7 +15,7 @@
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.GPS)
     <div class="form-horizontal">
-        <h4>ParkingLotAreas</h4>
+        <h4>@Resources.WebPages.ParkingLotAreas</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
@@ -54,14 +54,14 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="@Resources.Common.Save" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink(string.Format(Resources.Common.Back_To,Resources.WebPages.ParkingLotAreas_Index), "Index")
 </div>
 
 @section Scripts {
