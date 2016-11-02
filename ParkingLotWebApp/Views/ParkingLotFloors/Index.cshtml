@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<ParkingLotWebApp.Models.ParkingLotFloors>
 
 @{
-    var areaname = Model.First().ParkingLotAreas.Name;
+    var areaname = ViewBag.AreaName as string;
     if (ViewBag.returnUrl != null)
     {
         ViewBag.Title = string.Format(Resources.WebPages.ParkingLotFloors_Index_fromArea, areaname);
@@ -18,7 +18,7 @@
     if (ViewBag.returnUrl != null)
     {
         <p>
-            @Html.ActionLink(string.Format(Resources.WebPages.ParkingLotFloors_Create_FromArea, Model.First().ParkingLotAreas.Name), "Create", new { id = ViewBag.AreaId }) |
+            @Html.ActionLink(string.Format(Resources.WebPages.ParkingLotFloors_Create_FromArea,areaname), "Create", new { id = ViewBag.AreaId }) |
             @Html.ActionLink(string.Format(Resources.Common.Back_To, Resources.WebPages.ParkingLotAreas_Index), "Index", "ParkingLotAreas", null, null)
         </p>
     }
