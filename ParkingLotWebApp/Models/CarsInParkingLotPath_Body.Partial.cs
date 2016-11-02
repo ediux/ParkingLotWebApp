@@ -7,6 +7,12 @@ namespace ParkingLotWebApp.Models
     [MetadataType(typeof(CarsInParkingLotPath_BodyMetaData))]
     public partial class CarsInParkingLotPath_Body
     {
+        public static CarsInParkingLotPath_Body Create()
+        {
+            var model = new CarsInParkingLotPath_Body();
+            model.CreateUTCTime = DateTime.Now.ToUniversalTime();
+            return model;
+        }
     }
     
     public partial class CarsInParkingLotPath_BodyMetaData
