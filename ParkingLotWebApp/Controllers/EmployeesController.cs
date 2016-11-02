@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ParkingLotWebApp.Models;
+using Microsoft.AspNet.Identity;
 
 namespace ParkingLotWebApp.Controllers
 {
@@ -38,7 +39,7 @@ namespace ParkingLotWebApp.Controllers
         // GET: Employees/Create
         public ActionResult Create()
         {
-            return View(new Employee());
+            return View(Employee.Create(User.Identity.GetUserId<int>()));
         }
 
         // POST: Employees/Create
