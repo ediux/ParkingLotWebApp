@@ -7,6 +7,14 @@ namespace ParkingLotWebApp.Models
     [MetadataType(typeof(News_BodyMetaData))]
     public partial class News_Body
     {
+        public static News_Body Create(int UserId)
+        {
+            var model = new News_Body();
+            model.Void = false;
+            model.LastUpdateUserId = model.CreateUserId = UserId;
+            model.LastUpdateUTCTime = model.CreateUTCTime = DateTime.Now.ToUniversalTime();
+            return model;
+        }
     }
     
     public partial class News_BodyMetaData
