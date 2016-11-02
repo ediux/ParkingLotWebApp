@@ -7,6 +7,14 @@ namespace ParkingLotWebApp.Models
     [MetadataType(typeof(EmployeeMetaData))]
     public partial class Employee
     {
+        public static Employee Create(int UserId)
+        {
+            var model = new Employee();
+            model.Void = false;
+            model.LastUpdateUserId = model.CreateUserId = UserId;
+            model.LastUpdateUTCTime = model.CreateUTCTime = DateTime.Now.ToUniversalTime();
+            return model;
+        }
     }
     
     public partial class EmployeeMetaData
