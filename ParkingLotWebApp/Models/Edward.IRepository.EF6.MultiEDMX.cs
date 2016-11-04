@@ -1,5 +1,4 @@
 ﻿
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ParkingLotWebApp.Models
 { 
-	public partial interface IRepositoryBase<T> :IDisposable
+			public partial interface IRepositoryBase<T> :IDisposable
 		where T : class
 	{
 		IUnitOfWork UnitOfWork { get; set; }
@@ -25,6 +24,7 @@ namespace ParkingLotWebApp.Models
         Task<IQueryable<T>> AllAsync();
 
 		IQueryable<T> Where(Expression<Func<T, bool>> expression);
+
 		T Add(T entity);
 
 		/// <summary>
@@ -34,6 +34,11 @@ namespace ParkingLotWebApp.Models
 		/// <param name="entities">Entities.</param>
 		IList<T> BatchAdd(IEnumerable<T> entities);
 		
+		/// <summary>
+		/// Batchs the create.
+		/// </summary>
+		/// <returns>The create.</returns>
+		/// <param name="entity">Entities.</param>
 		void Delete(T entity);
 
         /// <summary>
@@ -59,4 +64,3 @@ namespace ParkingLotWebApp.Models
 		Task<T> ReloadAsync(T entity);
 	}
 }
-

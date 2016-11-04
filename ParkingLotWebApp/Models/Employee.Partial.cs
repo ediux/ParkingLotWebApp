@@ -11,7 +11,7 @@ namespace ParkingLotWebApp.Models
         {
             var model = new Employee();
             model.Void = false;
-            model.LastUpdateUserId = model.CreateUserId = UserId;
+            model.LastUserId = model.CreateUserId = UserId;
             model.LastUpdateUTCTime = model.CreateUTCTime = DateTime.Now.ToUniversalTime();
             return model;
         }

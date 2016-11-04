@@ -14,6 +14,12 @@ namespace ParkingLotWebApp.Models
     
     public partial class ParkingLotsDetail
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ParkingLotsDetail()
+        {
+            this.ParkingLotsFloor = new HashSet<ParkingLotsFloor>();
+        }
+    
         public int ID { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
@@ -26,5 +32,8 @@ namespace ParkingLotWebApp.Models
         public int MotoGrid { get; set; }
         public bool Void { get; set; }
         public Nullable<System.DateTime> LastUpdate { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParkingLotsFloor> ParkingLotsFloor { get; set; }
     }
 }

@@ -14,13 +14,6 @@ namespace ParkingLotWebApp.Models
     
     public partial class Cars
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Cars()
-        {
-            this.ParkingGrid = new HashSet<ParkingGrid>();
-            this.CarsInParkingLotPath_Header = new HashSet<CarsInParkingLotPath_Header>();
-        }
-    
         public int Id { get; set; }
         public string CarNumber { get; set; }
         public string CarType { get; set; }
@@ -34,9 +27,5 @@ namespace ParkingLotWebApp.Models
     
         public virtual Employee Employee { get; set; }
         public virtual ETAs ETAs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParkingGrid> ParkingGrid { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CarsInParkingLotPath_Header> CarsInParkingLotPath_Header { get; set; }
     }
 }

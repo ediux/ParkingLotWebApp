@@ -1,18 +1,17 @@
 ﻿<#@ template language="C#" debug="true" hostspecific="true"#>
 <#@ include file="EF.Utility.CS.ttinclude"#>
-<#@ import namespace="System.IO" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
 <#@ import namespace="System.Diagnostics" #>
-
-<#@ output extension=".cs"#>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
 <#
-
-// This needs to be set to the .edmx file that you want to process.
-string edmxFile = FindEDMXFileName(); // @"Model1.edmx";
+string[] edmxFiles = FindEDMXFileName(); // @"Model1.edmx";
 
 CodeGenerationTools code = new CodeGenerationTools(this);
 MetadataLoader loader = new MetadataLoader(this);
 MetadataTools ef = new MetadataTools(this);
-
 #>
 using System;
 using System.Collections.Generic;
@@ -22,6 +21,8 @@ using System.Threading.Tasks;
 
 namespace <#= code.VsNamespaceSuggestion() #>
 { 
+		<#
+	#>
 	public partial interface IRepositoryBase<T> :IDisposable
 		where T : class
 	{
@@ -39,6 +40,7 @@ namespace <#= code.VsNamespaceSuggestion() #>
         Task<IQueryable<T>> AllAsync();
 
 		IQueryable<T> Where(Expression<Func<T, bool>> expression);
+
 		T Add(T entity);
 
 		/// <summary>
@@ -48,6 +50,11 @@ namespace <#= code.VsNamespaceSuggestion() #>
 		/// <param name="entities">Entities.</param>
 		IList<T> BatchAdd(IEnumerable<T> entities);
 		
+		/// <summary>
+		/// Batchs the create.
+		/// </summary>
+		/// <returns>The create.</returns>
+		/// <param name="entity">Entities.</param>
 		void Delete(T entity);
 
         /// <summary>
@@ -73,45 +80,13 @@ namespace <#= code.VsNamespaceSuggestion() #>
 		Task<T> ReloadAsync(T entity);
 	}
 }<#
-
-
-EdmItemCollection ItemCollection = loader.CreateEdmItemCollection(edmxFile);
-EntityContainer container = ItemCollection.GetItems<EntityContainer>().FirstOrDefault();
 EntityFrameworkTemplateFileManager fileManager = EntityFrameworkTemplateFileManager.Create(this);
+foreach(var edmxFile in edmxFiles){
+	EdmItemCollection ItemCollection = loader.CreateEdmItemCollection(edmxFile);
+	EntityContainer container = ItemCollection.GetItems<EntityContainer>().FirstOrDefault();
 
-foreach (EntityType entity in ItemCollection.GetItems<EntityType>().OrderBy(e => e.Name))
-{;
-
-	if(!DoesFileExist(entity.Name + "Repository.cs"))
-	{
-		fileManager.StartNewFile(entity.Name + "Repository.cs");
-		#>using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace <#= code.VsNamespaceSuggestion() #>
-{   
-	<#=Accessibility.ForType(entity)#> <#=code.SpaceAfter(code.AbstractOption(entity))#> partial class <#=code.Escape(entity)#>Repository : EFRepository<<#=code.Escape(entity)#>>, I<#=code.Escape(entity)#>Repository
-	{
-
-	}
-
-	<#=Accessibility.ForType(entity)#> <#=code.SpaceAfter(code.AbstractOption(entity))#> partial interface I<#=code.Escape(entity)#>Repository : IRepositoryBase<<#=code.Escape(entity)#>>
-	{
-
-	}
-}<#
-	}
-	else
-	{
-		fileManager.StartNewFile(entity.Name + "Repository.cs");
-		this.Write(OutputFile(entity.Name + "Repository.cs"));
-	}
-}
-
-fileManager.StartNewFile("IUnitOfWork.cs");
-#>using System.Data.Entity;
+	fileManager.StartNewFile("IUnitOfWork.cs");
+		#>using System.Data.Entity;
 using System.Threading.Tasks;
 
 namespace <#= code.VsNamespaceSuggestion() #>
@@ -134,8 +109,9 @@ namespace <#= code.VsNamespaceSuggestion() #>
         /// <returns>非同步執行結果。</returns>
         Task CommitAsync();
 	}
-}<# fileManager.StartNewFile("EFRepository.cs");
-#>using System;
+}<#
+		fileManager.StartNewFile("EFRepository.cs");
+		#>using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -248,18 +224,42 @@ namespace <#= code.VsNamespaceSuggestion() #>
         }
         #endregion
 	}
-}<#fileManager.StartNewFile("EFUnitOfWork.cs");
-#>using System.Data.Entity;
+}<#
+	string dbname = code.Escape(container);
+	foreach (EntityType entity in ItemCollection.GetItems<EntityType>().OrderBy(e => e.Name))
+	{;
+		
+		fileManager.StartNewFile(entity.Name + "Repository.cs");
+			#>using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace <#= code.VsNamespaceSuggestion() #>
+{   
+	<#=Accessibility.ForType(entity)#> <#=code.SpaceAfter(code.AbstractOption(entity))#> partial class <#=code.Escape(entity)#>Repository : EFRepository<<#=code.Escape(entity)#>>, I<#=code.Escape(entity)#>Repository
+	{
+
+	}
+
+	<#=Accessibility.ForType(entity)#> <#=code.SpaceAfter(code.AbstractOption(entity))#> partial interface I<#=code.Escape(entity)#>Repository : IRepositoryBase<<#=code.Escape(entity)#>>
+	{
+
+	}
+}<#
+
+		fileManager.StartNewFile(dbname + "UnitOfWork.cs");
+			#>using System.Data.Entity;
 using System.Threading.Tasks;
 
 namespace <#= code.VsNamespaceSuggestion() #>
 {
-	public partial class EFUnitOfWork : IUnitOfWork
+	public partial class <#=dbname#>UnitOfWork : IUnitOfWork
 	{
 		private DbContext _context;
 		public DbContext Context { get{ return _context;} set{ _context=value;} }
 
-		public EFUnitOfWork()
+		public <#=dbname#>UnitOfWork()
 		{
 			Context = new <#=code.Escape(container)#>();
 		}
@@ -293,32 +293,39 @@ namespace <#= code.VsNamespaceSuggestion() #>
 		}
 
 	}
+}<#
+	}
 }
-<#fileManager.StartNewFile("RepositoryHelper.cs");
-#>
-using System;
+fileManager.StartNewFile("RepositoryHelper.cs");
+#>using System;
 
 namespace <#= code.VsNamespaceSuggestion() #>
 {
 	public static class RepositoryHelper
 	{
-		public static IUnitOfWork GetUnitOfWork()
-		{
-			return new EFUnitOfWork();
-		}
-
 		public static TUnitOfWork GetUnitOfWork<TUnitOfWork>() where TUnitOfWork : IUnitOfWork
         {
             return Activator.CreateInstance<TUnitOfWork>();
         }
 		
-		<# foreach (EntityType entity in ItemCollection.GetItems<EntityType>().OrderBy(e => e.Name))
-{; #>
+		<#
+		foreach(var edmxFile in edmxFiles){
+			EdmItemCollection ItemCollection = loader.CreateEdmItemCollection(edmxFile);
+			EntityContainer container = ItemCollection.GetItems<EntityContainer>().FirstOrDefault();
+			string dbname = code.Escape(container);
+			#>
+		public static IUnitOfWork Get<#=dbname#>UnitOfWork()
+		{
+			return new <#=dbname#>UnitOfWork();
+		}			
+			<#
+			foreach (EntityType entity in ItemCollection.GetItems<EntityType>().OrderBy(e => e.Name))
+			{; #>
 
 		public static <#=code.Escape(entity)#>Repository Get<#=code.Escape(entity)#>Repository()
 		{
 			var repository = new <#=code.Escape(entity)#>Repository();
-			repository.UnitOfWork = GetUnitOfWork();
+			repository.UnitOfWork = Get<#=dbname#>UnitOfWork();
 			return repository;
 		}
 
@@ -328,12 +335,13 @@ namespace <#= code.VsNamespaceSuggestion() #>
 			repository.UnitOfWork = unitOfWork;
 			return repository;
 		}		
-<# } #>
+<#			} #>
+
 	}
-}<#	fileManager.Process();
+}
+	<#}
+fileManager.Process();
 #>
-
-
 <#+
 
 bool DoesFileExist(string filename)
@@ -367,13 +375,13 @@ string GetCurrentDirectory()
 	return executingDirectoryName;
 }
 
-string FindEDMXFileName()
+string[] FindEDMXFileName()
 {
-	string edmxFile = "";
+	string[] edmxFile = new string[] {};
 				
 	string[] entityFrameworkFiles = Directory.GetFiles(GetCurrentDirectory(), "*.edmx");
 	if(entityFrameworkFiles.Length > 0)
-		edmxFile = entityFrameworkFiles[0];
+		edmxFile = entityFrameworkFiles;
 	
 	return edmxFile;
 }

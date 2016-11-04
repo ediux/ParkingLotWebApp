@@ -12,18 +12,19 @@ namespace ParkingLotWebApp.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class News_Body
+    public partial class ParkingLotsFloor
     {
-        public int Id { get; set; }
-        public Nullable<int> Header_Id { get; set; }
-        public string Content { get; set; }
-        public int Version { get; set; }
-        public int CreateUserId { get; set; }
-        public System.DateTime CreateUTCTime { get; set; }
-        public int LastUpdateUserId { get; set; }
-        public System.DateTime LastUpdateUTCTime { get; set; }
+        public int ID { get; set; }
+        public int ParkingLotsID { get; set; }
+        public short FloorOrder { get; set; }
+        public string FloorName { get; set; }
+        public int CarTotalGrid { get; set; }
+        public int CarLastGrid { get; set; }
+        public int MotoTotalGrid { get; set; }
+        public int MotoLastGrid { get; set; }
         public bool Void { get; set; }
+        public Nullable<System.DateTime> LastUpdate { get; set; }
     
-        public virtual News_Header News_Header { get; set; }
+        public virtual ParkingLotsDetail ParkingLotsDetail { get; set; }
     }
 }

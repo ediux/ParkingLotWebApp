@@ -59,7 +59,5 @@ namespace ParkingLotWebApp.Models
     
         public virtual Employee Employee { get; set; }
         public virtual ETAs ETAs { get; set; }
-        public virtual ICollection<ParkingGrid> ParkingGrid { get; set; }
-        public virtual ICollection<CarsInParkingLotPath_Header> CarsInParkingLotPath_Header { get; set; }
     }
 }

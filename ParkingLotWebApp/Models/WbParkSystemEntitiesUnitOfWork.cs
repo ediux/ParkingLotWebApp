@@ -3,14 +3,14 @@ using System.Threading.Tasks;
 
 namespace ParkingLotWebApp.Models
 {
-	public partial class EFUnitOfWork : IUnitOfWork
+	public partial class WbParkSystemEntitiesUnitOfWork : IUnitOfWork
 	{
 		private DbContext _context;
 		public DbContext Context { get{ return _context;} set{ _context=value;} }
 
-		public EFUnitOfWork()
+		public WbParkSystemEntitiesUnitOfWork()
 		{
-			Context = new ParkingLotModelEntities();
+			Context = new WbParkSystemEntities();
 		}
 
 		public void Commit()

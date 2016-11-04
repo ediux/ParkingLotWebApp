@@ -20,5 +20,7 @@ namespace ParkingLotWebApp.Models
         public string PhoneNumber { get; set; }
         public bool Void { get; set; }
         public Nullable<System.DateTime> LastUpdate { get; set; }
+    
+        public virtual PushPhoneType PushPhoneType { get; set; }
     }
 }

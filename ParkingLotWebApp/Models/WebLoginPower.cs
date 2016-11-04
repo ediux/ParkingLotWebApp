@@ -12,12 +12,10 @@ namespace ParkingLotWebApp.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class WebLogin
+    public partial class WebLoginPower
     {
-        public int ID { get; set; }
-        public string Account { get; set; }
-        public string Password { get; set; }
-        public byte PowerTypeID { get; set; }
+        public byte ID { get; set; }
         public string Name { get; set; }
+        public Nullable<bool> Void { get; set; }
     }
 }

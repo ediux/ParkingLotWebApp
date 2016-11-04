@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="WbParkSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="WbParkSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AnnouncementDetail">
           <Key>
             <PropertyRef Name="No" />
@@ -16,6 +16,46 @@
           <Property Name="Detail" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="ToTop" Type="bit" Nullable="false" />
           <Property Name="LastUpdate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Cars">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CarNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CarType" Type="nchar" MaxLength="1" Nullable="false" />
+          <Property Name="ETAId" Type="int" />
+          <Property Name="EmpId" Type="int" />
+          <Property Name="Void" Type="bit" Nullable="false" />
+          <Property Name="CreateUserId" Type="int" Nullable="false" />
+          <Property Name="CreateUTCTime" Type="smalldatetime" Nullable="false" />
+          <Property Name="LastUpdateUserId" Type="int" Nullable="false" />
+          <Property Name="LastUpdateUTCTime" Type="smalldatetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Void" Type="bit" Nullable="false" />
+          <Property Name="CreateUserId" Type="int" Nullable="false" />
+          <Property Name="CreateUTCTime" Type="smalldatetime" Nullable="false" />
+          <Property Name="LastUserId" Type="int" Nullable="false" />
+          <Property Name="LastUpdateUTCTime" Type="smalldatetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ETAs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Void" Type="bit" Nullable="false" />
+          <Property Name="CreateUserId" Type="int" Nullable="false" />
+          <Property Name="CreateUTCTime" Type="smalldatetime" Nullable="false" />
+          <Property Name="LastUpdateUserId" Type="int" Nullable="false" />
+          <Property Name="LastUpdateUTCTime" Type="smalldatetime" Nullable="false" />
         </EntityType>
         <EntityType Name="ParkingLotsDetail">
           <Key>
@@ -31,6 +71,31 @@
           <Property Name="Latitude" Type="float" Nullable="false" />
           <Property Name="CarGrid" Type="int" Nullable="false" />
           <Property Name="MotoGrid" Type="int" Nullable="false" />
+          <Property Name="Void" Type="bit" Nullable="false" />
+          <Property Name="LastUpdate" Type="datetime" />
+        </EntityType>
+        <!--產生期間發現錯誤:
+警告 6002: 資料表/檢視 'WbParkSystem.dbo.ParkingLotsFloor' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
+        <EntityType Name="ParkingLotsFloor">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ParkingLotsID" />
+            <PropertyRef Name="FloorOrder" />
+            <PropertyRef Name="FloorName" />
+            <PropertyRef Name="CarTotalGrid" />
+            <PropertyRef Name="CarLastGrid" />
+            <PropertyRef Name="MotoTotalGrid" />
+            <PropertyRef Name="MotoLastGrid" />
+            <PropertyRef Name="Void" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParkingLotsID" Type="int" Nullable="false" />
+          <Property Name="FloorOrder" Type="smallint" Nullable="false" />
+          <Property Name="FloorName" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="CarTotalGrid" Type="int" Nullable="false" />
+          <Property Name="CarLastGrid" Type="int" Nullable="false" />
+          <Property Name="MotoTotalGrid" Type="int" Nullable="false" />
+          <Property Name="MotoLastGrid" Type="int" Nullable="false" />
           <Property Name="Void" Type="bit" Nullable="false" />
           <Property Name="LastUpdate" Type="datetime" />
         </EntityType>
@@ -58,15 +123,11 @@
           <Property Name="ParkDate" Type="date" />
           <Property Name="Count" Type="smallint" Nullable="false" />
         </EntityType>
-        <!--產生期間發現錯誤:
-警告 6002: 資料表/檢視 'WbParkSystem.dbo.PushPhoneDetail' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
         <EntityType Name="PushPhoneDetail">
           <Key>
-            <PropertyRef Name="PhoneTypeID" />
             <PropertyRef Name="DeviceID" />
             <PropertyRef Name="Token" />
             <PropertyRef Name="PhoneNumber" />
-            <PropertyRef Name="Void" />
           </Key>
           <Property Name="PhoneTypeID" Type="tinyint" Nullable="false" />
           <Property Name="DeviceID" Type="nvarchar" MaxLength="200" Nullable="false" />
@@ -75,36 +136,93 @@
           <Property Name="Void" Type="bit" Nullable="false" />
           <Property Name="LastUpdate" Type="datetime" />
         </EntityType>
-        <!--產生期間發現錯誤:
-警告 6002: 資料表/檢視 'WbParkSystem.dbo.PushPhoneType' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
         <EntityType Name="PushPhoneType">
           <Key>
             <PropertyRef Name="ID" />
-            <PropertyRef Name="PushPhone" />
           </Key>
           <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PushPhone" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <!--產生期間發現錯誤:
-警告 6002: 資料表/檢視 'WbParkSystem.dbo.WebLogin' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
-        <EntityType Name="WebLogin">
+警告 6002: 資料表/檢視 'WbParkSystem.dbo.WebLoginPower' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
+        <EntityType Name="WebLoginPower">
           <Key>
             <PropertyRef Name="ID" />
-            <PropertyRef Name="Account" />
-            <PropertyRef Name="Password" />
-            <PropertyRef Name="PowerTypeID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Account" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="Password" Type="nvarchar" MaxLength="30" Nullable="false" />
-          <Property Name="PowerTypeID" Type="tinyint" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="10" />
+          <Property Name="Void" Type="bit" />
         </EntityType>
-        <!--產生期間發現錯誤:
-警告 6002: 資料表/檢視 'WbParkSystem.dbo.WebLoginPower' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
+        <Association Name="FK_Cars_ToEmployee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Cars" Type="Self.Cars" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cars">
+              <PropertyRef Name="EmpId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cars_ToETAs">
+          <End Role="ETAs" Type="Self.ETAs" Multiplicity="0..1" />
+          <End Role="Cars" Type="Self.Cars" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ETAs">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cars">
+              <PropertyRef Name="ETAId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParkingLotsFloor_ParkingLotsDetail">
+          <End Role="ParkingLotsDetail" Type="Self.ParkingLotsDetail" Multiplicity="1" />
+          <End Role="ParkingLotsFloor" Type="Self.ParkingLotsFloor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParkingLotsDetail">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ParkingLotsFloor">
+              <PropertyRef Name="ParkingLotsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PushPhoneDetail_PushPhoneType">
+          <End Role="PushPhoneType" Type="Self.PushPhoneType" Multiplicity="1" />
+          <End Role="PushPhoneDetail" Type="Self.PushPhoneDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PushPhoneType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PushPhoneDetail">
+              <PropertyRef Name="PhoneTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="WbParkSystemModelStoreContainer">
           <EntitySet Name="AnnouncementDetail" EntityType="Self.AnnouncementDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cars" EntityType="Self.Cars" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ETAs" EntityType="Self.ETAs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParkingLotsDetail" EntityType="Self.ParkingLotsDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PushPhoneDetail" EntityType="Self.PushPhoneDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PushPhoneType" EntityType="Self.PushPhoneType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParkingLotsFloor" EntityType="Self.ParkingLotsFloor" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ParkingLotsFloor].[ID] AS [ID], 
+    [ParkingLotsFloor].[ParkingLotsID] AS [ParkingLotsID], 
+    [ParkingLotsFloor].[FloorOrder] AS [FloorOrder], 
+    [ParkingLotsFloor].[FloorName] AS [FloorName], 
+    [ParkingLotsFloor].[CarTotalGrid] AS [CarTotalGrid], 
+    [ParkingLotsFloor].[CarLastGrid] AS [CarLastGrid], 
+    [ParkingLotsFloor].[MotoTotalGrid] AS [MotoTotalGrid], 
+    [ParkingLotsFloor].[MotoLastGrid] AS [MotoLastGrid], 
+    [ParkingLotsFloor].[Void] AS [Void], 
+    [ParkingLotsFloor].[LastUpdate] AS [LastUpdate]
+    FROM [dbo].[ParkingLotsFloor] AS [ParkingLotsFloor]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="ParkingLotsRecoed_HT" EntityType="Self.ParkingLotsRecoed_HT" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [ParkingLotsRecoed_HT].[ID] AS [ID], 
@@ -121,34 +239,31 @@
     [ParkingLotsRecord].[Count] AS [Count]
     FROM [dbo].[ParkingLotsRecord] AS [ParkingLotsRecord]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="PushPhoneDetail" EntityType="Self.PushPhoneDetail" store:Type="Tables" store:Schema="dbo">
+          <EntitySet Name="WebLoginPower" EntityType="Self.WebLoginPower" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [PushPhoneDetail].[PhoneTypeID] AS [PhoneTypeID], 
-    [PushPhoneDetail].[DeviceID] AS [DeviceID], 
-    [PushPhoneDetail].[Token] AS [Token], 
-    [PushPhoneDetail].[PhoneNumber] AS [PhoneNumber], 
-    [PushPhoneDetail].[Void] AS [Void], 
-    [PushPhoneDetail].[LastUpdate] AS [LastUpdate]
-    FROM [dbo].[PushPhoneDetail] AS [PushPhoneDetail]</DefiningQuery>
+    [WebLoginPower].[ID] AS [ID], 
+    [WebLoginPower].[Name] AS [Name], 
+    [WebLoginPower].[Void] AS [Void]
+    FROM [dbo].[WebLoginPower] AS [WebLoginPower]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="PushPhoneType" EntityType="Self.PushPhoneType" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [PushPhoneType].[ID] AS [ID], 
-    [PushPhoneType].[PushPhone] AS [PushPhone]
-    FROM [dbo].[PushPhoneType] AS [PushPhoneType]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="WebLogin" EntityType="Self.WebLogin" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [WebLogin].[ID] AS [ID], 
-    [WebLogin].[Account] AS [Account], 
-    [WebLogin].[Password] AS [Password], 
-    [WebLogin].[PowerTypeID] AS [PowerTypeID], 
-    [WebLogin].[Name] AS [Name]
-    FROM [dbo].[WebLogin] AS [WebLogin]</DefiningQuery>
-          </EntitySet>
+          <AssociationSet Name="FK_Cars_ToEmployee" Association="Self.FK_Cars_ToEmployee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Cars" EntitySet="Cars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cars_ToETAs" Association="Self.FK_Cars_ToETAs">
+            <End Role="ETAs" EntitySet="ETAs" />
+            <End Role="Cars" EntitySet="Cars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParkingLotsFloor_ParkingLotsDetail" Association="Self.FK_ParkingLotsFloor_ParkingLotsDetail">
+            <End Role="ParkingLotsDetail" EntitySet="ParkingLotsDetail" />
+            <End Role="ParkingLotsFloor" EntitySet="ParkingLotsFloor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PushPhoneDetail_PushPhoneType" Association="Self.FK_PushPhoneDetail_PushPhoneType">
+            <End Role="PushPhoneType" EntitySet="PushPhoneType" />
+            <End Role="PushPhoneDetail" EntitySet="PushPhoneDetail" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="WbParkSystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -180,6 +295,7 @@
           <Property Name="MotoGrid" Type="Int32" Nullable="false" />
           <Property Name="Void" Type="Boolean" Nullable="false" />
           <Property Name="LastUpdate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ParkingLotsFloor" Relationship="WbParkSystemModel.FK_ParkingLotsFloor_ParkingLotsDetail" FromRole="ParkingLotsDetail" ToRole="ParkingLotsFloor" />
         </EntityType>
         <EntityType Name="ParkingLotsRecoed_HT">
           <Key>
@@ -201,51 +317,181 @@
           <Property Name="ParkDate" Type="DateTime" Precision="0" />
           <Property Name="Count" Type="Int16" Nullable="false" />
         </EntityType>
-        <EntityType Name="PushPhoneDetail">
-          <Key>
-            <PropertyRef Name="PhoneTypeID" />
-            <PropertyRef Name="DeviceID" />
-            <PropertyRef Name="Token" />
-            <PropertyRef Name="PhoneNumber" />
-            <PropertyRef Name="Void" />
-          </Key>
-          <Property Name="PhoneTypeID" Type="Byte" Nullable="false" />
-          <Property Name="DeviceID" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Token" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Void" Type="Boolean" Nullable="false" />
-          <Property Name="LastUpdate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="PushPhoneType">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="PushPhone" />
-          </Key>
-          <Property Name="ID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PushPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
-        <EntityType Name="WebLogin">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="Account" />
-            <PropertyRef Name="Password" />
-            <PropertyRef Name="PowerTypeID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Account" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PowerTypeID" Type="Byte" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityContainer Name="WbParkSystemEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AnnouncementDetail" EntityType="Self.AnnouncementDetail" />
           <EntitySet Name="ParkingLotsDetail" EntityType="Self.ParkingLotsDetail" />
           <EntitySet Name="ParkingLotsRecoed_HT" EntityType="Self.ParkingLotsRecoed_HT" />
           <EntitySet Name="ParkingLotsRecord" EntityType="Self.ParkingLotsRecord" />
-          <EntitySet Name="PushPhoneDetail" EntityType="Self.PushPhoneDetail" />
-          <EntitySet Name="PushPhoneType" EntityType="Self.PushPhoneType" />
-          <EntitySet Name="WebLogin" EntityType="Self.WebLogin" />
+          <EntitySet Name="ParkingLotsFloor" EntityType="WbParkSystemModel.ParkingLotsFloor" />
+          <EntitySet Name="WebLoginPower" EntityType="WbParkSystemModel.WebLoginPower" />
+          <AssociationSet Name="FK_ParkingLotsFloor_ParkingLotsDetail" Association="WbParkSystemModel.FK_ParkingLotsFloor_ParkingLotsDetail">
+            <End Role="ParkingLotsDetail" EntitySet="ParkingLotsDetail" />
+            <End Role="ParkingLotsFloor" EntitySet="ParkingLotsFloor" />
+          </AssociationSet>
+          <EntitySet Name="Cars" EntityType="WbParkSystemModel.Cars" />
+          <EntitySet Name="Employee" EntityType="WbParkSystemModel.Employee" />
+          <EntitySet Name="ETAs" EntityType="WbParkSystemModel.ETAs" />
+          <AssociationSet Name="FK_Cars_ToEmployee" Association="WbParkSystemModel.FK_Cars_ToEmployee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Cars" EntitySet="Cars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cars_ToETAs" Association="WbParkSystemModel.FK_Cars_ToETAs">
+            <End Role="ETAs" EntitySet="ETAs" />
+            <End Role="Cars" EntitySet="Cars" />
+          </AssociationSet>
+          <EntitySet Name="PushPhoneDetail" EntityType="WbParkSystemModel.PushPhoneDetail" />
+          <EntitySet Name="PushPhoneType" EntityType="WbParkSystemModel.PushPhoneType" />
+          <AssociationSet Name="FK_PushPhoneDetail_PushPhoneType" Association="WbParkSystemModel.FK_PushPhoneDetail_PushPhoneType">
+            <End Role="PushPhoneType" EntitySet="PushPhoneType" />
+            <End Role="PushPhoneDetail" EntitySet="PushPhoneDetail" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="ParkingLotsFloor">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ParkingLotsID" />
+            <PropertyRef Name="FloorOrder" />
+            <PropertyRef Name="FloorName" />
+            <PropertyRef Name="CarTotalGrid" />
+            <PropertyRef Name="CarLastGrid" />
+            <PropertyRef Name="MotoTotalGrid" />
+            <PropertyRef Name="MotoLastGrid" />
+            <PropertyRef Name="Void" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParkingLotsID" Type="Int32" Nullable="false" />
+          <Property Name="FloorOrder" Type="Int16" Nullable="false" />
+          <Property Name="FloorName" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CarTotalGrid" Type="Int32" Nullable="false" />
+          <Property Name="CarLastGrid" Type="Int32" Nullable="false" />
+          <Property Name="MotoTotalGrid" Type="Int32" Nullable="false" />
+          <Property Name="MotoLastGrid" Type="Int32" Nullable="false" />
+          <Property Name="Void" Type="Boolean" Nullable="false" />
+          <Property Name="LastUpdate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ParkingLotsDetail" Relationship="WbParkSystemModel.FK_ParkingLotsFloor_ParkingLotsDetail" FromRole="ParkingLotsFloor" ToRole="ParkingLotsDetail" />
+        </EntityType>
+        <EntityType Name="WebLoginPower">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Void" Type="Boolean" />
+        </EntityType>
+        <Association Name="FK_ParkingLotsFloor_ParkingLotsDetail">
+          <End Type="WbParkSystemModel.ParkingLotsDetail" Role="ParkingLotsDetail" Multiplicity="1" />
+          <End Type="WbParkSystemModel.ParkingLotsFloor" Role="ParkingLotsFloor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParkingLotsDetail">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ParkingLotsFloor">
+              <PropertyRef Name="ParkingLotsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Cars">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CarNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CarType" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="ETAId" Type="Int32" />
+          <Property Name="EmpId" Type="Int32" />
+          <Property Name="Void" Type="Boolean" Nullable="false" />
+          <Property Name="CreateUserId" Type="Int32" Nullable="false" />
+          <Property Name="CreateUTCTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="LastUpdateUserId" Type="Int32" Nullable="false" />
+          <Property Name="LastUpdateUTCTime" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Employee" Relationship="WbParkSystemModel.FK_Cars_ToEmployee" FromRole="Cars" ToRole="Employee" />
+          <NavigationProperty Name="ETAs" Relationship="WbParkSystemModel.FK_Cars_ToETAs" FromRole="Cars" ToRole="ETAs" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Void" Type="Boolean" Nullable="false" />
+          <Property Name="CreateUserId" Type="Int32" Nullable="false" />
+          <Property Name="CreateUTCTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="LastUserId" Type="Int32" Nullable="false" />
+          <Property Name="LastUpdateUTCTime" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Cars" Relationship="WbParkSystemModel.FK_Cars_ToEmployee" FromRole="Employee" ToRole="Cars" />
+        </EntityType>
+        <EntityType Name="ETAs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Void" Type="Boolean" Nullable="false" />
+          <Property Name="CreateUserId" Type="Int32" Nullable="false" />
+          <Property Name="CreateUTCTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="LastUpdateUserId" Type="Int32" Nullable="false" />
+          <Property Name="LastUpdateUTCTime" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Cars" Relationship="WbParkSystemModel.FK_Cars_ToETAs" FromRole="ETAs" ToRole="Cars" />
+        </EntityType>
+        <Association Name="FK_Cars_ToEmployee">
+          <End Type="WbParkSystemModel.Employee" Role="Employee" Multiplicity="0..1" />
+          <End Type="WbParkSystemModel.Cars" Role="Cars" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cars">
+              <PropertyRef Name="EmpId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cars_ToETAs">
+          <End Type="WbParkSystemModel.ETAs" Role="ETAs" Multiplicity="0..1" />
+          <End Type="WbParkSystemModel.Cars" Role="Cars" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ETAs">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cars">
+              <PropertyRef Name="ETAId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="PushPhoneDetail">
+          <Key>
+            <PropertyRef Name="DeviceID" />
+            <PropertyRef Name="Token" />
+            <PropertyRef Name="PhoneNumber" />
+          </Key>
+          <Property Name="PhoneTypeID" Type="Byte" Nullable="false" />
+          <Property Name="DeviceID" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Token" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Void" Type="Boolean" Nullable="false" />
+          <Property Name="LastUpdate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="PushPhoneType" Relationship="WbParkSystemModel.FK_PushPhoneDetail_PushPhoneType" FromRole="PushPhoneDetail" ToRole="PushPhoneType" />
+        </EntityType>
+        <EntityType Name="PushPhoneType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PushPhone" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="PushPhoneDetail" Relationship="WbParkSystemModel.FK_PushPhoneDetail_PushPhoneType" FromRole="PushPhoneType" ToRole="PushPhoneDetail" />
+        </EntityType>
+        <Association Name="FK_PushPhoneDetail_PushPhoneType">
+          <End Type="WbParkSystemModel.PushPhoneType" Role="PushPhoneType" Multiplicity="1" />
+          <End Type="WbParkSystemModel.PushPhoneDetail" Role="PushPhoneDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PushPhoneType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PushPhoneDetail">
+              <PropertyRef Name="PhoneTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -303,34 +549,91 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ParkingLotsFloor">
+            <EntityTypeMapping TypeName="WbParkSystemModel.ParkingLotsFloor">
+              <MappingFragment StoreEntitySet="ParkingLotsFloor">
+                <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
+                <ScalarProperty Name="Void" ColumnName="Void" />
+                <ScalarProperty Name="MotoLastGrid" ColumnName="MotoLastGrid" />
+                <ScalarProperty Name="MotoTotalGrid" ColumnName="MotoTotalGrid" />
+                <ScalarProperty Name="CarLastGrid" ColumnName="CarLastGrid" />
+                <ScalarProperty Name="CarTotalGrid" ColumnName="CarTotalGrid" />
+                <ScalarProperty Name="FloorName" ColumnName="FloorName" />
+                <ScalarProperty Name="FloorOrder" ColumnName="FloorOrder" />
+                <ScalarProperty Name="ParkingLotsID" ColumnName="ParkingLotsID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WebLoginPower">
+            <EntityTypeMapping TypeName="WbParkSystemModel.WebLoginPower">
+              <MappingFragment StoreEntitySet="WebLoginPower">
+                <ScalarProperty Name="Void" ColumnName="Void" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cars">
+            <EntityTypeMapping TypeName="WbParkSystemModel.Cars">
+              <MappingFragment StoreEntitySet="Cars">
+                <ScalarProperty Name="LastUpdateUTCTime" ColumnName="LastUpdateUTCTime" />
+                <ScalarProperty Name="LastUpdateUserId" ColumnName="LastUpdateUserId" />
+                <ScalarProperty Name="CreateUTCTime" ColumnName="CreateUTCTime" />
+                <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
+                <ScalarProperty Name="Void" ColumnName="Void" />
+                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+                <ScalarProperty Name="ETAId" ColumnName="ETAId" />
+                <ScalarProperty Name="CarType" ColumnName="CarType" />
+                <ScalarProperty Name="CarNumber" ColumnName="CarNumber" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employee">
+            <EntityTypeMapping TypeName="WbParkSystemModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="LastUpdateUTCTime" ColumnName="LastUpdateUTCTime" />
+                <ScalarProperty Name="LastUserId" ColumnName="LastUserId" />
+                <ScalarProperty Name="CreateUTCTime" ColumnName="CreateUTCTime" />
+                <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
+                <ScalarProperty Name="Void" ColumnName="Void" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ETAs">
+            <EntityTypeMapping TypeName="WbParkSystemModel.ETAs">
+              <MappingFragment StoreEntitySet="ETAs">
+                <ScalarProperty Name="LastUpdateUTCTime" ColumnName="LastUpdateUTCTime" />
+                <ScalarProperty Name="LastUpdateUserId" ColumnName="LastUpdateUserId" />
+                <ScalarProperty Name="CreateUTCTime" ColumnName="CreateUTCTime" />
+                <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
+                <ScalarProperty Name="Void" ColumnName="Void" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="PushPhoneDetail">
             <EntityTypeMapping TypeName="WbParkSystemModel.PushPhoneDetail">
               <MappingFragment StoreEntitySet="PushPhoneDetail">
-                <ScalarProperty Name="PhoneTypeID" ColumnName="PhoneTypeID" />
-                <ScalarProperty Name="DeviceID" ColumnName="DeviceID" />
-                <ScalarProperty Name="Token" ColumnName="Token" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="Void" ColumnName="Void" />
                 <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
+                <ScalarProperty Name="Void" ColumnName="Void" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="DeviceID" ColumnName="DeviceID" />
+                <ScalarProperty Name="PhoneTypeID" ColumnName="PhoneTypeID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PushPhoneType">
             <EntityTypeMapping TypeName="WbParkSystemModel.PushPhoneType">
               <MappingFragment StoreEntitySet="PushPhoneType">
-                <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="PushPhone" ColumnName="PushPhone" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="WebLogin">
-            <EntityTypeMapping TypeName="WbParkSystemModel.WebLogin">
-              <MappingFragment StoreEntitySet="WebLogin">
                 <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Account" ColumnName="Account" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="PowerTypeID" ColumnName="PowerTypeID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

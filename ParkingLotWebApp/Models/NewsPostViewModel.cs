@@ -10,21 +10,20 @@ namespace ParkingLotWebApp.Models
     {
         public NewsPostViewModel()
         {
+            IsTop = false;
             LastUpdateUserId = CreateUserId = -1;
             LastUpdateUTCTime = CreateUTCTime = DateTime.Now.ToUniversalTime();
         }
 
-        public NewsPostViewModel(News_Header source)
+        public NewsPostViewModel(AnnouncementDetail source) :base()
         {
-            this.Id = source.Id;
-            this.Caption = source.Caption;
-            this.CreateUserId = source.CreateUserId;
-            this.CreateUTCTime = source.CreateUTCTime;
-            this.EndTime = source.EndTime;
-            this.LastUpdateUserId = source.LastUpdateUserId;
-            this.LastUpdateUTCTime = source.LastUpdateUTCTime;
-            this.StartTime = source.StartTime;
-            this.Void = source.Void;
+            Id = source.No;
+            StartTime = (source.StartDate.HasValue)?source.StartDate.Value: new DateTime(1900,1,1);
+            EndTime = (source.EndDate.HasValue) ? source.EndDate.Value : new DateTime(1900, 1, 1);
+            Caption = source.Title;
+            Content = source.Detail;
+            IsTop = source.ToTop;
+            LastUpdateUTCTime = (source.LastUpdate.HasValue)? source.LastUpdate.Value: new DateTime(1900,1,1);
         }
         [Required]
         public int Id { get; set; }
@@ -72,5 +71,9 @@ namespace ParkingLotWebApp.Models
         [Required]
         [Display(Name = "版本號")]
         public int Version { get; set; }
+
+        [Required]
+        [Display(Name ="置頂")]
+        public bool IsTop { get; set; }
     }
 }

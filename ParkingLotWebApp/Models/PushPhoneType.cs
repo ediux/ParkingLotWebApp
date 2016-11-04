@@ -14,7 +14,16 @@ namespace ParkingLotWebApp.Models
     
     public partial class PushPhoneType
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public PushPhoneType()
+        {
+            this.PushPhoneDetail = new HashSet<PushPhoneDetail>();
+        }
+    
         public byte ID { get; set; }
         public string PushPhone { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PushPhoneDetail> PushPhoneDetail { get; set; }
     }
 }

@@ -4,14 +4,22 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="29735c82c0a1456c87dfa0304d8cb982" Name="Diagram1" ZoomLevel="114">
+      <Diagram DiagramId="29735c82c0a1456c87dfa0304d8cb982" Name="Diagram1" ZoomLevel="74">
         <EntityTypeShape EntityType="WbParkSystemModel.AnnouncementDetail" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WbParkSystemModel.ParkingLotsDetail" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WbParkSystemModel.ParkingLotsRecoed_HT" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WbParkSystemModel.ParkingLotsRecoed_HT" Width="2" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WbParkSystemModel.ParkingLotsRecord" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WbParkSystemModel.PushPhoneDetail" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WbParkSystemModel.PushPhoneType" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WbParkSystemModel.WebLogin" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WbParkSystemModel.ParkingLotsFloor" Width="1.5" PointX="5.375" PointY="6.75" />
+        <EntityTypeShape EntityType="WbParkSystemModel.WebLoginPower" Width="1.5" PointX="0.75" PointY="7.75" />
+        <AssociationConnector Association="WbParkSystemModel.FK_ParkingLotsFloor_ParkingLotsDetail" />
+        <EntityTypeShape EntityType="WbParkSystemModel.Cars" Width="1.5" PointX="9.625" PointY="4" />
+        <EntityTypeShape EntityType="WbParkSystemModel.Employee" Width="1.5" PointX="7.125" PointY="9" />
+        <EntityTypeShape EntityType="WbParkSystemModel.ETAs" Width="1.5" PointX="7.375" PointY="4.375" />
+        <AssociationConnector Association="WbParkSystemModel.FK_Cars_ToEmployee" />
+        <AssociationConnector Association="WbParkSystemModel.FK_Cars_ToETAs" />
+        <EntityTypeShape EntityType="WbParkSystemModel.PushPhoneDetail" Width="1.5" PointX="11.625" PointY="9" />
+        <EntityTypeShape EntityType="WbParkSystemModel.PushPhoneType" Width="1.5" PointX="9.375" PointY="9.25" />
+        <AssociationConnector Association="WbParkSystemModel.FK_PushPhoneDetail_PushPhoneType" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

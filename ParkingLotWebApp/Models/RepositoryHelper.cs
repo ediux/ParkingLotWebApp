@@ -4,21 +4,34 @@ namespace ParkingLotWebApp.Models
 {
 	public static class RepositoryHelper
 	{
-		public static IUnitOfWork GetUnitOfWork()
-		{
-			return new EFUnitOfWork();
-		}
-
 		public static TUnitOfWork GetUnitOfWork<TUnitOfWork>() where TUnitOfWork : IUnitOfWork
         {
             return Activator.CreateInstance<TUnitOfWork>();
         }
 		
-		
+				public static IUnitOfWork GetWbParkSystemEntitiesUnitOfWork()
+		{
+			return new WbParkSystemEntitiesUnitOfWork();
+		}			
+			
+		public static AnnouncementDetailRepository GetAnnouncementDetailRepository()
+		{
+			var repository = new AnnouncementDetailRepository();
+			repository.UnitOfWork = GetWbParkSystemEntitiesUnitOfWork();
+			return repository;
+		}
+
+		public static AnnouncementDetailRepository GetAnnouncementDetailRepository(IUnitOfWork unitOfWork)
+		{
+			var repository = new AnnouncementDetailRepository();
+			repository.UnitOfWork = unitOfWork;
+			return repository;
+		}		
+
 		public static CarsRepository GetCarsRepository()
 		{
 			var repository = new CarsRepository();
-			repository.UnitOfWork = GetUnitOfWork();
+			repository.UnitOfWork = GetWbParkSystemEntitiesUnitOfWork();
 			return repository;
 		}
 
@@ -29,38 +42,10 @@ namespace ParkingLotWebApp.Models
 			return repository;
 		}		
 
-		public static CarsInParkingLotPath_BodyRepository GetCarsInParkingLotPath_BodyRepository()
-		{
-			var repository = new CarsInParkingLotPath_BodyRepository();
-			repository.UnitOfWork = GetUnitOfWork();
-			return repository;
-		}
-
-		public static CarsInParkingLotPath_BodyRepository GetCarsInParkingLotPath_BodyRepository(IUnitOfWork unitOfWork)
-		{
-			var repository = new CarsInParkingLotPath_BodyRepository();
-			repository.UnitOfWork = unitOfWork;
-			return repository;
-		}		
-
-		public static CarsInParkingLotPath_HeaderRepository GetCarsInParkingLotPath_HeaderRepository()
-		{
-			var repository = new CarsInParkingLotPath_HeaderRepository();
-			repository.UnitOfWork = GetUnitOfWork();
-			return repository;
-		}
-
-		public static CarsInParkingLotPath_HeaderRepository GetCarsInParkingLotPath_HeaderRepository(IUnitOfWork unitOfWork)
-		{
-			var repository = new CarsInParkingLotPath_HeaderRepository();
-			repository.UnitOfWork = unitOfWork;
-			return repository;
-		}		
-
 		public static EmployeeRepository GetEmployeeRepository()
 		{
 			var repository = new EmployeeRepository();
-			repository.UnitOfWork = GetUnitOfWork();
+			repository.UnitOfWork = GetWbParkSystemEntitiesUnitOfWork();
 			return repository;
 		}
 
@@ -74,7 +59,7 @@ namespace ParkingLotWebApp.Models
 		public static ETAsRepository GetETAsRepository()
 		{
 			var repository = new ETAsRepository();
-			repository.UnitOfWork = GetUnitOfWork();
+			repository.UnitOfWork = GetWbParkSystemEntitiesUnitOfWork();
 			return repository;
 		}
 
@@ -85,102 +70,104 @@ namespace ParkingLotWebApp.Models
 			return repository;
 		}		
 
-		public static News_BodyRepository GetNews_BodyRepository()
+		public static ParkingLotsDetailRepository GetParkingLotsDetailRepository()
 		{
-			var repository = new News_BodyRepository();
-			repository.UnitOfWork = GetUnitOfWork();
+			var repository = new ParkingLotsDetailRepository();
+			repository.UnitOfWork = GetWbParkSystemEntitiesUnitOfWork();
 			return repository;
 		}
 
-		public static News_BodyRepository GetNews_BodyRepository(IUnitOfWork unitOfWork)
+		public static ParkingLotsDetailRepository GetParkingLotsDetailRepository(IUnitOfWork unitOfWork)
 		{
-			var repository = new News_BodyRepository();
+			var repository = new ParkingLotsDetailRepository();
 			repository.UnitOfWork = unitOfWork;
 			return repository;
 		}		
 
-		public static News_HeaderRepository GetNews_HeaderRepository()
+		public static ParkingLotsFloorRepository GetParkingLotsFloorRepository()
 		{
-			var repository = new News_HeaderRepository();
-			repository.UnitOfWork = GetUnitOfWork();
+			var repository = new ParkingLotsFloorRepository();
+			repository.UnitOfWork = GetWbParkSystemEntitiesUnitOfWork();
 			return repository;
 		}
 
-		public static News_HeaderRepository GetNews_HeaderRepository(IUnitOfWork unitOfWork)
+		public static ParkingLotsFloorRepository GetParkingLotsFloorRepository(IUnitOfWork unitOfWork)
 		{
-			var repository = new News_HeaderRepository();
+			var repository = new ParkingLotsFloorRepository();
 			repository.UnitOfWork = unitOfWork;
 			return repository;
 		}		
 
-		public static ParkingGridRepository GetParkingGridRepository()
+		public static ParkingLotsRecoed_HTRepository GetParkingLotsRecoed_HTRepository()
 		{
-			var repository = new ParkingGridRepository();
-			repository.UnitOfWork = GetUnitOfWork();
+			var repository = new ParkingLotsRecoed_HTRepository();
+			repository.UnitOfWork = GetWbParkSystemEntitiesUnitOfWork();
 			return repository;
 		}
 
-		public static ParkingGridRepository GetParkingGridRepository(IUnitOfWork unitOfWork)
+		public static ParkingLotsRecoed_HTRepository GetParkingLotsRecoed_HTRepository(IUnitOfWork unitOfWork)
 		{
-			var repository = new ParkingGridRepository();
+			var repository = new ParkingLotsRecoed_HTRepository();
 			repository.UnitOfWork = unitOfWork;
 			return repository;
 		}		
 
-		public static ParkingLotAreasRepository GetParkingLotAreasRepository()
+		public static ParkingLotsRecordRepository GetParkingLotsRecordRepository()
 		{
-			var repository = new ParkingLotAreasRepository();
-			repository.UnitOfWork = GetUnitOfWork();
+			var repository = new ParkingLotsRecordRepository();
+			repository.UnitOfWork = GetWbParkSystemEntitiesUnitOfWork();
 			return repository;
 		}
 
-		public static ParkingLotAreasRepository GetParkingLotAreasRepository(IUnitOfWork unitOfWork)
+		public static ParkingLotsRecordRepository GetParkingLotsRecordRepository(IUnitOfWork unitOfWork)
 		{
-			var repository = new ParkingLotAreasRepository();
+			var repository = new ParkingLotsRecordRepository();
 			repository.UnitOfWork = unitOfWork;
 			return repository;
 		}		
 
-		public static ParkingLotFloorsRepository GetParkingLotFloorsRepository()
+		public static PushPhoneDetailRepository GetPushPhoneDetailRepository()
 		{
-			var repository = new ParkingLotFloorsRepository();
-			repository.UnitOfWork = GetUnitOfWork();
+			var repository = new PushPhoneDetailRepository();
+			repository.UnitOfWork = GetWbParkSystemEntitiesUnitOfWork();
 			return repository;
 		}
 
-		public static ParkingLotFloorsRepository GetParkingLotFloorsRepository(IUnitOfWork unitOfWork)
+		public static PushPhoneDetailRepository GetPushPhoneDetailRepository(IUnitOfWork unitOfWork)
 		{
-			var repository = new ParkingLotFloorsRepository();
+			var repository = new PushPhoneDetailRepository();
 			repository.UnitOfWork = unitOfWork;
 			return repository;
 		}		
 
-		public static SensorsRepository GetSensorsRepository()
+		public static PushPhoneTypeRepository GetPushPhoneTypeRepository()
 		{
-			var repository = new SensorsRepository();
-			repository.UnitOfWork = GetUnitOfWork();
+			var repository = new PushPhoneTypeRepository();
+			repository.UnitOfWork = GetWbParkSystemEntitiesUnitOfWork();
 			return repository;
 		}
 
-		public static SensorsRepository GetSensorsRepository(IUnitOfWork unitOfWork)
+		public static PushPhoneTypeRepository GetPushPhoneTypeRepository(IUnitOfWork unitOfWork)
 		{
-			var repository = new SensorsRepository();
+			var repository = new PushPhoneTypeRepository();
 			repository.UnitOfWork = unitOfWork;
 			return repository;
 		}		
 
-		public static vw_ParkingLotGridRemainRepository Getvw_ParkingLotGridRemainRepository()
+		public static WebLoginPowerRepository GetWebLoginPowerRepository()
 		{
-			var repository = new vw_ParkingLotGridRemainRepository();
-			repository.UnitOfWork = GetUnitOfWork();
+			var repository = new WebLoginPowerRepository();
+			repository.UnitOfWork = GetWbParkSystemEntitiesUnitOfWork();
 			return repository;
 		}
 
-		public static vw_ParkingLotGridRemainRepository Getvw_ParkingLotGridRemainRepository(IUnitOfWork unitOfWork)
+		public static WebLoginPowerRepository GetWebLoginPowerRepository(IUnitOfWork unitOfWork)
 		{
-			var repository = new vw_ParkingLotGridRemainRepository();
+			var repository = new WebLoginPowerRepository();
 			repository.UnitOfWork = unitOfWork;
 			return repository;
 		}		
+
 	}
 }
+	
