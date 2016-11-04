@@ -369,15 +369,7 @@ namespace ParkingLotWebApp.Controllers
             var user = UserManager.FindById(User.Identity.GetUserId<int>());
             if (user != null)
             {
-                if (user.ApplicationUserProfileRef.Any())
-                {
-                    var profileref = user.ApplicationUserProfileRef.SingleOrDefault();
-                    if (profileref != null)
-                    {
-                        return profileref.ApplicationUserProfile.PhoneNumber != null;
-                    }
-                }
-
+                return user.PhoneNumber != null;
             }
             return false;
         }
