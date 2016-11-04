@@ -13,19 +13,32 @@ namespace ParkingLotWebApp.Controllers
 {
     public class CarsController : Controller
     {
-        private ParkingLotModelEntities db = new ParkingLotModelEntities();
+        //private ParkingLotModelEntities db = new ParkingLotModelEntities();
+        private ICarsRepository db;
+        private IEmployeeRepository db_emp;
+        private IETAsRepository db_etc;
+
+        public CarsController()
+        {
+            db = RepositoryHelper.GetCarsRepository();
+            db_emp = RepositoryHelper.GetEmployeeRepository(db.UnitOfWork);
+            db_etc = RepositoryHelper.GetETAsRepository(db.UnitOfWork);
+        }
 
         // GET: Cars
         public ActionResult Index()
         {
-            var cars = db.Cars.Where(w=>w.Void==false).Include(c => c.Employee).Include(c => c.ETAs);
+            var cars = db.Where(w => w.Void == false)
+                .Include(c => c.Employee)
+                .Include(c => c.ETAs);
+
             return View(cars
-                .OrderBy(o=>o.CarNumber)
-                .OrderBy(o=>o.CarType)
-                .OrderBy(o=>o.Employee.Code)
-                .OrderBy(o=>o.Employee.Name)
-                .OrderBy(o=>o.ETAs.Code)
-                .OrderByDescending(o=>o.CreateUTCTime)
+                .OrderBy(o => o.CarNumber)
+                .OrderBy(o => o.CarType)
+                .OrderBy(o => o.Employee.Code)
+                .OrderBy(o => o.Employee.Name)
+                .OrderBy(o => o.ETAs.Code)
+                .OrderByDescending(o => o.CreateUTCTime)
                 .ToList());
         }
 
@@ -36,7 +49,7 @@ namespace ParkingLotWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cars cars = db.Cars.Find(id);
+            Cars cars = db.Get(id);
             if (cars == null)
             {
                 return HttpNotFound();
@@ -47,10 +60,10 @@ namespace ParkingLotWebApp.Controllers
         // GET: Cars/Create
         public ActionResult Create()
         {
-            var selectemp = db.Employee.Where(w => w.Void == false).ToList();
+            var selectemp = db_emp.Where(w => w.Void == false).ToList();
             selectemp.Insert(0, null);
-            ViewBag.EmpId = new SelectList(selectemp , "Id", "Name");
-            var selectetc = db.ETAs.Where(w => w.Void == false).ToList();
+            ViewBag.EmpId = new SelectList(selectemp, "Id", "Name");
+            var selectetc = db_etc.Where(w => w.Void == false).ToList();
             selectetc.Insert(0, null);
             ViewBag.ETAId = new SelectList(selectetc, "Id", "Code");
             return View(new Cars());
@@ -65,13 +78,13 @@ namespace ParkingLotWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Cars.Add(cars);
-                db.SaveChanges();
+                db.Add(cars);
+                db.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.EmpId = new SelectList(db.Employee.Where(w => w.Void == false), "Id", "Name", cars.EmpId);
-            ViewBag.ETAId = new SelectList(db.ETAs.Where(w => w.Void == false), "Id", "Code", cars.ETAId);
+            ViewBag.EmpId = new SelectList(db_emp.Where(w => w.Void == false), "Id", "Name", cars.EmpId);
+            ViewBag.ETAId = new SelectList(db_etc.Where(w => w.Void == false), "Id", "Code", cars.ETAId);
             return View(cars);
         }
 
@@ -82,15 +95,15 @@ namespace ParkingLotWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cars cars = db.Cars.Find(id);
+            Cars cars = db.Get(id);
             if (cars == null)
             {
                 return HttpNotFound();
             }
-            var selectemp = db.Employee.Where(w => w.Void == false).ToList();
-            selectemp.Insert(0,null);
-            var selectetc = db.ETAs.Where(w => w.Void == false).ToList();
-            selectetc.Insert(0,null);
+            var selectemp = db_emp.Where(w => w.Void == false).ToList();
+            selectemp.Insert(0, null);
+            var selectetc = db_etc.Where(w => w.Void == false).ToList();
+            selectetc.Insert(0, null);
             ViewBag.EmpId = new SelectList(selectemp, "Id", "Name", cars.EmpId);
             ViewBag.ETAId = new SelectList(selectetc, "Id", "Code", cars.ETAId);
             return View(cars);
@@ -105,13 +118,13 @@ namespace ParkingLotWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(cars).State = EntityState.Modified;
-                db.SaveChanges();
+                db.UnitOfWork.Context.Entry(cars).State = EntityState.Modified;
+                db.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
-            var selectemp = db.Employee.Where(w => w.Void == false).ToList();
+            var selectemp = db_emp.Where(w => w.Void == false).ToList();
             selectemp.Insert(0, new Employee() { Id = -1, Name = "(無)" });
-            var selectetc = db.ETAs.Where(w => w.Void == false).ToList();
+            var selectetc = db_etc.Where(w => w.Void == false).ToList();
             selectetc.Insert(0, new ETAs() { Id = -1, Code = "(無)" });
             ViewBag.EmpId = new SelectList(selectemp, "Id", "Name", cars.EmpId);
             ViewBag.ETAId = new SelectList(selectetc, "Id", "Code", cars.ETAId);
@@ -125,7 +138,7 @@ namespace ParkingLotWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cars cars = db.Cars.Find(id);
+            Cars cars = db.Get(id);
             if (cars == null)
             {
                 return HttpNotFound();
@@ -138,11 +151,12 @@ namespace ParkingLotWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Cars cars = db.Cars.Find(id);
+            Cars cars = db.Get(id);
             cars.Void = true;
             cars.LastUpdateUserId = User.Identity.GetUserId<int>();
             cars.LastUpdateUTCTime = DateTime.Now.ToUniversalTime();
-            db.SaveChanges();
+            db.UnitOfWork.Context.Entry(cars).State = EntityState.Modified;
+            db.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
 
