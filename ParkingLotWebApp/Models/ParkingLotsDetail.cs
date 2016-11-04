@@ -28,8 +28,6 @@ namespace ParkingLotWebApp.Models
         public string Charge { get; set; }
         public double Longitude { get; set; }
         public double Latitude { get; set; }
-        public int CarGrid { get; set; }
-        public int MotoGrid { get; set; }
         public bool Void { get; set; }
         public Nullable<System.DateTime> LastUpdate { get; set; }
     
