@@ -30,7 +30,6 @@ namespace ParkingLotWebApp.Models
         public virtual DbSet<ParkingLotsRecoed_HT> ParkingLotsRecoed_HT { get; set; }
         public virtual DbSet<ParkingLotsRecord> ParkingLotsRecord { get; set; }
         public virtual DbSet<ParkingLotsFloor> ParkingLotsFloor { get; set; }
-        public virtual DbSet<WebLoginPower> WebLoginPower { get; set; }
         public virtual DbSet<Cars> Cars { get; set; }
         public virtual DbSet<Employee> Employee { get; set; }
         public virtual DbSet<ETAs> ETAs { get; set; }

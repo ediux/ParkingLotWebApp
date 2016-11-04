@@ -69,8 +69,6 @@
           <Property Name="Charge" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Longitude" Type="float" Nullable="false" />
           <Property Name="Latitude" Type="float" Nullable="false" />
-          <Property Name="CarGrid" Type="int" Nullable="false" />
-          <Property Name="MotoGrid" Type="int" Nullable="false" />
           <Property Name="Void" Type="bit" Nullable="false" />
           <Property Name="LastUpdate" Type="datetime" />
         </EntityType>
@@ -144,15 +142,9 @@
           <Property Name="PushPhone" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <!--產生期間發現錯誤:
+警告 6002: 資料表/檢視 'WbParkSystem.dbo.WebLogin' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
+        <!--產生期間發現錯誤:
 警告 6002: 資料表/檢視 'WbParkSystem.dbo.WebLoginPower' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
-        <EntityType Name="WebLoginPower">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="10" />
-          <Property Name="Void" Type="bit" />
-        </EntityType>
         <Association Name="FK_Cars_ToEmployee">
           <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
           <End Role="Cars" Type="Self.Cars" Multiplicity="*" />
@@ -239,13 +231,6 @@
     [ParkingLotsRecord].[Count] AS [Count]
     FROM [dbo].[ParkingLotsRecord] AS [ParkingLotsRecord]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="WebLoginPower" EntityType="Self.WebLoginPower" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [WebLoginPower].[ID] AS [ID], 
-    [WebLoginPower].[Name] AS [Name], 
-    [WebLoginPower].[Void] AS [Void]
-    FROM [dbo].[WebLoginPower] AS [WebLoginPower]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_Cars_ToEmployee" Association="Self.FK_Cars_ToEmployee">
             <End Role="Employee" EntitySet="Employee" />
             <End Role="Cars" EntitySet="Cars" />
@@ -291,8 +276,6 @@
           <Property Name="Charge" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Longitude" Type="Double" Nullable="false" />
           <Property Name="Latitude" Type="Double" Nullable="false" />
-          <Property Name="CarGrid" Type="Int32" Nullable="false" />
-          <Property Name="MotoGrid" Type="Int32" Nullable="false" />
           <Property Name="Void" Type="Boolean" Nullable="false" />
           <Property Name="LastUpdate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="ParkingLotsFloor" Relationship="WbParkSystemModel.FK_ParkingLotsFloor_ParkingLotsDetail" FromRole="ParkingLotsDetail" ToRole="ParkingLotsFloor" />
@@ -323,7 +306,6 @@
           <EntitySet Name="ParkingLotsRecoed_HT" EntityType="Self.ParkingLotsRecoed_HT" />
           <EntitySet Name="ParkingLotsRecord" EntityType="Self.ParkingLotsRecord" />
           <EntitySet Name="ParkingLotsFloor" EntityType="WbParkSystemModel.ParkingLotsFloor" />
-          <EntitySet Name="WebLoginPower" EntityType="WbParkSystemModel.WebLoginPower" />
           <AssociationSet Name="FK_ParkingLotsFloor_ParkingLotsDetail" Association="WbParkSystemModel.FK_ParkingLotsFloor_ParkingLotsDetail">
             <End Role="ParkingLotsDetail" EntitySet="ParkingLotsDetail" />
             <End Role="ParkingLotsFloor" EntitySet="ParkingLotsFloor" />
@@ -369,14 +351,6 @@
           <Property Name="Void" Type="Boolean" Nullable="false" />
           <Property Name="LastUpdate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="ParkingLotsDetail" Relationship="WbParkSystemModel.FK_ParkingLotsFloor_ParkingLotsDetail" FromRole="ParkingLotsFloor" ToRole="ParkingLotsDetail" />
-        </EntityType>
-        <EntityType Name="WebLoginPower">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Void" Type="Boolean" />
         </EntityType>
         <Association Name="FK_ParkingLotsFloor_ParkingLotsDetail">
           <End Type="WbParkSystemModel.ParkingLotsDetail" Role="ParkingLotsDetail" Multiplicity="1" />
@@ -522,8 +496,6 @@
                 <ScalarProperty Name="Charge" ColumnName="Charge" />
                 <ScalarProperty Name="Longitude" ColumnName="Longitude" />
                 <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="CarGrid" ColumnName="CarGrid" />
-                <ScalarProperty Name="MotoGrid" ColumnName="MotoGrid" />
                 <ScalarProperty Name="Void" ColumnName="Void" />
                 <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
               </MappingFragment>
@@ -561,15 +533,6 @@
                 <ScalarProperty Name="FloorName" ColumnName="FloorName" />
                 <ScalarProperty Name="FloorOrder" ColumnName="FloorOrder" />
                 <ScalarProperty Name="ParkingLotsID" ColumnName="ParkingLotsID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="WebLoginPower">
-            <EntityTypeMapping TypeName="WbParkSystemModel.WebLoginPower">
-              <MappingFragment StoreEntitySet="WebLoginPower">
-                <ScalarProperty Name="Void" ColumnName="Void" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
