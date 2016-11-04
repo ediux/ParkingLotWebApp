@@ -9,47 +9,7 @@ namespace My.Core.Infrastructures.Implementations.Models
 {
     public partial class ApplicationUserRepository : IApplicationUserRepository
     {
-        // 此屬性為注入式相依性使用
-        // 如無使用DI則會在第一次取用時初始化
-        private IUserOperationLogRepository _userOperationLogRepository;
-        public IUserOperationLogRepository UserOperationLogRepository
-        {
-            get
-            {
-                if (_userOperationLogRepository == null)
-                {
-                    _userOperationLogRepository = RepositoryHelper.GetUserOperationLogRepository();
-                    _userOperationLogRepository.UnitOfWork = this.UnitOfWork; //設定使用相同的資料庫連線管理物件
-                }
-
-                return _userOperationLogRepository;
-            }
-            set { _userOperationLogRepository = value; }
-        }
-
-        public async Task<ApplicationUser> ChangePassword(ApplicationUser UpdatedUserData)
-        {
-            var currentLoginedUser = getCurrentLoginedUser();
-
-            try
-            {
-                await WriteUserOperationLogAsync(OperationCodeEnum.Account_ChangePassword_Start, currentLoginedUser);
-
-                UnitOfWork.Context.Entry<ApplicationUser>(UpdatedUserData).State = System.Data.Entity.EntityState.Modified;
-
-                UnitOfWork.Commit();
-
-                await WriteUserOperationLogAsync(OperationCodeEnum.Account_ChangePassword_End_Success, currentLoginedUser);
-
-                return Reload(UpdatedUserData);
-            }
-            catch (Exception ex)
-            {
-                WriteErrorLog(ex);
-                await WriteUserOperationLogAsync(OperationCodeEnum.Account_ChangePassword_End_Fail, currentLoginedUser);
-                throw ex;
-            }
-        }
+  
 
         public async Task<ApplicationUser> ChangePasswordAsync(ApplicationUser UpdateUserData)
         {
@@ -81,15 +41,7 @@ namespace My.Core.Infrastructures.Implementations.Models
 
             try
             {
-
-                IQueryable<ApplicationUser> queryset = ObjectSet.Include(i => i.ApplicationUserProfileRef);
-
-                var result = from q in ApplicationUserProfileRefRepository.All()
-                             where q.ApplicationUserProfile.EMail.Equals(email, StringComparison.InvariantCultureIgnoreCase)
-                             && q.Void == false
-                             select q.ApplicationUser;
-
-                ApplicationUser founduser = result.SingleOrDefault();
+                ApplicationUser founduser = Where(w => w.EMail.Equals(email, StringComparison.InvariantCultureIgnoreCase)).SingleOrDefault();
 
                 return founduser;
             }
@@ -101,29 +53,20 @@ namespace My.Core.Infrastructures.Implementations.Models
             }
         }
 
-        public Task<ApplicationUser> FindByEmailAsync(string email)
+        public async Task<ApplicationUser> FindByEmailAsync(string email)
         {
             var currentLoginedUser = getCurrentLoginedUser();
 
             try
             {
+                ApplicationUser founduser = await Where(w => w.EMail.Equals(email, StringComparison.InvariantCultureIgnoreCase)).SingleOrDefaultAsync();
 
-                IQueryable<ApplicationUser> queryset = All().Include(i => i.ApplicationUserProfileRef);
-
-                var result = from q in queryset
-                             from profilerefs in q.ApplicationUserProfileRef
-                             where profilerefs.ApplicationUserProfile.EMail.Equals(email, StringComparison.InvariantCultureIgnoreCase)
-                             && q.Void == false
-                             select q;
-
-                ApplicationUser founduser = result.SingleOrDefault();
-
-                return Task.FromResult(founduser);
+                return founduser;
             }
             catch (Exception ex)
             {
                 WriteErrorLog(ex);
-                Task.Run(() => WriteUserOperationLogAsync(OperationCodeEnum.Account_FindByEmail_End_Fail, currentLoginedUser));
+                await Task.Run(() => WriteUserOperationLogAsync(OperationCodeEnum.Account_FindByEmail_End_Fail, currentLoginedUser));
                 throw ex;
             }
         }
@@ -284,9 +227,9 @@ namespace My.Core.Infrastructures.Implementations.Models
 
                 if (_founduser != null)
                 {
-                    ApplicationUserProfileRef _profile = _founduser.ApplicationUserProfileRef.Single();
-                    return (_profile.ApplicationUserProfile.EMailConfirmed
-                        || _profile.ApplicationUserProfile.PhoneConfirmed);
+
+                    return (_founduser.EMailConfirmed
+                        || _founduser.PhoneConfirmed);
                 }
 
                 return false;
@@ -309,9 +252,9 @@ namespace My.Core.Infrastructures.Implementations.Models
 
                 if (_founduser != null)
                 {
-                    ApplicationUserProfileRef _profile = _founduser.ApplicationUserProfileRef.Single();
-                    return (_profile.ApplicationUserProfile.EMailConfirmed
-                        || _profile.ApplicationUserProfile.PhoneConfirmed);
+
+                    return (_founduser.EMailConfirmed
+                        || _founduser.PhoneConfirmed);
                 }
 
                 return false;
@@ -433,40 +376,20 @@ namespace My.Core.Infrastructures.Implementations.Models
         /// <param name="User">User.</param>
         protected async virtual Task WriteUserOperationLogAsync(OperationCodeEnum code, ApplicationUser User)
         {
-            try
-            {
-                if (User == null)
-                {
-                    return;
+            await Task.Run(() =>
+             {
+                 try
+                 {
+                     return;
+                    //_unitofwork.GetEntry<ApplicationUser>(User).State = EntityState.Modified;
+
                 }
+                 catch (Exception ex)
+                 {
+                     WriteErrorLog(ex);
+                 }
+             });
 
-                string _url = string.Empty;
-                string _body = string.Empty;
-
-                if (System.Web.HttpContext.Current != null)
-                {
-                    _url = System.Web.HttpContext.Current.Request.Url.AbsoluteUri;
-                    _body = Newtonsoft.Json.JsonConvert.SerializeObject(System.Web.HttpContext.Current.Request.Form);
-                }
-
-                _userOperationLogRepository.Add(new UserOperationLog()
-                {
-                    Body = _body,
-                    UserId = User.Id,
-                    LogTime = DateTime.Now,
-                    OpreationCode = (int)code,
-                    URL = _url
-                });
-
-                await UnitOfWork.CommitAsync();
-
-                //_unitofwork.GetEntry<ApplicationUser>(User).State = EntityState.Modified;
-
-            }
-            catch (Exception ex)
-            {
-                WriteErrorLog(ex);
-            }
 
         }
 
@@ -497,36 +420,43 @@ namespace My.Core.Infrastructures.Implementations.Models
             }
         }
 
-        ApplicationUser IApplicationUserRepository.ChangePassword(ApplicationUser UpdatedUserData)
+
+
+        public Task SetEmailAsync(ApplicationUser user, string email)
         {
             throw new NotImplementedException();
         }
-        #endregion
 
-        private IApplicationUserProfileRefRepository _applicationUserProfileRefRepository;
-        public IApplicationUserProfileRefRepository ApplicationUserProfileRefRepository
+        public ApplicationUser ChangePassword(ApplicationUser UpdatedUserData)
         {
-            get
-            {
-                if (_applicationUserProfileRefRepository == null)
-                {
-                    _applicationUserProfileRefRepository = RepositoryHelper.GetApplicationUserProfileRefRepository();
-                    _applicationUserProfileRefRepository.UnitOfWork = UnitOfWork;
-                }
+            var currentLoginedUser = getCurrentLoginedUser();
 
-                return _applicationUserProfileRefRepository;
-            }
-            set
+            try
             {
-                _applicationUserProfileRefRepository = value;
-                _applicationUserProfileRefRepository.UnitOfWork = UnitOfWork;
+                //await WriteUserOperationLogAsync(OperationCodeEnum.Account_ChangePassword_Start, currentLoginedUser);
+
+                UnitOfWork.Context.Entry<ApplicationUser>(UpdatedUserData).State = System.Data.Entity.EntityState.Modified;
+
+                UnitOfWork.Commit();
+
+               // await WriteUserOperationLogAsync(OperationCodeEnum.Account_ChangePassword_End_Success, currentLoginedUser);
+
+                return Reload(UpdatedUserData);
+            }
+            catch (Exception ex)
+            {
+                WriteErrorLog(ex);
+              //  await WriteUserOperationLogAsync(OperationCodeEnum.Account_ChangePassword_End_Fail, currentLoginedUser);
+                throw ex;
             }
         }
+        #endregion
+
+
     }
 
     public partial interface IApplicationUserRepository : IRepositoryBase<ApplicationUser>
     {
-        IApplicationUserProfileRefRepository ApplicationUserProfileRefRepository { get; set; }
         /// <summary>
         /// 變更密碼
         /// </summary>
@@ -594,8 +524,10 @@ namespace My.Core.Infrastructures.Implementations.Models
 
         Task<int> ResetPasswordWithTokenAsync(string Token, string newPassword);
 
+        ApplicationUser FindByEmail(string email);
 
+        Task<ApplicationUser> FindByEmailAsync(string email);
 
-        IUserOperationLogRepository UserOperationLogRepository { get; set; }
+        Task SetEmailAsync(ApplicationUser user, string email);
     }
 }

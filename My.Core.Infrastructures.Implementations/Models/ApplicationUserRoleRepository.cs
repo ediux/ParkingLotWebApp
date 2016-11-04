@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace My.Core.Infrastructures.Implementations.Models
-{
-    public partial class ApplicationUserRoleRepository : EFRepository<ApplicationUserRole>, IApplicationUserRoleRepository
-    {
-        
-    }
+{   
+	public  partial class ApplicationUserRoleRepository : EFRepository<ApplicationUserRole>, IApplicationUserRoleRepository
+	{
 
-    public  partial interface IApplicationUserRoleRepository : IRepositoryBase<ApplicationUserRole>
+	}
+
+	public  partial interface IApplicationUserRoleRepository : IRepositoryBase<ApplicationUserRole>
 	{
 
 	}

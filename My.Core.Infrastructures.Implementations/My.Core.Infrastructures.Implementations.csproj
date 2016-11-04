@@ -110,24 +110,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ApplicationDbModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\ApplicationGroup.cs">
-      <DependentUpon>ApplicationDbModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ApplicationGroup.Partial.cs">
-      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ApplicationGroupRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ApplicationGroupTree.cs">
-      <DependentUpon>ApplicationDbModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ApplicationGroupTree.Partial.cs">
-      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ApplicationGroupTreeRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\ApplicationRole.Identity.Partial.cs" />
     <Compile Include="Models\ApplicationRole.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
@@ -138,6 +121,7 @@
     <Compile Include="Models\ApplicationUser.cs">
       <DependentUpon>ApplicationDbModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ApplicationUser.Identify.Partail.cs" />
     <Compile Include="Models\ApplicationUser.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
@@ -150,12 +134,6 @@
     <Compile Include="Models\ApplicationUserClaimRepository.cs">
       <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ApplicationUserGroup.Partial.cs">
-      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ApplicationUserGroupRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\ApplicationUserLogin.cs">
       <DependentUpon>ApplicationDbModel.tt</DependentUpon>
     </Compile>
@@ -165,23 +143,6 @@
     <Compile Include="Models\ApplicationUserLoginRepository.cs">
       <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ApplicationUserProfile.Partial.cs">
-      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ApplicationUserProfileRef.cs">
-      <DependentUpon>ApplicationDbModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ApplicationUserProfileRef.Partial.cs">
-      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ApplicationUserProfileRefRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ApplicationUserProfileRefRepository.partial.cs" />
-    <Compile Include="Models\ApplicationUserProfileRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ApplicationUserProfileRepository.partial.cs" />
     <Compile Include="Models\ApplicationUserRepository.cs">
       <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
     </Compile>
@@ -222,36 +183,8 @@
     <Compile Include="Models\RepositoryHelper.cs">
       <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\UserOperationCodeDefine.cs">
-      <SubType>Code</SubType>
-      <DependentUpon>ApplicationDbModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserOperationCodeDefine.Partial.cs">
-      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserOperationCodeDefineRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserOperationCodeDefineRepository.partial.cs" />
-    <Compile Include="Models\UserOperationLog.cs">
-      <SubType>Code</SubType>
-      <DependentUpon>ApplicationDbModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserOperationLog.Partial.cs">
-      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserOperationLogRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserOperationLogRepository.partial.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\ApplicationRole.cs">
-      <DependentUpon>ApplicationDbModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ApplicationUserGroup.cs">
-      <DependentUpon>ApplicationDbModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ApplicationUserProfile.cs">
       <DependentUpon>ApplicationDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Enums\OperationCodeEnum.cs" />

@@ -47,7 +47,7 @@ namespace My.Core.Infrastructures.Implementations.Models
         public async Task DeleteAsync(ApplicationUser user)
         {
             user.Void = true;
-            userrolerepo.UnitOfWork.Context.Entry<ApplicationUser>(user).State = EntityState.Modified;
+            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
             await userrolerepo.UnitOfWork.CommitAsync();
         }
 
@@ -144,23 +144,18 @@ namespace My.Core.Infrastructures.Implementations.Models
         public async Task<ApplicationUser> FindByEmailAsync(string email)
         {
             var findemail = await userrolerepo
-                               .ApplicationUserRepository
-                               .ApplicationUserProfileRefRepository
-                               .UserProfileRepository
-                               .FindByEmailAsync(email);
+                .ApplicationUserRepository
+                .FindByEmailAsync(email);
             return findemail;
-
         }
 
         public Task<string> GetEmailAsync(ApplicationUser user)
         {
-            return Task<string>.Run(() =>
+            return Task.Run(() =>
             {
                 try
                 {
-                    var userinroles = (from q in user.ApplicationUserProfileRef
-                                       select q.ApplicationUserProfile.EMail).SingleOrDefault();
-                    return userinroles;
+                    return user.EMail;
                 }
                 catch (Exception)
                 {
@@ -174,9 +169,7 @@ namespace My.Core.Infrastructures.Implementations.Models
         {
             return Task<bool>.Run(() =>
             {
-                var userinroles = (from q in user.ApplicationUserProfileRef
-                                   select q.ApplicationUserProfile.EMailConfirmed);
-                return userinroles.Single();
+                return user.EMailConfirmed;
             });
         }
 
@@ -185,10 +178,9 @@ namespace My.Core.Infrastructures.Implementations.Models
             //userrolerepo.ApplicationUserRepository.ApplicationUserProfileRefRepository.UserProfileRepository.
             return Task.Run(() =>
             {
-                var useremail = user.ApplicationUserProfileRef.Single();
-                useremail.ApplicationUserProfile.EMail = email;
-                useremail.ApplicationUserProfile.LastUpdateTime = DateTime.Now.ToUniversalTime();
-                userrolerepo.UnitOfWork.Context.Entry(useremail).State = EntityState.Modified;
+                user.EMail = email;
+                user.LastUpdateTime = DateTime.Now.ToUniversalTime();
+                userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
                 userrolerepo.UnitOfWork.Commit();
             });
         }
@@ -197,10 +189,10 @@ namespace My.Core.Infrastructures.Implementations.Models
         {
             return Task.Run(() =>
             {
-                var useremail = user.ApplicationUserProfileRef.Single();
-                useremail.ApplicationUserProfile.EMailConfirmed = confirmed;
-                useremail.ApplicationUserProfile.LastUpdateTime = DateTime.Now.ToUniversalTime();
-                userrolerepo.UnitOfWork.Context.Entry(useremail).State = EntityState.Modified;
+
+                user.EMailConfirmed = confirmed;
+                user.LastUpdateTime = DateTime.Now.ToUniversalTime();
+                userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
                 userrolerepo.UnitOfWork.Commit();
             });
         }
@@ -379,12 +371,9 @@ namespace My.Core.Infrastructures.Implementations.Models
         #region Phone Number Store
         public Task<string> GetPhoneNumberAsync(ApplicationUser user)
         {
-            return Task<string>.Run(() =>
+            return Task.Run(() =>
             {
-                var result = (from q in user.ApplicationUserProfileRef
-                              select q.ApplicationUserProfile.PhoneNumber).SingleOrDefault();
-
-                return result;
+                return user.PhoneNumber;
             });
         }
 
@@ -392,16 +381,13 @@ namespace My.Core.Infrastructures.Implementations.Models
         {
             return Task<bool>.Run(() =>
             {
-                var result = (from q in user.ApplicationUserProfileRef
-                              select q.ApplicationUserProfile.PhoneConfirmed).Single();
-                return result;
+                return user.PhoneConfirmed;
             });
         }
 
         public async Task SetPhoneNumberAsync(ApplicationUser user, string phoneNumber)
         {
-            var profile = (from q in user.ApplicationUserProfileRef
-                           select q.ApplicationUserProfile).Single();
+            var profile = user;
 
             profile.PhoneNumber = phoneNumber;
             profile.PhoneConfirmed = true;
@@ -416,8 +402,7 @@ namespace My.Core.Infrastructures.Implementations.Models
 
         public async Task SetPhoneNumberConfirmedAsync(ApplicationUser user, bool confirmed)
         {
-            var profile = (from q in user.ApplicationUserProfileRef
-                           select q.ApplicationUserProfile).Single();
+            var profile = user;
 
             profile.PhoneConfirmed = confirmed;
 
@@ -431,7 +416,7 @@ namespace My.Core.Infrastructures.Implementations.Models
         #region Security Stamp Store
         public Task<string> GetSecurityStampAsync(ApplicationUser user)
         {
-            return Task<string>.Run(() =>
+            return Task.Run(() =>
             {
                 return user.SecurityStamp;
             });

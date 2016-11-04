@@ -77,10 +77,10 @@ namespace My.Core.Infrastructures.Implementations
                 if (await CheckAccountIsExist(user))
                     return IdentityResult.Failed("此帳號已存在!");
 
-                user.Password = password;
+                user.Password = "";
                 user.PasswordHash = PasswordHasher.HashPassword(password);
-                user.ResetPasswordToken = await GeneratePasswordResetTokenAsync(user.Id);
-                await base.CreateAsync(user);
+                // user.ResetPasswordToken = await GeneratePasswordResetTokenAsync(user.Id);
+                await Store.CreateAsync(user);
                 return IdentityResult.Success;
             }
             catch (Exception ex)
