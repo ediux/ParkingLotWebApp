@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ParkingLotWebApp.Models.ParkingLotAreas>
+﻿@model IEnumerable<ParkingLotWebApp.Models.ParkingLotsDetail>
 
 @{
     ViewBag.Title = Resources.WebPages.ParkingLotAreas_Index;
@@ -15,20 +15,20 @@
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.GPS)
-        </th>*@
         <th>
-            @Html.DisplayNameFor(model => model.CreateUserId)
+            @Html.DisplayNameFor(model => model.Address)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CreateUTCTime)
+            @Html.DisplayNameFor(model => model.Tel)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LastUpdateUserId)
+            @Html.DisplayNameFor(model => model.Period)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LastUpdateUTCTime)
+            @Html.DisplayNameFor(model => model.Charge)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastUpdate)
         </th>
         <th></th>
     </tr>
@@ -38,25 +38,25 @@
         <td>
             @Html.DisplayFor(modelItem => item.Name)
         </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.GPS)
-        </td>*@
         <td>
-            @Html.DisplayFor(modelItem => item.CreateUserId)
+            @Html.DisplayFor(modelItem => item.Address)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.CreateUTCTime)
+            @Html.DisplayFor(modelItem => item.Tel)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.LastUpdateUserId)
+            @Html.DisplayFor(modelItem => item.Period)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.LastUpdateUTCTime)
+            @Html.ActionLink(Resources.WebPages.ParkingLotsDetail_Charge,"ShowCharge",new { id=item.ID })
         </td>
         <td>
-            @Html.ActionLink(Resources.Common.Edit, "Edit", new { id=item.Id }) |
-            @Html.ActionLink(Resources.Common.Delete, "Delete", new { id=item.Id }) |
-            @Html.ActionLink(Resources.WebPages.ParkingLotAreas_FloorsLink, "Index", "ParkingLotFloors", new { id = item.Id, returnUrl = Url.Action("Index", "ParkingLotAreas", null) }, null)
+            @Html.DisplayFor(modelItem => item.LastUpdate)
+        </td>
+        <td>
+            @Html.ActionLink(Resources.Common.Edit, "Edit", new { id=item.ID }) |
+            @Html.ActionLink(Resources.Common.Delete, "Delete", new { id=item.ID }) |
+            @Html.ActionLink(Resources.WebPages.ParkingLotAreas_FloorsLink, "Index", "ParkingLotFloors", new { id = item.ID, returnUrl = Url.Action("Index", "ParkingLotAreas", null) }, null)
         </td>
     </tr>
 }
