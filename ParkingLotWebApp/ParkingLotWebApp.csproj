@@ -40,6 +40,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AntiXssLibrary, Version=4.3.0.0, Culture=neutral, PublicKeyToken=d127efab8a9c114f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AntiXSS.4.3.0\lib\net40\AntiXssLibrary.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="HtmlSanitizationLibrary, Version=4.3.0.0, Culture=neutral, PublicKeyToken=d127efab8a9c114f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AntiXSS.4.3.0\lib\net40\HtmlSanitizationLibrary.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -167,6 +175,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Code\AjaxValidateAntiForgeryTokenAttribute.cs" />
+    <Compile Include="App_Code\SecurityHelper.cs" />
     <Compile Include="App_GlobalResources\Common.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -323,9 +332,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>WbParkSystemModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\WebLoginPower.cs">
-      <DependentUpon>WbParkSystemModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\WebLoginPower.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
@@ -913,16 +919,11 @@
     <Content Include="Views\ParkingLotAreas\Details.cshtml" />
     <Content Include="Views\ParkingLotAreas\Edit.cshtml" />
     <Content Include="Views\ParkingLotAreas\Index.cshtml" />
-    <Content Include="Views\ParkingLotFloors\Create.cshtml" />
-    <Content Include="Views\ParkingLotFloors\Delete.cshtml" />
-    <Content Include="Views\ParkingLotFloors\Details.cshtml" />
-    <Content Include="Views\ParkingLotFloors\Edit.cshtml" />
-    <Content Include="Views\ParkingLotFloors\Index.cshtml" />
-    <Content Include="Views\ParkingGrids\Create.cshtml" />
-    <Content Include="Views\ParkingGrids\Delete.cshtml" />
-    <Content Include="Views\ParkingGrids\Details.cshtml" />
-    <Content Include="Views\ParkingGrids\Edit.cshtml" />
-    <Content Include="Views\ParkingGrids\Index.cshtml" />
+    <Content Include="Views\ParkingLotsFloor\Create.cshtml" />
+    <Content Include="Views\ParkingLotsFloor\Delete.cshtml" />
+    <Content Include="Views\ParkingLotsFloor\Details.cshtml" />
+    <Content Include="Views\ParkingLotsFloor\Edit.cshtml" />
+    <Content Include="Views\ParkingLotsFloor\Index.cshtml" />
     <Content Include="Views\Employees\Create.cshtml" />
     <Content Include="Views\Employees\Delete.cshtml" />
     <Content Include="Views\Employees\Details.cshtml" />
@@ -938,11 +939,6 @@
     <Content Include="Views\ETAs\Details.cshtml" />
     <Content Include="Views\ETAs\Edit.cshtml" />
     <Content Include="Views\ETAs\Index.cshtml" />
-    <Content Include="Views\Sensors\Create.cshtml" />
-    <Content Include="Views\Sensors\Delete.cshtml" />
-    <Content Include="Views\Sensors\Details.cshtml" />
-    <Content Include="Views\Sensors\Edit.cshtml" />
-    <Content Include="Views\Sensors\Index.cshtml" />
     <Content Include="Views\News\Create.cshtml" />
     <Content Include="Views\News\Delete.cshtml" />
     <Content Include="Views\News\Edit.cshtml" />
@@ -957,7 +953,7 @@
     <Content Include="Views\Shared\EditorTemplates\UserIDMappingDisplay.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\VoidDisplay.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\UTCLocalTimeDisplay.cshtml" />
-    <Content Include="Views\ParkingLotFloors\ListRemainParkingGridAmounts.cshtml" />
+    <Content Include="Views\ParkingLotsFloor\ListRemainParkingGridAmounts.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Html.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\UTCLocalDateDisplay.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\UTCLocalDateDisplay.cshtml" />

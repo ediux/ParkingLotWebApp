@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<ParkingLotWebApp.Models.Employee>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = Resources.WebPages.Employees_Index;
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink(Resources.WebPages.Employees_Create_New, "Create")
 </p>
 <table class="table">
     <tr>
@@ -27,7 +27,7 @@
             @Html.DisplayNameFor(model => model.CreateUTCTime)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LastUpdateUserId)
+            @Html.DisplayNameFor(model => model.LastUserId)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.LastUpdateUTCTime)
@@ -53,15 +53,15 @@
             @Html.DisplayFor(modelItem => item.CreateUTCTime)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.LastUpdateUserId)
+            @Html.DisplayFor(modelItem => item.LastUserId)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.LastUpdateUTCTime)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink(Resources.Common.Edit, "Edit", new { id=item.Id }) |
+            @Html.ActionLink(Resources.Common.Details, "Details", new { id=item.Id }) |
+            @Html.ActionLink(Resources.Common.Delete, "Delete", new { id=item.Id })
         </td>
     </tr>
 }

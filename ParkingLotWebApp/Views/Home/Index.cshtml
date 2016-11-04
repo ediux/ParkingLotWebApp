@@ -31,15 +31,22 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th colspan="2">@Model.Areas[key]</th>
+                                @if (Model.RemainSummary[key].All(w => w.NoneFloor == false))
+                                {
+                                    <th colspan="3">@Model.Areas[key]</th>
+                                }
+                                else
+                                {
+                                    <th colspan="2">@Model.Areas[key]</th>
+                                }
                             </tr>
                             <tr>
                                 @if (Model.RemainSummary[key].All(p => p.NoneFloor == false))
                                 {
                                     <th>樓層</th>
                                 }
-                                <th>剩餘汽車車格位</th>
-                                <th>剩餘機車車格位</th>
+                                <th>@Resources.WebPages.ParkingLotsFloor_CarLastGrid</th>
+                                <th>@Resources.WebPages.ParkingLotsFloor_MotoLastGrid</th>
                             </tr>
                         </thead>
                         <tbody>

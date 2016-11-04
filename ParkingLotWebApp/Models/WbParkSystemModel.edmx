@@ -72,19 +72,9 @@
           <Property Name="Void" Type="bit" Nullable="false" />
           <Property Name="LastUpdate" Type="datetime" />
         </EntityType>
-        <!--產生期間發現錯誤:
-警告 6002: 資料表/檢視 'WbParkSystem.dbo.ParkingLotsFloor' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
         <EntityType Name="ParkingLotsFloor">
           <Key>
             <PropertyRef Name="ID" />
-            <PropertyRef Name="ParkingLotsID" />
-            <PropertyRef Name="FloorOrder" />
-            <PropertyRef Name="FloorName" />
-            <PropertyRef Name="CarTotalGrid" />
-            <PropertyRef Name="CarLastGrid" />
-            <PropertyRef Name="MotoTotalGrid" />
-            <PropertyRef Name="MotoLastGrid" />
-            <PropertyRef Name="Void" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParkingLotsID" Type="int" Nullable="false" />
@@ -195,22 +185,9 @@
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ETAs" EntityType="Self.ETAs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParkingLotsDetail" EntityType="Self.ParkingLotsDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParkingLotsFloor" EntityType="Self.ParkingLotsFloor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PushPhoneDetail" EntityType="Self.PushPhoneDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PushPhoneType" EntityType="Self.PushPhoneType" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ParkingLotsFloor" EntityType="Self.ParkingLotsFloor" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [ParkingLotsFloor].[ID] AS [ID], 
-    [ParkingLotsFloor].[ParkingLotsID] AS [ParkingLotsID], 
-    [ParkingLotsFloor].[FloorOrder] AS [FloorOrder], 
-    [ParkingLotsFloor].[FloorName] AS [FloorName], 
-    [ParkingLotsFloor].[CarTotalGrid] AS [CarTotalGrid], 
-    [ParkingLotsFloor].[CarLastGrid] AS [CarLastGrid], 
-    [ParkingLotsFloor].[MotoTotalGrid] AS [MotoTotalGrid], 
-    [ParkingLotsFloor].[MotoLastGrid] AS [MotoLastGrid], 
-    [ParkingLotsFloor].[Void] AS [Void], 
-    [ParkingLotsFloor].[LastUpdate] AS [LastUpdate]
-    FROM [dbo].[ParkingLotsFloor] AS [ParkingLotsFloor]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="ParkingLotsRecoed_HT" EntityType="Self.ParkingLotsRecoed_HT" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [ParkingLotsRecoed_HT].[ID] AS [ID], 
@@ -260,22 +237,6 @@
           <Property Name="ToTop" Type="Boolean" Nullable="false" />
           <Property Name="LastUpdate" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="ParkingLotsDetail">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Address" Type="String" MaxLength="75" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Tel" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Period" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Charge" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Longitude" Type="Double" Nullable="false" />
-          <Property Name="Latitude" Type="Double" Nullable="false" />
-          <Property Name="Void" Type="Boolean" Nullable="false" />
-          <Property Name="LastUpdate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="ParkingLotsFloor" Relationship="WbParkSystemModel.FK_ParkingLotsFloor_ParkingLotsDetail" FromRole="ParkingLotsDetail" ToRole="ParkingLotsFloor" />
-        </EntityType>
         <EntityType Name="ParkingLotsRecoed_HT">
           <Key>
             <PropertyRef Name="ID" />
@@ -298,14 +259,8 @@
         </EntityType>
         <EntityContainer Name="WbParkSystemEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AnnouncementDetail" EntityType="Self.AnnouncementDetail" />
-          <EntitySet Name="ParkingLotsDetail" EntityType="Self.ParkingLotsDetail" />
           <EntitySet Name="ParkingLotsRecoed_HT" EntityType="Self.ParkingLotsRecoed_HT" />
           <EntitySet Name="ParkingLotsRecord" EntityType="Self.ParkingLotsRecord" />
-          <EntitySet Name="ParkingLotsFloor" EntityType="WbParkSystemModel.ParkingLotsFloor" />
-          <AssociationSet Name="FK_ParkingLotsFloor_ParkingLotsDetail" Association="WbParkSystemModel.FK_ParkingLotsFloor_ParkingLotsDetail">
-            <End Role="ParkingLotsDetail" EntitySet="ParkingLotsDetail" />
-            <End Role="ParkingLotsFloor" EntitySet="ParkingLotsFloor" />
-          </AssociationSet>
           <EntitySet Name="Cars" EntityType="WbParkSystemModel.Cars" />
           <EntitySet Name="Employee" EntityType="WbParkSystemModel.Employee" />
           <EntitySet Name="ETAs" EntityType="WbParkSystemModel.ETAs" />
@@ -323,43 +278,13 @@
             <End Role="PushPhoneType" EntitySet="PushPhoneType" />
             <End Role="PushPhoneDetail" EntitySet="PushPhoneDetail" />
           </AssociationSet>
+          <EntitySet Name="ParkingLotsDetail" EntityType="WbParkSystemModel.ParkingLotsDetail" />
+          <EntitySet Name="ParkingLotsFloor" EntityType="WbParkSystemModel.ParkingLotsFloor" />
+          <AssociationSet Name="FK_ParkingLotsFloor_ParkingLotsDetail" Association="WbParkSystemModel.FK_ParkingLotsFloor_ParkingLotsDetail">
+            <End Role="ParkingLotsDetail" EntitySet="ParkingLotsDetail" />
+            <End Role="ParkingLotsFloor" EntitySet="ParkingLotsFloor" />
+          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="ParkingLotsFloor">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="ParkingLotsID" />
-            <PropertyRef Name="FloorOrder" />
-            <PropertyRef Name="FloorName" />
-            <PropertyRef Name="CarTotalGrid" />
-            <PropertyRef Name="CarLastGrid" />
-            <PropertyRef Name="MotoTotalGrid" />
-            <PropertyRef Name="MotoLastGrid" />
-            <PropertyRef Name="Void" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParkingLotsID" Type="Int32" Nullable="false" />
-          <Property Name="FloorOrder" Type="Int16" Nullable="false" />
-          <Property Name="FloorName" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="CarTotalGrid" Type="Int32" Nullable="false" />
-          <Property Name="CarLastGrid" Type="Int32" Nullable="false" />
-          <Property Name="MotoTotalGrid" Type="Int32" Nullable="false" />
-          <Property Name="MotoLastGrid" Type="Int32" Nullable="false" />
-          <Property Name="Void" Type="Boolean" Nullable="false" />
-          <Property Name="LastUpdate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="ParkingLotsDetail" Relationship="WbParkSystemModel.FK_ParkingLotsFloor_ParkingLotsDetail" FromRole="ParkingLotsFloor" ToRole="ParkingLotsDetail" />
-        </EntityType>
-        <Association Name="FK_ParkingLotsFloor_ParkingLotsDetail">
-          <End Type="WbParkSystemModel.ParkingLotsDetail" Role="ParkingLotsDetail" Multiplicity="1" />
-          <End Type="WbParkSystemModel.ParkingLotsFloor" Role="ParkingLotsFloor" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParkingLotsDetail">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="ParkingLotsFloor">
-              <PropertyRef Name="ParkingLotsID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Cars">
           <Key>
             <PropertyRef Name="Id" />
@@ -462,6 +387,50 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ParkingLotsDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="75" FixedLength="false" Unicode="true" />
+          <Property Name="Tel" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Period" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Charge" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="Longitude" Type="Double" Nullable="false" />
+          <Property Name="Latitude" Type="Double" Nullable="false" />
+          <Property Name="Void" Type="Boolean" Nullable="false" />
+          <Property Name="LastUpdate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ParkingLotsFloor" Relationship="WbParkSystemModel.FK_ParkingLotsFloor_ParkingLotsDetail" FromRole="ParkingLotsDetail" ToRole="ParkingLotsFloor" />
+        </EntityType>
+        <EntityType Name="ParkingLotsFloor">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParkingLotsID" Type="Int32" Nullable="false" />
+          <Property Name="FloorOrder" Type="Int16" Nullable="false" />
+          <Property Name="FloorName" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CarTotalGrid" Type="Int32" Nullable="false" />
+          <Property Name="CarLastGrid" Type="Int32" Nullable="false" />
+          <Property Name="MotoTotalGrid" Type="Int32" Nullable="false" />
+          <Property Name="MotoLastGrid" Type="Int32" Nullable="false" />
+          <Property Name="Void" Type="Boolean" Nullable="false" />
+          <Property Name="LastUpdate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ParkingLotsDetail" Relationship="WbParkSystemModel.FK_ParkingLotsFloor_ParkingLotsDetail" FromRole="ParkingLotsFloor" ToRole="ParkingLotsDetail" />
+        </EntityType>
+        <Association Name="FK_ParkingLotsFloor_ParkingLotsDetail">
+          <End Type="WbParkSystemModel.ParkingLotsDetail" Role="ParkingLotsDetail" Multiplicity="1" />
+          <End Type="WbParkSystemModel.ParkingLotsFloor" Role="ParkingLotsFloor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParkingLotsDetail">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ParkingLotsFloor">
+              <PropertyRef Name="ParkingLotsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -477,22 +446,6 @@
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Detail" ColumnName="Detail" />
                 <ScalarProperty Name="ToTop" ColumnName="ToTop" />
-                <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ParkingLotsDetail">
-            <EntityTypeMapping TypeName="WbParkSystemModel.ParkingLotsDetail">
-              <MappingFragment StoreEntitySet="ParkingLotsDetail">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Tel" ColumnName="Tel" />
-                <ScalarProperty Name="Period" ColumnName="Period" />
-                <ScalarProperty Name="Charge" ColumnName="Charge" />
-                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="Void" ColumnName="Void" />
                 <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -514,22 +467,6 @@
                 <ScalarProperty Name="LogTime" ColumnName="LogTime" />
                 <ScalarProperty Name="ParkDate" ColumnName="ParkDate" />
                 <ScalarProperty Name="Count" ColumnName="Count" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ParkingLotsFloor">
-            <EntityTypeMapping TypeName="WbParkSystemModel.ParkingLotsFloor">
-              <MappingFragment StoreEntitySet="ParkingLotsFloor">
-                <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
-                <ScalarProperty Name="Void" ColumnName="Void" />
-                <ScalarProperty Name="MotoLastGrid" ColumnName="MotoLastGrid" />
-                <ScalarProperty Name="MotoTotalGrid" ColumnName="MotoTotalGrid" />
-                <ScalarProperty Name="CarLastGrid" ColumnName="CarLastGrid" />
-                <ScalarProperty Name="CarTotalGrid" ColumnName="CarTotalGrid" />
-                <ScalarProperty Name="FloorName" ColumnName="FloorName" />
-                <ScalarProperty Name="FloorOrder" ColumnName="FloorOrder" />
-                <ScalarProperty Name="ParkingLotsID" ColumnName="ParkingLotsID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -592,6 +529,38 @@
             <EntityTypeMapping TypeName="WbParkSystemModel.PushPhoneType">
               <MappingFragment StoreEntitySet="PushPhoneType">
                 <ScalarProperty Name="PushPhone" ColumnName="PushPhone" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParkingLotsDetail">
+            <EntityTypeMapping TypeName="WbParkSystemModel.ParkingLotsDetail">
+              <MappingFragment StoreEntitySet="ParkingLotsDetail">
+                <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
+                <ScalarProperty Name="Void" ColumnName="Void" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Charge" ColumnName="Charge" />
+                <ScalarProperty Name="Period" ColumnName="Period" />
+                <ScalarProperty Name="Tel" ColumnName="Tel" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParkingLotsFloor">
+            <EntityTypeMapping TypeName="WbParkSystemModel.ParkingLotsFloor">
+              <MappingFragment StoreEntitySet="ParkingLotsFloor">
+                <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
+                <ScalarProperty Name="Void" ColumnName="Void" />
+                <ScalarProperty Name="MotoLastGrid" ColumnName="MotoLastGrid" />
+                <ScalarProperty Name="MotoTotalGrid" ColumnName="MotoTotalGrid" />
+                <ScalarProperty Name="CarLastGrid" ColumnName="CarLastGrid" />
+                <ScalarProperty Name="CarTotalGrid" ColumnName="CarTotalGrid" />
+                <ScalarProperty Name="FloorName" ColumnName="FloorName" />
+                <ScalarProperty Name="FloorOrder" ColumnName="FloorOrder" />
+                <ScalarProperty Name="ParkingLotsID" ColumnName="ParkingLotsID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

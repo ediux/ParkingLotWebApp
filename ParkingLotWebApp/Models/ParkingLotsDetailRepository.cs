@@ -22,10 +22,13 @@ namespace ParkingLotWebApp.Models
                     new vw_ParkingLotGridRemain()
                     {
                         FloorOrder = s.FloorOrder,
-                        NoneFloor = !area.ParkingLotsFloor.Any(),
+                        NoneFloor = (s.FloorName == areadatas[k]),
                         剩餘停車格數 = s.CarLastGrid,
                         樓層名稱 = s.FloorName,
-                        剩餘機車格數 = s.MotoLastGrid
+                        剩餘機車格數 = s.MotoLastGrid,
+                        總停車格數 = s.CarTotalGrid,
+                        總機車格數 = s.MotoTotalGrid,
+                        ID = s.ID
                     }).ToList());
                 result.Areas.Add(k, areadatas[k]);
                 result.SelectedAreas.Add(k, false);

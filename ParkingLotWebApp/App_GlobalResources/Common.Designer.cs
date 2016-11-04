@@ -61,6 +61,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 地址 的當地語系化字串。
+        /// </summary>
+        public static string Address {
+            get {
+                return ResourceManager.GetString("Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 返回到{0} 的當地語系化字串。
         /// </summary>
         public static string Back_To {
@@ -93,6 +102,24 @@ namespace ParkingLotWebApp.App_GlobalResources {
         public static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 費用說明 的當地語系化字串。
+        /// </summary>
+        public static string Charge {
+            get {
+                return ResourceManager.GetString("Charge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 關閉 的當地語系化字串。
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
             }
         }
         
@@ -160,6 +187,33 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 資料異動時間 的當地語系化字串。
+        /// </summary>
+        public static string LastUpdate {
+            get {
+                return ResourceManager.GetString("LastUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 緯度 的當地語系化字串。
+        /// </summary>
+        public static string Latitude {
+            get {
+                return ResourceManager.GetString("Latitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 經度 的當地語系化字串。
+        /// </summary>
+        public static string Longitude {
+            get {
+                return ResourceManager.GetString("Longitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 此公告無內容!! 的當地語系化字串。
         /// </summary>
         public static string News_NoMessage {
@@ -196,6 +250,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 電話 的當地語系化字串。
+        /// </summary>
+        public static string Tel {
+            get {
+                return ResourceManager.GetString("Tel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 到 的當地語系化字串。
         /// </summary>
         public static string To {
@@ -205,7 +268,7 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
-        ///   查詢類似 停車場管理系統 的當地語系化字串。
+        ///   查詢類似 微型停車場管理系統 的當地語系化字串。
         /// </summary>
         public static string WebSiteName {
             get {

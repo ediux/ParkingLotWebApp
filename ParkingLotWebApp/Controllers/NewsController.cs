@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using ParkingLotWebApp.Models;
 using Microsoft.AspNet.Identity;
 using System.Threading.Tasks;
+using System.Data.Entity.Validation;
 
 namespace ParkingLotWebApp.Controllers
 {
@@ -20,7 +21,7 @@ namespace ParkingLotWebApp.Controllers
         public async Task<ActionResult> Index()
         {
             var news_Header = await db.All().ToListAsync();
-            return View(news_Header.OrderBy(o => o.ToTop).OrderByDescending(o => o.StartDate));
+            return View(news_Header.OrderByDescending(o => o.ToTop).OrderByDescending(o=>o.StartDate));
         }
 
         // GET: News/Details/5
@@ -58,44 +59,44 @@ namespace ParkingLotWebApp.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Caption,StartTime,EndTime,Void,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime")] NewsPostViewModel newspostViewModel)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Caption,Content,StartTime,EndTime,Void,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime,IsTop")] NewsPostViewModel newspostViewModel)
         {
             if (ModelState.IsValid)
             {
-                var news = new AnnouncementDetail();
-                news.Detail = newspostViewModel.Content;
-                news.EndDate = newspostViewModel.EndTime;
-                news.LastUpdate = newspostViewModel.LastUpdateUTCTime;
-                news.StartDate = newspostViewModel.StartTime;
-                news.Title = newspostViewModel.Caption;
-                news.ToTop = newspostViewModel.IsTop;
+                try
+                {
+                    this.ApplyXSSProtected(newspostViewModel);
 
-                db.Add(news);
-                //var news_Header = new News_Header();
-                //news_Header.Caption = newspostViewModel.Caption;
-                //news_Header.CreateUserId = newspostViewModel.CreateUserId;
-                //news_Header.CreateUTCTime = newspostViewModel.CreateUTCTime;
-                //news_Header.EndTime = newspostViewModel.EndTime;
-                //news_Header.LastUpdateUserId = newspostViewModel.LastUpdateUserId;
-                //news_Header.LastUpdateUTCTime = newspostViewModel.LastUpdateUTCTime;
-                //news_Header.StartTime = newspostViewModel.StartTime;
-                //news_Header.Void = newspostViewModel.Void;
-                //news_Header = db.News_Header.Add(news_Header);
-                //newspostViewModel.Id = news_Header.Id;
+                    var news = new AnnouncementDetail();
+                    news.Detail = newspostViewModel.Content;
+                    news.EndDate = newspostViewModel.EndTime;
+                    news.LastUpdate = newspostViewModel.LastUpdateUTCTime;
+                    news.StartDate = newspostViewModel.StartTime;
+                    news.Title = newspostViewModel.Caption;
+                    news.ToTop = newspostViewModel.IsTop;
 
-                //var news_Body = new News_Body();
-                //news_Body.Content = newspostViewModel.Content;
-                //news_Body.CreateUserId = newspostViewModel.CreateUserId;
-                //news_Body.CreateUTCTime = newspostViewModel.CreateUTCTime;
-                //news_Body.Header_Id = news_Header.Id;
-                //news_Body.LastUpdateUserId = newspostViewModel.LastUpdateUserId;
-                //news_Body.LastUpdateUTCTime = newspostViewModel.LastUpdateUTCTime;
-                //news_Body.Version = newspostViewModel.Version;
-                //news_Body.Void = newspostViewModel.Void;
-                //news_Body = db.News_Body.Add(news_Body);
-                //newspostViewModel.Body_Id = news_Body.Id;
+                    db.Add(news);
 
-                await db.UnitOfWork.CommitAsync();
+
+                    await db.UnitOfWork.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    if (ex is DbEntityValidationException)
+                    {
+                        DbEntityValidationException validex = (DbEntityValidationException)ex;
+                       foreach( var vaerr in validex.EntityValidationErrors)
+                        {
+                            foreach(var msg in vaerr.ValidationErrors)
+                            {
+                                ModelState.AddModelError(msg.PropertyName, msg.ErrorMessage);
+                            }
+                        }
+                    }
+                    newspostViewModel.Content = HttpUtility.HtmlDecode(newspostViewModel.Content);
+                    return View(newspostViewModel);
+                }
+
                 return RedirectToAction("Index");  //重導至新增內文的控制器
             }
 
@@ -121,6 +122,7 @@ namespace ParkingLotWebApp.Controllers
                 }
 
                 NewsPostViewModel viewmodel = new NewsPostViewModel(news_Header);
+                viewmodel.Content = HttpUtility.HtmlDecode(viewmodel.Content);
                 viewmodel.LastUpdateUserId = User.Identity.GetUserId<int>();
                 viewmodel.LastUpdateUTCTime = DateTime.Now.ToUniversalTime();
                 // ViewBag.Id = new SelectList(db.News_Body, "Id", "Content", news_Header.Id);
@@ -140,7 +142,7 @@ namespace ParkingLotWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [OutputCache(Duration = 0, VaryByParam = "none", Location = System.Web.UI.OutputCacheLocation.Server)]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Caption,StartTime,EndTime,Void,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime,Body_Id,Content,Version")] NewsPostViewModel viewModel)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Caption,Content,StartTime,EndTime,Void,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime,Body_Id,Content,Version,IsTop")] NewsPostViewModel viewModel)
         {
 
             if (viewModel == null)
@@ -157,12 +159,12 @@ namespace ParkingLotWebApp.Controllers
                 news_Header.Detail = viewModel.Content;
                 news_Header.StartDate = viewModel.StartTime;
                 news_Header.EndDate = viewModel.EndTime;
-              
+                news_Header.ToTop = viewModel.IsTop;
                 news_Header.LastUpdate = viewModel.LastUpdateUTCTime;
 
                 db.UnitOfWork.Context.Entry(news_Header).State = EntityState.Modified;
                 db.UnitOfWork.Commit();
-                
+
             }
 
 

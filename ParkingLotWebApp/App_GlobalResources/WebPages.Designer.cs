@@ -142,6 +142,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 建立員工資料 的當地語系化字串。
+        /// </summary>
+        public static string Employees_Create_New {
+            get {
+                return ResourceManager.GetString("Employees_Create_New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 刪除 {0} 的當地語系化字串。
         /// </summary>
         public static string Employees_Delete {
@@ -322,7 +331,16 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
-        ///   查詢類似 停車場停車區域資料維護 的當地語系化字串。
+        ///   查詢類似 公告置頂 的當地語系化字串。
+        /// </summary>
+        public static string NewsTop {
+            get {
+                return ResourceManager.GetString("NewsTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 停車場資料維護 的當地語系化字串。
         /// </summary>
         public static string ParkingLotAreas {
             get {
@@ -331,7 +349,7 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
-        ///   查詢類似 新增停車場區域 的當地語系化字串。
+        ///   查詢類似 新增停車場 的當地語系化字串。
         /// </summary>
         public static string ParkingLotAreas_Create_New {
             get {
@@ -340,7 +358,7 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
-        ///   查詢類似 刪除停車場區域 的當地語系化字串。
+        ///   查詢類似 刪除停車場 的當地語系化字串。
         /// </summary>
         public static string ParkingLotAreas_Delete {
             get {
@@ -349,7 +367,7 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
-        ///   查詢類似 編輯停車場區域 的當地語系化字串。
+        ///   查詢類似 編輯停車場 的當地語系化字串。
         /// </summary>
         public static string ParkingLotAreas_Edit {
             get {
@@ -367,7 +385,7 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
-        ///   查詢類似 停車場區域列表 的當地語系化字串。
+        ///   查詢類似 停車場列表 的當地語系化字串。
         /// </summary>
         public static string ParkingLotAreas_Index {
             get {
@@ -412,7 +430,7 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
-        ///   查詢類似 所有區域樓層總覽 的當地語系化字串。
+        ///   查詢類似 所有停車樓樓層總覽 的當地語系化字串。
         /// </summary>
         public static string ParkingLotFloors_Index {
             get {
@@ -435,6 +453,132 @@ namespace ParkingLotWebApp.App_GlobalResources {
         public static string ParkingLotFloors_ListRemainParkingGridAmounts {
             get {
                 return ResourceManager.GetString("ParkingLotFloors_ListRemainParkingGridAmounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 地址 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotsDetail_Address {
+            get {
+                return ResourceManager.GetString("ParkingLotsDetail_Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 費用說明 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotsDetail_Charge {
+            get {
+                return ResourceManager.GetString("ParkingLotsDetail_Charge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 停車場詳細資訊 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotsDetail_Details {
+            get {
+                return ResourceManager.GetString("ParkingLotsDetail_Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 停車場系統代碼 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotsDetail_ID {
+            get {
+                return ResourceManager.GetString("ParkingLotsDetail_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 資料異動時間 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotsDetail_LastUpdate {
+            get {
+                return ResourceManager.GetString("ParkingLotsDetail_LastUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 停車場名稱 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotsDetail_Name {
+            get {
+                return ResourceManager.GetString("ParkingLotsDetail_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 可停時間 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotsDetail_Period {
+            get {
+                return ResourceManager.GetString("ParkingLotsDetail_Period", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 字串格式不正確，請輸入格式如:00:00~24:00. 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotsDetail_Period_VaildErrorMessage {
+            get {
+                return ResourceManager.GetString("ParkingLotsDetail_Period_VaildErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 汽車剩餘車格數 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotsFloor_CarLastGrid {
+            get {
+                return ResourceManager.GetString("ParkingLotsFloor_CarLastGrid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 汽車總車格數 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotsFloor_CarTotalGrid {
+            get {
+                return ResourceManager.GetString("ParkingLotsFloor_CarTotalGrid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 樓層名稱 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotsFloor_FloorName {
+            get {
+                return ResourceManager.GetString("ParkingLotsFloor_FloorName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 樓層順序 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotsFloor_FloorOrder {
+            get {
+                return ResourceManager.GetString("ParkingLotsFloor_FloorOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 機車剩餘車格數 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotsFloor_MotoLastGrid {
+            get {
+                return ResourceManager.GetString("ParkingLotsFloor_MotoLastGrid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 機車總車格數 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotsFloor_MotoTotalGrid {
+            get {
+                return ResourceManager.GetString("ParkingLotsFloor_MotoTotalGrid", resourceCulture);
             }
         }
     }

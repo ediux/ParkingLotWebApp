@@ -40,7 +40,56 @@ namespace My.Core.Infrastructures.Implementations.Models
         #region 使用者
         public async Task CreateAsync(ApplicationUser user)
         {
-            userrolerepo.ApplicationUserRepository.Add(user);
+            user = userrolerepo.ApplicationUserRepository.Add(user);
+
+
+
+
+            if (Roles.Count() > 0)
+            {
+                if (Roles.SingleOrDefault(s => s.Name == "Users") != null)
+                {
+                    await AddToRoleAsync(user, "Users");
+                }
+                else
+                {
+                    await CreateAsync(new Models.ApplicationRole()
+                    {
+                        CreateTime = DateTime.UtcNow,
+                        CreateUserId = user.Id,
+                        LastUpdateTime = DateTime.UtcNow,
+                        LastUpdateUserId = user.Id,
+                        Name = "Users",
+                        Void = false
+                    });
+
+                    await AddToRoleAsync(user, "Users");
+                }
+            }
+            else
+            {
+                await CreateAsync(new Models.ApplicationRole()
+                {
+                    CreateTime = DateTime.UtcNow,
+                    CreateUserId = user.Id,
+                    LastUpdateTime = DateTime.UtcNow,
+                    LastUpdateUserId = user.Id,
+                    Name = "Admins",
+                    Void = false
+                });
+
+                await CreateAsync(new Models.ApplicationRole()
+                {
+                    CreateTime = DateTime.UtcNow,
+                    CreateUserId = user.Id,
+                    LastUpdateTime = DateTime.UtcNow,
+                    LastUpdateUserId = user.Id,
+                    Name = "Users",
+                    Void = false
+                });
+
+                await AddToRoleAsync(user, "Admins");
+            }
             await userrolerepo.UnitOfWork.CommitAsync();
         }
 

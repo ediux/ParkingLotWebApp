@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using ParkingLotWebApp.Models;
 using Microsoft.AspNet.Identity;
@@ -33,6 +30,7 @@ namespace ParkingLotWebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Employee employee = db.Get(id);
+            this.ApplyXSSProtected(employee);
             if (employee == null)
             {
                 return HttpNotFound();
@@ -55,6 +53,7 @@ namespace ParkingLotWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                this.ApplyXSSProtected(employee);
                 db.Add(employee);
                 db.UnitOfWork.Commit();
                 return RedirectToAction("Index");
@@ -87,6 +86,7 @@ namespace ParkingLotWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                this.ApplyXSSProtected(employee);
                 db.UnitOfWork.Context.Entry(employee).State = EntityState.Modified;
                 db.UnitOfWork.Commit();
                 return RedirectToAction("Index");
@@ -102,6 +102,7 @@ namespace ParkingLotWebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Employee employee = db.Get(id);
+            this.ApplyXSSProtected(employee);
             if (employee == null)
             {
                 return HttpNotFound();
@@ -115,6 +116,7 @@ namespace ParkingLotWebApp.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Employee employee = db.Get(id);
+            this.ApplyXSSProtected(employee);
             employee.Void = true;
             employee.LastUserId = User.Identity.GetUserId<int>();
             employee.LastUpdateUTCTime = DateTime.UtcNow;

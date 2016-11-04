@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ParkingLotWebApp.Models.ParkingLotFloors>
+﻿@model IEnumerable<ParkingLotWebApp.Models.ParkingLotsFloor>
 
 @{
     var areaname = ViewBag.AreaName as string;
@@ -34,28 +34,30 @@
         @if (ViewBag.returnUrl == null)
         {
             <th>
-                @Html.DisplayNameFor(model => model.ParkingLotAreas.Name)
+                @Html.DisplayNameFor(model => model.ParkingLotsDetail.Name)
             </th>
         }
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.FloorOrder)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Void)
+            @Html.DisplayNameFor(model => model.FloorName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CreateUserId)
+            @Html.DisplayNameFor(model => model.CarTotalGrid)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CreateUTCTime)
+            @Html.DisplayNameFor(model => model.CarLastGrid)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LastUpdateUserId)
+            @Html.DisplayNameFor(model => model.MotoTotalGrid)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LastUpdateUTCTime)
+            @Html.DisplayNameFor(model => model.MotoLastGrid)
         </th>
-
+        <th>
+            @Html.DisplayNameFor(model => model.LastUpdate)
+        </th>
         <th></th>
     </tr>
 
@@ -65,31 +67,34 @@
             @if (ViewBag.returnUrl == null)
             {
                 <th>
-                    @Html.DisplayFor(model => item.ParkingLotAreas.Name)
+                    @Html.DisplayFor(model => item.ParkingLotsDetail.Name)
                 </th>
             }
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.FloorOrder)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Void)
+                @Html.DisplayFor(modelItem => item.FloorName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreateUserId)
+                @Html.DisplayFor(modelItem => item.CarTotalGrid)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreateUTCTime)
+                @Html.DisplayFor(modelItem => item.CarLastGrid)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LastUpdateUserId)
+                @Html.DisplayFor(modelItem => item.MotoTotalGrid)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LastUpdateUTCTime)
+                @Html.DisplayFor(modelItem => item.MotoLastGrid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastUpdate)
             </td>
 
             <td>
-                @Html.ActionLink(Resources.Common.Edit, "Edit", new { id = item.Id }) |
-                @Html.ActionLink(Resources.Common.Delete, "Delete", new { id = item.Id })
+                @Html.ActionLink(Resources.Common.Edit, "Edit", new { id = item.ID }) |
+                @Html.ActionLink(Resources.Common.Delete, "Delete", new { id = item.ID })
             </td>
         </tr>
     }

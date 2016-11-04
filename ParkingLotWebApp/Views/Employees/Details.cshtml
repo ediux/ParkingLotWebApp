@@ -1,13 +1,13 @@
 ﻿@model ParkingLotWebApp.Models.Employee
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = string.Format(Resources.WebPages.Employees_Details, Model.Name);
 }
 
-<h2>Details</h2>
+<h2>@ViewBag.Title</h2>
 
 <div>
-    <h4>Employee</h4>
+    <h4>@Resources.WebPages.Employees</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -43,11 +43,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.LastUpdateUserId)
+            @Html.DisplayNameFor(model => model.LastUserId)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.LastUpdateUserId)
+            @Html.DisplayFor(model => model.LastUserId)
         </dd>
 
         <dt>
@@ -61,6 +61,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink(Resources.Common.Edit, "Edit", new { id = Model.Id }) |
+    @Html.ActionLink(string.Format(Resources.Common.Back_To,Resources.WebPages.Employees_Index), "Index")
 </p>

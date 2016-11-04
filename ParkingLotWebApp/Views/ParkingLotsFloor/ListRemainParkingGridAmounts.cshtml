@@ -9,7 +9,7 @@
 <div class="row" style="margin-top:20px;">
 
     <div class="col-xs-4 col-md-2">
-        @using (Html.BeginForm("ListRemainParkingGridAmounts", "ParkingLotFloors", FormMethod.Post, new { @id = "selectlocationform", @class = "form-horizontal", @role = "form" }))
+        @using (Html.BeginForm("ListRemainParkingGridAmounts", "ParkingLotsFloor", FormMethod.Post, new { @id = "selectlocationform", @class = "form-horizontal", @role = "form" }))
         {
             @Html.AntiForgeryToken()
             foreach (var key in Model.RemainSummary.Keys)
@@ -34,28 +34,40 @@
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th colspan="2">@Model.Areas[key]</th>
+                                @if (Model.RemainSummary[key].All(w => w.NoneFloor == false))
+                                {
+                                    <th colspan="3">@Model.Areas[key]</th>
+                                }
+                                else
+                                {
+                                    <th colspan="2">@Model.Areas[key]</th>
+                                    <th><a href="javascript:showEditModal(@Model.RemainSummary[key][0].ID,'@Model.RemainSummary[key][0].樓層名稱',@Model.RemainSummary[key][0].總停車格數,@Model.RemainSummary[key][0].剩餘停車格數,@Model.RemainSummary[key][0].總機車格數,@Model.RemainSummary[key][0].剩餘機車格數);">@Model.Areas[key]</a></th>
+                                }
                             </tr>
                             <tr>
                                 @if (Model.RemainSummary[key].All(p=>p.NoneFloor==false))
                                 {
                                     <th>樓層</th>
                                 }
-                                <th>剩餘車格位</th>
+                                <th>@Resources.WebPages.ParkingLotsFloor_CarLastGrid</th>
+                                <th>@Resources.WebPages.ParkingLotsFloor_MotoLastGrid</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item_n in Model.RemainSummary[key])
                             {
-                                <tr id="@Html.Raw(item_n.Id.ToString()+"_"+item_n.樓層名稱)">
+                                <tr id="@Html.Raw(Model.Areas[key]+"_"+item_n.樓層名稱)">
                                     @if (item_n.NoneFloor == false)
                                     {
-                                        <td><a href="javascript:showEditModal(@item_n.Id,'@item_n.樓層名稱',@item_n.停車格數,@item_n.剩餘停車格數);">@item_n.樓層名稱</a></td>
+                                        <td><a href="javascript:showEditModal(@item_n.ID,'@item_n.樓層名稱',@item_n.總停車格數,@item_n.剩餘停車格數,@item_n.總機車格數,@item_n.剩餘機車格數);">@item_n.樓層名稱</a></td>
                                         <td>@item_n.剩餘停車格數</td>
+                                        <td>@item_n.剩餘機車格數</td>
                                     }
                                     else
                                     {
-                                        <td><a href="javascript:showEditModal(@item_n.Id,'@item_n.樓層名稱',@item_n.停車格數,@item_n.剩餘停車格數);">@item_n.剩餘停車格數</a></td>
+                                        
+                                        <td>@item_n.剩餘停車格數</td>
+                                        <td>@item_n.剩餘機車格數</td>
                                     }
                                 </tr>
                             }
@@ -80,36 +92,55 @@
             <div class="modal-body">
                 <div class="form-horizontal">
                     <div class="form-group">
-                        <div class="col-sm-6">
-                            <label class="control-label col-sm-6" for="form-group-input">目前剩餘車格位數:</label>
-                            <div class="col-sm-6">
+                        <div class="col-sm-12">
+                            <label class="control-label col-sm-7" for="form-group-input">@Resources.WebPages.ParkingLotsFloor_CarTotalGrid:</label>
+                            <div class="col-sm-5">
                                 <label class="control-label form-control-static" for="form-group-input" id="currentValue">1</label>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-sm-6">
-                            <label class="control-label col-sm-6" for="form-group-input">修改剩餘車格位數:</label>
-                            <div class="col-sm-6">
+                        <div class="col-sm-12">
+                            <label class="control-label col-sm-7" for="form-group-input">@Resources.WebPages.ParkingLotsFloor_CarLastGrid:</label>
+                            <div class="col-sm-5">
                                 <input type="text" class="form-control" placeholder="Placecholder" id="targetValue">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <label class="control-label col-sm-7" for="form-group-input">@Resources.WebPages.ParkingLotsFloor_MotoTotalGrid:</label>
+                            <div class="col-sm-5">
+                                <label class="control-label form-control-static" for="form-group-input" id="moto_currentValue">1</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <label class="control-label col-sm-7" for="form-group-input">@Resources.WebPages.ParkingLotsFloor_MotoLastGrid:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" placeholder="Placecholder" id="moto_targetValue">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="btnSave">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Common.Close</button>
+                <button type="button" class="btn btn-primary" id="btnSave">@Resources.Common.Save</button>
             </div>
         </div>
     </div>
 </div>
 @section scripts{
     <script type="text/javascript">
-        function showEditModal(areaId, floorname, limitamount, remainamount) {
-            $('#currentValue').html(remainamount);
+        function showEditModal(areaId, floorname, limitamount, remainamount,limitmotoamount,remainmotoamount) {
+            $('#currentValue').html(limitamount);
+            $('#moto_currentValue').html(limitmotoamount);
             $('#targetValue').val(remainamount);
-            $('#targetValue').attr('placeholder',remainamount);
+            $('#targetValue').attr('placeholder', remainamount);
+            $('#moto_targetValue').val(remainmotoamount);
+            $('#moto_targetValue').attr('placeholder', remainmotoamount);
             $('#EditRemainGridModal').modal('show');
             $('#btnSave').click(function () {
                
@@ -117,10 +148,9 @@
                     type: 'POST',
                     url:'@Url.Action("EditRemainParkingGridAmounts")',
                     data:  {
-                        'AreaId': areaId,
-                        'Name': floorname,
-                        'GridAmout': limitamount,
-                        'GridRemainAmount': $('#targetValue').val()
+                        'ID': areaId,
+                        'CarLastGrid': $('#targetValue').val(),
+                        'MotoLastGrid': $('#moto_targetValue').val()
                     },
                     dataType: 'json',
                     headers:{'RequestVerificationToken': '@RazorHelpFunctions.GetAntiForgeryToken()'

@@ -10,6 +10,9 @@ namespace ParkingLotWebApp.Models
     {
         public NewsPostViewModel()
         {
+            Version = 0; 
+            Body_Id = 0;
+            Content = string.Empty;
             IsTop = false;
             LastUpdateUserId = CreateUserId = -1;
             LastUpdateUTCTime = CreateUTCTime = DateTime.Now.ToUniversalTime();

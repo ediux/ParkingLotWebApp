@@ -13,10 +13,18 @@ namespace ParkingLotWebApp.Models
 
         public string 樓層名稱 { get; set; }
 
+        public int 總停車格數 { get; set; }
+
         public int 剩餘停車格數 { get; set; }
 
+        public int 總機車格數
+        {
+            get;set;
+        }
         public int 剩餘機車格數 { get; set; }
 
         public short FloorOrder { get; set; }
+
+        public int ID { get; set; }
     }
 }

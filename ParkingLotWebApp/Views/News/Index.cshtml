@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ParkingLotWebApp.Models.News_Header>
+﻿@model IEnumerable<ParkingLotWebApp.Models.AnnouncementDetail>
 
 @{
     ViewBag.Title = "Index";
@@ -19,7 +19,7 @@
                     @foreach (var item in Model)
                     {
                         <a class="list-group-item" data-ajax="true" data-ajax-method="Get" data-ajax-mode="replace"
-                            data-ajax-update="#replacepageholder" href="@Url.Action("Edit",new { id = item.Id })">@item.Caption<div class="pull-right">@(item.StartTime.ToLocalTime().ToShortDateString())</div></a> 
+                            data-ajax-update="#replacepageholder" href="@Url.Action("Edit",new { id = item.No })">@item.Title<div class="pull-right">@(item.StartDate.Value.ToShortDateString())</div></a> 
                     }
                 </div>
             </div>

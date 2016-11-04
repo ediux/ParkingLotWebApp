@@ -46,7 +46,7 @@ namespace ParkingLotWebApp.Models
         [Required]
         [Display(Name = "最後更新者")]
         [UIHint("UserIDMappingDisplay")]
-        public int LastUpdateUserId { get; set; }
+        public int LastUserId { get; set; }
         [Required]
         [Display(Name = "最後更新時間")]
         [UIHint("UTCLocalTimeDisplay")]

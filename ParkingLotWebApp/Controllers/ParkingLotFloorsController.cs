@@ -4,6 +4,7 @@ using System.Net;
 using System.Web.Mvc;
 using ParkingLotWebApp.Models;
 using Microsoft.AspNet.Identity;
+using System;
 
 namespace ParkingLotWebApp.Controllers
 {
@@ -19,7 +20,7 @@ namespace ParkingLotWebApp.Controllers
 
         // GET: ParkingLotsFloor
         public ActionResult Index(int? id)
-        {  
+        {
             if (id.HasValue)
             {
                 ViewBag.AreaId = id.Value;
@@ -54,13 +55,13 @@ namespace ParkingLotWebApp.Controllers
             if (id != null && id.HasValue)
             {
                 ViewBag.returnUrl = Url.Action("Index", "ParkingLotsFloor", new { id = id.Value });
-                ViewBag.AreaId = new SelectList(db_area.Where(w => w.ID == id.Value && w.Void == false), "Id", "Name");
+                ViewBag.ParkingLotsID = new SelectList(db_area.Where(w => w.ID == id.Value && w.Void == false), "ID", "Name");
                 viewmodel.ParkingLotsID = id.Value;
                 viewmodel.ParkingLotsDetail = db_area.Get(id.Value);
             }
             else
             {
-                ViewBag.AreaId = new SelectList(db.Where(w => w.Void == false), "Id", "Name");
+                ViewBag.ParkingLotsID = new SelectList(db_area.Where(w => w.Void == false), "ID", "Name");
 
             }
 
@@ -77,6 +78,10 @@ namespace ParkingLotWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                var parkingdetail = db_area.Get(ParkingLotsFloor.ParkingLotsID);
+                ParkingLotsFloor.ParkingLotsID = parkingdetail.ID;
+                ParkingLotsFloor.ParkingLotsDetail = parkingdetail;
+
                 db.Add(ParkingLotsFloor);
                 db.UnitOfWork.Commit();
                 return RedirectToAction("Index", new { id = ParkingLotsFloor.ParkingLotsID });
@@ -84,11 +89,11 @@ namespace ParkingLotWebApp.Controllers
             if (ParkingLotsFloor.ParkingLotsID != 0)
             {
                 ViewBag.returnUrl = Url.Action("Index", "ParkingLotsFloor", new { id = ParkingLotsFloor.ParkingLotsID });
-                ViewBag.AreaId = new SelectList(db.Where(w => w.ID == ParkingLotsFloor.ParkingLotsID && w.Void == false), "Id", "Name");
+                ViewBag.ParkingLotsID = new SelectList(db_area.Where(w => w.ID == ParkingLotsFloor.ParkingLotsID && w.Void == false), "Id", "Name");
             }
             else
             {
-                ViewBag.AreaId = new SelectList(db.Where(w => w.Void == false), "Id", "Name");
+                ViewBag.ParkingLotsID = new SelectList(db_area.Where(w => w.Void == false), "ID", "Name");
             }
             return View(ParkingLotsFloor);
         }
@@ -105,7 +110,7 @@ namespace ParkingLotWebApp.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.AreaId = new SelectList(db.Where(w => w.Void == false), "Id", "Name", ParkingLotsFloor.ParkingLotsID);
+            ViewBag.ParkingLotsID = new SelectList(db_area.Where(w => w.Void == false), "ID", "Name", ParkingLotsFloor.ParkingLotsID);
             return View(ParkingLotsFloor);
         }
 
@@ -123,7 +128,7 @@ namespace ParkingLotWebApp.Controllers
                 db.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
-            ViewBag.AreaId = new SelectList(db_area.Where(w=>w.Void==false), "Id", "Name", ParkingLotsFloor.ParkingLotsID);
+            ViewBag.ParkingLotsID = new SelectList(db_area.Where(w => w.Void == false), "ID", "Name", ParkingLotsFloor.ParkingLotsID);
             return View(ParkingLotsFloor);
         }
 
@@ -173,19 +178,31 @@ namespace ParkingLotWebApp.Controllers
 
             var model = db_area.GetListRemainParkingGridAmounts();
 
-            foreach(var selected in sId)
+            foreach (var selected in sId)
             {
                 model.SelectedAreas[selected] = true;
             }
-           
+
             return View(model);
         }
 
         [HttpPost]
         [AjaxValidateAntiForgeryToken]
-        public ActionResult EditRemainParkingGridAmounts([Bind(Include = "AreaId,Name,GridAmout,GridRemainAmount")]ParkingLotsFloor ParkingLotsFloor)
+        public ActionResult EditRemainParkingGridAmounts([Bind(Include = "ID,CarLastGrid,MotoLastGrid")]ParkingLotsFloor ParkingLotsFloor)
         {
-            return Json(true, JsonRequestBehavior.AllowGet);
+            if (ParkingLotsFloor != null)
+            {
+                var data = db.Get(ParkingLotsFloor.ID);
+                if (data != null)
+                {
+                    data.CarLastGrid = ParkingLotsFloor.CarLastGrid;
+                    data.MotoLastGrid = ParkingLotsFloor.MotoLastGrid;
+                    data.LastUpdate = DateTime.Now;
+                    db.UnitOfWork.Commit();
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                }
+            }
+            return Json(false, JsonRequestBehavior.AllowGet);
         }
 
 

@@ -57,7 +57,7 @@
             @Html.ActionLink(Resources.Common.Edit, "Edit", new { id=item.ID }) |
             @Html.ActionLink(Resources.Common.Details, "Details", new { id = item.ID }) |
             @Html.ActionLink(Resources.Common.Delete, "Delete", new { id=item.ID }) |
-            @Html.ActionLink(Resources.WebPages.ParkingLotAreas_FloorsLink, "Index", "ParkingLotFloors", new { id = item.ID, returnUrl = Url.Action("Index", "ParkingLotAreas", null) }, null)
+            @Html.ActionLink(Resources.WebPages.ParkingLotAreas_FloorsLink, "Index", "ParkingLotsFloor", new { id = item.ID, returnUrl = Url.Action("Index", "ParkingLotAreas", null) }, null)
         </td>
     </tr>
 }

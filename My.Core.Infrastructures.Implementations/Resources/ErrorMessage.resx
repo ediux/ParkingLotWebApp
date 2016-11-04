@@ -118,6 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="StringLength" xml:space="preserve">
-    <value>欄位長度不得大於 {0} 個字元</value>
+    <value>欄位長度不得大於 {1} 個字元</value>
   </data>
 </root>

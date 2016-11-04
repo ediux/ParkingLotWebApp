@@ -102,7 +102,7 @@ namespace ParkingLotWebApp.Models
         [Required]
         [Display(Name = "Void", ResourceType = typeof(MUI))]
         public bool Void { get; set; }
-        [Display(Name = "ParkingLotsDetail_LastUpdate", ResourceType = typeof(WebPages))]
+        [Display(Name = "LastUpdate", ResourceType = typeof(Common))]
         public DateTime? LastUpdate { get; set; }
     }
 }

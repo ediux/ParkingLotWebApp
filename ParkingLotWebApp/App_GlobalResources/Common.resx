@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Address" xml:space="preserve">
+    <value>地址</value>
+  </data>
   <data name="BackToManage" xml:space="preserve">
     <value>回到管理總覽</value>
   </data>
@@ -129,6 +132,12 @@
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>取消</value>
+  </data>
+  <data name="Charge" xml:space="preserve">
+    <value>費用說明</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>關閉</value>
   </data>
   <data name="Create" xml:space="preserve">
     <value>建立</value>
@@ -152,6 +161,15 @@
   <data name="HelloWorld" xml:space="preserve">
     <value>嗨, {0} !</value>
   </data>
+  <data name="LastUpdate" xml:space="preserve">
+    <value>資料異動時間</value>
+  </data>
+  <data name="Latitude" xml:space="preserve">
+    <value>緯度</value>
+  </data>
+  <data name="Longitude" xml:space="preserve">
+    <value>經度</value>
+  </data>
   <data name="News_NoMessage" xml:space="preserve">
     <value>此公告無內容!!</value>
   </data>
@@ -164,12 +182,15 @@
   <data name="Save" xml:space="preserve">
     <value>儲存</value>
   </data>
+  <data name="Tel" xml:space="preserve">
+    <value>電話</value>
+  </data>
   <data name="To" xml:space="preserve">
     <value>到</value>
     <comment>To</comment>
   </data>
   <data name="WebSiteName" xml:space="preserve">
-    <value>停車場管理系統</value>
+    <value>微型停車場管理系統</value>
     <comment>網站名稱</comment>
   </data>
 </root>

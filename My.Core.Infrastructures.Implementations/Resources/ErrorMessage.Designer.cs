@@ -61,7 +61,7 @@ namespace My.Core.Infrastructures.Implementations.Resources {
         }
         
         /// <summary>
-        ///   查詢類似 欄位長度不得大於 {0} 個字元 的當地語系化字串。
+        ///   查詢類似 欄位長度不得大於 {1} 個字元 的當地語系化字串。
         /// </summary>
         public static string StringLength {
             get {

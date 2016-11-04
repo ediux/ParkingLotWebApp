@@ -211,22 +211,22 @@
     <value>首頁-[資訊看板]</value>
   </data>
   <data name="ParkingLotAreas" xml:space="preserve">
-    <value>停車場停車區域資料維護</value>
+    <value>停車場資料維護</value>
   </data>
   <data name="ParkingLotAreas_Create_New" xml:space="preserve">
-    <value>新增停車場區域</value>
+    <value>新增停車場</value>
   </data>
   <data name="ParkingLotAreas_Delete" xml:space="preserve">
-    <value>刪除停車場區域</value>
+    <value>刪除停車場</value>
   </data>
   <data name="ParkingLotAreas_Edit" xml:space="preserve">
-    <value>編輯停車場區域</value>
+    <value>編輯停車場</value>
   </data>
   <data name="ParkingLotAreas_FloorsLink" xml:space="preserve">
     <value>樓層總覽</value>
   </data>
   <data name="ParkingLotAreas_Index" xml:space="preserve">
-    <value>停車場區域列表</value>
+    <value>停車場列表</value>
   </data>
   <data name="ParkingLotAreas_This" xml:space="preserve">
     <value>這個區域嗎</value>
@@ -241,12 +241,60 @@
     <value>新增樓層</value>
   </data>
   <data name="ParkingLotFloors_Index" xml:space="preserve">
-    <value>所有區域樓層總覽</value>
+    <value>所有停車樓樓層總覽</value>
   </data>
   <data name="ParkingLotFloors_Index_fromArea" xml:space="preserve">
     <value>{0}的樓層總覽</value>
   </data>
   <data name="ParkingLotFloors_ListRemainParkingGridAmounts" xml:space="preserve">
     <value>維護剩餘車位數量</value>
+  </data>
+  <data name="ParkingLotsDetail_Address" xml:space="preserve">
+    <value>地址</value>
+  </data>
+  <data name="ParkingLotsDetail_Charge" xml:space="preserve">
+    <value>費用說明</value>
+  </data>
+  <data name="ParkingLotsDetail_Details" xml:space="preserve">
+    <value>停車場詳細資訊</value>
+  </data>
+  <data name="ParkingLotsDetail_ID" xml:space="preserve">
+    <value>停車場系統代碼</value>
+  </data>
+  <data name="ParkingLotsDetail_LastUpdate" xml:space="preserve">
+    <value>資料異動時間</value>
+  </data>
+  <data name="ParkingLotsDetail_Name" xml:space="preserve">
+    <value>停車場名稱</value>
+  </data>
+  <data name="ParkingLotsDetail_Period" xml:space="preserve">
+    <value>可停時間</value>
+  </data>
+  <data name="ParkingLotsDetail_Period_VaildErrorMessage" xml:space="preserve">
+    <value>字串格式不正確，請輸入格式如:00:00~24:00.</value>
+  </data>
+  <data name="ParkingLotsFloor_CarLastGrid" xml:space="preserve">
+    <value>汽車剩餘車格數</value>
+  </data>
+  <data name="ParkingLotsFloor_CarTotalGrid" xml:space="preserve">
+    <value>汽車總車格數</value>
+  </data>
+  <data name="ParkingLotsFloor_FloorName" xml:space="preserve">
+    <value>樓層名稱</value>
+  </data>
+  <data name="ParkingLotsFloor_FloorOrder" xml:space="preserve">
+    <value>樓層順序</value>
+  </data>
+  <data name="ParkingLotsFloor_MotoLastGrid" xml:space="preserve">
+    <value>機車剩餘車格數</value>
+  </data>
+  <data name="ParkingLotsFloor_MotoTotalGrid" xml:space="preserve">
+    <value>機車總車格數</value>
+  </data>
+  <data name="Employees_Create_New" xml:space="preserve">
+    <value>建立員工資料</value>
+  </data>
+  <data name="NewsTop" xml:space="preserve">
+    <value>公告置頂</value>
   </data>
 </root>
