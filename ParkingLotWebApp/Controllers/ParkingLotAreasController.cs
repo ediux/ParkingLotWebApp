@@ -12,12 +12,12 @@ namespace ParkingLotWebApp.Controllers
 {
     public class ParkingLotAreasController : Controller
     {
-        private ParkingLotModelEntities db = new ParkingLotModelEntities();
+        private IParkingLotsDetailRepository db = RepositoryHelper.GetParkingLotsDetailRepository();
 
         // GET: ParkingLotAreas
         public ActionResult Index()
         {
-            return View(db.ParkingLotAreas.Where(w=>w.Void==false)
+            return View(db.Where(w=>w.Void==false)
                 .ToList());
         }
 
@@ -28,7 +28,7 @@ namespace ParkingLotWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ParkingLotAreas parkingLotAreas = db.ParkingLotAreas.Find(id);
+            ParkingLotsDetail parkingLotAreas = db.Get(id);
             if (parkingLotAreas == null)
             {
                 return HttpNotFound();
@@ -39,7 +39,7 @@ namespace ParkingLotWebApp.Controllers
         // GET: ParkingLotAreas/Create
         public ActionResult Create()
         {
-            return View(new ParkingLotAreas());
+            return View(new ParkingLotsDetail());
         }
 
         // POST: ParkingLotAreas/Create
@@ -47,12 +47,12 @@ namespace ParkingLotWebApp.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,GPS,Void,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime")] ParkingLotAreas parkingLotAreas)
+        public ActionResult Create([Bind(Include = "ID,Name,Address,Tel,Period,Charge,Longitude,Latitude,CarGrid,MotoGrid,Void,LastUpdate")] ParkingLotsDetail parkingLotAreas)
         {
             if (ModelState.IsValid)
             {
-                db.ParkingLotAreas.Add(parkingLotAreas);
-                db.SaveChanges();
+                db.Add(parkingLotAreas);
+                db.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
 
@@ -66,7 +66,7 @@ namespace ParkingLotWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ParkingLotAreas parkingLotAreas = db.ParkingLotAreas.Find(id);
+            ParkingLotsDetail parkingLotAreas = db.Get(id);
             if (parkingLotAreas == null)
             {
                 return HttpNotFound();
@@ -79,12 +79,12 @@ namespace ParkingLotWebApp.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,GPS,Void,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime")] ParkingLotAreas parkingLotAreas)
+        public ActionResult Edit([Bind(Include = "ID,Name,Address,Tel,Period,Charge,Longitude,Latitude,CarGrid,MotoGrid,Void,LastUpdate")] ParkingLotsDetail parkingLotAreas)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(parkingLotAreas).State = EntityState.Modified;
-                db.SaveChanges();
+                db.UnitOfWork.Context.Entry(parkingLotAreas).State = EntityState.Modified;
+                db.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
             return View(parkingLotAreas);
@@ -97,7 +97,7 @@ namespace ParkingLotWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ParkingLotAreas parkingLotAreas = db.ParkingLotAreas.Find(id);
+            ParkingLotsDetail parkingLotAreas = db.Get(id);
             if (parkingLotAreas == null)
             {
                 return HttpNotFound();
@@ -110,15 +110,17 @@ namespace ParkingLotWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ParkingLotAreas parkingLotAreas = db.ParkingLotAreas.Find(id);
-            db.ParkingLotAreas.Remove(parkingLotAreas);
-            db.SaveChanges();
+            ParkingLotsDetail parkingLotAreas = db.Get(id);
+            parkingLotAreas.Void = true;
+            parkingLotAreas.LastUpdate = DateTime.UtcNow;
+            db.UnitOfWork.Context.Entry(parkingLotAreas).State = EntityState.Modified;
+            db.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
 
         public ActionResult RemainIndex()
         {
-            return View(db.ParkingLotAreas.Where(w => w.Void == false)
+            return View(db.Where(w => w.Void == false)
                 .ToList());
         }
 
