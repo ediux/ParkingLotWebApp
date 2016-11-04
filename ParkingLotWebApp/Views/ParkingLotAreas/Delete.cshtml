@@ -1,4 +1,4 @@
-﻿@model ParkingLotWebApp.Models.ParkingLotAreas
+﻿@model ParkingLotWebApp.Models.ParkingLotsDetail
 
 @{
     ViewBag.Title = Resources.WebPages.ParkingLotAreas_Delete;
@@ -19,35 +19,35 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.CreateUserId)
+            @Html.DisplayNameFor(model => model.Address)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.CreateUserId)
+            @Html.DisplayFor(model => model.Address)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.CreateUTCTime)
+            @Html.DisplayNameFor(model => model.Tel)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.CreateUTCTime)
+            @Html.DisplayFor(model => model.Tel)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.LastUpdateUserId)
+            @Html.DisplayNameFor(model => model.Period)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.LastUpdateUserId)
+            @Html.DisplayFor(model => model.Period)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.LastUpdateUTCTime)
+            @Html.DisplayNameFor(model => model.LastUpdate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.LastUpdateUTCTime)
+            @Html.DisplayFor(model => model.LastUpdate)
         </dd>
 
     </dl>
