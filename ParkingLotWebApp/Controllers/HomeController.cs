@@ -9,18 +9,18 @@ namespace ParkingLotWebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private IParkingLotAreasRepository db;
-        private IParkingLotFloorsRepository db_floor;
+        private IParkingLotsDetailRepository db;
+        private IParkingLotsFloorRepository db_floor;
 
         public HomeController()
         {
-            db = RepositoryHelper.GetParkingLotAreasRepository();
-            db_floor = RepositoryHelper.GetParkingLotFloorsRepository(db.UnitOfWork);
+            db = RepositoryHelper.GetParkingLotsDetailRepository();
+            db_floor = RepositoryHelper.GetParkingLotsFloorRepository(db.UnitOfWork);
         }
 
         public ActionResult Index()
         {
-            var model = db_floor.GetListRemainParkingGridAmounts();
+            var model = db.GetListRemainParkingGridAmounts();
             return View(model);
         }
 
@@ -36,7 +36,7 @@ namespace ParkingLotWebApp.Controllers
                 sId = selects.Split(',').ToList().ConvertAll(c => int.Parse(c)).ToArray();
             }
 
-            var model = db_floor.GetListRemainParkingGridAmounts();
+            var model = db.GetListRemainParkingGridAmounts();
 
             foreach (var key in sId)
             {
