@@ -8,17 +8,19 @@ using System.Web;
 using System.Web.Mvc;
 using ParkingLotWebApp.Models;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 
 namespace ParkingLotWebApp.Controllers
 {
     public class ETAsController : Controller
     {
-        private ParkingLotModelEntities db = new ParkingLotModelEntities();
+        //private ParkingLotModelEntities db = new ParkingLotModelEntities();
+        private IETAsRepository db = RepositoryHelper.GetETAsRepository();
 
         // GET: ETAs
         public async Task<ActionResult> Index()
         {
-            return View(await db.ETAs.Where(w=>w.Void==false).ToListAsync());
+            return View(await db.Where(w=>w.Void==false).ToListAsync());
         }
 
         // GET: ETAs/Details/5
@@ -28,7 +30,7 @@ namespace ParkingLotWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ETAs eTAs = db.ETAs.Find(id);
+            ETAs eTAs = db.Get(id);
             if (eTAs == null)
             {
                 return HttpNotFound();
@@ -51,8 +53,8 @@ namespace ParkingLotWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.ETAs.Add(eTAs);
-                db.SaveChanges();
+                db.Add(eTAs);
+                db.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
 
@@ -66,7 +68,7 @@ namespace ParkingLotWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ETAs eTAs = db.ETAs.Find(id);
+            ETAs eTAs = db.Get(id);
             if (eTAs == null)
             {
                 return HttpNotFound();
@@ -83,8 +85,8 @@ namespace ParkingLotWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(eTAs).State = EntityState.Modified;
-                db.SaveChanges();
+                db.UnitOfWork.Context.Entry(eTAs).State = EntityState.Modified;
+                db.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
             return View(eTAs);
@@ -97,7 +99,7 @@ namespace ParkingLotWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ETAs eTAs = db.ETAs.Find(id);
+            ETAs eTAs = db.Get(id);
             if (eTAs == null)
             {
                 return HttpNotFound();
@@ -110,9 +112,12 @@ namespace ParkingLotWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ETAs eTAs = db.ETAs.Find(id);
-            db.ETAs.Remove(eTAs);
-            db.SaveChanges();
+            ETAs eTAs = db.Get(id);
+            eTAs.Void = true;
+            eTAs.LastUpdateUserId = User.Identity.GetUserId<int>();
+            eTAs.LastUpdateUTCTime = DateTime.UtcNow;
+            db.UnitOfWork.Context.Entry(eTAs).State = EntityState.Modified;
+            db.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
 
