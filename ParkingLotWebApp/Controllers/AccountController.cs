@@ -152,7 +152,11 @@ namespace ParkingLotWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.UserName };
+                var user = ApplicationUser.Create();
+                user.DisplayName = model.UserName;
+                user.UserName = model.UserName;
+
+                // new ApplicationUser { UserName = model.UserName, DisplayName=model.UserName, EMail="abc@aaa.com", PhoneNumber="0910123456" };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -372,6 +376,9 @@ namespace ParkingLotWebApp.Controllers
                 user.UserName = info.DefaultUserName;
                 user.LastUpdateUserId = user.CreateUserId = User.Identity.GetUserId<int>();
                 user.LastActivityTime = user.LastUpdateTime = user.CreateTime = DateTime.Now.ToUniversalTime();
+                user.EMail = model.Email;
+                user.EMailConfirmed = true;
+                user.DisplayName = info.DefaultUserName;
 
                 var result = await UserManager.CreateAsync(user);
 
@@ -381,39 +388,11 @@ namespace ParkingLotWebApp.Controllers
 
                     if (result.Succeeded)
                     {
-                        user = UserManager.FindByName(info.DefaultUserName);
-
-                        if (user != null)
-                        {
-                            var userprofile = new ApplicationUserProfile()
-                            {
-                                EMail = model.Email,
-                                EMailConfirmed = true,
-                                DisplayName = info.DefaultUserName
-                            };
-
-                            userprofile = db.ApplicationUserProfile.Add(userprofile);
-
-                            user.ApplicationUserProfileRef.Add(new ApplicationUserProfileRef()
-                            {
-                                Void = false,
-                                UserId = user.Id,
-                                ProfileId = userprofile.Id,
-                                CreateTime = DateTime.Now.ToUniversalTime(),
-                                LastUpdateTime = DateTime.Now.ToUniversalTime()
-                            });
-
-                            db.SaveChanges();
-                        }
-
+                        user = UserManager.FindByName(info.DefaultUserName);               
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                         return RedirectToLocal(returnUrl);
                     }
                 }
-
-
-
-                var profileassign = new ApplicationUserProfileRef() { };
 
                 AddErrors(result);
             }
