@@ -13,12 +13,16 @@ namespace ParkingLotWebApp.Controllers
 {
     public class EmployeesController : Controller
     {
-        private ParkingLotModelEntities db = new ParkingLotModelEntities();
+        private IEmployeeRepository db;
 
+        public EmployeesController()
+        {
+            db = RepositoryHelper.GetEmployeeRepository();
+        }
         // GET: Employees
         public ActionResult Index()
         {
-            return View(db.Employee.Where(w=>w.Void==false).ToList());
+            return View(db.Where(w=>w.Void==false).ToList());
         }
 
         // GET: Employees/Details/5
@@ -28,7 +32,7 @@ namespace ParkingLotWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = db.Employee.Find(id);
+            Employee employee = db.Get(id);
             if (employee == null)
             {
                 return HttpNotFound();
@@ -51,8 +55,8 @@ namespace ParkingLotWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Employee.Add(employee);
-                db.SaveChanges();
+                db.Add(employee);
+                db.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
 
@@ -66,7 +70,7 @@ namespace ParkingLotWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = db.Employee.Find(id);
+            Employee employee = db.Get(id);
             if (employee == null)
             {
                 return HttpNotFound();
@@ -83,8 +87,8 @@ namespace ParkingLotWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(employee).State = EntityState.Modified;
-                db.SaveChanges();
+                db.UnitOfWork.Context.Entry(employee).State = EntityState.Modified;
+                db.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
             return View(employee);
@@ -97,7 +101,7 @@ namespace ParkingLotWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = db.Employee.Find(id);
+            Employee employee = db.Get(id);
             if (employee == null)
             {
                 return HttpNotFound();
@@ -110,9 +114,13 @@ namespace ParkingLotWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Employee employee = db.Employee.Find(id);
-            db.Employee.Remove(employee);
-            db.SaveChanges();
+            Employee employee = db.Get(id);
+            employee.Void = true;
+            employee.LastUserId = User.Identity.GetUserId<int>();
+            employee.LastUpdateUTCTime = DateTime.UtcNow;
+            db.UnitOfWork.Context.Entry(employee).State = EntityState.Modified;
+            db.UnitOfWork.Commit();
+
             return RedirectToAction("Index");
         }
 
