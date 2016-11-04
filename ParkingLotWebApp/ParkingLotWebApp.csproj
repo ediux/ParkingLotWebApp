@@ -189,47 +189,33 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
-    <Compile Include="Controllers\ParkingGridsController.cs" />
     <Compile Include="Controllers\ParkingLotAreasController.cs" />
     <Compile Include="Controllers\ParkingLotFloorsController.cs" />
-    <Compile Include="Controllers\SensorsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AnnouncementDetail.cs">
       <DependentUpon>WbParkSystemModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AnnouncementDetail.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AnnouncementDetailRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Cars.cs">
-      <DependentUpon>ParkingLotModel.tt</DependentUpon>
+      <DependentUpon>WbParkSystemModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Cars.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CarsInParkingLotPath_Body.cs">
-      <DependentUpon>ParkingLotModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\CarsInParkingLotPath_Body.Partial.cs">
-      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\CarsInParkingLotPath_BodyRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\CarsInParkingLotPath_Header.cs">
-      <DependentUpon>ParkingLotModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\CarsInParkingLotPath_Header.Partial.cs">
-      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\CarsInParkingLotPath_HeaderRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\CarsRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
+      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Edward.IRepository.EF6.cs">
+    <Compile Include="Models\Edward.IRepository.EF6.MultiEDMX.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
+      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EFGeneratePartialClass.cs">
       <AutoGen>True</AutoGen>
@@ -237,129 +223,91 @@
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EFRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EFUnitOfWork.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
+      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Employee.cs">
-      <DependentUpon>ParkingLotModel.tt</DependentUpon>
+      <DependentUpon>WbParkSystemModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Employee.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EmployeeRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
+      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ETAs.cs">
-      <DependentUpon>ParkingLotModel.tt</DependentUpon>
+      <DependentUpon>WbParkSystemModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ETAs.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ETAsRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\IUnitOfWork.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
+      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\HomeIndexViewModel.cs" />
+    <Compile Include="Models\IUnitOfWork.cs">
+      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\NewsPostViewModel.cs" />
-    <Compile Include="Models\News_Body.cs">
-      <DependentUpon>ParkingLotModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\News_Body.Partial.cs">
-      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\News_BodyRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\News_Header.cs">
-      <DependentUpon>ParkingLotModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\News_Header.Partial.cs">
-      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\News_HeaderRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ParkingGrid.cs">
-      <DependentUpon>ParkingLotModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ParkingGrid.Partial.cs">
-      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ParkingGridRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ParkingLotAreas.cs">
-      <DependentUpon>ParkingLotModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ParkingLotAreas.Partial.cs">
-      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ParkingLotAreasRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ParkingLotFloors.cs">
-      <DependentUpon>ParkingLotModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ParkingLotFloors.Partial.cs">
-      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ParkingLotFloorsRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ParkingLotModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ParkingLotModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ParkingLotModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ParkingLotModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ParkingLotModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ParkingLotModel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Models\ParkingLotsDetail.cs">
       <DependentUpon>WbParkSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingLotsDetail.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingLotsDetailRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingLotsFloor.cs">
+      <DependentUpon>WbParkSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingLotsFloor.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingLotsFloorRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ParkingLotsRecoed_HT.cs">
       <DependentUpon>WbParkSystemModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ParkingLotsRecoed_HT.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingLotsRecoed_HTRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ParkingLotsRecord.cs">
       <DependentUpon>WbParkSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingLotsRecord.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingLotsRecordRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PushPhoneDetail.cs">
       <DependentUpon>WbParkSystemModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PushPhoneDetail.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PushPhoneDetailRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\PushPhoneType.cs">
       <DependentUpon>WbParkSystemModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PushPhoneType.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PushPhoneTypeRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\RepositoryHelper.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
+      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Sensors.cs">
-      <DependentUpon>ParkingLotModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Sensors.Partial.cs">
-      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SensorsRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\vw_ParkingLotGridRemain.cs">
-      <DependentUpon>ParkingLotModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\vw_ParkingLotGridRemain.Partial.cs">
-      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\vw_ParkingLotGridRemainRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
+    <Compile Include="Models\vw_ParkingLotGridRemain.cs" />
+    <Compile Include="Models\WbParkSystemEntitiesUnitOfWork.cs">
+      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\WbParkSystemModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -376,8 +324,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WbParkSystemModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\WebLogin.cs">
+    <Compile Include="Models\WebLoginPower.cs">
       <DependentUpon>WbParkSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WebLoginPower.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WebLoginPowerRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -401,23 +355,13 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\Edward.IRepository.EF6.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Edward.IRepository.EF6.cs</LastGenOutput>
-    </Content>
     <Content Include="Models\EFGeneratePartialClass.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EFGeneratePartialClass.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\ParkingLotModel.Context.tt">
+    <Content Include="Models\Edward.IRepository.EF6.MultiEDMX.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ParkingLotModel.edmx</DependentUpon>
-      <LastGenOutput>ParkingLotModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\ParkingLotModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ParkingLotModel.edmx</DependentUpon>
-      <LastGenOutput>ParkingLotModel.cs</LastGenOutput>
+      <LastGenOutput>Edward.IRepository.EF6.MultiEDMX.cs</LastGenOutput>
     </Content>
     <Content Include="Models\WbParkSystemModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -435,13 +379,6 @@
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\ParkingLotModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ParkingLotModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\ParkingLotModel.edmx.diagram">
-      <DependentUpon>ParkingLotModel.edmx</DependentUpon>
-    </Content>
     <Content Include="App_Code\RazorHelpFunctions.cshtml" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
