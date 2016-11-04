@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ParkingLotWebApp.Models;
+using Microsoft.Security.Application;
+using ParkingLotWebApp;
 
 namespace ParkingLotWebApp.Controllers
 {
@@ -33,6 +35,7 @@ namespace ParkingLotWebApp.Controllers
             {
                 return HttpNotFound();
             }
+            parkingLotAreas.Charge = HttpUtility.HtmlDecode(parkingLotAreas.Charge);
             return View(parkingLotAreas);
         }
 
@@ -49,10 +52,17 @@ namespace ParkingLotWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Name,Address,Tel,Period,Charge,Longitude,Latitude,CarGrid,MotoGrid,Void,LastUpdate")] ParkingLotsDetail parkingLotAreas)
         {
+            this.ApplyXSSProtected(parkingLotAreas);
+
             if (ModelState.IsValid)
             {
+                //TODO: 加入可能被XSS攻擊的文字輸入框或是弱型別資料的輸入
+                //parkingLotAreas.Address = Sanitizer.GetSafeHtmlFragment(parkingLotAreas.Address);
+                //parkingLotAreas.Charge = Sanitizer.GetSafeHtmlFragment(parkingLotAreas.Charge);
+               
                 db.Add(parkingLotAreas);
                 db.UnitOfWork.Commit();
+               
                 return RedirectToAction("Index");
             }
 
@@ -67,6 +77,8 @@ namespace ParkingLotWebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ParkingLotsDetail parkingLotAreas = db.Get(id);
+            parkingLotAreas.LastUpdate = DateTime.Now;
+            parkingLotAreas.Charge = HttpUtility.HtmlDecode(parkingLotAreas.Charge);
             if (parkingLotAreas == null)
             {
                 return HttpNotFound();
@@ -81,12 +93,16 @@ namespace ParkingLotWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Name,Address,Tel,Period,Charge,Longitude,Latitude,CarGrid,MotoGrid,Void,LastUpdate")] ParkingLotsDetail parkingLotAreas)
         {
+            
             if (ModelState.IsValid)
             {
+                this.ApplyXSSProtected(parkingLotAreas);
                 db.UnitOfWork.Context.Entry(parkingLotAreas).State = EntityState.Modified;
                 db.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
+            parkingLotAreas.LastUpdate = DateTime.Now;
+            parkingLotAreas.Charge = HttpUtility.HtmlDecode(parkingLotAreas.Charge);
             return View(parkingLotAreas);
         }
 
