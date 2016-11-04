@@ -7,58 +7,56 @@ using Microsoft.AspNet.Identity;
 
 namespace ParkingLotWebApp.Controllers
 {
-    public class ParkingLotFloorsController : Controller
+    public class ParkingLotsFloorController : Controller
     {
-        private IParkingLotFloorsRepository db = RepositoryHelper.GetParkingLotFloorsRepository();
-        private IParkingLotAreasRepository db_area = RepositoryHelper.GetParkingLotAreasRepository();
+        private IParkingLotsFloorRepository db = RepositoryHelper.GetParkingLotsFloorRepository();
+        private IParkingLotsDetailRepository db_area = RepositoryHelper.GetParkingLotsDetailRepository();
 
-        public ParkingLotFloorsController()
+        public ParkingLotsFloorController()
         {
             db_area.UnitOfWork = db.UnitOfWork;
         }
 
-        // GET: ParkingLotFloors
+        // GET: ParkingLotsFloor
         public ActionResult Index(int? id)
-        {
-
-           
+        {  
             if (id.HasValue)
             {
                 ViewBag.AreaId = id.Value;
                 ViewBag.AreaName = db_area.Get(id.Value).Name;
                 ViewBag.returnUrl = Url.Action("Index", "ParkingLotAreas", new { id = id.Value });
-                var parkingLotFloorsByFiliter = db.Where(w => w.AreaId == id && w.Void == false).Include(p => p.ParkingLotAreas);
-                return View(parkingLotFloorsByFiliter.ToList());
+                var ParkingLotsFloorByFiliter = db.Where(w => w.ParkingLotsID == id && w.Void == false).Include(p => p.ParkingLotsDetail);
+                return View(ParkingLotsFloorByFiliter.ToList());
             }
-            var parkingLotFloors = db.Where(w => w.Void == false).Include(p => p.ParkingLotAreas);
-            return View(parkingLotFloors.ToList());
+            var ParkingLotsFloor = db.Where(w => w.Void == false).Include(p => p.ParkingLotsDetail);
+            return View(ParkingLotsFloor.ToList());
         }
 
-        // GET: ParkingLotFloors/Details/5
+        // GET: ParkingLotsFloor/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ParkingLotFloors parkingLotFloors = db.Get(id);
-            if (parkingLotFloors == null)
+            ParkingLotsFloor ParkingLotsFloor = db.Get(id);
+            if (ParkingLotsFloor == null)
             {
                 return HttpNotFound();
             }
-            return View(parkingLotFloors);
+            return View(ParkingLotsFloor);
         }
 
-        // GET: ParkingLotFloors/Create
+        // GET: ParkingLotsFloor/Create
         public ActionResult Create(int? id)
         {
-            var viewmodel = ParkingLotFloors.Create(User.Identity.GetUserId<int>());
+            var viewmodel = ParkingLotsFloor.Create();
             if (id != null && id.HasValue)
             {
-                ViewBag.returnUrl = Url.Action("Index", "ParkingLotFloors", new { id = id.Value });
-                ViewBag.AreaId = new SelectList(db_area.Where(w => w.Id == id.Value && w.Void == false), "Id", "Name");
-                viewmodel.AreaId = id.Value;
-                viewmodel.ParkingLotAreas = db_area.Get(id.Value);
+                ViewBag.returnUrl = Url.Action("Index", "ParkingLotsFloor", new { id = id.Value });
+                ViewBag.AreaId = new SelectList(db_area.Where(w => w.ID == id.Value && w.Void == false), "Id", "Name");
+                viewmodel.ParkingLotsID = id.Value;
+                viewmodel.ParkingLotsDetail = db_area.Get(id.Value);
             }
             else
             {
@@ -69,93 +67,95 @@ namespace ParkingLotWebApp.Controllers
             return View(viewmodel);
         }
 
-        // POST: ParkingLotFloors/Create
+        // POST: ParkingLotsFloor/Create
         // 若要免於過量張貼攻擊，請啟用想要繫結的特定屬性，如需
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,AreaId,Name,Void,CreateUserId,CreateUTCTime,LastUserId,LastUpdateUtcTime,GridAmout,GridRemainAmount")] ParkingLotFloors parkingLotFloors)
+        public ActionResult Create([Bind(Include = @"ID,ParkingLotsID,FloorOrder,FloorName,CarTotalGrid
+      ,CarLastGrid,MotoTotalGrid,MotoLastGrid,Void,LastUpdate")] ParkingLotsFloor ParkingLotsFloor)
         {
             if (ModelState.IsValid)
             {
-                db.Add(parkingLotFloors);
+                db.Add(ParkingLotsFloor);
                 db.UnitOfWork.Commit();
-                return RedirectToAction("Index", new { id = parkingLotFloors.AreaId });
+                return RedirectToAction("Index", new { id = ParkingLotsFloor.ParkingLotsID });
             }
-            if (parkingLotFloors.AreaId != null && parkingLotFloors.AreaId.HasValue)
+            if (ParkingLotsFloor.ParkingLotsID != 0)
             {
-                ViewBag.returnUrl = Url.Action("Index", "ParkingLotFloors", new { id = parkingLotFloors.AreaId.HasValue });
-                ViewBag.AreaId = new SelectList(db.Where(w => w.Id == parkingLotFloors.AreaId.Value && w.Void == false), "Id", "Name");
+                ViewBag.returnUrl = Url.Action("Index", "ParkingLotsFloor", new { id = ParkingLotsFloor.ParkingLotsID });
+                ViewBag.AreaId = new SelectList(db.Where(w => w.ID == ParkingLotsFloor.ParkingLotsID && w.Void == false), "Id", "Name");
             }
             else
             {
                 ViewBag.AreaId = new SelectList(db.Where(w => w.Void == false), "Id", "Name");
             }
-            return View(parkingLotFloors);
+            return View(ParkingLotsFloor);
         }
 
-        // GET: ParkingLotFloors/Edit/5
+        // GET: ParkingLotsFloor/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ParkingLotFloors parkingLotFloors = db.Get(id);
-            if (parkingLotFloors == null)
+            ParkingLotsFloor ParkingLotsFloor = db.Get(id);
+            if (ParkingLotsFloor == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.AreaId = new SelectList(db.Where(w => w.Void == false), "Id", "Name", parkingLotFloors.AreaId);
-            return View(parkingLotFloors);
+            ViewBag.AreaId = new SelectList(db.Where(w => w.Void == false), "Id", "Name", ParkingLotsFloor.ParkingLotsID);
+            return View(ParkingLotsFloor);
         }
 
-        // POST: ParkingLotFloors/Edit/5
+        // POST: ParkingLotsFloor/Edit/5
         // 若要免於過量張貼攻擊，請啟用想要繫結的特定屬性，如需
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,AreaId,Name,Void,CreateUserId,CreateUTCTime,LastUserId,LastUpdateUtcTime,GridAmout,GridRemainAmount")] ParkingLotFloors parkingLotFloors)
+        public ActionResult Edit([Bind(Include = @"ID,ParkingLotsID,FloorOrder,FloorName,CarTotalGrid
+      ,CarLastGrid,MotoTotalGrid,MotoLastGrid,Void,LastUpdate")] ParkingLotsFloor ParkingLotsFloor)
         {
             if (ModelState.IsValid)
             {
-                db.UnitOfWork.Context.Entry(parkingLotFloors).State = EntityState.Modified;
+                db.UnitOfWork.Context.Entry(ParkingLotsFloor).State = EntityState.Modified;
                 db.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
-            ViewBag.AreaId = new SelectList(db_area.Where(w=>w.Void==false), "Id", "Name", parkingLotFloors.AreaId);
-            return View(parkingLotFloors);
+            ViewBag.AreaId = new SelectList(db_area.Where(w=>w.Void==false), "Id", "Name", ParkingLotsFloor.ParkingLotsID);
+            return View(ParkingLotsFloor);
         }
 
-        // GET: ParkingLotFloors/Delete/5
+        // GET: ParkingLotsFloor/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ParkingLotFloors parkingLotFloors = db.Get(id);
-            if (parkingLotFloors == null)
+            ParkingLotsFloor ParkingLotsFloor = db.Get(id);
+            if (ParkingLotsFloor == null)
             {
                 return HttpNotFound();
             }
-            return View(parkingLotFloors);
+            return View(ParkingLotsFloor);
         }
 
-        // POST: ParkingLotFloors/Delete/5
+        // POST: ParkingLotsFloor/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ParkingLotFloors parkingLotFloors = db.Get(id);
-            db.Delete(parkingLotFloors);
+            ParkingLotsFloor ParkingLotsFloor = db.Get(id);
+            db.Delete(ParkingLotsFloor);
             db.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
 
         public ActionResult ListRemainParkingGridAmounts()
         {
-            var model = db.GetListRemainParkingGridAmounts();
+            var model = db_area.GetListRemainParkingGridAmounts();
             return View(model);
         }
 
@@ -171,7 +171,7 @@ namespace ParkingLotWebApp.Controllers
                 sId = selects.Split(',').ToList().ConvertAll(c => int.Parse(c)).ToArray();
             }
 
-            var model = db.GetListRemainParkingGridAmounts();
+            var model = db_area.GetListRemainParkingGridAmounts();
 
             foreach(var selected in sId)
             {
@@ -183,7 +183,7 @@ namespace ParkingLotWebApp.Controllers
 
         [HttpPost]
         [AjaxValidateAntiForgeryToken]
-        public ActionResult EditRemainParkingGridAmounts([Bind(Include = "AreaId,Name,GridAmout,GridRemainAmount")]ParkingLotFloors parkinglotFloors)
+        public ActionResult EditRemainParkingGridAmounts([Bind(Include = "AreaId,Name,GridAmout,GridRemainAmount")]ParkingLotsFloor ParkingLotsFloor)
         {
             return Json(true, JsonRequestBehavior.AllowGet);
         }
