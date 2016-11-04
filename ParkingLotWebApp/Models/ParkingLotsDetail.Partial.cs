@@ -6,12 +6,13 @@ namespace ParkingLotWebApp.Models
     using System.ComponentModel.DataAnnotations;
     using My.Core.Infrastructures.Implementations.Resources;
     using System.Collections.ObjectModel;
+    using System.Web;
 
     /// <summary>
     /// 停車場資訊
     /// </summary>
     [MetadataType(typeof(ParkingLotsDetailMetaData))]
-    public partial class ParkingLotsDetail
+    public partial class ParkingLotsDetail : IValidatableObject
     {
         public static ParkingLotsDetail Create()
         {
@@ -29,6 +30,32 @@ namespace ParkingLotWebApp.Models
                 Tel = "",
                 Void = false
             };
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+
+            var temp = HttpUtility.HtmlDecode(Charge);
+           
+
+            if (temp.Length > 512)
+            {
+                Charge = temp;
+                yield return new ValidationResult(string.Format(ErrorMessage.StringLength, WebPages.ParkingLotsDetail_Charge ,100));
+            }
+
+            System.Diagnostics.Debug.Write(Charge);
+            //if (validationContext.Items.Count > 0)
+            //{
+            //    foreach(string k in validationContext.Items.Keys)
+            //    {
+            //        if(validationContext.Items[k] is string)
+            //        {
+            //            validationContext.Items[k] = Microsoft.Security.Application.Sanitizer.GetSafeHtmlFragment(validationContext.Items[k] as string);
+            //        }
+            //    }
+            //}
+            yield return ValidationResult.Success;
         }
     }
 
@@ -62,7 +89,7 @@ namespace ParkingLotWebApp.Models
             ErrorMessageResourceType = typeof(WebPages))]
         public string Period { get; set; }
 
-        [StringLength(100, ErrorMessageResourceName = "StringLength", ErrorMessageResourceType = typeof(ErrorMessage))]
+        [StringLength(512, ErrorMessageResourceName = "StringLength", ErrorMessageResourceType = typeof(ErrorMessage))]
         [Required]
         [Display(Name = "Charge", ResourceType = typeof(Common))]
         public string Charge { get; set; }
