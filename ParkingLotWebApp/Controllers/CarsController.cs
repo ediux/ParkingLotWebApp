@@ -17,12 +17,14 @@ namespace ParkingLotWebApp.Controllers
         private ICarsRepository db;
         private IEmployeeRepository db_emp;
         private IETAsRepository db_etc;
+        private ICarPurposeTypesRepository db_carPurpose;
 
         public CarsController()
         {
             db = RepositoryHelper.GetCarsRepository();
             db_emp = RepositoryHelper.GetEmployeeRepository(db.UnitOfWork);
             db_etc = RepositoryHelper.GetETAsRepository(db.UnitOfWork);
+            db_carPurpose = RepositoryHelper.GetCarPurposeTypesRepository(db.UnitOfWork);
         }
 
         // GET: Cars
@@ -66,6 +68,7 @@ namespace ParkingLotWebApp.Controllers
             var selectetc = db_etc.Where(w => w.Void == false).ToList();
             selectetc.Insert(0, null);
             ViewBag.ETAId = new SelectList(selectetc, "Id", "Code");
+            ViewBag.CarPurposeTypeID = new SelectList(db_carPurpose.All(), "Id", "Name");
             return View(new Cars());
         }
 
@@ -74,7 +77,7 @@ namespace ParkingLotWebApp.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,CarNumber,CarType,ETAId,EmpId,Void,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime")] Cars cars)
+        public ActionResult Create([Bind(Include = "Id,CarNumber,CarType,ETAId,EmpId,Void,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime,CarPurposeTypeID")] Cars cars)
         {
             if (ModelState.IsValid)
             {
@@ -85,6 +88,7 @@ namespace ParkingLotWebApp.Controllers
 
             ViewBag.EmpId = new SelectList(db_emp.Where(w => w.Void == false), "Id", "Name", cars.EmpId);
             ViewBag.ETAId = new SelectList(db_etc.Where(w => w.Void == false), "Id", "Code", cars.ETAId);
+            ViewBag.CarPurposeTypeID = new SelectList(db_carPurpose.All(), "Id", "Name");
             return View(cars);
         }
 
@@ -106,6 +110,7 @@ namespace ParkingLotWebApp.Controllers
             selectetc.Insert(0, null);
             ViewBag.EmpId = new SelectList(selectemp, "Id", "Name", cars.EmpId);
             ViewBag.ETAId = new SelectList(selectetc, "Id", "Code", cars.ETAId);
+            ViewBag.CarPurposeTypeID = new SelectList(db_carPurpose.All(), "Id", "Name");
             return View(cars);
         }
 
@@ -114,7 +119,7 @@ namespace ParkingLotWebApp.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,CarNumber,CarType,ETAId,EmpId,Void,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime")] Cars cars)
+        public ActionResult Edit([Bind(Include = "Id,CarNumber,CarType,ETAId,EmpId,Void,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime,CarPurposeTypeID")] Cars cars)
         {
             if (ModelState.IsValid)
             {
@@ -128,6 +133,7 @@ namespace ParkingLotWebApp.Controllers
             selectetc.Insert(0, new ETAs() { Id = -1, Code = "(無)" });
             ViewBag.EmpId = new SelectList(selectemp, "Id", "Name", cars.EmpId);
             ViewBag.ETAId = new SelectList(selectetc, "Id", "Code", cars.ETAId);
+            ViewBag.CarPurposeTypeID = new SelectList(db_carPurpose.All(), "Id", "Name");
             return View(cars);
         }
 
