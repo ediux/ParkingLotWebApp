@@ -72,6 +72,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         /// <summary>
         ///   查詢類似 新增用途 的當地語系化字串。
         /// </summary>
+        public static string CarPurposeTypes_Create {
+            get {
+                return ResourceManager.GetString("CarPurposeTypes_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 新增用途 的當地語系化字串。
+        /// </summary>
         public static string CarPurposeTypes_Create_New {
             get {
                 return ResourceManager.GetString("CarPurposeTypes_Create_New", resourceCulture);

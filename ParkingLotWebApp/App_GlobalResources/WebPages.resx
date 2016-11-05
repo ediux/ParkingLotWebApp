@@ -312,4 +312,7 @@
   <data name="CarPurposeTypes_Edit" xml:space="preserve">
     <value>編輯用途</value>
   </data>
+  <data name="CarPurposeTypes_Create" xml:space="preserve">
+    <value>新增用途</value>
+  </data>
 </root>
