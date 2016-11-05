@@ -115,6 +115,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 車輛用途列表 的當地語系化字串。
+        /// </summary>
+        public static string CarPurposeTypes_Index {
+            get {
+                return ResourceManager.GetString("CarPurposeTypes_Index", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 車輛資訊 的當地語系化字串。
         /// </summary>
         public static string Cars {
