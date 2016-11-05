@@ -61,6 +61,51 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 車輛用途管理 的當地語系化字串。
+        /// </summary>
+        public static string CarPurposeTypes {
+            get {
+                return ResourceManager.GetString("CarPurposeTypes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 新增用途 的當地語系化字串。
+        /// </summary>
+        public static string CarPurposeTypes_Create_New {
+            get {
+                return ResourceManager.GetString("CarPurposeTypes_Create_New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 刪除用途 的當地語系化字串。
+        /// </summary>
+        public static string CarPurposeTypes_Delete {
+            get {
+                return ResourceManager.GetString("CarPurposeTypes_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 用途詳細資料 的當地語系化字串。
+        /// </summary>
+        public static string CarPurposeTypes_Details {
+            get {
+                return ResourceManager.GetString("CarPurposeTypes_Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 編輯用途 的當地語系化字串。
+        /// </summary>
+        public static string CarPurposeTypes_Edit {
+            get {
+                return ResourceManager.GetString("CarPurposeTypes_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 車輛資訊 的當地語系化字串。
         /// </summary>
         public static string Cars {
