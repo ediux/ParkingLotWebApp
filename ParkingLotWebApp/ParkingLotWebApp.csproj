@@ -192,6 +192,8 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CarPurposeTypesController.cs" />
     <Compile Include="Controllers\CarsController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\ETAsController.cs" />
@@ -210,6 +212,15 @@
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AnnouncementDetailRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CarPurposeTypes.cs">
+      <DependentUpon>WbParkSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CarPurposeTypes.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CarPurposeTypesRepository.cs">
       <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Cars.cs">
@@ -293,6 +304,11 @@
     <Compile Include="Models\ParkingLotsRecordRepository.cs">
       <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PartialClasses\CarPurposeTypes.Partial.cs" />
+    <Compile Include="Models\PartialClasses\CarPurposeTypesRepository.Partial.cs" />
+    <Compile Include="Models\PartialClasses\Cars.Partial.cs" />
+    <Compile Include="Models\PartialClasses\Employee.Partial.cs" />
+    <Compile Include="Models\PartialClasses\ParkingLotsDetailRepository.Partial.cs" />
     <Compile Include="Models\PushPhoneDetail.cs">
       <DependentUpon>WbParkSystemModel.tt</DependentUpon>
     </Compile>
@@ -332,12 +348,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>WbParkSystemModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\WebLoginPower.Partial.cs">
-      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\WebLoginPowerRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -958,9 +968,16 @@
     <Content Include="Views\Shared\DisplayTemplates\UTCLocalDateDisplay.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\UTCLocalDateDisplay.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\CarTypeDisplay.cshtml" />
+    <Content Include="Views\CarPurposeTypes\Create.cshtml" />
+    <Content Include="Views\CarPurposeTypes\Delete.cshtml" />
+    <Content Include="Views\CarPurposeTypes\Details.cshtml" />
+    <Content Include="Views\CarPurposeTypes\Edit.cshtml" />
+    <Content Include="Views\CarPurposeTypes\Index.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\CarTypeDisplay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

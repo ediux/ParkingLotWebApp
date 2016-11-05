@@ -28,6 +28,20 @@ namespace ParkingLotWebApp.Models
 			return repository;
 		}		
 
+		public static CarPurposeTypesRepository GetCarPurposeTypesRepository()
+		{
+			var repository = new CarPurposeTypesRepository();
+			repository.UnitOfWork = GetWbParkSystemEntitiesUnitOfWork();
+			return repository;
+		}
+
+		public static CarPurposeTypesRepository GetCarPurposeTypesRepository(IUnitOfWork unitOfWork)
+		{
+			var repository = new CarPurposeTypesRepository();
+			repository.UnitOfWork = unitOfWork;
+			return repository;
+		}		
+
 		public static CarsRepository GetCarsRepository()
 		{
 			var repository = new CarsRepository();
@@ -150,20 +164,6 @@ namespace ParkingLotWebApp.Models
 		public static PushPhoneTypeRepository GetPushPhoneTypeRepository(IUnitOfWork unitOfWork)
 		{
 			var repository = new PushPhoneTypeRepository();
-			repository.UnitOfWork = unitOfWork;
-			return repository;
-		}		
-
-		public static WebLoginPowerRepository GetWebLoginPowerRepository()
-		{
-			var repository = new WebLoginPowerRepository();
-			repository.UnitOfWork = GetWbParkSystemEntitiesUnitOfWork();
-			return repository;
-		}
-
-		public static WebLoginPowerRepository GetWebLoginPowerRepository(IUnitOfWork unitOfWork)
-		{
-			var repository = new WebLoginPowerRepository();
 			repository.UnitOfWork = unitOfWork;
 			return repository;
 		}		

@@ -1,12 +1,21 @@
 ﻿@{
     ViewBag.Title = Resources.WebPages.HomePage_Title;
+    if (IsAjax)
+    {
+        Layout = "";
+    }
 }
 @model ParkingLotWebApp.Models.HomeIndexViewModel
 <h2>@Resources.WebPages.HomePage</h2>
 <div class="row" style="margin-top:20px;">
 
     <div class="col-xs-4 col-md-2">
-        @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @id = "selectlocationform", @class = "form-horizontal", @role = "form" }))
+        @using (Ajax.BeginForm("Index", new { }, new AjaxOptions
+        {
+            UpdateTargetId = "body",
+            HttpMethod = "Post",
+            OnSuccess="init"
+        }, new { @id = "selectlocationform", @class = "form-horizontal", @role = "form" }))
         {
             @Html.AntiForgeryToken()
             foreach (var key in Model.Areas.Keys)
@@ -79,10 +88,39 @@
 </div>
 @section scripts{
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('#selectlocationform').on('click', ':checkbox', function () {
-                $('#selectlocationform').submit();
+        function autoReload() {
+            console.debug('timer.');
+            $.ajax({
+                url: '@Url.Action("Reload")',
+                data: { areaId: $('[name="areaId"]').val() },
+                type: 'POST',
+                cache: false,
+                datatype: 'html',
+                headers: { 'RequestVerificationToken': '@RazorHelpFunctions.GetAntiForgeryToken()' },
+                success: function (data) {
+                    $('#body').empty();
+                    $('#body').html(data);
+                    init();
+                    setTimeout(function () { autoReload(); }, 10000);
+                    //init();
+                    //console.debug(data);
+                    console.debug('auto reload.');
+                }
             });
+
+        }
+        function init() {
+            $('#selectlocationform').on('click', ':checkbox', function () {
+                console.debug('areaId triggered.');
+                $('#selectlocationform').submit();
+                //autoReload();
+            });
+            console.debug('event registered.');
+        }
+        $(document).ready(function () {
+            $.ajaxSetup({ cache: false });
+            init();
+            setTimeout(function () { autoReload(); }, 10000);
         });
     </script>
 }

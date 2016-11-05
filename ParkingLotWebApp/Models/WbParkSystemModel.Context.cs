@@ -35,5 +35,6 @@ namespace ParkingLotWebApp.Models
         public virtual DbSet<PushPhoneType> PushPhoneType { get; set; }
         public virtual DbSet<ParkingLotsDetail> ParkingLotsDetail { get; set; }
         public virtual DbSet<ParkingLotsFloor> ParkingLotsFloor { get; set; }
+        public virtual DbSet<CarPurposeTypes> CarPurposeTypes { get; set; }
     }
 }

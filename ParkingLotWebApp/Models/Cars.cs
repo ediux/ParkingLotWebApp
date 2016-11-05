@@ -14,6 +14,12 @@ namespace ParkingLotWebApp.Models
     
     public partial class Cars
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Cars()
+        {
+            this.PushPhoneDetail = new HashSet<PushPhoneDetail>();
+        }
+    
         public int Id { get; set; }
         public string CarNumber { get; set; }
         public string CarType { get; set; }
@@ -24,8 +30,12 @@ namespace ParkingLotWebApp.Models
         public System.DateTime CreateUTCTime { get; set; }
         public int LastUpdateUserId { get; set; }
         public System.DateTime LastUpdateUTCTime { get; set; }
+        public Nullable<int> CarPurposeTypeID { get; set; }
     
         public virtual Employee Employee { get; set; }
         public virtual ETAs ETAs { get; set; }
+        public virtual CarPurposeTypes CarPurposeTypes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PushPhoneDetail> PushPhoneDetail { get; set; }
     }
 }

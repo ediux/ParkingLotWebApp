@@ -17,5 +17,7 @@ namespace ParkingLotWebApp.Models
         [StringLength(20, ErrorMessage="欄位長度不得大於 20 個字元")]
         [Required]
         public string PushPhone { get; set; }
+    
+        public virtual ICollection<PushPhoneDetail> PushPhoneDetail { get; set; }
     }
 }

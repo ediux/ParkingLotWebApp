@@ -20,7 +20,9 @@
         <th>
             @Html.DisplayNameFor(model => model.CarType)
         </th>
-
+        <th>
+            @Html.DisplayNameFor(model => model.CarPurposeTypes.Name)
+        </th>
         <th>
             @Html.DisplayNameFor(x => x.Employee.Code)
         </th>
@@ -47,6 +49,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CarType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => (item.CarPurposeTypes ?? new ParkingLotWebApp.Models.CarPurposeTypes()).Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Employee.Code)

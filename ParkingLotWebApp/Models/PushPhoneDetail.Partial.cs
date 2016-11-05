@@ -28,5 +28,9 @@ namespace ParkingLotWebApp.Models
         [Required]
         public bool Void { get; set; }
         public Nullable<System.DateTime> LastUpdate { get; set; }
+        public Nullable<int> CarInfoId { get; set; }
+    
+        public virtual PushPhoneType PushPhoneType { get; set; }
+        public virtual Cars Cars { get; set; }
     }
 }
