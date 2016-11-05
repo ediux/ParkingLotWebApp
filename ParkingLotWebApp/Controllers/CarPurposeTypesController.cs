@@ -40,7 +40,7 @@ namespace ParkingLotWebApp.Controllers
         // GET: CarPurposeTypes/Create
         public ActionResult Create()
         {
-            return View();
+            return View(CarPurposeTypes.Create());
         }
 
         // POST: CarPurposeTypes/Create
