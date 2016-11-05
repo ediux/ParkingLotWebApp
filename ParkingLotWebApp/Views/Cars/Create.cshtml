@@ -47,7 +47,7 @@
                         @Html.ValidationMessageFor(model => model.CarType, "", new { @class = "text-danger" })
                     </div>
                     <div class="col-md-3">
-                        @Html.ActionLink("車輛用途維護", "Index", "CarPurposeTypes", new { }, new { @class = "btn btn-primary" })
+                        @Html.ActionLink("車輛用途維護", "Index", "CarPurposeTypes", new { ReturnUrl = Url.Action("Create","Cars") }, new { @class = "btn btn-primary" })
                     </div>               
                 </div>
             }
