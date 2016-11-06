@@ -2,6 +2,7 @@ namespace ParkingLotWebApp.Models
 {
     using App_GlobalResources;
     using My.Core.Infrastructures.Implementations.Resources;
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -51,7 +52,7 @@ namespace ParkingLotWebApp.Models
         public bool Void { get; set; }
         [Display(Name = "LastUpdate", ResourceType = typeof(Common))]
         public Nullable<System.DateTime> LastUpdate { get; set; }
-
+        [JsonIgnore]
         public virtual ParkingLotsDetail ParkingLotsDetail { get; set; }
     }
 }
