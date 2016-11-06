@@ -7,6 +7,38 @@ namespace ParkingLotWebApp.Models
 {
     public partial class ParkingLotsDetailRepository
     {
+        public override IQueryable<ParkingLotsDetail> All()
+        {
+            return base.All().Where(w=>w.Void==false);
+        }
+        public override ParkingLotsDetail Add(ParkingLotsDetail entity)
+        {
+            ParkingLotsDetail entityInDatabase = ObjectSet.SingleOrDefault(s => s.Name.Equals(entity.Name, StringComparison.InvariantCultureIgnoreCase));
+            if (entityInDatabase != null)
+            {
+                //如果資料庫已經有相同名稱的資料則複寫原本的資料                
+                entityInDatabase.ParkingLotsFloor.Clear();//移除原相同名稱的關聯資料
+                entityInDatabase.Address = entity.Address;
+                entityInDatabase.Charge = entity.Charge;
+                entityInDatabase.LastUpdate = DateTime.Now;
+                entityInDatabase.Latitude = entity.Latitude;
+                entityInDatabase.Longitude = entity.Longitude;
+                entityInDatabase.Name = entity.Name;
+                entityInDatabase.Period = entity.Period;
+                entityInDatabase.Tel = entity.Tel;
+                entityInDatabase.Void = false;
+                UnitOfWork.Context.Entry(entityInDatabase).State = System.Data.Entity.EntityState.Modified;
+                return entityInDatabase;
+            }
+            return base.Add(entity);
+        }
+        public override void Delete(ParkingLotsDetail entity)
+        {
+            if (entity.Void == false)
+            {
+                entity.Void = true;
+            }            
+        }
         public HomeIndexViewModel GetListRemainParkingGridAmounts()
         {
             HomeIndexViewModel result = new Models.HomeIndexViewModel();
