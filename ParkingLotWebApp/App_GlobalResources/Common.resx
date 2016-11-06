@@ -176,6 +176,9 @@
   <data name="OK" xml:space="preserve">
     <value>確認</value>
   </data>
+  <data name="Rename" xml:space="preserve">
+    <value>更名</value>
+  </data>
   <data name="RoleAssign" xml:space="preserve">
     <value>角色指派</value>
   </data>

@@ -232,6 +232,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 更名 的當地語系化字串。
+        /// </summary>
+        public static string Rename {
+            get {
+                return ResourceManager.GetString("Rename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 角色指派 的當地語系化字串。
         /// </summary>
         public static string RoleAssign {
