@@ -20,6 +20,7 @@ namespace ParkingLotWebApp.Controllers
 
         public ActionResult Index()
         {
+            ViewBag.AreaId = "";
             var model = db.GetListRemainParkingGridAmounts();
             return View(model);
         }
@@ -29,6 +30,7 @@ namespace ParkingLotWebApp.Controllers
         public ActionResult Index(FormCollection collection)
         {
             string selects = collection["areaId"];
+            ViewBag.AreaId = selects;
             int[] sId = new int[] { };
 
             if (!string.IsNullOrEmpty(selects))
@@ -48,10 +50,10 @@ namespace ParkingLotWebApp.Controllers
 
         [OutputCache(VaryByParam = "*", Duration = 0, NoStore = true)]
         [HttpPost]
-        [AjaxValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public ActionResult Reload(FormCollection collection)
         {
-            string selects = collection["areaId"];
+            string selects = collection["shared_areaId"];
             int[] sId = new int[] { };
 
             if (!string.IsNullOrEmpty(selects))
@@ -66,7 +68,7 @@ namespace ParkingLotWebApp.Controllers
                 model.SelectedAreas[key] = true;
             }
 
-            return View("Index",model);
+            return View(model);
         }
 
         public ActionResult About()

@@ -6,122 +6,173 @@
     }
 }
 @model ParkingLotWebApp.Models.HomeIndexViewModel
-<h2>@Resources.WebPages.HomePage</h2>
-<div class="row" style="margin-top:20px;">
 
-    <div class="col-xs-4 col-md-2">
-        @using (Ajax.BeginForm("Index", new { }, new AjaxOptions
-        {
-            UpdateTargetId = "body",
-            HttpMethod = "Post",
-            OnSuccess="init"
-        }, new { @id = "selectlocationform", @class = "form-horizontal", @role = "form" }))
-        {
-            @Html.AntiForgeryToken()
-            foreach (var key in Model.Areas.Keys)
+@if (!IsAjax)
+{
+    <h2>@Resources.WebPages.HomePage</h2>
+
+
+    <div class="row" style="margin-top:20px;" id="autorefresh">
+        <div class="col-xs-4 col-md-2" id="selectAreas">
+            @using (Ajax.BeginForm("Index", null, new AjaxOptions
             {
-                <div class="form-group">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="areaId" value="@key" @((Model.SelectedAreas[key]) ? Html.Raw("checked") : Html.Raw("")) />
-                            @Model.Areas[key]
-                        </label>
+                UpdateTargetId = "selectAreas",
+                HttpMethod = "Post",
+                OnSuccess = "refreshSelect"
+            }, new { @id = "selectlocationform", @class = "form-horizontal", @role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                foreach (var key in Model.Areas.Keys)
+                {
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="areaId" value="@key" @((Model.SelectedAreas[key]) ? Html.Raw("checked") : Html.Raw("")) />
+                                @Model.Areas[key]
+                            </label>
+                        </div>
                     </div>
-                </div>
-            }
-        }
-    </div>
-    <div class="col-xs-8 col-md-10">
-        @foreach (int key in Model.Areas.Keys)
-        {
-            if (Model.SelectedAreas[key])
-            {
-                <div class="col-xs-12 col-md-4">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                @if (Model.RemainSummary[key].All(w => w.NoneFloor == false))
-                                {
-                                    <th colspan="3">@Model.Areas[key]</th>
-                                }
-                                else
-                                {
-                                    <th colspan="2">@Model.Areas[key]</th>
-                                }
-                            </tr>
-                            <tr>
-                                @if (Model.RemainSummary[key].All(p => p.NoneFloor == false))
-                                {
-                                    <th>樓層</th>
-                                }
-                                <th>@Resources.WebPages.ParkingLotsFloor_CarLastGrid</th>
-                                <th>@Resources.WebPages.ParkingLotsFloor_MotoLastGrid</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item_n in Model.RemainSummary[key])
-                            {
-                                <tr>
-                                    @if (item_n.NoneFloor == false)
-                                    {
-                                        <td>@item_n.樓層名稱</td>
-                                        <td>@item_n.剩餘停車格數</td>
-                                        <td>@item_n.剩餘機車格數</td>
-                                    }
-                                    else
-                                    {
-                                        <td>@item_n.剩餘停車格數</td>
-                                        <td>@item_n.剩餘機車格數</td>
-                                    }
-                                </tr>
-                            }
-                        </tbody>
-
-
-
-                    </table>
-                </div>
-            }
-
-        }
-    </div>
-</div>
-@section scripts{
-    <script type="text/javascript">
-        function autoReload() {
-            console.debug('timer.');
-            $.ajax({
-                url: '@Url.Action("Reload")',
-                data: { areaId: $('[name="areaId"]').val() },
-                type: 'POST',
-                cache: false,
-                datatype: 'html',
-                headers: { 'RequestVerificationToken': '@RazorHelpFunctions.GetAntiForgeryToken()' },
-                success: function (data) {
-                    $('#body').empty();
-                    $('#body').html(data);
-                    init();
-                    setTimeout(function () { autoReload(); }, 10000);
-                    //init();
-                    //console.debug(data);
-                    console.debug('auto reload.');
                 }
-            });
+            }
+        </div>
+        <div class="col-xs-8 col-md-10" id="showFloors">
+            @using (Ajax.BeginForm("Reload", null, new AjaxOptions
+            {
+                UpdateTargetId = "showFloors",
+                HttpMethod = "Post",
+                OnSuccess = "autoReload"
+            }, new { @id = "autoreload" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("shared_areaId", "")
+                foreach (int key in Model.Areas.Keys)
+                {
 
-        }
-        function init() {
-            $('#selectlocationform').on('click', ':checkbox', function () {
-                console.debug('areaId triggered.');
-                $('#selectlocationform').submit();
-                //autoReload();
+
+                    if (Model.SelectedAreas[key])
+                    {
+                        <div class="col-xs-12 col-md-4">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        @if (Model.RemainSummary[key].All(w => w.NoneFloor == false))
+                                        {
+                                            <th colspan="3">@Model.Areas[key]</th>
+                                        }
+                                        else
+                                        {
+                                            <th colspan="2">@Model.Areas[key]</th>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        @if (Model.RemainSummary[key].All(p => p.NoneFloor == false))
+                                        {
+                                            <th>樓層</th>
+                                        }
+                                        <th>@Resources.WebPages.ParkingLotsFloor_CarLastGrid</th>
+                                        <th>@Resources.WebPages.ParkingLotsFloor_MotoLastGrid</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item_n in Model.RemainSummary[key])
+                                    {
+                                        <tr>
+                                            @if (item_n.NoneFloor == false)
+                                            {
+                                                <td>@item_n.樓層名稱</td>
+                                                <td>@item_n.剩餘停車格數</td>
+                                                <td>@item_n.剩餘機車格數</td>
+                                            }
+                                            else
+                                            {
+                                                <td>@item_n.剩餘停車格數</td>
+                                                <td>@item_n.剩餘機車格數</td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+
+                }
+            }
+
+        </div>
+    </div>
+    <script>
+        var sharedAreaId = '@ViewBag.AreaId';
+    </script>
+    @section scripts{
+        
+        <script type="text/javascript">
+            function autoReload() {
+                console.debug('timer.');                
+                $('#shared_areaId').val(sharedAreaId);
+                console.debug('sharedAreaId:' + sharedAreaId);
+                setTimeout('$(\'#autoreload\').submit();', 10000);
+                @*$.ajax({
+                    url: '@Url.Action("Reload")',
+                    data: { areaId: $('[name="areaId"]').val() },
+                    type: 'POST',
+                    cache: false,
+                    datatype: 'html',
+                    headers: { 'RequestVerificationToken': '@RazorHelpFunctions.GetAntiForgeryToken()' },
+                    success: function (data) {
+                        $('#body').empty();
+                        $('#body').html(data);
+                        init();
+                        setTimeout(function () { autoReload(); }, 10000);
+                        //init();
+                        //console.debug(data);
+                        console.debug('auto reload.');
+                    }
+                });*@
+            }
+            function refreshSelect() {
+                init();
+                $('#autoreload').submit();
+            }
+            function init() {
+                $.ajaxSetup({ cache: false });
+                $('#selectlocationform').on('click', ':checkbox', function () {                                       
+                    console.debug('areaId triggered.');
+                    $('#selectlocationform').submit();
+                    //autoReload();
+                });
+                console.debug('event registered.');
+                autoReload();
+            }
+            $(document).ready(function () {
+                init();
             });
-            console.debug('event registered.');
+        </script>
+    }
+}
+else
+{
+    using (Ajax.BeginForm("Index", null, new AjaxOptions
+    {
+        UpdateTargetId = "selectAreas",
+        HttpMethod = "Post",
+        OnSuccess = "refreshSelect"
+    }, new { @id = "selectlocationform", @class = "form-horizontal", @role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        foreach (var key in Model.Areas.Keys)
+        {
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="areaId" value="@key" @((Model.SelectedAreas[key]) ? Html.Raw("checked") : Html.Raw("")) />
+                        @Model.Areas[key]
+                    </label>
+                </div>
+            </div>
         }
-        $(document).ready(function () {
-            $.ajaxSetup({ cache: false });
-            init();
-            setTimeout(function () { autoReload(); }, 10000);
-        });
+    }
+    <script>
+        var sharedAreaId = '@ViewBag.AreaId';
     </script>
 }
 
