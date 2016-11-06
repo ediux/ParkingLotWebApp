@@ -318,4 +318,7 @@
   <data name="CarPurposeTypes_Index" xml:space="preserve">
     <value>車輛用途列表</value>
   </data>
+  <data name="CarPurposeTypes_This" xml:space="preserve">
+    <value>這個車輛用途嗎</value>
+  </data>
 </root>
