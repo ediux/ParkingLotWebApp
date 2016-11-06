@@ -17,7 +17,7 @@
         <EntityTypeShape EntityType="WbParkSystemModel.PushPhoneType" Width="1.5" PointX="13.875" PointY="9.25" />
         <AssociationConnector Association="WbParkSystemModel.FK_PushPhoneDetail_PushPhoneType" />
         <EntityTypeShape EntityType="WbParkSystemModel.ParkingLotsDetail" Width="2.125" PointX="0.75" PointY="8" />
-        <EntityTypeShape EntityType="WbParkSystemModel.ParkingLotsFloor" Width="2.125" PointX="3" PointY="8" />
+        <EntityTypeShape EntityType="WbParkSystemModel.ParkingLotsFloor" Width="2.125" PointX="3.875" PointY="8.125" />
         <AssociationConnector Association="WbParkSystemModel.FK_ParkingLotsFloor_ParkingLotsDetail" />
         <EntityTypeShape EntityType="WbParkSystemModel.CarPurposeTypes" Width="1.5" PointX="11.875" PointY="4.75" />
         <AssociationConnector Association="WbParkSystemModel.FK_Cars_CarPurposeTypes" />
