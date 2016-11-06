@@ -7,6 +7,7 @@ namespace ParkingLotWebApp.Models
     using My.Core.Infrastructures.Implementations.Resources;
     using System.Collections.ObjectModel;
     using System.Web;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// 停車場資訊
@@ -104,5 +105,6 @@ namespace ParkingLotWebApp.Models
         public bool Void { get; set; }
         [Display(Name = "LastUpdate", ResourceType = typeof(Common))]
         public DateTime? LastUpdate { get; set; }
+        public virtual ICollection<ParkingLotsFloor> ParkingLotsFloor { get; set; }
     }
 }
