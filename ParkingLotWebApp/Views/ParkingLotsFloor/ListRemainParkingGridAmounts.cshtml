@@ -2,14 +2,145 @@
 
 @{
     ViewBag.Title = Resources.WebPages.ParkingLotFloors_ListRemainParkingGridAmounts;
+    if (IsAjax)
+    {
+        Layout = "";
+    }
 }
 
-<h2>@ViewBag.Title</h2>
+@if (!IsAjax)
+{
+    <h2>@ViewBag.Title</h2>
 
-<div class="row" style="margin-top:20px;">
 
+    <div class="row" style="margin-top:20px;" id="partialArea">
+        <div class="col-xs-4 col-md-2">
+            @using (Ajax.BeginForm("ListRemainParkingGridAmounts", "ParkingLotsFloor", null, new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "partialArea" }, new { @id = "selectlocationform", @class = "form-horizontal", @role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                foreach (var key in Model.RemainSummary.Keys)
+                {
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="areaId" value="@key" @((Model.SelectedAreas[key]) ? Html.Raw("checked") : Html.Raw("")) />
+                                @Model.Areas[key]
+                            </label>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="col-xs-8 col-md-10">
+            @foreach (int key in Model.RemainSummary.Keys)
+            {
+                if (Model.SelectedAreas[key])
+                {
+                    <div class="col-xs-12 col-md-4">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    @if (Model.RemainSummary[key].All(w => w.NoneFloor == false))
+                                    {
+                                        <th colspan="3">@Model.Areas[key]</th>
+                                    }
+                                    else
+                                    {
+                                        <th colspan="2">@Model.Areas[key]</th>
+                                        <th><a href="javascript:showEditModal('car_@Model.RemainSummary[key][0].ID','moto_@Model.RemainSummary[key][0].ID',@Model.RemainSummary[key][0].ID,'@Model.RemainSummary[key][0].樓層名稱',@Model.RemainSummary[key][0].總停車格數,@Model.RemainSummary[key][0].剩餘停車格數,@Model.RemainSummary[key][0].總機車格數,@Model.RemainSummary[key][0].剩餘機車格數);">@Model.Areas[key]</a></th>
+                                    }
+                                </tr>
+                                <tr>
+                                    @if (Model.RemainSummary[key].All(p => p.NoneFloor == false))
+                                    {
+                                        <th>樓層</th>
+                                    }
+                                    <th>@Resources.WebPages.ParkingLotsFloor_CarLastGrid</th>
+                                    <th>@Resources.WebPages.ParkingLotsFloor_MotoLastGrid</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item_n in Model.RemainSummary[key])
+                                {
+                                    <tr id="@Html.Raw(Model.Areas[key]+"_"+item_n.樓層名稱)">
+                                        @if (item_n.NoneFloor == false)
+                                        {
+                                            <td><a href="javascript:showEditModal('car_@item_n.ID','moto_@item_n.ID',@item_n.ID,'@item_n.樓層名稱',@item_n.總停車格數,@item_n.剩餘停車格數,@item_n.總機車格數,@item_n.剩餘機車格數);">@item_n.樓層名稱</a></td>
+                                            <td id="car_@item_n.ID">@item_n.剩餘停車格數</td>
+                                            <td id="moto_@item_n.ID">@item_n.剩餘機車格數</td>
+                                        }
+                                        else
+                                        {
+
+                                            <td id="car_@item_n.ID">@item_n.剩餘停車格數</td>
+                                            <td id="moto_@item_n.ID">@item_n.剩餘機車格數</td>
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <div class="modal fade" id="EditRemainGridModal" tabindex="-1" role="dialog" aria-labelledby="EditRemainGridModal-label">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="EditRemainGridModal-label">編輯</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <label class="control-label col-sm-7" for="form-group-input">@Resources.WebPages.ParkingLotsFloor_CarTotalGrid:</label>
+                                <div class="col-sm-5">
+                                    <label class="control-label form-control-static" for="form-group-input" id="currentValue">1</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <label class="control-label col-sm-7" for="form-group-input">@Resources.WebPages.ParkingLotsFloor_CarLastGrid:</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" placeholder="Placecholder" id="targetValue">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <label class="control-label col-sm-7" for="form-group-input">@Resources.WebPages.ParkingLotsFloor_MotoTotalGrid:</label>
+                                <div class="col-sm-5">
+                                    <label class="control-label form-control-static" for="form-group-input" id="moto_currentValue">1</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <label class="control-label col-sm-7" for="form-group-input">@Resources.WebPages.ParkingLotsFloor_MotoLastGrid:</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" placeholder="Placecholder" id="moto_targetValue">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Common.Close</button>
+                    <button type="button" class="btn btn-primary" id="btnSave">@Resources.Common.Save</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+}
+else
+{
     <div class="col-xs-4 col-md-2">
-        @using (Html.BeginForm("ListRemainParkingGridAmounts", "ParkingLotsFloor", FormMethod.Post, new { @id = "selectlocationform", @class = "form-horizontal", @role = "form" }))
+        @using (Ajax.BeginForm("ListRemainParkingGridAmounts", "ParkingLotsFloor", null, new AjaxOptions() { HttpMethod="Post", UpdateTargetId= "partialArea" }, new { @id = "selectlocationform", @class = "form-horizontal", @role = "form" }))
         {
             @Html.AntiForgeryToken()
             foreach (var key in Model.RemainSummary.Keys)
@@ -25,148 +156,112 @@
             }
         }
     </div>
-    <div class="col-xs-8 col-md-10">
-        @foreach (int key in Model.RemainSummary.Keys)
-        {
-            if (Model.SelectedAreas[key])
+        <div class="col-xs-8 col-md-10">
+            @foreach (int key in Model.RemainSummary.Keys)
             {
-                <div class="col-xs-12 col-md-4">
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                @if (Model.RemainSummary[key].All(w => w.NoneFloor == false))
-                                {
-                                    <th colspan="3">@Model.Areas[key]</th>
-                                }
-                                else
-                                {
-                                    <th colspan="2">@Model.Areas[key]</th>
-                                    <th><a href="javascript:showEditModal(@Model.RemainSummary[key][0].ID,'@Model.RemainSummary[key][0].樓層名稱',@Model.RemainSummary[key][0].總停車格數,@Model.RemainSummary[key][0].剩餘停車格數,@Model.RemainSummary[key][0].總機車格數,@Model.RemainSummary[key][0].剩餘機車格數);">@Model.Areas[key]</a></th>
-                                }
-                            </tr>
-                            <tr>
-                                @if (Model.RemainSummary[key].All(p=>p.NoneFloor==false))
-                                {
-                                    <th>樓層</th>
-                                }
-                                <th>@Resources.WebPages.ParkingLotsFloor_CarLastGrid</th>
-                                <th>@Resources.WebPages.ParkingLotsFloor_MotoLastGrid</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item_n in Model.RemainSummary[key])
-                            {
-                                <tr id="@Html.Raw(Model.Areas[key]+"_"+item_n.樓層名稱)">
-                                    @if (item_n.NoneFloor == false)
+                if (Model.SelectedAreas[key])
+                {
+                    <div class="col-xs-12 col-md-4">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    @if (Model.RemainSummary[key].All(w => w.NoneFloor == false))
                                     {
-                                        <td><a href="javascript:showEditModal(@item_n.ID,'@item_n.樓層名稱',@item_n.總停車格數,@item_n.剩餘停車格數,@item_n.總機車格數,@item_n.剩餘機車格數);">@item_n.樓層名稱</a></td>
-                                        <td>@item_n.剩餘停車格數</td>
-                                        <td>@item_n.剩餘機車格數</td>
+                                        <th colspan="3">@Model.Areas[key]</th>
                                     }
                                     else
                                     {
-                                        
-                                        <td>@item_n.剩餘停車格數</td>
-                                        <td>@item_n.剩餘機車格數</td>
+                                        <th colspan="2">@Model.Areas[key]</th>
+                                        <th><a href="javascript:showEditModal('car_@Model.RemainSummary[key][0].ID','moto_@Model.RemainSummary[key][0].ID',@Model.RemainSummary[key][0].ID,'@Model.RemainSummary[key][0].樓層名稱',@Model.RemainSummary[key][0].總停車格數,@Model.RemainSummary[key][0].剩餘停車格數,@Model.RemainSummary[key][0].總機車格數,@Model.RemainSummary[key][0].剩餘機車格數);">@Model.Areas[key]</a></th>
                                     }
                                 </tr>
-                            }
-                        </tbody>
+                                <tr>
+                                    @if (Model.RemainSummary[key].All(p => p.NoneFloor == false))
+                                    {
+                                        <th>樓層</th>
+                                    }
+                                    <th>@Resources.WebPages.ParkingLotsFloor_CarLastGrid</th>
+                                    <th>@Resources.WebPages.ParkingLotsFloor_MotoLastGrid</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item_n in Model.RemainSummary[key])
+                                {
+                                    <tr id="@Html.Raw(Model.Areas[key]+"_"+item_n.樓層名稱)">
+                                        @if (item_n.NoneFloor == false)
+                                        {
+                                            <td><a href="javascript:showEditModal('car_@item_n.ID','moto_@item_n.ID',@item_n.ID,'@item_n.樓層名稱',@item_n.總停車格數,@item_n.剩餘停車格數,@item_n.總機車格數,@item_n.剩餘機車格數);">@item_n.樓層名稱</a></td>
+                                            <td id="car_@item_n.ID">@item_n.剩餘停車格數</td>
+                                            <td id="moto_@item_n.ID">@item_n.剩餘機車格數</td>
+                                        }
+                                        else
+                                        {
 
-
-
-                    </table>
-                </div>
+                                            <td id="car_@item_n.ID">@item_n.剩餘停車格數</td>
+                                            <td id="moto_@item_n.ID">@item_n.剩餘機車格數</td>
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
             }
-
-        }
-    </div>
-</div>
-<div class="modal fade" id="EditRemainGridModal" tabindex="-1" role="dialog" aria-labelledby="EditRemainGridModal-label">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="EditRemainGridModal-label">編輯</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <div class="col-sm-12">
-                            <label class="control-label col-sm-7" for="form-group-input">@Resources.WebPages.ParkingLotsFloor_CarTotalGrid:</label>
-                            <div class="col-sm-5">
-                                <label class="control-label form-control-static" for="form-group-input" id="currentValue">1</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-12">
-                            <label class="control-label col-sm-7" for="form-group-input">@Resources.WebPages.ParkingLotsFloor_CarLastGrid:</label>
-                            <div class="col-sm-5">
-                                <input type="text" class="form-control" placeholder="Placecholder" id="targetValue">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-12">
-                            <label class="control-label col-sm-7" for="form-group-input">@Resources.WebPages.ParkingLotsFloor_MotoTotalGrid:</label>
-                            <div class="col-sm-5">
-                                <label class="control-label form-control-static" for="form-group-input" id="moto_currentValue">1</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-12">
-                            <label class="control-label col-sm-7" for="form-group-input">@Resources.WebPages.ParkingLotsFloor_MotoLastGrid:</label>
-                            <div class="col-sm-5">
-                                <input type="text" class="form-control" placeholder="Placecholder" id="moto_targetValue">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Common.Close</button>
-                <button type="button" class="btn btn-primary" id="btnSave">@Resources.Common.Save</button>
-            </div>
         </div>
-    </div>
-</div>
-@section scripts{
-    <script type="text/javascript">
-        function showEditModal(areaId, floorname, limitamount, remainamount,limitmotoamount,remainmotoamount) {
-            $('#currentValue').html(limitamount);
-            $('#moto_currentValue').html(limitmotoamount);
-            $('#targetValue').val(remainamount);
-            $('#targetValue').attr('placeholder', remainamount);
-            $('#moto_targetValue').val(remainmotoamount);
-            $('#moto_targetValue').attr('placeholder', remainmotoamount);
-            $('#EditRemainGridModal').modal('show');
-            $('#btnSave').click(function () {
-               
-                $.ajax({
-                    type: 'POST',
-                    url:'@Url.Action("EditRemainParkingGridAmounts")',
-                    data:  {
-                        'ID': areaId,
-                        'CarLastGrid': $('#targetValue').val(),
-                        'MotoLastGrid': $('#moto_targetValue').val()
-                    },
-                    dataType: 'json',
-                    headers:{'RequestVerificationToken': '@RazorHelpFunctions.GetAntiForgeryToken()'
-                    },
-                    success: function (response) {
-                        $('#EditRemainGridModal').modal('hide');
-                        window.location.reload();   //重新載入
-                    }
+}
+
+
+@if (!IsAjax)
+{
+    @section scripts{
+        <script type="text/javascript">
+            var _areaid = null;
+            var _selectCellCar = null;
+            var _selectCellMoto = null;
+            function showEditModal(carHtmlId, motoHtmlId, areaId, floorname, limitamount, remainamount, limitmotoamount, remainmotoamount) {
+                $('#currentValue').html(limitamount);
+                $('#moto_currentValue').html(limitmotoamount);
+                $('#targetValue').val(remainamount);
+                $('#targetValue').attr('placeholder', remainamount);
+                $('#moto_targetValue').val(remainmotoamount);
+                $('#moto_targetValue').attr('placeholder', remainmotoamount);
+                $('#EditRemainGridModal').modal('show');
+                _areaid = areaId;
+                _selectCellCar = $('#' + carHtmlId);
+                _selectCellMoto = $('#' + motoHtmlId);
+            }
+            $(document).ready(function () {
+                $('#selectlocationform').on('click', ':checkbox', function () {
+                    $('#selectlocationform').submit();
+                });
+                $('#btnSave').click(function () {
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("EditRemainParkingGridAmounts")',
+                        data: {
+                            'ID': _areaid,
+                            'CarLastGrid': $('#targetValue').val(),
+                            'MotoLastGrid': $('#moto_targetValue').val()
+                        },
+                        dataType: 'json',
+                        headers: {
+                            'RequestVerificationToken': '@RazorHelpFunctions.GetAntiForgeryToken()'
+                        },
+                        success: function (response) {
+                            if (response.Success) {
+                                $(_selectCellCar).html(response.Data.CarLastGrid);
+                                $(_selectCellMoto).html(response.Data.MotoLastGrid);
+                                _selectCellCar = null;
+                                _selectCellMoto = null;
+                            }
+                            //$('#modal').modal('toggle');
+                            $('#EditRemainGridModal').modal('toggle');
+                            $('#selectlocationform').submit();
+                        }
+                    });
                 });
             });
-
-        }
-        $(document).ready(function () {
-            $('#selectlocationform').on('click', ':checkbox', function () {
-                $('#selectlocationform').submit();
-            });
-        });
-    </script>
+        </script>
+    }
 }
