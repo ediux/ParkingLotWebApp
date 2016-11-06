@@ -20,22 +20,7 @@ namespace ParkingLotWebApp.Controllers
         {
             ViewBag.ReturnUrl = ReturnUrl;
             return View(db.All().ToList());
-        }
-
-        // GET: CarPurposeTypes/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            CarPurposeTypes carPurposeTypes = db.Get(id);
-            if (carPurposeTypes == null)
-            {
-                return HttpNotFound();
-            }
-            return View(carPurposeTypes);
-        }
+        }     
 
         // GET: CarPurposeTypes/Create
         public ActionResult Create()

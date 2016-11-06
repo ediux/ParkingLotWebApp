@@ -970,7 +970,6 @@
     <Content Include="Views\Shared\DisplayTemplates\CarTypeDisplay.cshtml" />
     <Content Include="Views\CarPurposeTypes\Create.cshtml" />
     <Content Include="Views\CarPurposeTypes\Delete.cshtml" />
-    <Content Include="Views\CarPurposeTypes\Details.cshtml" />
     <Content Include="Views\CarPurposeTypes\Edit.cshtml" />
     <Content Include="Views\CarPurposeTypes\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\CarTypeDisplay.cshtml" />
