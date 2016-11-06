@@ -192,17 +192,18 @@ namespace ParkingLotWebApp.Controllers
         {
             if (ParkingLotsFloor != null)
             {
-                var data = db.Get(ParkingLotsFloor.ID);
+                ParkingLotsFloor data = db.Get(ParkingLotsFloor.ID);
                 if (data != null)
                 {
                     data.CarLastGrid = ParkingLotsFloor.CarLastGrid;
                     data.MotoLastGrid = ParkingLotsFloor.MotoLastGrid;
                     data.LastUpdate = DateTime.Now;
                     db.UnitOfWork.Commit();
-                    return Json(true, JsonRequestBehavior.AllowGet);
+                    db.UnitOfWork.Context.Entry(data).Reload();
+                    return Content(Newtonsoft.Json.JsonConvert.SerializeObject(new { Success = true, Data = data }), "application/json");
                 }
             }
-            return Json(false, JsonRequestBehavior.AllowGet);
+            return Content(Newtonsoft.Json.JsonConvert.SerializeObject(new { Success = false, Data = ParkingLotsFloor }), "application/json");
         }
 
 
