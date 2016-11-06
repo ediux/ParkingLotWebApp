@@ -127,12 +127,14 @@
             <PropertyRef Name="PhoneNumber" />
           </Key>
           <Property Name="PhoneTypeID" Type="tinyint" Nullable="false" />
-          <Property Name="CarInfoId" Type="int" />
+          <Property Name="CarID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="CarType" Type="char" MaxLength="1" Nullable="false" />
           <Property Name="DeviceID" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Token" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="PhoneNumber" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Void" Type="bit" Nullable="false" />
           <Property Name="LastUpdate" Type="datetime" />
+          <Property Name="CarRefId" Type="int" />
         </EntityType>
         <EntityType Name="PushPhoneType">
           <Key>
@@ -197,7 +199,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="PushPhoneDetail">
-              <PropertyRef Name="CarInfoId" />
+              <PropertyRef Name="CarRefId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -315,12 +317,7 @@
             <End Role="ETAs" EntitySet="ETAs" />
             <End Role="Cars" EntitySet="Cars" />
           </AssociationSet>
-          <EntitySet Name="PushPhoneDetail" EntityType="WbParkSystemModel.PushPhoneDetail" />
           <EntitySet Name="PushPhoneType" EntityType="WbParkSystemModel.PushPhoneType" />
-          <AssociationSet Name="FK_PushPhoneDetail_PushPhoneType" Association="WbParkSystemModel.FK_PushPhoneDetail_PushPhoneType">
-            <End Role="PushPhoneType" EntitySet="PushPhoneType" />
-            <End Role="PushPhoneDetail" EntitySet="PushPhoneDetail" />
-          </AssociationSet>
           <EntitySet Name="ParkingLotsDetail" EntityType="WbParkSystemModel.ParkingLotsDetail" />
           <EntitySet Name="ParkingLotsFloor" EntityType="WbParkSystemModel.ParkingLotsFloor" />
           <AssociationSet Name="FK_ParkingLotsFloor_ParkingLotsDetail" Association="WbParkSystemModel.FK_ParkingLotsFloor_ParkingLotsDetail">
@@ -332,8 +329,13 @@
             <End Role="CarPurposeTypes" EntitySet="CarPurposeTypes" />
             <End Role="Cars" EntitySet="Cars" />
           </AssociationSet>
+          <EntitySet Name="PushPhoneDetail" EntityType="WbParkSystemModel.PushPhoneDetail" />
           <AssociationSet Name="FK_PushPhoneDetail_Cars" Association="WbParkSystemModel.FK_PushPhoneDetail_Cars">
             <End Role="Cars" EntitySet="Cars" />
+            <End Role="PushPhoneDetail" EntitySet="PushPhoneDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PushPhoneDetail_PushPhoneType" Association="WbParkSystemModel.FK_PushPhoneDetail_PushPhoneType">
+            <End Role="PushPhoneType" EntitySet="PushPhoneType" />
             <End Role="PushPhoneDetail" EntitySet="PushPhoneDetail" />
           </AssociationSet>
         </EntityContainer>
@@ -408,22 +410,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="PushPhoneDetail">
-          <Key>
-            <PropertyRef Name="DeviceID" />
-            <PropertyRef Name="Token" />
-            <PropertyRef Name="PhoneNumber" />
-          </Key>
-          <Property Name="PhoneTypeID" Type="Byte" Nullable="false" />
-          <Property Name="DeviceID" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Token" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Void" Type="Boolean" Nullable="false" />
-          <Property Name="LastUpdate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="PushPhoneType" Relationship="WbParkSystemModel.FK_PushPhoneDetail_PushPhoneType" FromRole="PushPhoneDetail" ToRole="PushPhoneType" />
-          <Property Name="CarInfoId" Type="Int32" />
-          <NavigationProperty Name="Cars" Relationship="WbParkSystemModel.FK_PushPhoneDetail_Cars" FromRole="PushPhoneDetail" ToRole="Cars" />
-        </EntityType>
         <EntityType Name="PushPhoneType">
           <Key>
             <PropertyRef Name="ID" />
@@ -432,18 +418,6 @@
           <Property Name="PushPhone" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="PushPhoneDetail" Relationship="WbParkSystemModel.FK_PushPhoneDetail_PushPhoneType" FromRole="PushPhoneType" ToRole="PushPhoneDetail" />
         </EntityType>
-        <Association Name="FK_PushPhoneDetail_PushPhoneType">
-          <End Type="WbParkSystemModel.PushPhoneType" Role="PushPhoneType" Multiplicity="1" />
-          <End Type="WbParkSystemModel.PushPhoneDetail" Role="PushPhoneDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PushPhoneType">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="PushPhoneDetail">
-              <PropertyRef Name="PhoneTypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="ParkingLotsDetail">
           <Key>
             <PropertyRef Name="ID" />
@@ -509,6 +483,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="PushPhoneDetail">
+          <Key>
+            <PropertyRef Name="DeviceID" />
+            <PropertyRef Name="Token" />
+            <PropertyRef Name="PhoneNumber" />
+          </Key>
+          <Property Name="PhoneTypeID" Type="Byte" Nullable="false" />
+          <Property Name="CarID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CarType" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="DeviceID" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Token" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Void" Type="Boolean" Nullable="false" />
+          <Property Name="LastUpdate" Type="DateTime" Precision="3" />
+          <Property Name="CarRefId" Type="Int32" />
+          <NavigationProperty Name="Cars" Relationship="WbParkSystemModel.FK_PushPhoneDetail_Cars" FromRole="PushPhoneDetail" ToRole="Cars" />
+          <NavigationProperty Name="PushPhoneType" Relationship="WbParkSystemModel.FK_PushPhoneDetail_PushPhoneType" FromRole="PushPhoneDetail" ToRole="PushPhoneType" />
+        </EntityType>
         <Association Name="FK_PushPhoneDetail_Cars">
           <End Type="WbParkSystemModel.Cars" Role="Cars" Multiplicity="0..1" />
           <End Type="WbParkSystemModel.PushPhoneDetail" Role="PushPhoneDetail" Multiplicity="*" />
@@ -517,7 +509,19 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="PushPhoneDetail">
-              <PropertyRef Name="CarInfoId" />
+              <PropertyRef Name="CarRefId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PushPhoneDetail_PushPhoneType">
+          <End Type="WbParkSystemModel.PushPhoneType" Role="PushPhoneType" Multiplicity="1" />
+          <End Type="WbParkSystemModel.PushPhoneDetail" Role="PushPhoneDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PushPhoneType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PushPhoneDetail">
+              <PropertyRef Name="PhoneTypeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -604,19 +608,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PushPhoneDetail">
-            <EntityTypeMapping TypeName="WbParkSystemModel.PushPhoneDetail">
-              <MappingFragment StoreEntitySet="PushPhoneDetail">
-                <ScalarProperty Name="CarInfoId" ColumnName="CarInfoId" />
-                <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
-                <ScalarProperty Name="Void" ColumnName="Void" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="Token" ColumnName="Token" />
-                <ScalarProperty Name="DeviceID" ColumnName="DeviceID" />
-                <ScalarProperty Name="PhoneTypeID" ColumnName="PhoneTypeID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="PushPhoneType">
             <EntityTypeMapping TypeName="WbParkSystemModel.PushPhoneType">
               <MappingFragment StoreEntitySet="PushPhoneType">
@@ -663,6 +654,21 @@
                 <ScalarProperty Name="Void" ColumnName="Void" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PushPhoneDetail">
+            <EntityTypeMapping TypeName="WbParkSystemModel.PushPhoneDetail">
+              <MappingFragment StoreEntitySet="PushPhoneDetail">
+                <ScalarProperty Name="CarRefId" ColumnName="CarRefId" />
+                <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
+                <ScalarProperty Name="Void" ColumnName="Void" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="DeviceID" ColumnName="DeviceID" />
+                <ScalarProperty Name="CarType" ColumnName="CarType" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="PhoneTypeID" ColumnName="PhoneTypeID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
