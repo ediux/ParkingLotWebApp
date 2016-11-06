@@ -14,6 +14,14 @@ namespace ParkingLotWebApp.Models
         [Required]
         public byte PhoneTypeID { get; set; }
         
+        [StringLength(10, ErrorMessage="欄位長度不得大於 10 個字元")]
+        [Required]
+        public string CarID { get; set; }
+        
+        [StringLength(1, ErrorMessage="欄位長度不得大於 1 個字元")]
+        [Required]
+        public string CarType { get; set; }
+        
         [StringLength(200, ErrorMessage="欄位長度不得大於 200 個字元")]
         [Required]
         public string DeviceID { get; set; }
@@ -28,9 +36,9 @@ namespace ParkingLotWebApp.Models
         [Required]
         public bool Void { get; set; }
         public Nullable<System.DateTime> LastUpdate { get; set; }
-        public Nullable<int> CarInfoId { get; set; }
+        public Nullable<int> CarRefId { get; set; }
     
-        public virtual PushPhoneType PushPhoneType { get; set; }
         public virtual Cars Cars { get; set; }
+        public virtual PushPhoneType PushPhoneType { get; set; }
     }
 }

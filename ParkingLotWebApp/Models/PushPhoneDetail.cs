@@ -15,14 +15,16 @@ namespace ParkingLotWebApp.Models
     public partial class PushPhoneDetail
     {
         public byte PhoneTypeID { get; set; }
+        public string CarID { get; set; }
+        public string CarType { get; set; }
         public string DeviceID { get; set; }
         public string Token { get; set; }
         public string PhoneNumber { get; set; }
         public bool Void { get; set; }
         public Nullable<System.DateTime> LastUpdate { get; set; }
-        public Nullable<int> CarInfoId { get; set; }
+        public Nullable<int> CarRefId { get; set; }
     
-        public virtual PushPhoneType PushPhoneType { get; set; }
         public virtual Cars Cars { get; set; }
+        public virtual PushPhoneType PushPhoneType { get; set; }
     }
 }
