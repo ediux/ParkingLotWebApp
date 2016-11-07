@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+
+        <li class="dropdown user  hidden-xs">
+            <a data-toggle="dropdown" class="dropdown-toggle" href="#"> <i class="icon-male"></i> <span class="username">@User.Identity.GetUserName()</span> <i class="icon-caret-down small"></i> </a>
+            <ul class="dropdown-menu">
+                <li><a href="@Url.Action("UserProfileEdit","Manage",new { id = User.Identity.GetUserId<int>() })"><i class="icon-user"></i> My Profile</a></li>
+                <li class="divider"></li>
+                <li><a href="@Url.Action("Index","Manage")"><i class="icon-cog"></i> 系統設置 </a></li>
+                <li class="divider"></li>
+                <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="icon-key"></i> 登出</a></li>
+            </ul>
+        </li>
+   
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("註冊", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("登入", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}
+@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+{
+    @Html.AntiForgeryToken()
+}
