@@ -1002,6 +1002,7 @@
     <Content Include="Views\Shared\DisplayTemplates\EnabledDisplay.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Password.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\EnabledDisplay.cshtml" />
+    <Content Include="Views\Home\Theme.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
