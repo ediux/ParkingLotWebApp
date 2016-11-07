@@ -42,54 +42,11 @@ namespace My.Core.Infrastructures.Implementations.Models
         {
             user = userrolerepo.ApplicationUserRepository.Add(user);
 
-
-
-
-            if (Roles.Count() > 0)
+            if (Roles.SingleOrDefault(s => s.Name == "Users") != null)
             {
-                if (Roles.SingleOrDefault(s => s.Name == "Users") != null)
-                {
-                    await AddToRoleAsync(user, "Users");
-                }
-                else
-                {
-                    await CreateAsync(new Models.ApplicationRole()
-                    {
-                        CreateTime = DateTime.UtcNow,
-                        CreateUserId = user.Id,
-                        LastUpdateTime = DateTime.UtcNow,
-                        LastUpdateUserId = user.Id,
-                        Name = "Users",
-                        Void = false
-                    });
-
-                    await AddToRoleAsync(user, "Users");
-                }
-            }
-            else
-            {
-                await CreateAsync(new Models.ApplicationRole()
-                {
-                    CreateTime = DateTime.UtcNow,
-                    CreateUserId = user.Id,
-                    LastUpdateTime = DateTime.UtcNow,
-                    LastUpdateUserId = user.Id,
-                    Name = "Admins",
-                    Void = false
-                });
-
-                await CreateAsync(new Models.ApplicationRole()
-                {
-                    CreateTime = DateTime.UtcNow,
-                    CreateUserId = user.Id,
-                    LastUpdateTime = DateTime.UtcNow,
-                    LastUpdateUserId = user.Id,
-                    Name = "Users",
-                    Void = false
-                });
-
-                await AddToRoleAsync(user, "Admins");
-            }
+                await AddToRoleAsync(user, "Users");
+                throw new Exception("Users Role is not existed.");
+            }          
             await userrolerepo.UnitOfWork.CommitAsync();
         }
 
@@ -112,7 +69,36 @@ namespace My.Core.Infrastructures.Implementations.Models
 
         public async Task UpdateAsync(ApplicationUser user)
         {
-            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
+            var oriuser = userrolerepo.ApplicationUserRepository.Get(user.Id);
+            var pwdhasher = new PasswordHasher();
+
+            if (!string.IsNullOrEmpty(user.Password) || oriuser.PasswordHash != user.PasswordHash)
+            {
+                user.PasswordHash = pwdhasher.HashPassword(user.Password ?? "");
+
+                if (oriuser.PasswordHash != user.PasswordHash)
+                {
+                    oriuser.Password = string.Empty;
+                    oriuser.PasswordHash = user.PasswordHash;
+
+                }
+            }
+
+
+            oriuser.UserName = user.UserName;
+            oriuser.DisplayName = user.DisplayName;
+            oriuser.Address = user.Address;
+            oriuser.EMail = user.EMail;
+            oriuser.EMailConfirmed = false;
+            oriuser.LastUpdateTime = DateTime.UtcNow;
+            
+            if (user.TwoFactorEnabled)
+            {
+                oriuser.PhoneNumber = user.PhoneNumber;
+                oriuser.PhoneConfirmed = false;
+            }
+
+            userrolerepo.UnitOfWork.Context.Entry(oriuser).State = EntityState.Modified;
             await userrolerepo.UnitOfWork.CommitAsync();
         }
 

@@ -9,7 +9,7 @@ namespace My.Core.Infrastructures.Implementations.Models
 {
     public partial class ApplicationUserRepository : IApplicationUserRepository
     {
-  
+
 
         public async Task<ApplicationUser> ChangePasswordAsync(ApplicationUser UpdateUserData)
         {
@@ -349,7 +349,7 @@ namespace My.Core.Infrastructures.Implementations.Models
             if (rtn == -1)
             {
                 var s = from q in ObjectSet
-                        where q.UserName == "System"
+                        where q.UserName == "root"
                         select q;
 
                 if (s.Any())
@@ -359,9 +359,8 @@ namespace My.Core.Infrastructures.Implementations.Models
 
                 var usr = ApplicationUser.CreateKernelUser();
                 base.Add(usr);
-                usr = Reload(usr);
                 UnitOfWork.Commit();
-
+                usr = Reload(usr);
                 return usr;
             }
 
@@ -381,9 +380,9 @@ namespace My.Core.Infrastructures.Implementations.Models
                  try
                  {
                      return;
-                    //_unitofwork.GetEntry<ApplicationUser>(User).State = EntityState.Modified;
+                     //_unitofwork.GetEntry<ApplicationUser>(User).State = EntityState.Modified;
 
-                }
+                 }
                  catch (Exception ex)
                  {
                      WriteErrorLog(ex);
@@ -439,14 +438,14 @@ namespace My.Core.Infrastructures.Implementations.Models
 
                 UnitOfWork.Commit();
 
-               // await WriteUserOperationLogAsync(OperationCodeEnum.Account_ChangePassword_End_Success, currentLoginedUser);
+                // await WriteUserOperationLogAsync(OperationCodeEnum.Account_ChangePassword_End_Success, currentLoginedUser);
 
                 return Reload(UpdatedUserData);
             }
             catch (Exception ex)
             {
                 WriteErrorLog(ex);
-              //  await WriteUserOperationLogAsync(OperationCodeEnum.Account_ChangePassword_End_Fail, currentLoginedUser);
+                //  await WriteUserOperationLogAsync(OperationCodeEnum.Account_ChangePassword_End_Fail, currentLoginedUser);
                 throw ex;
             }
         }

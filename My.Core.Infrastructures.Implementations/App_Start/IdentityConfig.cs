@@ -38,6 +38,7 @@ namespace My.Core.Infrastructures.Implementations
             : base(store)
         {
         }
+                
         public async Task<bool> CheckAccountIsExist(ApplicationUser user)
         {
             try
@@ -170,6 +171,7 @@ namespace My.Core.Infrastructures.Implementations
 
             return roleManager;
         }
+        
     }
     // 設定在此應用程式中使用的應用程式登入管理員。
     public class ApplicationSignInManager : SignInManager<ApplicationUser, int>
@@ -183,7 +185,7 @@ namespace My.Core.Infrastructures.Implementations
         {
             return user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
         }
-
+        
         public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);

@@ -82,6 +82,17 @@ namespace My.Core.Infrastructures.Implementations.Models
         public string ConfirmPassword { get; set; }
     }
 
+    public class RegisterForAdminsViewModel: RegisterViewModel
+    {
+        [Required]
+        [Display(Name ="顯示名稱")]
+        public string DisplayName { get; set; }
+        [Required]
+        public int RoleId { get; set; }
+
+        public virtual ApplicationRole Role { get; set; }
+    }
+
     public class ResetPasswordViewModel
     {
         [Required]

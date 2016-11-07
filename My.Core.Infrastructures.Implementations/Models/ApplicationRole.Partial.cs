@@ -17,14 +17,19 @@ namespace My.Core.Infrastructures.Implementations.Models
         [Required]
         public string Name { get; set; }
         [Required]
+        [UIHint("VoidDisplay")]
         public bool Void { get; set; }
         [Required]
+        [UIHint("UserIDMappingDisplay")]
         public int CreateUserId { get; set; }
         [Required]
+        [UIHint("UTCLocalTimeDisplay")]
         public System.DateTime CreateTime { get; set; }
         [Required]
+        [UIHint("UserIDMappingDisplay")]
         public int LastUpdateUserId { get; set; }
         [Required]
+        [UIHint("UTCLocalTimeDisplay")]
         public System.DateTime LastUpdateTime { get; set; }
     
         public virtual ICollection<ApplicationUserRole> ApplicationUserRole { get; set; }
