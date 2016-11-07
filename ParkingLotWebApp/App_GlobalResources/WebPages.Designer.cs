@@ -133,7 +133,7 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
-        ///   查詢類似 車輛資訊 的當地語系化字串。
+        ///   查詢類似 車輛維護 的當地語系化字串。
         /// </summary>
         public static string Cars {
             get {
@@ -520,7 +520,7 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
-        ///   查詢類似 維護剩餘車位數量 的當地語系化字串。
+        ///   查詢類似 剩餘車位數量維護 的當地語系化字串。
         /// </summary>
         public static string ParkingLotFloors_ListRemainParkingGridAmounts {
             get {

@@ -22,11 +22,11 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("首頁", "Index", "Home")</li>
+                    <li>@Html.ActionLink("儀錶板", "Index", "Home")</li>
                     @if (User.IsInRole("Admins"))
                     {
                         <li>@Html.ActionLink("車輛維護", "Index", "Cars")</li>
-                        <li>@Html.ActionLink("剩餘車位維護", "ListRemainParkingGridAmounts", "ParkingLotsFloor") </li>
+                        <li>@Html.ActionLink("剩餘車位數量維護", "ListRemainParkingGridAmounts", "ParkingLotsFloor") </li>
                         <li>@Html.ActionLink("公告維護", "Index", "News")</li>
                        
                     }

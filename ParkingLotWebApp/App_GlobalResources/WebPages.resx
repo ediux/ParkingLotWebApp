@@ -142,7 +142,7 @@
     <value>這個車輛用途嗎</value>
   </data>
   <data name="Cars" xml:space="preserve">
-    <value>車輛資訊</value>
+    <value>車輛維護</value>
     <comment>車輛維護</comment>
   </data>
   <data name="Cars_Create_New" xml:space="preserve">
@@ -277,7 +277,7 @@
     <value>{0}的樓層總覽</value>
   </data>
   <data name="ParkingLotFloors_ListRemainParkingGridAmounts" xml:space="preserve">
-    <value>維護剩餘車位數量</value>
+    <value>剩餘車位數量維護</value>
   </data>
   <data name="ParkingLotsDetail_Address" xml:space="preserve">
     <value>地址</value>
