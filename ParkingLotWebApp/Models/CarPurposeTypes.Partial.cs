@@ -1,9 +1,10 @@
 namespace ParkingLotWebApp.Models
 {
+    using My.Core.Infrastructures.Implementations.Resources;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    
+
     [MetadataType(typeof(CarPurposeTypesMetaData))]
     public partial class CarPurposeTypes
     {
@@ -19,7 +20,7 @@ namespace ParkingLotWebApp.Models
         [Display(Name="用途")]
         public string Name { get; set; }
         [Required]
-        [Display(Name="Void",ResourceType = typeof(My.Core.Infrastructures.Implementations.Resources.MUI))]
+        [Display(Name="Void",ResourceType = typeof(MUI))]
         public bool Void { get; set; }
     
         public virtual ICollection<Cars> Cars { get; set; }

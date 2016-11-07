@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = Resources.WebPages.HomePage_Title;
+    ViewBag.Title = WebPages.HomePage_Title;
     if (IsAjax)
     {
         Layout = "";
@@ -9,7 +9,7 @@
 
 @if (!IsAjax)
 {
-    <h2>@Resources.WebPages.HomePage</h2>
+    <h2>@WebPages.HomePage</h2>
 
 
     <div class="row" style="margin-top:20px;" id="autorefresh">
@@ -69,8 +69,8 @@
                                         {
                                             <th>樓層</th>
                                         }
-                                        <th>@Resources.WebPages.ParkingLotsFloor_CarLastGrid</th>
-                                        <th>@Resources.WebPages.ParkingLotsFloor_MotoLastGrid</th>
+                                        <th>@WebPages.ParkingLotsFloor_CarLastGrid</th>
+                                        <th>@WebPages.ParkingLotsFloor_MotoLastGrid</th>
                                     </tr>
                                 </thead>
                                 <tbody>

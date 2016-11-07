@@ -1,14 +1,14 @@
 ﻿@model ParkingLotWebApp.Models.ParkingLotsDetail
 
 @{
-    ViewBag.Title = Resources.WebPages.ParkingLotAreas_Delete;
+    ViewBag.Title = WebPages.ParkingLotAreas_Delete;
 }
 
 <h2>@ViewBag.Title</h2>
 
-<h3>@string.Format(Resources.Common.DeleteConfirmMessage,Resources.WebPages.ParkingLotAreas_This)</h3>
+<h3>@string.Format(Common.DeleteConfirmMessage,WebPages.ParkingLotAreas_This)</h3>
 <div>
-    <h4>@Resources.WebPages.ParkingLotAreas</h4>
+    <h4>@WebPages.ParkingLotAreas</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -56,8 +56,8 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="@Resources.Common.Delete" class="btn btn-default" /> |
-            @Html.ActionLink(string.Format(Resources.Common.Back_To,Resources.WebPages.ParkingLotAreas_Index), "Index")
+            <input type="submit" value="@Common.Delete" class="btn btn-default" /> |
+            @Html.ActionLink(string.Format(Common.Back_To,WebPages.ParkingLotAreas_Index), "Index")
         </div>
     }
 </div>

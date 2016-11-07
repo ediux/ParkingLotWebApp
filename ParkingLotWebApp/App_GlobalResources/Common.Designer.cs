@@ -70,6 +70,24 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 系統角色 的當地語系化字串。
+        /// </summary>
+        public static string ApplicationRole {
+            get {
+                return ResourceManager.GetString("ApplicationRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 使用者帳號 的當地語系化字串。
+        /// </summary>
+        public static string ApplicationUser {
+            get {
+                return ResourceManager.GetString("ApplicationUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 返回到{0} 的當地語系化字串。
         /// </summary>
         public static string Back_To {
@@ -79,7 +97,16 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
-        ///   查詢類似 回到管理總覽 的當地語系化字串。
+        ///   查詢類似 返回到帳號列表 的當地語系化字串。
+        /// </summary>
+        public static string Back_To_UserList {
+            get {
+                return ResourceManager.GetString("Back_To_UserList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 返回到管理總覽 的當地語系化字串。
         /// </summary>
         public static string BackToManage {
             get {
@@ -88,7 +115,7 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
-        ///   查詢類似 回到角色總覽 的當地語系化字串。
+        ///   查詢類似 返回到角色總覽 的當地語系化字串。
         /// </summary>
         public static string BackToRole {
             get {
@@ -129,6 +156,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         public static string Create {
             get {
                 return ResourceManager.GetString("Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 新增帳號 的當地語系化字串。
+        /// </summary>
+        public static string CreateNewUserInAdminsMode {
+            get {
+                return ResourceManager.GetString("CreateNewUserInAdminsMode", resourceCulture);
             }
         }
         
@@ -232,6 +268,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 編輯 {0} 的資料 的當地語系化字串。
+        /// </summary>
+        public static string ProfileEdit {
+            get {
+                return ResourceManager.GetString("ProfileEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 更名 的當地語系化字串。
         /// </summary>
         public static string Rename {
@@ -259,6 +304,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 註冊 的當地語系化字串。
+        /// </summary>
+        public static string SignUp {
+            get {
+                return ResourceManager.GetString("SignUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 電話 的當地語系化字串。
         /// </summary>
         public static string Tel {
@@ -268,11 +322,38 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 這個帳號嗎 的當地語系化字串。
+        /// </summary>
+        public static string ThisUser {
+            get {
+                return ResourceManager.GetString("ThisUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 到 的當地語系化字串。
         /// </summary>
         public static string To {
             get {
                 return ResourceManager.GetString("To", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 {0} 的詳細資訊 的當地語系化字串。
+        /// </summary>
+        public static string UserDetails {
+            get {
+                return ResourceManager.GetString("UserDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 帳號清單 的當地語系化字串。
+        /// </summary>
+        public static string UserLists {
+            get {
+                return ResourceManager.GetString("UserLists", resourceCulture);
             }
         }
         

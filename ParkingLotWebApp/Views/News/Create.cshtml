@@ -1,7 +1,7 @@
 ﻿@model ParkingLotWebApp.Models.NewsPostViewModel
 @using Microsoft.AspNet.Identity
 @{
-    ViewBag.Title = Resources.WebPages.News_Create_New;
+    ViewBag.Title = WebPages.News_Create_New;
     if (IsAjax || ViewContext.IsChildAction)
     {
         Layout = null;
@@ -9,7 +9,7 @@
 
 }
 
-@*<h2>@Resources.MUI.WebPages.News_Create_New</h2>
+@*<h2>@MUI.WebPages.News_Create_New</h2>
     <form class="form-horizontal"></form>*@
 @using (Ajax.BeginForm("Create", null, new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "replacepageholder", OnSuccess= "onSuccess" }, htmlAttributes: new { @class = "form-horizontal m-15" }))
 {
@@ -31,8 +31,8 @@
             <div class="input-group input-group-sm">
                 @Html.EditorFor(model => model.Caption, new { htmlAttributes = new { @class = "form-control input-sm" } })
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="submit">@Resources.Common.Create</button>
-                    <button class="btn btn-default" type="button" onclick="document.location.reload();">@Resources.Common.Cancel</button>
+                    <button class="btn btn-default" type="submit">@Common.Create</button>
+                    <button class="btn btn-default" type="button" onclick="document.location.reload();">@Common.Cancel</button>
                 </span>
                 @Html.ValidationMessageFor(model => model.Caption, "", new { @class = "text-danger" })
             </div>
@@ -43,7 +43,7 @@
         <div class="col-md-10">
             <div class="input-daterange input-group" id="datepicker">
                 @Html.TextBoxFor(model => model.StartTime, "{0:yyyy/MM/dd}", new { @class = "input-sm form-control" })
-                <span class="input-group-addon">@Resources.Common.To</span>
+                <span class="input-group-addon">@Common.To</span>
                 @Html.TextBoxFor(model => model.EndTime, "{0:yyyy/MM/dd}", new { @class = "input-sm form-control" })
             </div>
             @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
@@ -54,7 +54,7 @@
         <div class="col-sm-offset-2 col-sm-10">
             <div class="checkbox">
                 <label>
-                    @Html.CheckBoxFor(model => model.IsTop) @Resources.WebPages.NewsTop
+                    @Html.CheckBoxFor(model => model.IsTop) @WebPages.NewsTop
                 </label>
             </div>
         </div>

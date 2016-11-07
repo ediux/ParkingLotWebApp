@@ -44,6 +44,9 @@
       <HintPath>..\packages\AntiXSS.4.3.0\lib\net40\AntiXssLibrary.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="App_GlobalResources.ynhiz-j7">
+      <HintPath>..\..\..\..\..\AppData\Local\Temp\Temporary ASP.NET Files\root\ed6808a2\_shadow\b1a6a341\5080\App_GlobalResources.ynhiz-j7.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlSanitizationLibrary, Version=4.3.0.0, Culture=neutral, PublicKeyToken=d127efab8a9c114f, processorArchitecture=MSIL">
       <HintPath>..\packages\AntiXSS.4.3.0\lib\net40\HtmlSanitizationLibrary.dll</HintPath>
       <Private>True</Private>
@@ -51,6 +54,14 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -330,6 +341,7 @@
     <Compile Include="Models\RepositoryHelper.cs">
       <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UserProfileViewModel.cs" />
     <Compile Include="Models\vw_ParkingLotGridRemain.cs" />
     <Compile Include="Models\WbParkSystemEntitiesUnitOfWork.cs">
       <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
@@ -367,6 +379,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -419,6 +432,7 @@
     <Content Include="Models\WbParkSystemModel.edmx.diagram">
       <DependentUpon>WbParkSystemModel.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\PreRelease.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Scripts\ckeditor\ckeditor.js" />
@@ -974,6 +988,20 @@
     <Content Include="Views\CarPurposeTypes\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\CarTypeDisplay.cshtml" />
     <Content Include="Views\Home\Reload.cshtml" />
+    <Content Include="Views\Manage\AllUsers.cshtml" />
+    <Content Include="Views\Manage\UserDetails.cshtml" />
+    <Content Include="Views\Manage\UserProfileEdit.cshtml" />
+    <Content Include="Views\Manage\RegisterUserInAdminsMode.cshtml" />
+    <Content Include="Views\Manage\DeleteUser.cshtml" />
+    <Content Include="Views\Manage\AllRoles.cshtml" />
+    <Content Include="Views\Manage\CreateRole.cshtml" />
+    <Content Include="Views\Manage\RoleDetails.cshtml" />
+    <Content Include="Views\Manage\ListRoleMembers.cshtml" />
+    <Content Include="Views\Manage\DeleteRole.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Password.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\EnabledDisplay.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Password.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\EnabledDisplay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -999,10 +1027,14 @@
   <ItemGroup>
     <EmbeddedResource Include="App_GlobalResources\Common.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
       <LastGenOutput>Common.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\WebPages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
       <LastGenOutput>WebPages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>

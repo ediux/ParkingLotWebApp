@@ -1,7 +1,7 @@
 ﻿@model ParkingLotWebApp.Models.Cars
 @using Microsoft.AspNet.Identity
 @{
-    ViewBag.Title = Resources.WebPages.Cars_Create_New;
+    ViewBag.Title = WebPages.Cars_Create_New;
     bool isAdmins = false;
 
     if (User.IsInRole("Admins"))
@@ -18,7 +18,7 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>@Resources.WebPages.Cars</h4>
+        <h4>@WebPages.Cars</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -84,14 +84,14 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="@Resources.Common.Create" class="btn btn-default" />
+                <input type="submit" value="@Common.Create" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink(string.Format(Resources.Common.Back_To, Resources.WebPages.Cars_Lists), "Index")
+    @Html.ActionLink(string.Format(Common.Back_To, WebPages.Cars_Lists), "Index")
 </div>
 
 @section Scripts {

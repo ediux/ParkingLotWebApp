@@ -37,16 +37,3 @@
 
 }
 
-@helper Geti18nText(string name)
-{
-
-var muitext = Resources.Common.ResourceManager.GetString(name);
-if (string.IsNullOrEmpty(muitext))
-{
-        @Resources.WebPages.ResourceManager.GetString(name);
-}else
-{
-        @Html.Raw(muitext)
-}
-
-}

@@ -1,0 +1,78 @@
+﻿@using PagedList.Mvc
+@using PagedList
+@model IEnumerable<My.Core.Infrastructures.Implementations.Models.ApplicationUser>
+
+@{ 
+    ViewBag.Title = Common.UserLists;
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink(Common.CreateNewUserInAdminsMode, "RegisterUserInAdminsMode") | @Html.ActionLink(Common.BackToManage, "Index")
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Void)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DisplayName)
+        </th>
+     
+        <th>
+            @Html.DisplayNameFor(model => model.EMail)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreateTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastActivityTime)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Void)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DisplayName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EMail)
+            </td>       
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastActivityTime)
+            </td>            
+            <td>
+                @Html.ActionLink(Common.Edit, "UserProfileEdit", new { id = item.Id }) |
+                @Html.ActionLink(Common.Details, "UserDetails", new { id = item.Id }) |
+                @Html.ActionLink(Common.Delete, "DeleteUser", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+@{
+    var data = Model as IPagedList;
+}
+<hr/>
+<div class="text-center">
+    @Html.PagedListPager(data, p => Url.Action("AllUsers",new { pageid=p }))
+</div>
+@section pagecss{
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+}

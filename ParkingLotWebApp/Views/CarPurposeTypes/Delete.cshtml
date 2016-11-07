@@ -6,9 +6,9 @@
 
 <h2>@ViewBag.Title</h2>
 
-<h3>@string.Format(Resources.Common.DeleteConfirmMessage, Resources.WebPages.CarPurposeTypes_This)</h3>
+<h3>@string.Format(Common.DeleteConfirmMessage, WebPages.CarPurposeTypes_This)</h3>
 <div>
-    <h4>@Resources.WebPages.CarPurposeTypes</h4>
+    <h4>@WebPages.CarPurposeTypes</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -33,8 +33,8 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="@Resources.Common.Delete" class="btn btn-default" /> |
-            @Html.ActionLink(string.Format(Resources.Common.Back_To, Resources.WebPages.CarPurposeTypes_Index), "Index")
+            <input type="submit" value="@Common.Delete" class="btn btn-default" /> |
+            @Html.ActionLink(string.Format(Common.Back_To, WebPages.CarPurposeTypes_Index), "Index")
         </div>
     }
 </div>

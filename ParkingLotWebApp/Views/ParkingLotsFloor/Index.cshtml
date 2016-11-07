@@ -4,12 +4,12 @@
     var areaname = ViewBag.AreaName as string;
     if (ViewBag.returnUrl != null)
     {
-        ViewBag.Title = string.Format(Resources.WebPages.ParkingLotFloors_Index_fromArea, areaname);
+        ViewBag.Title = string.Format(WebPages.ParkingLotFloors_Index_fromArea, areaname);
 
     }
     else
     {
-        ViewBag.Title = Resources.WebPages.ParkingLotFloors_Index;
+        ViewBag.Title = WebPages.ParkingLotFloors_Index;
     }
 }
 <h2>@ViewBag.Title</h2>
@@ -18,14 +18,14 @@
     if (ViewBag.returnUrl != null)
     {
         <p>
-            @Html.ActionLink(string.Format(Resources.WebPages.ParkingLotFloors_Create_FromArea,areaname), "Create", new { id = ViewBag.AreaId }) |
-            @Html.ActionLink(string.Format(Resources.Common.Back_To, Resources.WebPages.ParkingLotAreas_Index), "Index", "ParkingLotAreas", null, null)
+            @Html.ActionLink(string.Format(WebPages.ParkingLotFloors_Create_FromArea,areaname), "Create", new { id = ViewBag.AreaId }) |
+            @Html.ActionLink(string.Format(Common.Back_To, WebPages.ParkingLotAreas_Index), "Index", "ParkingLotAreas", null, null)
         </p>
     }
     else
     {
         <p>
-            @Html.ActionLink(Resources.WebPages.ParkingLotFloors_Create_New, "Create")
+            @Html.ActionLink(WebPages.ParkingLotFloors_Create_New, "Create")
         </p>
     }
 }
@@ -93,8 +93,8 @@
             </td>
 
             <td>
-                @Html.ActionLink(Resources.Common.Edit, "Edit", new { id = item.ID }) |
-                @Html.ActionLink(Resources.Common.Delete, "Delete", new { id = item.ID })
+                @Html.ActionLink(Common.Edit, "Edit", new { id = item.ID }) |
+                @Html.ActionLink(Common.Delete, "Delete", new { id = item.ID })
             </td>
         </tr>
     }

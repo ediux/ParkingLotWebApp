@@ -1,6 +1,5 @@
 namespace ParkingLotWebApp.Models
 {
-    using App_GlobalResources;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -8,6 +7,7 @@ namespace ParkingLotWebApp.Models
     using System.Collections.ObjectModel;
     using System.Web;
     using Newtonsoft.Json;
+    using Resources;
 
     /// <summary>
     /// 停車場資訊

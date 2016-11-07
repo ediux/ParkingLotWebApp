@@ -23,18 +23,19 @@
             }
             ]
         </dd>
-        <dt>外部登入:</dt>
-        <dd>
-            @Model.Logins.Count [
-            @Html.ActionLink("管理", "ManageLogins") ]
-        </dd>
         @*
-            電話號碼可以當做雙因素驗證系統中的第二個驗證因素。
+            <dt>外部登入:</dt>
+            <dd>
+                @Model.Logins.Count [
+                @Html.ActionLink("管理", "ManageLogins") ]
+            </dd>
 
-             請參閱<a href="http://go.microsoft.com/fwlink/?LinkId=403804">此文章</a>
-                以了解設定此 ASP.NET 應用程式以支援使用 SMS 進行雙因素驗證的詳細資料。
+                電話號碼可以當做雙因素驗證系統中的第二個驗證因素。
 
-            雙因素驗證設定完成之後，請取消註解以下區塊
+                 請參閱<a href="http://go.microsoft.com/fwlink/?LinkId=403804">此文章</a>
+                    以了解設定此 ASP.NET 應用程式以支援使用 SMS 進行雙因素驗證的詳細資料。
+
+                雙因素驗證設定完成之後，請取消註解以下區塊
         *@
         @*
             <dt>電話號碼:</dt>
@@ -81,9 +82,20 @@
                     }
                 </dd>*@
     </dl>
+
     @if (User.IsInRole("Admins"))
     {
-        <ht />
+        <h4>系統管理</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>帳號管理</dt>
+            <dd>[ @Html.ActionLink("維護", "AllUsers") ]</dd>
+            @if (User.Identity.Name.Equals("root", StringComparison.InvariantCultureIgnoreCase))
+            {
+                <dt>角色管理</dt>
+                <dd>[ @Html.ActionLink("維護", "AllRoles") ]</dd>
+            }
+        </dl>
         <h4>停車場維護作業</h4>
         <hr />
         <dl class="dl-horizontal">
@@ -92,7 +104,7 @@
             <dt>員工資料:</dt>
             <dd>[ @Html.ActionLink("維護", "Index", "Employees") ]</dd>
             <dt>ETC對應:</dt>
-            <dd>[ @Html.ActionLink("維護", "Index", "ETAs") ]</dd>            
+            <dd>[ @Html.ActionLink("維護", "Index", "ETAs") ]</dd>
         </dl>
     }
 

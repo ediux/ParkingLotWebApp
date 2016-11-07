@@ -1,7 +1,7 @@
 ﻿@model ParkingLotWebApp.Models.NewsPostViewModel
 @using Microsoft.AspNet.Identity
 @{
-    ViewBag.Title = Resources.WebPages.News_Edit;
+    ViewBag.Title = WebPages.News_Edit;
     if (IsAjax || ViewContext.IsChildAction)
     {
         Layout = null;
@@ -35,7 +35,7 @@
                 <div class="input-group input-group-sm">
                     @Html.EditorFor(model => model.Caption, new { htmlAttributes = new { @class = "form-control" } })
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit">@Resources.Common.Save</button>
+                        <button class="btn btn-default" type="submit">@Common.Save</button>
                     </span>
                 </div>
                 @Html.ValidationMessageFor(model => model.Caption, "", new { @class = "text-danger" })
@@ -46,7 +46,7 @@
             <div class="col-md-10">
                 <div class="input-daterange input-group" id="datepicker">
                     @Html.TextBoxFor(model => model.StartTime, "{0:yyyy/MM/dd}", new { @class = "input-sm form-control" })
-                    <span class="input-group-addon">@Resources.Common.To</span>
+                    <span class="input-group-addon">@Common.To</span>
                     @Html.TextBoxFor(model => model.EndTime, "{0:yyyy/MM/dd}", new { @class = "input-sm form-control" })
 
                 </div>
@@ -58,7 +58,7 @@
             <div class="col-sm-offset-2 col-sm-10">               
                 <div class="checkbox">
                     <label>
-                        @Html.CheckBoxFor(model => model.IsTop) @Resources.WebPages.NewsTop
+                        @Html.CheckBoxFor(model => model.IsTop) @WebPages.NewsTop
                     </label>
                 </div>
             </div>

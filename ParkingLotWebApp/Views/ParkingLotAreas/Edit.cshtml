@@ -1,7 +1,7 @@
 ﻿@model ParkingLotWebApp.Models.ParkingLotsDetail
 @using Microsoft.AspNet.Identity
 @{
-    ViewBag.Title = Resources.WebPages.ParkingLotAreas_Create_New;
+    ViewBag.Title = WebPages.ParkingLotAreas_Create_New;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -14,7 +14,7 @@
     @Html.HiddenFor(model => model.Void)
     @Html.HiddenFor(model => model.LastUpdate)
     <div class="form-horizontal">
-        <h4>@Resources.WebPages.ParkingLotAreas</h4>
+        <h4>@WebPages.ParkingLotAreas</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -68,14 +68,14 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="@Resources.Common.Save" class="btn btn-default" />
+                <input type="submit" value="@Common.Save" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink(string.Format(Resources.Common.Back_To, Resources.WebPages.ParkingLotAreas_Index), "Index")
+    @Html.ActionLink(string.Format(Common.Back_To, WebPages.ParkingLotAreas_Index), "Index")
 </div>
 
 @section Scripts {

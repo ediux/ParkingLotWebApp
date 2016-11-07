@@ -1,13 +1,13 @@
 ﻿@model ParkingLotWebApp.Models.Cars
 
 @{
-    ViewBag.Title = Resources.WebPages.Cars_Details;
+    ViewBag.Title = WebPages.Cars_Details;
 }
 
 <h2>@ViewBag.Title</h2>
 
 <div>
-    <h4>@Resources.WebPages.Cars</h4>
+    <h4>@WebPages.Cars</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -75,6 +75,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink(Resources.Common.Edit, "Edit", new { id = Model.Id }) |
-    @Html.ActionLink(string.Format(Resources.Common.Back_To,Resources.WebPages.Cars_Lists), "Index")
+    @Html.ActionLink(Common.Edit, "Edit", new { id = Model.Id }) |
+    @Html.ActionLink(string.Format(Common.Back_To,WebPages.Cars_Lists), "Index")
 </p>

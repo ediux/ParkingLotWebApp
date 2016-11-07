@@ -3,11 +3,11 @@
 @{
     if (Model.ParkingLotsID >0)
     {
-        ViewBag.Title = string.Format(Resources.WebPages.ParkingLotFloors_Create_FromArea, Model.ParkingLotsDetail.Name);
+        ViewBag.Title = string.Format(WebPages.ParkingLotFloors_Create_FromArea, Model.ParkingLotsDetail.Name);
     }
     else
     {
-        ViewBag.Title = Resources.WebPages.ParkingLotFloors_Create_New;
+        ViewBag.Title = WebPages.ParkingLotFloors_Create_New;
     }
 
 }
@@ -20,7 +20,7 @@
         @Html.AntiForgeryToken()
 
         <div class="form-horizontal">
-            <h4>@Resources.WebPages.ParkingLotFloors</h4>
+            <h4>@WebPages.ParkingLotFloors</h4>
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="form-group">
@@ -87,7 +87,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="@Resources.Common.Create" class="btn btn-default" />
+                    <input type="submit" value="@Common.Create" class="btn btn-default" />
                 </div>
             </div>
         </div>
@@ -95,12 +95,12 @@
 
     @if (string.IsNullOrEmpty(ViewBag.returnUrl as string) == false)
     {
-        <a href="@ViewBag.returnUrl">@string.Format(Resources.Common.Back_To, string.Format(Resources.WebPages.ParkingLotFloors_Index_fromArea,Model.ParkingLotsDetail.Name))</a>
+        <a href="@ViewBag.returnUrl">@string.Format(Common.Back_To, string.Format(WebPages.ParkingLotFloors_Index_fromArea,Model.ParkingLotsDetail.Name))</a>
     }
     else
     {
         <div>
-            @Html.ActionLink(string.Format(Resources.Common.Back_To, Resources.WebPages.ParkingLotFloors_Index), "Index")
+            @Html.ActionLink(string.Format(Common.Back_To, WebPages.ParkingLotFloors_Index), "Index")
         </div>
     }
 

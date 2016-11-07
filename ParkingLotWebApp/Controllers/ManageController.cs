@@ -10,6 +10,8 @@ using ParkingLotWebApp.Models;
 using My.Core.Infrastructures.Implementations;
 using My.Core.Infrastructures.Implementations.Models;
 using My.Core.Infrastructures.Implementations.Base;
+using PagedList;
+using System.Net;
 
 namespace ParkingLotWebApp.Controllers
 {
@@ -18,7 +20,7 @@ namespace ParkingLotWebApp.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-
+        private ApplicationRoleManager _roleManager;
         public ManageController()
         {
         }
@@ -50,6 +52,18 @@ namespace ParkingLotWebApp.Controllers
             private set
             {
                 _userManager = value;
+            }
+        }
+
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ?? new ApplicationRoleManager(new OpenCoreWebUserStore(OpenWebSiteEntities.Create()));
+            }
+            private set
+            {
+                _roleManager = value;
             }
         }
 
@@ -321,6 +335,247 @@ namespace ParkingLotWebApp.Controllers
             }
             var result = await UserManager.AddLoginAsync(User.Identity.GetUserId<int>(), loginInfo.Login);
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
+        }
+
+        public ActionResult RegisterUserInAdminsMode()
+        {
+            ViewBag.RoleId = new SelectList(RoleManager.Roles.Where(w => w.Void == false), "Id", "Name");
+            return View(new RegisterForAdminsViewModel());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RegisterUserInAdminsMode(RegisterForAdminsViewModel registerViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser user = ApplicationUser.Create();
+                user.UserName = registerViewModel.UserName;
+                user.DisplayName = registerViewModel.DisplayName;
+                user.EMail = registerViewModel.Email;
+                user.Password = string.Empty;
+                user.PasswordHash = UserManager.PasswordHasher.HashPassword(registerViewModel.Password);
+
+                IdentityResult result = UserManager.Create(user);
+                if (result.Succeeded)
+                {
+                    user = UserManager.FindByName(registerViewModel.UserName);
+                    if (user != null)
+                    {
+                        var role = RoleManager.FindById(registerViewModel.RoleId);
+                        user.ApplicationUserRole.Add(new ApplicationUserRole()
+                        {
+                            UserId = user.Id,
+                            RoleId = role.Id,
+                            Void = false,
+                            ApplicationRole = role,
+                            ApplicationUser = user
+                        });
+                        UserManager.Update(user);
+
+                        return RedirectToAction("AllUsers");
+                    }
+                }
+            }
+            ViewBag.RoleId = new SelectList(RoleManager.Roles.Where(w => w.Void == false), "Id", "Name");
+            return View(registerViewModel);
+        }
+
+        public ActionResult AllUsers(int? pageid, int? pageSize)
+        {
+            return View(UserManager.Users.Where(w => w.Void == false).OrderBy(o => o.Id).ToPagedList(pageid ?? 1, pageSize ?? 10));
+        }
+
+        public async Task<ActionResult> UserDetails(int id)
+        {
+            var user = await UserManager.FindByIdAsync(id);
+
+            if (user == null)
+                return HttpNotFound();
+
+            var userrole = user.ApplicationUserRole.SingleOrDefault();
+            var role = (userrole != null) ? userrole.ApplicationRole : null;
+            ViewBag.RoleName = (role != null) ? role.Name : "訪客";
+            return View(user);
+        }
+
+        public async Task<ActionResult> UserProfileEdit(int id)
+        {
+            ViewBag.RoleId = new SelectList(RoleManager.Roles.Where(w => w.Void == false), "Id", "Name");
+            ApplicationUser user = await UserManager.FindByIdAsync(id);
+            UserProfileViewModel viewmodel = new UserProfileViewModel();
+            viewmodel.Id = user.Id;
+            viewmodel.AccessFailedCount = user.AccessFailedCount;
+            viewmodel.Address = user.Address;
+            viewmodel.CreateTime = user.CreateTime;
+            viewmodel.CreateUserId = user.CreateUserId;
+            viewmodel.DisplayName = user.DisplayName;
+            viewmodel.EMail = user.EMail;
+            viewmodel.EMailConfirmed = user.EMailConfirmed;
+            viewmodel.LastActivityTime = user.LastActivityTime;
+            viewmodel.LastLoginFailTime = user.LastLoginFailTime;
+            viewmodel.LastUnlockedTime = user.LastUnlockedTime;
+            viewmodel.LastUpdateTime = user.LastUpdateTime;
+            viewmodel.LastUpdateUserId = user.LastUpdateUserId;
+            viewmodel.LockoutEnabled = user.LockoutEnabled;
+            viewmodel.LockoutEndDate = user.LockoutEndDate;
+            viewmodel.Password = user.Password;
+            viewmodel.PasswordHash = user.PasswordHash;
+            viewmodel.PhoneConfirmed = user.PhoneConfirmed;
+            viewmodel.PhoneNumber = user.PhoneNumber;
+            viewmodel.ResetPasswordToken = user.ResetPasswordToken;
+            viewmodel.SecurityStamp = user.SecurityStamp;
+            viewmodel.TwoFactorEnabled = user.TwoFactorEnabled;
+            viewmodel.UserName = user.UserName;
+            viewmodel.Void = user.Void;
+            var userrole = viewmodel.ApplicationUserRole.SingleOrDefault();
+            var role = (userrole != null) ? userrole.ApplicationRole : null;
+            viewmodel.RoleId = (role != null) ? role.Id : 0;
+            return View(viewmodel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UserProfileEdit(UserProfileViewModel user)
+        {
+            if (ModelState.IsValid)
+            {
+                var dbuser = UserManager.FindById(user.Id);
+
+                dbuser.Id = user.Id;
+                dbuser.AccessFailedCount = user.AccessFailedCount;
+                dbuser.Address = user.Address;
+                dbuser.CreateTime = user.CreateTime;
+                dbuser.CreateUserId = user.CreateUserId;
+                dbuser.DisplayName = user.DisplayName;
+                dbuser.EMail = user.EMail;
+                dbuser.EMailConfirmed = user.EMailConfirmed;
+                dbuser.LastActivityTime = user.LastActivityTime;
+                dbuser.LastLoginFailTime = user.LastLoginFailTime;
+                dbuser.LastUnlockedTime = DateTime.UtcNow;
+                dbuser.LastUpdateTime = user.LastUpdateTime;
+                dbuser.LastUpdateUserId = User.Identity.GetUserId<int>();
+                dbuser.LockoutEnabled = user.LockoutEnabled;
+                dbuser.LockoutEndDate = user.LockoutEndDate;
+                dbuser.Password = user.Password;
+                dbuser.PasswordHash = user.PasswordHash;
+                dbuser.PhoneConfirmed = user.PhoneConfirmed;
+                dbuser.PhoneNumber = user.PhoneNumber;
+                dbuser.ResetPasswordToken = user.ResetPasswordToken;
+                dbuser.SecurityStamp = user.SecurityStamp;
+                dbuser.TwoFactorEnabled = user.TwoFactorEnabled;
+                dbuser.UserName = user.UserName;
+                dbuser.Void = user.Void;
+
+                var userrole = dbuser.ApplicationUserRole.SingleOrDefault();
+                var role = (userrole != null) ? userrole.ApplicationRole : null;
+                var roleid = (role == null) ? -1 : role.Id;
+
+                if (roleid <= 0)
+                {
+                    UserManager.RemoveFromRoles(dbuser.Id, dbuser.ApplicationUserRole.Select(s => s.ApplicationRole.Name).ToArray());
+                }
+
+                if (roleid != user.RoleId)
+                {
+                    UserManager.AddToRole(dbuser.Id, RoleManager.FindById(user.RoleId).Name);
+                    //dbuser.ApplicationUserRole.Add(new ApplicationUserRole() { RoleId = user.RoleId, UserId = user.Id, Void = false });                    
+                }
+
+
+                IdentityResult result = UserManager.Update(dbuser);
+
+                if (result.Succeeded)
+                {
+
+                    return RedirectToAction("AllUsers");
+                }
+            }
+            ViewBag.RoleId = new SelectList(RoleManager.Roles.Where(w => w.Void == false), "Id", "Name");
+            return View(user);
+        }
+
+        public ActionResult DeleteUser(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ApplicationUser user = UserManager.FindById(id ?? 0);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(user);
+
+        }
+
+        [HttpPost, ActionName("DeleteUser")]
+        [ValidateAntiForgeryToken]
+        public ActionResult ConfirmDeleteUser(int id)
+        {
+            ApplicationUser user = UserManager.FindById(id);
+            user.Void = true;
+            user.LockoutEnabled = true;
+            user.LastUpdateUserId = User.Identity.GetUserId<int>();
+            user.LastUnlockedTime = user.LastActivityTime = user.LastUpdateTime = DateTime.UtcNow;
+            UserManager.Update(user);
+            return RedirectToAction("AllUsers");
+        }
+
+        public ActionResult AllRoles()
+        {
+            return View(RoleManager.Roles.Where(w => w.Void == false).ToList());
+        }
+
+        public ActionResult RoleDetails(int id)
+        {
+            return View(RoleManager.FindById(id));
+        }
+
+        public ActionResult CreateRole()
+        {
+            return View(ApplicationRole.Create());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateRole(ApplicationRole role)
+        {
+            var result = RoleManager.Create(role);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("AllRoles");
+            }
+            return View(role);
+        }
+
+        public ActionResult ListRoleMembers(int id)
+        {
+            var role = RoleManager.FindById(id);
+            return View(role.ApplicationUserRole.Where(w => w.RoleId == id).Select(s => s.ApplicationUser));
+        }
+
+        public ActionResult DeleteRole(int? id)
+        {
+            return View(RoleManager.FindById(id ?? 0));
+        }
+
+        [HttpPost, ActionName("DeleteRole")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteRoleConfirmed(int id)
+        {
+            var role = RoleManager.FindById(id);
+            role.Void = true;
+            role.LastUpdateTime = DateTime.UtcNow;
+            role.LastUpdateUserId = User.Identity.GetUserId<int>();
+            var result = RoleManager.Update(role);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("AllRoles");
+            }
+            return View(role);
         }
 
         protected override void Dispose(bool disposing)

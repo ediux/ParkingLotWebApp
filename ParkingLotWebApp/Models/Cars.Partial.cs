@@ -1,9 +1,10 @@
 namespace ParkingLotWebApp.Models
 {
+    using My.Core.Infrastructures.Implementations.Resources;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    
+
     [MetadataType(typeof(CarsMetaData))]
     public partial class Cars
     {
@@ -30,7 +31,7 @@ namespace ParkingLotWebApp.Models
         public Nullable<int> EmpId { get; set; }
         [Required]
         [UIHint("VoidDisplay")]
-        [Display(Name = "Void",ResourceType = typeof(My.Core.Infrastructures.Implementations.Resources.MUI))]
+        [Display(Name = "Void",ResourceType = typeof(MUI))]
         public bool Void { get; set; }
         [Required]
         [Display(Name = "建立者")]
