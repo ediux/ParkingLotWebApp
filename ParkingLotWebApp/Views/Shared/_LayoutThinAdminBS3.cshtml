@@ -18,7 +18,7 @@
     @RenderSection("pagecss", false)
 
     @*<link href="/style/dashboard.css" rel="stylesheet">
-    <link href="/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen" />*@
+        <link href="/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen" />*@
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
           <script src="/assets/js/html5shiv.js"></script>
@@ -26,20 +26,52 @@
         <![endif]-->
 </head>
 <body>
+    
     <div class="container">
         <div class="top-navbar header b-b">
             <a data-original-title="Toggle navigation" class="toggle-side-nav pull-left" href="#"><i class="icon-reorder"></i> </a>
             <div class="brand pull-left"> <a href="@Url.Action("Index","Home",new { area= "" })"><img src="/images/logo.png" width="147" height="33"></a></div>
-            <ul class="nav navbar-nav navbar-right  hidden-xs">
-                <!-- 通知列 -->
-                @*@Html.Partial("_NotificationPartial")*@
-                @Html.Partial("_LoginPartialThinAdminBS3")
-                <!-- 通知列 -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                @RenderSection("topnavmenu", required: false)
+                <ul class="nav navbar-nav navbar-right  hidden-xs">
+                    <!-- 通知列 -->
+                    @*@Html.Partial("_NotificationPartial")*@
+                    <!-- 通知列 -->
+                    @Html.Partial("_LoginPartialThinAdminBS3")
+                </ul>
+                <form class="pull-right">
+                    <input type="search" placeholder="Search..." class="search" id="search-input">
+                </form>
+                @*<ul class="nav navbar-nav">
+        <li class="active"><a href="#">Link</a></li>
+        <li><a href="javascript:;">Link</a></li>
+        <li class="dropdown open">
+            <a class="dropdown-toggle" href="javascript:;" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
             </ul>
-            <form class="pull-right">
-                <input type="search" placeholder="Search..." class="search" id="search-input">
-            </form>
+        </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="javascript:;">Link</a></li>
+        <li class="dropdown">
+            <a class="dropdown-toggle" href="javascript:;" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li><a href="#">Separated link</a></li>
+            </ul>
+        </li>
+    </ul>*@
+
         </div>
+
+    </div>
     </div>
     <div class="wrapper">
         <!-- left Sidebar Menu start-->

@@ -54,35 +54,16 @@
         </div>
     }
 </div>
-@section menubar{
-    <div class="left-nav">
-        <div id="side-nav">
-            <!-- Menubar Start -->
-            <ul id="nav">
-                <li><a href="@Url.Action("Index", "Home")"><i class="icon-dashboard "></i> 首頁 </a></li>
-                @if (User.IsInRole("Admins"))
-                {
-                    <li><a href="@Url.Action("Index","Cars")"><i class="icon-truck"></i> 車輛維護 </a></li>
-                    <li><a href="@Url.Action("ListRemainParkingGridAmounts", "ParkingLotsFloor")"><i class="icon-edit"></i> 剩餘車位維護 </a></li>
-                    <li class="current"><a href="@Url.Action("Index", "News")"><i class="icon-bullhorn "></i> 公告維護 </a></li>
-                }
-                <li><a href="@Url.Action("About", "Home")"><i class="icon-info-sign "></i> 關於 </a></li>
+@section topnavmenu{
+<ul class="nav navbar-nav">
+    <li><a href="@Url.Action("Index", "Home")"><i class="icon-dashboard "></i>&nbsp;儀錶板&nbsp;</a></li>
+    @if (User.IsInRole("Admins"))
+    {
+        <li><a href="@Url.Action("Index","Cars")"><i class="icon-truck"></i> 車輛維護 </a></li>
+            <li><a href="@Url.Action("ListRemainParkingGridAmounts", "ParkingLotsFloor")"><i class="icon-edit"></i> 剩餘車位維護 </a></li>
+            <li class="active"><a href="@Url.Action("Index", "News")"><i class="icon-bullhorn "></i> 公告維護 </a></li>
+    }
+    <li><a href="@Url.Action("About", "Home")"><i class="icon-info-sign "></i> 關於 </a></li>
+</ul>
 
-                @*<li class="current"> <a href="index.html"> <i class="icon-dashboard"></i> Dashboard </a> </li>
-                    <li>
-                        <a href="#"> <i class="icon-desktop"></i> UI Features <span class="label label-info pull-right">7</span> <i class="arrow icon-angle-left"></i></a>
-                        <ul class="sub-menu">
-                            <li> <a href="general.html"> <i class="icon-angle-right"></i> General </a> </li>
-                            <li> <a href="buttons.html"> <i class="icon-angle-right"></i> Buttons </a> </li>
-                            <li> <a href="tabs.html"> <i class="icon-angle-right"></i> Tabs</a> </li>
-                            <li> <a href="accordions.html"> <i class="icon-angle-right"></i> Accordions </a> </li>
-                            <li> <a href="nestable.html"> <i class="icon-angle-right"></i> Nestable List </a> </li>
-                            <li> <a href="grid.html"> <i class="icon-angle-right"></i> Grid </a> </li>
-                            <li> <a href="dialogs.html"> <i class="icon-angle-right"></i> Dialogs </a> </li>
-                        </ul>
-                    </li>*@
-            </ul>
-            <!-- Menubar End -->
-        </div>
-    </div>
 }
