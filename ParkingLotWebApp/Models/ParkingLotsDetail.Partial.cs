@@ -7,7 +7,7 @@ namespace ParkingLotWebApp.Models
     using System.Collections.ObjectModel;
     using System.Web;
     using Newtonsoft.Json;
-    using Resources;
+    using App_GlobalResources;
 
     /// <summary>
     /// 停車場資訊
