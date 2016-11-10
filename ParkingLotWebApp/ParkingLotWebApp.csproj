@@ -279,6 +279,15 @@
       <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\NewsPostViewModel.cs" />
+    <Compile Include="Models\ParkingArea.cs">
+      <DependentUpon>WbParkSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingArea.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingAreaRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ParkingLotsDetail.cs">
       <DependentUpon>WbParkSystemModel.tt</DependentUpon>
     </Compile>
@@ -297,15 +306,6 @@
     <Compile Include="Models\ParkingLotsFloorRepository.cs">
       <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ParkingLotsRecoed_HT.cs">
-      <DependentUpon>WbParkSystemModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ParkingLotsRecoed_HT.Partial.cs">
-      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ParkingLotsRecoed_HTRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\ParkingLotsRecord.cs">
       <DependentUpon>WbParkSystemModel.tt</DependentUpon>
     </Compile>
@@ -313,6 +313,15 @@
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ParkingLotsRecordRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingLotsRecord_HT.cs">
+      <DependentUpon>WbParkSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingLotsRecord_HT.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingLotsRecord_HTRepository.cs">
       <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PartialClasses\CarPurposeTypes.Partial.cs" />

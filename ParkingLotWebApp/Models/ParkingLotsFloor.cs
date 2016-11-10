@@ -14,6 +14,13 @@ namespace ParkingLotWebApp.Models
     
     public partial class ParkingLotsFloor
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ParkingLotsFloor()
+        {
+            this.ParkingLotsRecord_HT = new HashSet<ParkingLotsRecord_HT>();
+            this.ParkingLotsRecord = new HashSet<ParkingLotsRecord>();
+        }
+    
         public int ID { get; set; }
         public int ParkingLotsID { get; set; }
         public short FloorOrder { get; set; }
@@ -24,7 +31,12 @@ namespace ParkingLotWebApp.Models
         public int MotoLastGrid { get; set; }
         public bool Void { get; set; }
         public Nullable<System.DateTime> LastUpdate { get; set; }
+        public int CarLastGridRFID { get; set; }
     
         public virtual ParkingLotsDetail ParkingLotsDetail { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParkingLotsRecord_HT> ParkingLotsRecord_HT { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParkingLotsRecord> ParkingLotsRecord { get; set; }
     }
 }

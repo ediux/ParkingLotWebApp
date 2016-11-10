@@ -87,7 +87,7 @@ namespace ParkingLotWebApp.Controllers
             }
 
             ViewBag.EmpId = new SelectList(db_emp.Where(w => w.Void == false), "Id", "Name", cars.EmpId);
-            ViewBag.ETAId = new SelectList(db_etc.Where(w => w.Void == false), "Id", "Code", cars.ETAId);
+            ViewBag.ETAId = new SelectList(db_etc.Where(w => w.Void == false), "Id", "Code", cars.ETCsID);
             ViewBag.CarPurposeTypeID = new SelectList(db_carPurpose.All(), "Id", "Name");
             return View(cars);
         }
@@ -109,7 +109,7 @@ namespace ParkingLotWebApp.Controllers
             var selectetc = db_etc.Where(w => w.Void == false).ToList();
             selectetc.Insert(0, null);
             ViewBag.EmpId = new SelectList(selectemp, "Id", "Name", cars.EmpId);
-            ViewBag.ETAId = new SelectList(selectetc, "Id", "Code", cars.ETAId);
+            ViewBag.ETCsID = new SelectList(selectetc, "Id", "Code", cars.ETCsID);
             ViewBag.CarPurposeTypeID = new SelectList(db_carPurpose.All(), "Id", "Name");
             return View(cars);
         }
@@ -119,10 +119,12 @@ namespace ParkingLotWebApp.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,CarNumber,CarType,ETAId,EmpId,Void,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime,CarPurposeTypeID")] Cars cars)
+        public ActionResult Edit([Bind(Include = "Id,CarNumber,CarType,ETAId,EmpId,Code,Void,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime,CarPurposeTypeID")] Cars cars)
         {
             if (ModelState.IsValid)
             {
+                var emp = db_emp.Where(w => w.Code == cars.Employee.Code).Single();
+                cars.EmpId = emp.Id;
                 db.UnitOfWork.Context.Entry(cars).State = EntityState.Modified;
                 db.UnitOfWork.Commit();
                 return RedirectToAction("Index");
@@ -132,7 +134,7 @@ namespace ParkingLotWebApp.Controllers
             var selectetc = db_etc.Where(w => w.Void == false).ToList();
             selectetc.Insert(0, new ETAs() { Id = -1, Code = "(無)" });
             ViewBag.EmpId = new SelectList(selectemp, "Id", "Name", cars.EmpId);
-            ViewBag.ETAId = new SelectList(selectetc, "Id", "Code", cars.ETAId);
+            ViewBag.ETCsID = new SelectList(selectetc, "Id", "Code", cars.ETCsID);
             ViewBag.CarPurposeTypeID = new SelectList(db_carPurpose.All(), "Id", "Name");
             return View(cars);
         }

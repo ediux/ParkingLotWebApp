@@ -25,7 +25,6 @@ namespace My.Core.Infrastructures.Implementations.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<ApplicationUserRole> ApplicationUserRole { get; set; }
         public virtual DbSet<ApplicationUserLogin> ApplicationUserLogin { get; set; }
         public virtual DbSet<ApplicationUserClaim> ApplicationUserClaim { get; set; }
         public virtual DbSet<ApplicationRole> ApplicationRole { get; set; }

@@ -12,6 +12,7 @@ using My.Core.Infrastructures.Implementations.Models;
 using My.Core.Infrastructures.Implementations.Base;
 using PagedList;
 using System.Net;
+using System.Collections.Generic;
 
 namespace ParkingLotWebApp.Controllers
 {
@@ -360,17 +361,11 @@ namespace ParkingLotWebApp.Controllers
                 if (result.Succeeded)
                 {
                     user = UserManager.FindByName(registerViewModel.UserName);
+
                     if (user != null)
                     {
                         var role = RoleManager.FindById(registerViewModel.RoleId);
-                        user.ApplicationUserRole.Add(new ApplicationUserRole()
-                        {
-                            UserId = user.Id,
-                            RoleId = role.Id,
-                            Void = false,
-                            ApplicationRole = role,
-                            ApplicationUser = user
-                        });
+                        user.ApplicationRole.Add(role);
                         UserManager.Update(user);
 
                         return RedirectToAction("AllUsers");
@@ -393,9 +388,8 @@ namespace ParkingLotWebApp.Controllers
             if (user == null)
                 return HttpNotFound();
 
-            var userrole = user.ApplicationUserRole.SingleOrDefault();
-            var role = (userrole != null) ? userrole.ApplicationRole : null;
-            ViewBag.RoleName = (role != null) ? role.Name : "訪客";
+
+            ViewBag.RoleName = (user.ApplicationRole != null) ? string.Join(";", user.ApplicationRole.Select(s => s.Name).ToArray()) : "訪客";
             return View(user);
         }
 
@@ -406,7 +400,7 @@ namespace ParkingLotWebApp.Controllers
             UserProfileViewModel viewmodel = new UserProfileViewModel();
             viewmodel.Id = user.Id;
             viewmodel.AccessFailedCount = user.AccessFailedCount;
-            viewmodel.Address = user.Address;
+
             viewmodel.CreateTime = user.CreateTime;
             viewmodel.CreateUserId = user.CreateUserId;
             viewmodel.DisplayName = user.DisplayName;
@@ -428,9 +422,9 @@ namespace ParkingLotWebApp.Controllers
             viewmodel.TwoFactorEnabled = user.TwoFactorEnabled;
             viewmodel.UserName = user.UserName;
             viewmodel.Void = user.Void;
-            var userrole = viewmodel.ApplicationUserRole.SingleOrDefault();
-            var role = (userrole != null) ? userrole.ApplicationRole : null;
-            viewmodel.RoleId = (role != null) ? role.Id : 0;
+
+            var role = (viewmodel.ApplicationRole ?? null);
+            viewmodel.RoleId = (role != null) ? (role.FirstOrDefault() ?? new ApplicationRole() { Id = 0 }).Id : 0;
             return View(viewmodel);
         }
 
@@ -440,47 +434,54 @@ namespace ParkingLotWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dbuser = UserManager.FindById(user.Id);
 
-                dbuser.Id = user.Id;
-                dbuser.AccessFailedCount = user.AccessFailedCount;
-                dbuser.Address = user.Address;
-                dbuser.CreateTime = user.CreateTime;
-                dbuser.CreateUserId = user.CreateUserId;
-                dbuser.DisplayName = user.DisplayName;
-                dbuser.EMail = user.EMail;
-                dbuser.EMailConfirmed = user.EMailConfirmed;
-                dbuser.LastActivityTime = user.LastActivityTime;
-                dbuser.LastLoginFailTime = user.LastLoginFailTime;
-                dbuser.LastUnlockedTime = DateTime.UtcNow;
-                dbuser.LastUpdateTime = user.LastUpdateTime;
-                dbuser.LastUpdateUserId = User.Identity.GetUserId<int>();
-                dbuser.LockoutEnabled = user.LockoutEnabled;
-                dbuser.LockoutEndDate = user.LockoutEndDate;
-                dbuser.Password = user.Password;
-                dbuser.PasswordHash = user.PasswordHash;
-                dbuser.PhoneConfirmed = user.PhoneConfirmed;
-                dbuser.PhoneNumber = user.PhoneNumber;
-                dbuser.ResetPasswordToken = user.ResetPasswordToken;
-                dbuser.SecurityStamp = user.SecurityStamp;
-                dbuser.TwoFactorEnabled = user.TwoFactorEnabled;
-                dbuser.UserName = user.UserName;
-                dbuser.Void = user.Void;
+                ApplicationUser dbuser = UserManager.FindById(user.Id);
 
-                var userrole = dbuser.ApplicationUserRole.SingleOrDefault();
-                var role = (userrole != null) ? userrole.ApplicationRole : null;
-                var roleid = (role == null) ? -1 : role.Id;
+                dbuser = user as ApplicationUser;
 
-                if (roleid <= 0)
-                {
-                    UserManager.RemoveFromRoles(dbuser.Id, dbuser.ApplicationUserRole.Select(s => s.ApplicationRole.Name).ToArray());
-                }
+                //dbuser.Id = user.Id;
+                //dbuser.AccessFailedCount = user.AccessFailedCount;
+                ////dbuser.Address = user.Address;
+                //dbuser.CreateTime = user.CreateTime;
+                //dbuser.CreateUserId = user.CreateUserId;
+                //dbuser.DisplayName = user.DisplayName;
+                //dbuser.EMail = user.EMail;
+                //dbuser.EMailConfirmed = user.EMailConfirmed;
+                //dbuser.LastActivityTime = user.LastActivityTime;
+                //dbuser.LastLoginFailTime = user.LastLoginFailTime;
+                //dbuser.LastUnlockedTime = DateTime.UtcNow;
+                //dbuser.LastUpdateTime = user.LastUpdateTime;
+                //dbuser.LastUpdateUserId = User.Identity.GetUserId<int>();
+                //dbuser.LockoutEnabled = user.LockoutEnabled;
+                //dbuser.LockoutEndDate = user.LockoutEndDate;
+                //dbuser.Password = user.Password;
+                //dbuser.PasswordHash = user.PasswordHash;
+                //dbuser.PhoneConfirmed = user.PhoneConfirmed;
+                //dbuser.PhoneNumber = user.PhoneNumber;
+                //dbuser.ResetPasswordToken = user.ResetPasswordToken;
+                //dbuser.SecurityStamp = user.SecurityStamp;
+                //dbuser.TwoFactorEnabled = user.TwoFactorEnabled;
+                //dbuser.UserName = user.UserName;
+                //dbuser.Void = user.Void;
 
-                if (roleid != user.RoleId)
-                {
-                    UserManager.AddToRole(dbuser.Id, RoleManager.FindById(user.RoleId).Name);
-                    //dbuser.ApplicationUserRole.Add(new ApplicationUserRole() { RoleId = user.RoleId, UserId = user.Id, Void = false });                    
-                }
+
+                //var role = (viewmodel.ApplicationRole ?? null);
+                //dbuser.RoleId = (role != null) ? (role.FirstOrDefault() ?? new ApplicationRole() { Id = 0 }).Id : 0;
+
+
+                //var role = (user.ApplicationRole ?? null);
+                //var roleid = (role == null) ? 0 : (role.FirstOrDefault() ?? new ApplicationRole() { Id = 0 }).Id;
+
+                //if (roleid <= 0)
+                //{
+                //    UserManager.RemoveFromRoles(dbuser.Id, dbuser.ApplicationRole.Select(s => s.Name).ToArray());
+                //}
+
+                //if (roleid != dbuser.RoleId)
+                //{
+                //    UserManager.AddToRole(dbuser.Id, RoleManager.FindById(user.RoleId).Name);
+                //    //dbuser.ApplicationUserRole.Add(new ApplicationUserRole() { RoleId = user.RoleId, UserId = user.Id, Void = false });                    
+                //}
 
 
                 IdentityResult result = UserManager.Update(dbuser);
@@ -491,7 +492,9 @@ namespace ParkingLotWebApp.Controllers
                     return RedirectToAction("AllUsers");
                 }
             }
-            ViewBag.RoleId = new SelectList(RoleManager.Roles.Where(w => w.Void == false), "Id", "Name");
+            List<SelectListItem> options = RoleManager.Roles.Where(w => w.Void == false).ToList().ConvertAll(c => new SelectListItem() { Text = c.Name, Value = c.Id.ToString() });
+            options.Insert(0, new SelectListItem() { Text = "請選擇", Value = "0" });
+            ViewBag.RoleId = new SelectList(options, "Id", "Name", user.ApplicationRole.First().Id);
             return View(user);
         }
 
@@ -554,7 +557,7 @@ namespace ParkingLotWebApp.Controllers
         public ActionResult ListRoleMembers(int id)
         {
             var role = RoleManager.FindById(id);
-            return View(role.ApplicationUserRole.Where(w => w.RoleId == id).Select(s => s.ApplicationUser));
+            return View(role.ApplicationUser.ToList());
         }
 
         public ActionResult DeleteRole(int? id)

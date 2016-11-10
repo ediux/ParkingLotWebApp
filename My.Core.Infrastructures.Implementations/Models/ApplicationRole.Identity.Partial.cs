@@ -20,7 +20,7 @@ namespace My.Core.Infrastructures.Implementations.Models
                 LastUpdateTime = DateTime.Now.ToUniversalTime(),
                 LastUpdateUserId = -1,
                 Name = string.Empty,
-                ApplicationUserRole = new Collection<ApplicationUserRole>(),
+              
             };
         }
     }

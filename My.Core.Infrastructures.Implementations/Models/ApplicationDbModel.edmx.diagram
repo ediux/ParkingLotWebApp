@@ -5,15 +5,13 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="18d61634871d439086afb776c31732b8" Name="Diagram1">
-        <EntityTypeShape EntityType="OpenWebSiteModel.ApplicationUserRole" Width="1.5" PointX="3" PointY="10.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="OpenWebSiteModel.ApplicationUserLogin" Width="1.5" PointX="3" PointY="19.875" />
-        <EntityTypeShape EntityType="OpenWebSiteModel.ApplicationUserClaim" Width="1.5" PointX="3" PointY="16.75" />
-        <EntityTypeShape EntityType="OpenWebSiteModel.ApplicationRole" Width="1.5" PointX="6.375" PointY="1" />
-        <AssociationConnector Association="OpenWebSiteModel.FK_ApplicationUserRole_ToApplicationRole" />
-        <EntityTypeShape EntityType="OpenWebSiteModel.ApplicationUser" Width="1.5" PointX="0.75" PointY="13.25" />
+        <EntityTypeShape EntityType="OpenWebSiteModel.ApplicationUserLogin" Width="2.375" PointX="3" PointY="7.875" />
+        <EntityTypeShape EntityType="OpenWebSiteModel.ApplicationUserClaim" Width="2.25" PointX="3" PointY="5.125" />
+        <EntityTypeShape EntityType="OpenWebSiteModel.ApplicationRole" Width="1.5" PointX="0.75" PointY="8.5" />
+        <EntityTypeShape EntityType="OpenWebSiteModel.ApplicationUser" Width="1.5" PointX="0.75" PointY="1.75" />
         <AssociationConnector Association="OpenWebSiteModel.FK_ApplicationUserClaim_ToApplicationUser" />
         <AssociationConnector Association="OpenWebSiteModel.FK_ApplicationUserLogin_ToApplicationUser" />
-        <AssociationConnector Association="OpenWebSiteModel.FK_ApplicationUserRole_ToApplicationUser" />
+        <AssociationConnector Association="OpenWebSiteModel.ApplicationUserRole" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

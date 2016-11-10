@@ -126,6 +126,9 @@ foreach (var complex in typeMapper.GetItemsToGenerate<ComplexType>(itemCollectio
 [MetadataType(typeof(<#=code.Escape(complex)#>MetaData))]
 <#=Accessibility.ForType(complex)#> partial class <#=code.Escape(complex)#>
 {
+	public static <#=code.Escape(complex)#> Create(){
+		return new <#=code.Escape(complex)#>();
+	}
 }
 
 <#=Accessibility.ForType(complex)#> partial class <#=code.Escape(complex)#>MetaData
@@ -812,9 +815,9 @@ public static void ArgumentNotNull<T>(T arg, string name) where T : class
     }
 }
     
-private static readonly Lazy<System.ResourceManager> ResourceManager =
-    new Lazy<System.ResourceManager>(
-        () => new System.ResourceManager("System.Data.Entity.Design", typeof(MetadataItemCollectionFactory).Assembly), isThreadSafe: true);
+private static readonly Lazy<System.Resources.ResourceManager> ResourceManager =
+    new Lazy<System.Resources.ResourceManager>(
+        () => new System.Resources.ResourceManager("System.Data.Entity.Design", typeof(MetadataItemCollectionFactory).Assembly), isThreadSafe: true);
 
 public static string GetResourceString(string resourceName)
 {

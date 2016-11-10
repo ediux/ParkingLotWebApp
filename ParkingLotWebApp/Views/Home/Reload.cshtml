@@ -36,8 +36,8 @@
                             {
                                 <th>樓層</th>
                             }
+                            <th>@WebPages.ParkingLotsFloor_CarTotalGrid</th>
                             <th>@WebPages.ParkingLotsFloor_CarLastGrid</th>
-                            <th>@WebPages.ParkingLotsFloor_MotoLastGrid</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,13 +47,13 @@
                                 @if (item_n.NoneFloor == false)
                                 {
                                     <td>@item_n.樓層名稱</td>
+                                    <td>@item_n.總停車格數</td>
                                     <td>@item_n.剩餘停車格數</td>
-                                    <td>@item_n.剩餘機車格數</td>
                                 }
                                 else
                                 {
+                                    <td>@item_n.總停車格數</td>
                                     <td>@item_n.剩餘停車格數</td>
-                                    <td>@item_n.剩餘機車格數</td>
                                 }
                             </tr>
                         }

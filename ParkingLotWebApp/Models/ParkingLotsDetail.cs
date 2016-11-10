@@ -30,7 +30,9 @@ namespace ParkingLotWebApp.Models
         public double Latitude { get; set; }
         public bool Void { get; set; }
         public Nullable<System.DateTime> LastUpdate { get; set; }
+        public Nullable<int> AreaID { get; set; }
     
+        public virtual ParkingArea ParkingArea { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParkingLotsFloor> ParkingLotsFloor { get; set; }
     }

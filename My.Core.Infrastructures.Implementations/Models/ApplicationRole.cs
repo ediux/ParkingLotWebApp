@@ -17,7 +17,7 @@ namespace My.Core.Infrastructures.Implementations.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ApplicationRole()
         {
-            this.ApplicationUserRole = new HashSet<ApplicationUserRole>();
+            this.ApplicationUser = new HashSet<ApplicationUser>();
         }
     
         public int Id { get; set; }
@@ -29,6 +29,6 @@ namespace My.Core.Infrastructures.Implementations.Models
         public System.DateTime LastUpdateTime { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ApplicationUserRole> ApplicationUserRole { get; set; }
+        public virtual ICollection<ApplicationUser> ApplicationUser { get; set; }
     }
 }

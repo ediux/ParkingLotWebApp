@@ -3,108 +3,46 @@ namespace ParkingLotWebApp.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using My.Core.Infrastructures.Implementations.Resources;
-    using System.Collections.ObjectModel;
-    using System.Web;
-    using Newtonsoft.Json;
-    using App_GlobalResources;
-
-    /// <summary>
-    /// 停車場資訊
-    /// </summary>
+    
     [MetadataType(typeof(ParkingLotsDetailMetaData))]
-    public partial class ParkingLotsDetail : IValidatableObject
+    public partial class ParkingLotsDetail
     {
-        public static ParkingLotsDetail Create()
-        {
-            return new ParkingLotsDetail()
-            {
-                Address = string.Empty,
-                Charge = string.Empty,
-                ID = 0,
-                LastUpdate = DateTime.Now,
-                Latitude = 0.0f,
-                Longitude = 0.0f,
-                Name = string.Empty,
-                ParkingLotsFloor = new Collection<ParkingLotsFloor>(),
-                Period = "",
-                Tel = "",
-                Void = false
-            };
-        }
-
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-
-            var temp = HttpUtility.HtmlDecode(Charge);
-           
-
-            if (temp.Length > 512)
-            {
-                Charge = temp;
-                yield return new ValidationResult(string.Format(ErrorMessage.StringLength, WebPages.ParkingLotsDetail_Charge ,100));
-            }
-
-            System.Diagnostics.Debug.Write(Charge);
-            //if (validationContext.Items.Count > 0)
-            //{
-            //    foreach(string k in validationContext.Items.Keys)
-            //    {
-            //        if(validationContext.Items[k] is string)
-            //        {
-            //            validationContext.Items[k] = Microsoft.Security.Application.Sanitizer.GetSafeHtmlFragment(validationContext.Items[k] as string);
-            //        }
-            //    }
-            //}
-            yield return ValidationResult.Success;
-        }
     }
-
+    
     public partial class ParkingLotsDetailMetaData
     {
         [Required]
-        [Display(Name = "ParkingLotsDetail_ID", ResourceType = typeof(WebPages))]
         public int ID { get; set; }
-
-        [StringLength(25, ErrorMessageResourceName = "StringLength", ErrorMessageResourceType = typeof(ErrorMessage))]
+        
+        [StringLength(25, ErrorMessage="欄位長度不得大於 25 個字元")]
         [Required]
-        [Display(Name = "ParkingLotsDetail_Name", ResourceType = typeof(WebPages))]
         public string Name { get; set; }
-
-        [StringLength(75, ErrorMessageResourceName = "StringLength", ErrorMessageResourceType = typeof(ErrorMessage))]
+        
+        [StringLength(75, ErrorMessage="欄位長度不得大於 75 個字元")]
         [Required]
-        [Display(Name = "ParkingLotsDetail_Address", ResourceType = typeof(WebPages))]
         public string Address { get; set; }
-
-        [StringLength(15, ErrorMessageResourceName = "StringLength", ErrorMessageResourceType = typeof(ErrorMessage))]
+        
+        [StringLength(15, ErrorMessage="欄位長度不得大於 15 個字元")]
         [Required]
-        [Display(Name = "Tel", ResourceType = typeof(Common))]
-        [Phone]
         public string Tel { get; set; }
-
-        [StringLength(25, ErrorMessageResourceName = "StringLength", ErrorMessageResourceType = typeof(ErrorMessage))]
+        
+        [StringLength(25, ErrorMessage="欄位長度不得大於 25 個字元")]
         [Required]
-        [Display(Name = "ParkingLotsDetail_Period", ResourceType = typeof(WebPages))]
-        [RegularExpression("\\d{1,2}:\\d{1,2}~\\d{1,2}:\\d{1,2}",
-            ErrorMessageResourceName = "ParkingLotsDetail_Period_VaildErrorMessage",
-            ErrorMessageResourceType = typeof(WebPages))]
         public string Period { get; set; }
-
-        [StringLength(512, ErrorMessageResourceName = "StringLength", ErrorMessageResourceType = typeof(ErrorMessage))]
+        
+        [StringLength(512, ErrorMessage="欄位長度不得大於 512 個字元")]
         [Required]
-        [Display(Name = "Charge", ResourceType = typeof(Common))]
         public string Charge { get; set; }
         [Required]
-        [Display(Name = "Longitude", ResourceType = typeof(Common))]
         public double Longitude { get; set; }
         [Required]
-        [Display(Name = "Latitude", ResourceType = typeof(Common))]
         public double Latitude { get; set; }
         [Required]
-        [Display(Name = "Void", ResourceType = typeof(MUI))]
         public bool Void { get; set; }
-        [Display(Name = "LastUpdate", ResourceType = typeof(Common))]
-        public DateTime? LastUpdate { get; set; }
+        public Nullable<System.DateTime> LastUpdate { get; set; }
+        public Nullable<int> AreaID { get; set; }
+    
+        public virtual ParkingArea ParkingArea { get; set; }
         public virtual ICollection<ParkingLotsFloor> ParkingLotsFloor { get; set; }
     }
 }

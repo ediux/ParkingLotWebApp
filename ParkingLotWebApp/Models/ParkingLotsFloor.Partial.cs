@@ -18,7 +18,7 @@ namespace ParkingLotWebApp.Models
             };
         }
     }
-
+    
     public partial class ParkingLotsFloorMetaData
     {
         [Required]
@@ -30,8 +30,8 @@ namespace ParkingLotWebApp.Models
         [Required]
         [Display(Name = "ParkingLotsFloor_FloorOrder", ResourceType = typeof(WebPages))]
         public short FloorOrder { get; set; }
-
-        [StringLength(10, ErrorMessage = "欄位長度不得大於 10 個字元")]
+        
+        [StringLength(10, ErrorMessage="欄位長度不得大於 10 個字元")]
         [Required]
         [Display(Name = "ParkingLotsFloor_FloorName", ResourceType = typeof(WebPages))]
         public string FloorName { get; set; }
@@ -52,7 +52,11 @@ namespace ParkingLotWebApp.Models
         public bool Void { get; set; }
         [Display(Name = "LastUpdate", ResourceType = typeof(Common))]
         public Nullable<System.DateTime> LastUpdate { get; set; }
+        [Required]
+        public int CarLastGridRFID { get; set; }
         [JsonIgnore]
         public virtual ParkingLotsDetail ParkingLotsDetail { get; set; }
+        public virtual ICollection<ParkingLotsRecord_HT> ParkingLotsRecord_HT { get; set; }
+        public virtual ICollection<ParkingLotsRecord> ParkingLotsRecord { get; set; }
     }
 }

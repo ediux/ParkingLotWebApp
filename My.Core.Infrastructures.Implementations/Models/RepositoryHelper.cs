@@ -70,19 +70,5 @@ namespace My.Core.Infrastructures.Implementations.Models
 			repository.UnitOfWork = unitOfWork;
 			return repository;
 		}		
-
-		public static ApplicationUserRoleRepository GetApplicationUserRoleRepository()
-		{
-			var repository = new ApplicationUserRoleRepository();
-			repository.UnitOfWork = GetUnitOfWork();
-			return repository;
-		}
-
-		public static ApplicationUserRoleRepository GetApplicationUserRoleRepository(IUnitOfWork unitOfWork)
-		{
-			var repository = new ApplicationUserRoleRepository();
-			repository.UnitOfWork = unitOfWork;
-			return repository;
-		}		
 	}
 }

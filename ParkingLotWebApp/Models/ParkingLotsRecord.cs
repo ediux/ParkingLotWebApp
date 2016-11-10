@@ -17,6 +17,11 @@ namespace ParkingLotWebApp.Models
         public int ID { get; set; }
         public Nullable<System.DateTime> LogTime { get; set; }
         public Nullable<System.DateTime> ParkDate { get; set; }
-        public short Count { get; set; }
+        public int Count { get; set; }
+        public Nullable<int> ParkingLotsFloorID { get; set; }
+        public int CountRFID { get; set; }
+        public string Code { get; set; }
+    
+        public virtual ParkingLotsFloor ParkingLotsFloor { get; set; }
     }
 }

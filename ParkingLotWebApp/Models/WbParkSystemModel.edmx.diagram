@@ -4,25 +4,29 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="29735c82c0a1456c87dfa0304d8cb982" Name="Diagram1" ZoomLevel="74">
-        <EntityTypeShape EntityType="WbParkSystemModel.AnnouncementDetail" Width="2.125" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WbParkSystemModel.ParkingLotsRecoed_HT" Width="2" PointX="4.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WbParkSystemModel.ParkingLotsRecord" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WbParkSystemModel.Cars" Width="1.5" PointX="9.625" PointY="4" />
-        <EntityTypeShape EntityType="WbParkSystemModel.Employee" Width="1.5" PointX="7.125" PointY="9" />
-        <EntityTypeShape EntityType="WbParkSystemModel.ETAs" Width="1.5" PointX="7.375" PointY="4.375" />
+      <Diagram DiagramId="29735c82c0a1456c87dfa0304d8cb982" Name="Diagram1" ZoomLevel="97">
+        <EntityTypeShape EntityType="WbParkSystemModel.AnnouncementDetail" Width="2.125" PointX="7.5" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WbParkSystemModel.Employee" Width="1.5" PointX="0.75" PointY="7.875" />
+        <EntityTypeShape EntityType="WbParkSystemModel.PushPhoneType" Width="1.5" PointX="3" PointY="6.125" />
+        <EntityTypeShape EntityType="WbParkSystemModel.CarPurposeTypes" Width="1.5" PointX="0.75" PointY="5.375" />
+        <EntityTypeShape EntityType="WbParkSystemModel.Cars" Width="1.5" PointX="3" PointY="9.125" />
+        <EntityTypeShape EntityType="WbParkSystemModel.ETAs" Width="1.5" PointX="0.75" PointY="11.875" />
+        <EntityTypeShape EntityType="WbParkSystemModel.ParkingArea" Width="1.5" PointX="7.375" PointY="7.125" />
+        <EntityTypeShape EntityType="WbParkSystemModel.ParkingLotsDetail" Width="1.5" PointX="9.625" PointY="6.25" />
+        <EntityTypeShape EntityType="WbParkSystemModel.ParkingLotsFloor" Width="1.5" PointX="11.875" PointY="6.125" />
+        <EntityTypeShape EntityType="WbParkSystemModel.PushPhoneDetail" Width="1.5" PointX="5.25" PointY="8" />
+        <AssociationConnector Association="WbParkSystemModel.FK_Cars_CarPurposeTypes" />
         <AssociationConnector Association="WbParkSystemModel.FK_Cars_ToEmployee" />
         <AssociationConnector Association="WbParkSystemModel.FK_Cars_ToETAs" />
-        <EntityTypeShape EntityType="WbParkSystemModel.PushPhoneType" Width="1.5" PointX="12" PointY="9.25" />
-        <EntityTypeShape EntityType="WbParkSystemModel.ParkingLotsDetail" Width="2.125" PointX="0.75" PointY="8" />
-        <EntityTypeShape EntityType="WbParkSystemModel.ParkingLotsFloor" Width="2.125" PointX="3.875" PointY="8.125" />
-        <AssociationConnector Association="WbParkSystemModel.FK_ParkingLotsFloor_ParkingLotsDetail" />
-        <EntityTypeShape EntityType="WbParkSystemModel.CarPurposeTypes" Width="1.5" PointX="11.875" PointY="4.75" />
-        <AssociationConnector Association="WbParkSystemModel.FK_Cars_CarPurposeTypes" />
-        <EntityTypeShape EntityType="WbParkSystemModel.PushPhoneDetail" Width="1.5" PointX="9.625" PointY="9" />
         <AssociationConnector Association="WbParkSystemModel.FK_PushPhoneDetail_Cars" />
+        <AssociationConnector Association="WbParkSystemModel.FK_ParkingLotsDetail_ParkingArea" />
+        <AssociationConnector Association="WbParkSystemModel.FK_ParkingLotsFloor_ParkingLotsDetail" />
         <AssociationConnector Association="WbParkSystemModel.FK_PushPhoneDetail_PushPhoneType" />
-      </Diagram>
+        <EntityTypeShape EntityType="WbParkSystemModel.ParkingLotsRecord" Width="1.5" PointX="14.125" PointY="8.25" />
+        <EntityTypeShape EntityType="WbParkSystemModel.ParkingLotsRecord_HT" Width="1.5" PointX="14.125" PointY="5.125" />
+        <AssociationConnector Association="WbParkSystemModel.FK_ParkingLotsRecord_HT_ParkingLotsFloor" />
+        <AssociationConnector Association="WbParkSystemModel.FK_ParkingLotsRecord_ParkingLotsFloor" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
