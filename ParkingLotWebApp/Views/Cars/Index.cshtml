@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ParkingLotWebApp.Models.Cars>
+﻿@model IEnumerable<ParkingLotWebApp.Models.ETAs>
 
 @{
     ViewBag.Title = WebPages.Cars_Lists;
@@ -6,23 +6,26 @@
 
 <h2>@ViewBag.Title</h2>
 <h4>@WebPages.Cars</h4>
+@if (User.Identity.IsAuthenticated && User.Identity.Name.Equals("root", StringComparison.InvariantCultureIgnoreCase))
+{
+    <p>
+        @Html.ActionLink(WebPages.Cars_Create_New, "Create")
+    </p>
+}
 
-<p>
-    @Html.ActionLink(WebPages.Cars_Create_New, "Create")
-</p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.ETAs.Code)
+            @Html.DisplayNameFor(model => model.Code)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CarNumber)
+            @Html.DisplayNameFor(model => model.Cars.CarNumber)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CarPurposeTypes.Name)
+            @Html.DisplayNameFor(model => model.Cars.CarPurposeTypes.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(x => x.Employee.Code)
+            @Html.DisplayNameFor(x => x.Cars.Employee.Code)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CreateUTCTime)
@@ -37,16 +40,16 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ETAs.Code)
+                @Html.DisplayFor(modelItem => item.Code)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CarNumber)
+                @Html.DisplayFor(modelItem => (item.Cars ?? new ParkingLotWebApp.Models.Cars() { CarNumber = "" }).CarNumber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => (item.CarPurposeTypes ?? new ParkingLotWebApp.Models.CarPurposeTypes()).Name)
+                @Html.DisplayFor(modelItem => ((item.Cars ?? new ParkingLotWebApp.Models.Cars() { CarNumber = "" }).CarPurposeTypes ?? new ParkingLotWebApp.Models.CarPurposeTypes()).Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Employee.Code)
+                @Html.DisplayFor(modelItem => ((item.Cars ?? new ParkingLotWebApp.Models.Cars() { CarNumber = "" }).Employee ?? new ParkingLotWebApp.Models.Employee() { }).Code)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreateUTCTime)

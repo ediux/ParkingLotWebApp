@@ -207,6 +207,7 @@
     <Compile Include="Controllers\CarPurposeTypesController.cs" />
     <Compile Include="Controllers\CarsController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ETAsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -225,6 +226,36 @@
     </Compile>
     <Compile Include="Models\AnnouncementDetailRepository.cs">
       <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\API_GetAnnouncement_Result.cs">
+      <DependentUpon>WbParkSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\API_GetAnnouncement_Result.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\API_GetArea_Result.cs">
+      <DependentUpon>WbParkSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\API_GetArea_Result.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\API_GetFloorsGrid_Result.cs">
+      <DependentUpon>WbParkSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\API_GetFloorsGrid_Result.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\API_GetLotsDetail_Result.cs">
+      <DependentUpon>WbParkSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\API_GetLotsDetail_Result.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\API_GetLotsGrid_Result.cs">
+      <DependentUpon>WbParkSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\API_GetLotsGrid_Result.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CarPurposeTypes.cs">
       <DependentUpon>WbParkSystemModel.tt</DependentUpon>
@@ -327,7 +358,6 @@
     </Compile>
     <Compile Include="Models\PartialClasses\CarPurposeTypes.Partial.cs" />
     <Compile Include="Models\PartialClasses\CarPurposeTypesRepository.Partial.cs" />
-    <Compile Include="Models\PartialClasses\Cars.Partial.cs" />
     <Compile Include="Models\PartialClasses\Employee.Partial.cs" />
     <Compile Include="Models\PartialClasses\ParkingLotsDetailRepository.Partial.cs" />
     <Compile Include="Models\PushPhoneDetail.cs">
@@ -1014,10 +1044,12 @@
     <Content Include="Views\Shared\EditorTemplates\Password.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\EnabledDisplay.cshtml" />
     <Content Include="Views\Home\Theme.cshtml" />
+    <Content Include="Views\Shared\DbEntityValidationException.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Base\" />
+    <Folder Include="Views\Error\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
