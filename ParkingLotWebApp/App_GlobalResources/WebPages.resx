@@ -321,4 +321,10 @@
   <data name="ParkingLotsFloor_MotoTotalGrid" xml:space="preserve">
     <value>機車總車格數</value>
   </data>
+  <data name="ParkingLotsArea_Id" xml:space="preserve">
+    <value>Area Id</value>
+  </data>
+  <data name="ParkingLotsArea_Name" xml:space="preserve">
+    <value>Area Name</value>
+  </data>
 </root>

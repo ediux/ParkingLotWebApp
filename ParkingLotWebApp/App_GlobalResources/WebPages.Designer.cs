@@ -529,6 +529,24 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 Area Id 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotsArea_Id {
+            get {
+                return ResourceManager.GetString("ParkingLotsArea_Id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 Area Name 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotsArea_Name {
+            get {
+                return ResourceManager.GetString("ParkingLotsArea_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 地址 的當地語系化字串。
         /// </summary>
         public static string ParkingLotsDetail_Address {

@@ -358,7 +358,7 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
-        ///   查詢類似 微型停車場管理系統 的當地語系化字串。
+        ///   查詢類似 華邦eParking管理系統 的當地語系化字串。
         /// </summary>
         public static string WebSiteName {
             get {
