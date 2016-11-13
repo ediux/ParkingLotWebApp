@@ -24,7 +24,7 @@ namespace ParkingLotWebApp.Models
         public Nullable<System.DateTime> LastUpdate { get; set; }
         public Nullable<int> CarRefId { get; set; }
     
-        public virtual Cars Cars { get; set; }
         public virtual PushPhoneType PushPhoneType { get; set; }
+        public virtual Cars Cars { get; set; }
     }
 }

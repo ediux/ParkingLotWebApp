@@ -9,23 +9,23 @@
         <EntityTypeShape EntityType="WbParkSystemModel.Employee" Width="1.5" PointX="0.75" PointY="7.875" />
         <EntityTypeShape EntityType="WbParkSystemModel.PushPhoneType" Width="1.5" PointX="3" PointY="6.125" />
         <EntityTypeShape EntityType="WbParkSystemModel.CarPurposeTypes" Width="1.5" PointX="0.75" PointY="5.375" />
-        <EntityTypeShape EntityType="WbParkSystemModel.Cars" Width="1.5" PointX="3" PointY="9.125" />
-        <EntityTypeShape EntityType="WbParkSystemModel.ETAs" Width="1.5" PointX="0.75" PointY="11.875" />
         <EntityTypeShape EntityType="WbParkSystemModel.ParkingArea" Width="1.5" PointX="7.375" PointY="7.125" />
         <EntityTypeShape EntityType="WbParkSystemModel.ParkingLotsDetail" Width="1.5" PointX="9.625" PointY="6.25" />
         <EntityTypeShape EntityType="WbParkSystemModel.ParkingLotsFloor" Width="1.5" PointX="11.875" PointY="6.125" />
-        <EntityTypeShape EntityType="WbParkSystemModel.PushPhoneDetail" Width="1.5" PointX="5.25" PointY="8" />
-        <AssociationConnector Association="WbParkSystemModel.FK_Cars_CarPurposeTypes" />
-        <AssociationConnector Association="WbParkSystemModel.FK_Cars_ToEmployee" />
-        <AssociationConnector Association="WbParkSystemModel.FK_Cars_ToETAs" />
-        <AssociationConnector Association="WbParkSystemModel.FK_PushPhoneDetail_Cars" />
         <AssociationConnector Association="WbParkSystemModel.FK_ParkingLotsDetail_ParkingArea" />
         <AssociationConnector Association="WbParkSystemModel.FK_ParkingLotsFloor_ParkingLotsDetail" />
-        <AssociationConnector Association="WbParkSystemModel.FK_PushPhoneDetail_PushPhoneType" />
         <EntityTypeShape EntityType="WbParkSystemModel.ParkingLotsRecord" Width="1.5" PointX="14.125" PointY="8.25" />
         <EntityTypeShape EntityType="WbParkSystemModel.ParkingLotsRecord_HT" Width="1.5" PointX="14.125" PointY="5.125" />
         <AssociationConnector Association="WbParkSystemModel.FK_ParkingLotsRecord_HT_ParkingLotsFloor" />
         <AssociationConnector Association="WbParkSystemModel.FK_ParkingLotsRecord_ParkingLotsFloor" />
+        <EntityTypeShape EntityType="WbParkSystemModel.PushPhoneDetail" Width="1.5" PointX="5.25" PointY="7.375" />
+        <AssociationConnector Association="WbParkSystemModel.FK_PushPhoneDetail_PushPhoneType" />
+        <EntityTypeShape EntityType="WbParkSystemModel.Cars" Width="1.5" PointX="3" PointY="9.25" />
+        <EntityTypeShape EntityType="WbParkSystemModel.ETAs" Width="1.5" PointX="5.25" PointY="11.5" />
+        <AssociationConnector Association="WbParkSystemModel.FK_ETAs_Cars" />
+        <AssociationConnector Association="WbParkSystemModel.FK_PushPhoneDetail_Cars" />
+        <AssociationConnector Association="WbParkSystemModel.FK_Cars_CarPurposeTypes" />
+        <AssociationConnector Association="WbParkSystemModel.FK_Cars_Employee" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

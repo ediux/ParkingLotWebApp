@@ -33,6 +33,10 @@ namespace ParkingLotWebApp.Models
 
     public partial class CarsMetaData
     {
+        [Required]
+        [Display(Name = "系統識別碼")]
+        public int Id { get; set; }
+
         [StringLength(50, ErrorMessage = "欄位長度不得大於 50 個字元")]
         [Required]
         [Display(Name = "車號")]

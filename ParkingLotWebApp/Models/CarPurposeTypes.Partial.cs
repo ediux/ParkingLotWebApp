@@ -1,6 +1,7 @@
 namespace ParkingLotWebApp.Models
 {
     using My.Core.Infrastructures.Implementations.Resources;
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -23,6 +24,7 @@ namespace ParkingLotWebApp.Models
         [Display(Name="Void",ResourceType = typeof(MUI))]
         public bool Void { get; set; }
     
+        [JsonIgnore]
         public virtual ICollection<Cars> Cars { get; set; }
     }
 }

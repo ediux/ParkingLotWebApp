@@ -23,7 +23,10 @@ namespace ParkingLotWebApp.Models
         public int CreateUserId { get; set; }
         [Required]
         public System.DateTime CreateUTCTime { get; set; }
+        public Nullable<int> LastUpdateUserId { get; set; }
+        public Nullable<System.DateTime> LastUpdateUTCTime { get; set; }
+        public Nullable<int> CarRefId { get; set; }
     
-        public virtual ICollection<Cars> Cars { get; set; }
+        public virtual Cars Cars { get; set; }
     }
 }

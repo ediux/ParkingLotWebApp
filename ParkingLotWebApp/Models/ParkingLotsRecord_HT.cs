@@ -12,17 +12,16 @@ namespace ParkingLotWebApp.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ETAs
+    public partial class ParkingLotsRecord_HT
     {
-        public int Id { get; set; }
+        public int ID { get; set; }
+        public Nullable<System.DateTime> LogTime { get; set; }
+        public Nullable<System.DateTime> ParkDate { get; set; }
+        public int Count { get; set; }
+        public Nullable<int> ParkingLotsFloorID { get; set; }
+        public int CountRFID { get; set; }
         public string Code { get; set; }
-        public bool Void { get; set; }
-        public int CreateUserId { get; set; }
-        public System.DateTime CreateUTCTime { get; set; }
-        public Nullable<int> LastUpdateUserId { get; set; }
-        public Nullable<System.DateTime> LastUpdateUTCTime { get; set; }
-        public Nullable<int> CarRefId { get; set; }
     
-        public virtual Cars Cars { get; set; }
+        public virtual ParkingLotsFloor ParkingLotsFloor { get; set; }
     }
 }

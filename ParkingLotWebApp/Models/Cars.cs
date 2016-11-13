@@ -17,6 +17,7 @@ namespace ParkingLotWebApp.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Cars()
         {
+            this.ETAs = new HashSet<ETAs>();
             this.PushPhoneDetail = new HashSet<PushPhoneDetail>();
         }
     
@@ -24,7 +25,6 @@ namespace ParkingLotWebApp.Models
         public string CarNumber { get; set; }
         public string CarType { get; set; }
         public Nullable<int> CarPurposeTypeID { get; set; }
-        public Nullable<int> ETCsID { get; set; }
         public Nullable<int> EmpId { get; set; }
         public bool Void { get; set; }
         public int CreateUserId { get; set; }
@@ -32,10 +32,11 @@ namespace ParkingLotWebApp.Models
         public int LastUpdateUserId { get; set; }
         public System.DateTime LastUpdateUTCTime { get; set; }
     
-        public virtual CarPurposeTypes CarPurposeTypes { get; set; }
-        public virtual Employee Employee { get; set; }
-        public virtual ETAs ETAs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ETAs> ETAs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PushPhoneDetail> PushPhoneDetail { get; set; }
+        public virtual CarPurposeTypes CarPurposeTypes { get; set; }
+        public virtual Employee Employee { get; set; }
     }
 }

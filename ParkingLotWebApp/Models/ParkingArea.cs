@@ -12,17 +12,19 @@ namespace ParkingLotWebApp.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ETAs
+    public partial class ParkingArea
     {
-        public int Id { get; set; }
-        public string Code { get; set; }
-        public bool Void { get; set; }
-        public int CreateUserId { get; set; }
-        public System.DateTime CreateUTCTime { get; set; }
-        public Nullable<int> LastUpdateUserId { get; set; }
-        public Nullable<System.DateTime> LastUpdateUTCTime { get; set; }
-        public Nullable<int> CarRefId { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ParkingArea()
+        {
+            this.ParkingLotsDetail = new HashSet<ParkingLotsDetail>();
+        }
     
-        public virtual Cars Cars { get; set; }
+        public int AreaId { get; set; }
+        public string Name { get; set; }
+        public bool Void { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParkingLotsDetail> ParkingLotsDetail { get; set; }
     }
 }
