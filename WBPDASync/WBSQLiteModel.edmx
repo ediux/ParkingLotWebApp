@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="WBSQLiteModel.Store" Provider="System.Data.SQLite.EF6" ProviderManifestToken="data source=C:\Users\ediux\Documents\專案文件\華邦電子員工停車場管理系統\ParkingLotWebApp\WBPDASync\wbeparking.db" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CarPurposeTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Void" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ETCBinding">
+          <Key>
+            <PropertyRef Name="ETCID" />
+          </Key>
+          <Property Name="ETCID" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="CarID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="CarPurposeTypeID" Type="int" />
+        </EntityType>
+        <Association Name="FK_ETCBinding_0_0">
+          <End Role="CarPurposeTypes" Type="Self.CarPurposeTypes" Multiplicity="0..1" />
+          <End Role="ETCBinding" Type="Self.ETCBinding" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CarPurposeTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ETCBinding">
+              <PropertyRef Name="CarPurposeTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WBSQLiteModelStoreContainer">
+          <EntitySet Name="CarPurposeTypes" EntityType="Self.CarPurposeTypes" store:Type="Tables" />
+          <EntitySet Name="ETCBinding" EntityType="Self.ETCBinding" store:Type="Tables" />
+          <AssociationSet Name="FK_ETCBinding_0_0" Association="Self.FK_ETCBinding_0_0">
+            <End Role="CarPurposeTypes" EntitySet="CarPurposeTypes" />
+            <End Role="ETCBinding" EntitySet="ETCBinding" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="WBSQLiteModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="WBSQLiteModelContainer1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ETCBinding" EntityType="WBSQLiteModel.ETCBinding" />
+          <EntitySet Name="CarPurposeTypes" EntityType="WBSQLiteModel.CarPurposeTypes" />
+          <AssociationSet Name="FK_ETCBinding_0_0" Association="WBSQLiteModel.FK_ETCBinding_0_0">
+            <End Role="CarPurposeTypes" EntitySet="CarPurposeTypes" />
+            <End Role="ETCBinding" EntitySet="ETCBinding" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ETCBinding">
+          <Key>
+            <PropertyRef Name="ETCID" />
+          </Key>
+          <Property Name="ETCID" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="CarID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CarPurposeTypeID" Type="Int32" />
+          <NavigationProperty Name="CarPurposeTypes" Relationship="WBSQLiteModel.FK_ETCBinding_0_0" FromRole="ETCBinding" ToRole="CarPurposeTypes" />
+        </EntityType>
+        <EntityType Name="CarPurposeTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Void" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ETCBinding" Relationship="WBSQLiteModel.FK_ETCBinding_0_0" FromRole="CarPurposeTypes" ToRole="ETCBinding" />
+        </EntityType>
+        <Association Name="FK_ETCBinding_0_0">
+          <End Type="WBSQLiteModel.CarPurposeTypes" Role="CarPurposeTypes" Multiplicity="0..1" />
+          <End Type="WBSQLiteModel.ETCBinding" Role="ETCBinding" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CarPurposeTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ETCBinding">
+              <PropertyRef Name="CarPurposeTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
+        <Alias Key="Model" Value="WBSQLiteModel" />
+        <Alias Key="Target" Value="WBSQLiteModel.Store" />
+        <EntityContainerMapping CdmEntityContainer="WBSQLiteModelContainer1" StorageEntityContainer="WBSQLiteModelStoreContainer">
+          <EntitySetMapping Name="ETCBinding">
+            <EntityTypeMapping TypeName="WBSQLiteModel.ETCBinding">
+              <MappingFragment StoreEntitySet="ETCBinding">
+                <ScalarProperty Name="CarPurposeTypeID" ColumnName="CarPurposeTypeID" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="ETCID" ColumnName="ETCID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CarPurposeTypes">
+            <EntityTypeMapping TypeName="WBSQLiteModel.CarPurposeTypes">
+              <MappingFragment StoreEntitySet="CarPurposeTypes">
+                <ScalarProperty Name="Void" ColumnName="Void" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="無" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -213,6 +213,7 @@
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\ParkingLotAreasController.cs" />
     <Compile Include="Controllers\ParkingLotFloorsController.cs" />
+    <Compile Include="Controllers\SQLiteSync.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -341,6 +342,7 @@
     <Compile Include="Models\RepositoryHelper.cs">
       <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SyncDataViewModel.cs" />
     <Compile Include="Models\UserProfileViewModel.cs" />
     <Compile Include="Models\vw_ParkingLotGridRemain.cs" />
     <Compile Include="Models\WbParkSystemEntitiesUnitOfWork.cs">

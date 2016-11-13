@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "My.Core.Infrastructures", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "My.Core.Infrastructures.Implementations", "My.Core.Infrastructures.Implementations\My.Core.Infrastructures.Implementations.csproj", "{4CF6DBDF-3CF6-4647-BDDE-F1260B1EE419}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WBPDASync", "WBPDASync\WBPDASync.csproj", "{6471DCB4-AED8-48F7-9DB2-3849F1F89143}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{4CF6DBDF-3CF6-4647-BDDE-F1260B1EE419}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CF6DBDF-3CF6-4647-BDDE-F1260B1EE419}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CF6DBDF-3CF6-4647-BDDE-F1260B1EE419}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6471DCB4-AED8-48F7-9DB2-3849F1F89143}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6471DCB4-AED8-48F7-9DB2-3849F1F89143}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6471DCB4-AED8-48F7-9DB2-3849F1F89143}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6471DCB4-AED8-48F7-9DB2-3849F1F89143}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
