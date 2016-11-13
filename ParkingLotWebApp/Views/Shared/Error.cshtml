@@ -12,12 +12,26 @@
     if (User.IsInRole("Admins"))
     {
         <dl class="dl-horizontal">
-            <dt>錯誤訊息</dt>
-            <dd>@Model.Exception.Message</dd>
+            @if (Model != null)
+            {
+                <dt>控制器名稱</dt>
+                <dd>@Model.ControllerName</dd>
+                <dt>動作名稱</dt>
+                <dd>@Model.ActionName</dd>
+                <dt>錯誤訊息</dt>
+                if (Model.Exception != null)
+                {
+                    <dd>@Model.Exception.Message</dd>
+                }
+            }
         </dl>
+        if (Model != null)
+        {
 <pre>
     @Model.Exception.StackTrace
 </pre>
+        }
+
     }
 }
 
