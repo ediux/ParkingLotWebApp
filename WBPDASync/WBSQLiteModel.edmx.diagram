@@ -5,9 +5,8 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="c2da9887bd974521bb2297702ad78312" Name="Diagram1" >
-        <EntityTypeShape EntityType="WBSQLiteModel.ETCBinding" Width="1.5" PointX="3.375" PointY="0.75" />
-        <EntityTypeShape EntityType="WBSQLiteModel.CarPurposeTypes" Width="1.5" PointX="1.125" PointY="0.75" />
-        <AssociationConnector Association="WBSQLiteModel.FK_ETCBinding_0_0" />
+        <EntityTypeShape EntityType="WBSQLiteModel.CarPurposeTypes" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="WBSQLiteModel.ETCBinding" Width="1.5" PointX="2.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

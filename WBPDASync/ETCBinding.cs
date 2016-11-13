@@ -11,17 +11,11 @@ namespace WBPDASync
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-
+    
     public partial class ETCBinding
     {
-        [Key]
         public string ETCID { get; set; }
         public string CarID { get; set; }
         public Nullable<int> CarPurposeTypeID { get; set; }
-    
-        [ForeignKey("CarPurposeTypeID")]
-        public virtual CarPurposeTypes CarPurposeTypes { get; set; }
     }
 }

@@ -21,47 +21,18 @@
           <Property Name="CarID" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="CarPurposeTypeID" Type="int" />
         </EntityType>
-        <Association Name="FK_ETCBinding_0_0">
-          <End Role="CarPurposeTypes" Type="Self.CarPurposeTypes" Multiplicity="0..1" />
-          <End Role="ETCBinding" Type="Self.ETCBinding" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CarPurposeTypes">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ETCBinding">
-              <PropertyRef Name="CarPurposeTypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="WBSQLiteModelStoreContainer">
           <EntitySet Name="CarPurposeTypes" EntityType="Self.CarPurposeTypes" store:Type="Tables" />
           <EntitySet Name="ETCBinding" EntityType="Self.ETCBinding" store:Type="Tables" />
-          <AssociationSet Name="FK_ETCBinding_0_0" Association="Self.FK_ETCBinding_0_0">
-            <End Role="CarPurposeTypes" EntitySet="CarPurposeTypes" />
-            <End Role="ETCBinding" EntitySet="ETCBinding" />
-          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="WBSQLiteModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
         <EntityContainer Name="WBSQLiteModelContainer1" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="ETCBinding" EntityType="WBSQLiteModel.ETCBinding" />
           <EntitySet Name="CarPurposeTypes" EntityType="WBSQLiteModel.CarPurposeTypes" />
-          <AssociationSet Name="FK_ETCBinding_0_0" Association="WBSQLiteModel.FK_ETCBinding_0_0">
-            <End Role="CarPurposeTypes" EntitySet="CarPurposeTypes" />
-            <End Role="ETCBinding" EntitySet="ETCBinding" />
-          </AssociationSet>
+          <EntitySet Name="ETCBinding" EntityType="WBSQLiteModel.ETCBinding" />
         </EntityContainer>
-        <EntityType Name="ETCBinding">
-          <Key>
-            <PropertyRef Name="ETCID" />
-          </Key>
-          <Property Name="ETCID" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="CarID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="CarPurposeTypeID" Type="Int32" />
-          <NavigationProperty Name="CarPurposeTypes" Relationship="WBSQLiteModel.FK_ETCBinding_0_0" FromRole="ETCBinding" ToRole="CarPurposeTypes" />
-        </EntityType>
         <EntityType Name="CarPurposeTypes">
           <Key>
             <PropertyRef Name="Id" />
@@ -69,20 +40,15 @@
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Void" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ETCBinding" Relationship="WBSQLiteModel.FK_ETCBinding_0_0" FromRole="CarPurposeTypes" ToRole="ETCBinding" />
         </EntityType>
-        <Association Name="FK_ETCBinding_0_0">
-          <End Type="WBSQLiteModel.CarPurposeTypes" Role="CarPurposeTypes" Multiplicity="0..1" />
-          <End Type="WBSQLiteModel.ETCBinding" Role="ETCBinding" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CarPurposeTypes">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ETCBinding">
-              <PropertyRef Name="CarPurposeTypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+        <EntityType Name="ETCBinding">
+          <Key>
+            <PropertyRef Name="ETCID" />
+          </Key>
+          <Property Name="ETCID" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="CarID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CarPurposeTypeID" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -91,21 +57,21 @@
         <Alias Key="Model" Value="WBSQLiteModel" />
         <Alias Key="Target" Value="WBSQLiteModel.Store" />
         <EntityContainerMapping CdmEntityContainer="WBSQLiteModelContainer1" StorageEntityContainer="WBSQLiteModelStoreContainer">
-          <EntitySetMapping Name="ETCBinding">
-            <EntityTypeMapping TypeName="WBSQLiteModel.ETCBinding">
-              <MappingFragment StoreEntitySet="ETCBinding">
-                <ScalarProperty Name="CarPurposeTypeID" ColumnName="CarPurposeTypeID" />
-                <ScalarProperty Name="CarID" ColumnName="CarID" />
-                <ScalarProperty Name="ETCID" ColumnName="ETCID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CarPurposeTypes">
             <EntityTypeMapping TypeName="WBSQLiteModel.CarPurposeTypes">
               <MappingFragment StoreEntitySet="CarPurposeTypes">
                 <ScalarProperty Name="Void" ColumnName="Void" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ETCBinding">
+            <EntityTypeMapping TypeName="WBSQLiteModel.ETCBinding">
+              <MappingFragment StoreEntitySet="ETCBinding">
+                <ScalarProperty Name="CarPurposeTypeID" ColumnName="CarPurposeTypeID" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="ETCID" ColumnName="ETCID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

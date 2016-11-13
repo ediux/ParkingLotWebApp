@@ -5,9 +5,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Devices;
 using System.IO;
+using RestSharp;
+using System.Collections.ObjectModel;
 
 namespace WBPDASync
 {
+    [Serializable]
+    public class SyncDataViewModel
+    {
+        public SyncDataViewModel()
+        {
+            ETCBinding = new Collection<ETCBinding>();
+            CarPurposeTypes = new Collection<CarPurposeTypes>();
+        }
+        public virtual ICollection<ETCBinding> ETCBinding { get; set; }
+
+        public virtual ICollection<CarPurposeTypes> CarPurposeTypes { get; set; }
+    }
+
     class Program
     {
         static RemoteDeviceManager devmgr;
@@ -60,21 +75,47 @@ namespace WBPDASync
                         Console.WriteLine("開啟資料庫成功!");
                         //WBSQLiteModelContainer1 sqldb = new WBPDASync.WBSQLiteModelContainer1();
                         var etags = sqldb.ETCBinding.Distinct().OrderBy(o => o.ETCID);
+                        SyncDataViewModel db = new SyncDataViewModel();
 
                         if (etags.Count()>0)
-                        {
+                        {                            
                             foreach(var tag in etags)
                             {
+                                db.ETCBinding.Add(tag);
                                 Console.WriteLine("找到{0}->{1}", tag.ETCID, tag.CarID);
                             }
+
+                            db.CarPurposeTypes = new Collection<CarPurposeTypes>(db.CarPurposeTypes.ToList());
                         }
 
-                        sqldb.Dispose();
+                        Console.WriteLine("同步資料庫中...");
+                        db = StartSyncDB(db);
+                        Console.WriteLine("同步資料庫成功!");
+                        sqldb.Dispose();                        
                     }
 
                 }
             }
         
+        }
+
+        static SyncDataViewModel StartSyncDB(SyncDataViewModel sqlitedb)
+        {
+            var client = new RestClient("http://localhost:57276/api/SQLiteSync");
+            var request = new RestRequest(Method.POST);
+            request.RequestFormat = DataFormat.Json;           
+            request.AddBody(sqlitedb);
+            //request.AddHeader("postman-token", "1293d735-dc97-9b40-ea71-48bc269b2f9b");
+            request.AddHeader("cache-control", "no-cache");
+            request.AddHeader("content-type", "application/json");         
+            IRestResponse<SyncDataViewModel> response = client.Execute<SyncDataViewModel>(request);  
+                      
+            Console.Write(response.Content);
+            Console.WriteLine();
+
+
+            sqlitedb = response.Data;
+            return sqlitedb;
         }
     }
 }

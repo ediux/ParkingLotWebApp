@@ -11,22 +11,11 @@ namespace WBPDASync
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class CarPurposeTypes
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CarPurposeTypes()
-        {
-            this.ETCBinding = new HashSet<ETCBinding>();
-        }
-    
-        [Key]
         public int Id { get; set; }
         public string Name { get; set; }
         public bool Void { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ETCBinding> ETCBinding { get; set; }
     }
 }
