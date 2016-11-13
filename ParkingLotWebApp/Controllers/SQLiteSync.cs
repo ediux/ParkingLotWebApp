@@ -10,6 +10,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using ParkingLotWebApp.Models;
 using System.Collections.ObjectModel;
+using Microsoft.AspNet.Identity;
 
 namespace ParkingLotWebApp.Controllers
 {
@@ -27,34 +28,47 @@ namespace ParkingLotWebApp.Controllers
         }
 
         // GET: api/SQLiteSync
-        public IQueryable<SyncDataViewModel> GetETAs()
+        public IHttpActionResult GetETAs()
         {
             var model = new SyncDataViewModel();
 
             var etcsyncdata = from q in db.All()
-                              from s in q.Cars
-                              select new ETCSQLiteViewModel()
+                              select new ETCBinding()
                               {
-                                  CarId = s.CarNumber,
-                                  CarPurposeTypesId = s.CarPurposeTypeID ?? 0,
-                                  TagCode = q.Code
+                                  CarID = q.Cars.CarNumber,
+                                  CarPurposeTypeID = q.Cars.CarPurposeTypeID ?? 0,
+                                  ETCID = q.Code
                               };
 
-            model.ETCBinding = new Collection<ETCSQLiteViewModel>(etcsyncdata.ToList());
+            model.ETCBinding = new Collection<ETCBinding>(etcsyncdata.ToList());
             model.CarPurposeTypes = new Collection<CarPurposeTypes>(db_cartypes.All().ToList());
 
-            return model as IQueryable<SyncDataViewModel>;
+            return Ok(model);
         }
 
         // GET: api/SQLiteSync/5
         [ResponseType(typeof(SyncDataViewModel))]
         public IHttpActionResult GetETAs(string id)
         {
-            ETAs eTAs = db.Get(id);
+            ETAs eTAs = db.All().SingleOrDefault(s => s.Code == id);
+
             SyncDataViewModel model =
                 new Models.SyncDataViewModel();
 
-            model.ETCBinding.Add(new ETCSQLiteViewModel() { CarId = eTAs.Cars.First().CarNumber, TagCode = eTAs.Code, CarPurposeTypesId = eTAs.Cars.First().CarPurposeTypeID ?? 0 });
+            if (eTAs != null)
+            {
+                ETCBinding bindingdata = new ETCBinding() {  ETCID = eTAs.Code };
+
+                if(eTAs.CarRefId != null)
+                {
+                    bindingdata.CarID = eTAs.Cars.CarNumber;
+                    bindingdata.CarPurposeTypeID = eTAs.Cars.CarPurposeTypeID;
+                }
+
+                model.ETCBinding.Add(bindingdata);
+            }
+                
+
             model.CarPurposeTypes = new Collection<CarPurposeTypes>(db_cartypes.All().ToList());
 
             if (eTAs == null)
@@ -67,23 +81,23 @@ namespace ParkingLotWebApp.Controllers
 
         // PUT: api/SQLiteSync/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutETAs(int id, SyncDataViewModel eTAs)
+        public IHttpActionResult PutETAs(string id, ETCBinding eTAs)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != eTAs.Id)
+            if (id != eTAs.ETCID)
             {
                 return BadRequest();
             }
 
-            db.Entry(eTAs).State = EntityState.Modified;
+            eTAs = db.SyncFromDevice(this, id, eTAs);
 
             try
             {
-                db.SaveChanges();
+                db.UnitOfWork.Commit();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -102,31 +116,30 @@ namespace ParkingLotWebApp.Controllers
 
         // POST: api/SQLiteSync
         [ResponseType(typeof(SyncDataViewModel))]
-        public IHttpActionResult PostETAs(ETAs eTAs)
+        public IHttpActionResult PostETAs(SyncDataViewModel eTAs)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.ETAs.Add(eTAs);
-            db.SaveChanges();
+            eTAs = db.BatchSyncFormDevice(this, eTAs);
 
-            return CreatedAtRoute("DefaultApi", new { id = eTAs.Id }, eTAs);
+            return Ok(eTAs);
         }
 
         // DELETE: api/SQLiteSync/5
         [ResponseType(typeof(SyncDataViewModel))]
         public IHttpActionResult DeleteETAs(int id)
         {
-            ETAs eTAs = db.ETAs.Find(id);
+            ETAs eTAs = db.Get(id);
             if (eTAs == null)
             {
                 return NotFound();
             }
 
-            db.ETAs.Remove(eTAs);
-            db.SaveChanges();
+            db.Delete(eTAs);
+            db.UnitOfWork.Commit();
 
             return Ok(eTAs);
         }
@@ -140,9 +153,9 @@ namespace ParkingLotWebApp.Controllers
             base.Dispose(disposing);
         }
 
-        private bool ETAsExists(int id)
+        private bool ETAsExists(string id)
         {
-            return db.ETAs.Count(e => e.Id == id) > 0;
+            return db.All().Count(e => e.Code == id) > 0;
         }
     }
 }

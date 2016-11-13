@@ -6,20 +6,21 @@ using System.Web;
 
 namespace ParkingLotWebApp.Models
 {
-    public class ETCSQLiteViewModel
+    public partial class ETCBinding
     {
-        public string TagCode { get; set; }
-        public string CarId { get; set; }
-        public int CarPurposeTypesId { get; set; }
+        public string ETCID { get; set; }
+        public string CarID { get; set; }
+        public Nullable<int> CarPurposeTypeID { get; set; }
+
     }
     public class SyncDataViewModel
     {
         public SyncDataViewModel()
         {
-            ETCBinding = new Collection<ETCSQLiteViewModel>();
+            ETCBinding = new Collection<ETCBinding>();
             CarPurposeTypes = new Collection<CarPurposeTypes>();
         }
-        public virtual ICollection<ETCSQLiteViewModel> ETCBinding { get; set; }
+        public virtual ICollection<ETCBinding> ETCBinding { get; set; }
 
         public virtual ICollection<CarPurposeTypes> CarPurposeTypes { get; set; }
     }
