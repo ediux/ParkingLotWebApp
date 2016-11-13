@@ -6,4 +6,19 @@
 
 <h1 class="text-danger">錯誤。</h1>
 <h2 class="text-danger">處理您的要求時發生錯誤。</h2>
+@if (User.Identity != null && User.Identity.IsAuthenticated && Request.IsLocal)
+{
+
+    if (User.IsInRole("Admins"))
+    {
+        <dl class="dl-horizontal">
+            <dt>錯誤訊息</dt>
+            <dd>@Model.Exception.Message</dd>
+        </dl>
+<pre>
+    @Model.Exception.StackTrace
+</pre>
+    }
+}
+
 
