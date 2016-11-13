@@ -144,7 +144,7 @@ namespace My.Core.Infrastructures.Implementations.Models
 
 
                 var result = from q in ObjectSet
-                             where q.UserName.Equals(LoginAccount, StringComparison.InvariantCultureIgnoreCase)
+                             where q.Void == false && q.UserName.Equals(LoginAccount, StringComparison.InvariantCultureIgnoreCase)
                              select q;
 
                 _founduser = result.SingleOrDefault();
@@ -175,7 +175,7 @@ namespace My.Core.Infrastructures.Implementations.Models
 
 
                 var result = from q in ObjectSet
-                             where q.UserName.Equals(LoginAccount, StringComparison.InvariantCultureIgnoreCase)
+                             where q.Void == false && q.UserName.Equals(LoginAccount, StringComparison.InvariantCultureIgnoreCase)
                              select q;
 
                 _founduser = result.SingleOrDefault();
@@ -467,20 +467,39 @@ namespace My.Core.Infrastructures.Implementations.Models
                 }
             }
 
+            if(oriuser.PasswordHash != user.PasswordHash)
+            {
+                oriuser.PasswordHash = user.PasswordHash;
+            }
+
             oriuser.UserName = user.UserName;
-            oriuser.DisplayName = user.DisplayName;       
+            oriuser.DisplayName = user.DisplayName;
             oriuser.EMail = user.EMail;
             oriuser.EMailConfirmed = false;
             oriuser.LastUpdateTime = DateTime.UtcNow;
+            oriuser.PhoneNumber = user.PhoneNumber;
+            oriuser.PhoneConfirmed = false;
+                       
+            var role = user.ApplicationRole.FirstOrDefault();
 
-            if (user.TwoFactorEnabled)
+            if (role != null)
             {
-                oriuser.PhoneNumber = user.PhoneNumber;
-                oriuser.PhoneConfirmed = false;
+                if (oriuser.ApplicationRole.Any(s => s.Id == role.Id) == false)
+                {
+                    int roleid = role.Id;
+                    
+                    IApplicationRoleRepository rolerepo = RepositoryHelper.GetApplicationRoleRepository(UnitOfWork);
+                    var targetrole = rolerepo.Get(roleid);
+                    if (targetrole != null)
+                    {
+                        oriuser.ApplicationRole.Clear();
+                        oriuser.ApplicationRole.Add(targetrole);
+                    }
+                }
             }
 
             UnitOfWork.Context.Entry(oriuser).State = EntityState.Modified;
-
+          
             return oriuser;
         }
         #endregion

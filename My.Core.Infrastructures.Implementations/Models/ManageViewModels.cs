@@ -50,7 +50,7 @@ namespace My.Core.Infrastructures.Implementations.Models
         public string OldPassword { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "{0} 的長度至少必須為 {2} 個字元。", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "{0} 的長度至少必須為 {2} 個字元。")]
         [DataType(DataType.Password)]
         [Display(Name = "新密碼")]
         public string NewPassword { get; set; }
@@ -59,6 +59,12 @@ namespace My.Core.Infrastructures.Implementations.Models
         [Display(Name = "確認新密碼")]
         [Compare("NewPassword", ErrorMessage = "新密碼與確認密碼不相符。")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "使用者系統識別碼")]
+        public int UserId { get; set; }
+
+        [Display(Name = "顯示名稱")]
+        public string DisplayName { get; set; }
     }
 
     public class AddPhoneNumberViewModel

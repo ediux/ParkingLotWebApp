@@ -38,7 +38,40 @@ namespace My.Core.Infrastructures.Implementations
             : base(store)
         {
         }
-                
+        public async override Task<IdentityResult> ChangePasswordAsync(int userId, string currentPassword, string newPassword)
+        {
+            var user = await Store.FindByIdAsync(userId);
+            if (user != null)
+            {
+                if (PasswordHasher.VerifyHashedPassword(user.PasswordHash, currentPassword) == PasswordVerificationResult.Success)
+                {
+                    user.PasswordHash = PasswordHasher.HashPassword(newPassword);
+                    user.ResetPasswordToken = await GeneratePasswordResetTokenAsync(userId);
+                    user.LastUpdateTime = DateTime.UtcNow;
+                    user.LastUpdateUserId = HttpContext.Current.User.Identity.GetUserId<int>();
+                    return await UpdateAsync(user);
+                }
+                else
+                {
+                    if (HttpContext.Current != null)
+                    {
+                        //只有root帳號才能強制重設密碼
+                        if(HttpContext.Current.User.Identity.Name.Equals("root", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            user.PasswordHash = PasswordHasher.HashPassword(newPassword);
+                            user.ResetPasswordToken = await GeneratePasswordResetTokenAsync(userId);
+                            user.LastUpdateTime = DateTime.UtcNow;
+                            user.LastUpdateUserId = HttpContext.Current.User.Identity.GetUserId<int>();
+                            return await UpdateAsync(user);
+                        }
+                    }
+                    return IdentityResult.Failed("原密碼不正確!");
+                }
+            }
+            return IdentityResult.Failed("使用者不存在!");
+        }
+
+        
         public async Task<bool> CheckAccountIsExist(ApplicationUser user)
         {
             try
@@ -80,8 +113,11 @@ namespace My.Core.Infrastructures.Implementations
 
                 user.Password = "";
                 user.PasswordHash = PasswordHasher.HashPassword(password);
-                // user.ResetPasswordToken = await GeneratePasswordResetTokenAsync(user.Id);
+                
                 await Store.CreateAsync(user);
+                user = await FindByNameAsync(user.UserName);
+                user.ResetPasswordToken = await GeneratePasswordResetTokenAsync(user.Id);
+                await Store.UpdateAsync(user);
                 return IdentityResult.Success;
             }
             catch (Exception ex)
@@ -97,8 +133,8 @@ namespace My.Core.Infrastructures.Implementations
                 user.Password = newPassword;
                 user.PasswordHash = PasswordHasher.HashPassword(newPassword);
                 user.ResetPasswordToken = await GeneratePasswordResetTokenAsync(user.Id);
-                await base.UpdateAsync(user);
-                return IdentityResult.Success;
+                var result = await base.UpdateAsync(user);
+                return result;
             }
             catch (Exception ex)
             {
@@ -171,7 +207,7 @@ namespace My.Core.Infrastructures.Implementations
 
             return roleManager;
         }
-        
+
     }
     // 設定在此應用程式中使用的應用程式登入管理員。
     public class ApplicationSignInManager : SignInManager<ApplicationUser, int>
@@ -179,13 +215,13 @@ namespace My.Core.Infrastructures.Implementations
         public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)
             : base(userManager, authenticationManager)
         {
-        }
+        }        
 
         public override Task<ClaimsIdentity> CreateUserIdentityAsync(ApplicationUser user)
         {
             return user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
         }
-        
+
         public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);

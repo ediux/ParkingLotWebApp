@@ -74,7 +74,7 @@ namespace My.Core.Infrastructures.Implementations.Models
         public async Task UpdateAsync(ApplicationUser user)
         {
             user.LastActivityTime = DateTime.UtcNow;
-            user = userRepo.Update(user);
+            userRepo.Update(user);
             await userRepo.UnitOfWork.CommitAsync();
         }
 
