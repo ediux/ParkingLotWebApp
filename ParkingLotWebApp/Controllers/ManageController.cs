@@ -13,9 +13,12 @@ using My.Core.Infrastructures.Implementations.Base;
 using PagedList;
 using System.Net;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 
 namespace ParkingLotWebApp.Controllers
 {
+    [HandleError(ExceptionType = typeof(DbEntityValidationException),
+        View = "DbEntityValidationException")]
     [Authorize]
     public class ManageController : Controller
     {
@@ -231,9 +234,24 @@ namespace ParkingLotWebApp.Controllers
 
         //
         // GET: /Manage/ChangePassword
-        public ActionResult ChangePassword()
+        public ActionResult ChangePassword(int? id)
         {
-            return View();
+            if (id != null && id.HasValue)
+            {
+                var finduser = UserManager.FindById(id.Value);
+
+                if (finduser == null)
+                    return HttpNotFound();
+
+                return View(new ChangePasswordViewModel()
+                {
+                    DisplayName = finduser.DisplayName,
+                    UserId = finduser.Id,
+                    OldPassword = string.Empty
+                });
+            }
+
+            return View(new ChangePasswordViewModel() { UserId = User.Identity.GetUserId<int>(), DisplayName = User.Identity.Name });
         }
 
         //
@@ -246,7 +264,8 @@ namespace ParkingLotWebApp.Controllers
             {
                 return View(model);
             }
-            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId<int>(), model.OldPassword, model.NewPassword);
+
+            var result = await UserManager.ChangePasswordAsync(model.UserId, model.OldPassword, model.NewPassword);
             if (result.Succeeded)
             {
                 var user = await UserManager.FindByIdAsync(User.Identity.GetUserId<int>());
@@ -395,7 +414,7 @@ namespace ParkingLotWebApp.Controllers
 
         public async Task<ActionResult> UserProfileEdit(int id)
         {
-            ViewBag.RoleId = new SelectList(RoleManager.Roles.Where(w => w.Void == false), "Id", "Name");
+            
             ApplicationUser user = await UserManager.FindByIdAsync(id);
             UserProfileViewModel viewmodel = new UserProfileViewModel();
             viewmodel.Id = user.Id;
@@ -423,8 +442,12 @@ namespace ParkingLotWebApp.Controllers
             viewmodel.UserName = user.UserName;
             viewmodel.Void = user.Void;
 
-            var role = (viewmodel.ApplicationRole ?? null);
-            viewmodel.RoleId = (role != null) ? (role.FirstOrDefault() ?? new ApplicationRole() { Id = 0 }).Id : 0;
+            var role = (user.ApplicationRole ?? null);
+            int roleid = (role != null) ? (role.FirstOrDefault() ?? new ApplicationRole() { Id = 0 }).Id : 0;
+            var options = RoleManager.Roles.Where(w => w.Void == false).ToList();
+            //options.Insert(0, new ApplicationRole() { Id = 0, Name = "請選擇" });
+            viewmodel.RoleId = roleid;
+            ViewBag.Role = new SelectList(options, "Id", "Name", roleid);
             return View(viewmodel);
         }
 
@@ -482,19 +505,28 @@ namespace ParkingLotWebApp.Controllers
                 //    UserManager.AddToRole(dbuser.Id, RoleManager.FindById(user.RoleId).Name);
                 //    //dbuser.ApplicationUserRole.Add(new ApplicationUserRole() { RoleId = user.RoleId, UserId = user.Id, Void = false });                    
                 //}
+                              
+                var dbrole = dbuser.ApplicationRole.FirstOrDefault();
 
+                if (dbrole != null)
+                {
+                    if(dbrole.Id != user.RoleId)
+                    {
+                        UserManager.RemoveFromRoles(dbuser.Id, dbuser.ApplicationRole.Select(s => s.Name).ToArray());
+                        UserManager.AddToRole(dbuser.Id, RoleManager.FindById(user.RoleId).Name);
+                    }
+                }
 
                 IdentityResult result = UserManager.Update(dbuser);
 
                 if (result.Succeeded)
                 {
-
                     return RedirectToAction("AllUsers");
                 }
             }
-            List<SelectListItem> options = RoleManager.Roles.Where(w => w.Void == false).ToList().ConvertAll(c => new SelectListItem() { Text = c.Name, Value = c.Id.ToString() });
-            options.Insert(0, new SelectListItem() { Text = "請選擇", Value = "0" });
-            ViewBag.RoleId = new SelectList(options, "Id", "Name", user.ApplicationRole.First().Id);
+            var options = RoleManager.Roles.Where(w => w.Void == false).ToList();
+            //options.Insert(0, new ApplicationRole() { Id = 0, Name = "請選擇" });
+            ViewBag.RoleId = new SelectList(options, "Id", "Name", user.RoleId);
             return View(user);
         }
 

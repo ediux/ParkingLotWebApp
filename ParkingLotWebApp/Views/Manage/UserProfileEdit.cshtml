@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = string.Format(Common.ProfileEdit, Model.DisplayName);
+    //var DDL = new SelectList(ViewBag.RoleId as System.Collections.IEnumerable, "Value", "Text", Model.RoleId);
 }
 
 <h2>@ViewBag.Title</h2>
@@ -27,8 +28,9 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                [
+                @Html.ActionLink("變更密碼", "ChangePassword", new { id = Model.Id })
+                ]
             </div>
         </div>
         @Html.HiddenFor(model => model.PasswordHash)
@@ -62,10 +64,10 @@
         <div class="form-group">
             @Html.LabelFor(model => model.RoleId, MUI.RoleName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.RoleId,new SelectList(ViewBag.RoleId as System.Collections.IEnumerable,"Value","Text") , new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.RoleId, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model=>model.RoleId, (SelectList)ViewBag.Role,"請選擇..." , new { @class = "form-control" })
             </div>
         </div>
+        @Model.RoleId
         @Html.HiddenFor(model => model.CreateUserId)
         @Html.HiddenFor(model => model.CreateTime)
         @Html.HiddenFor(model => model.LastUpdateUserId)
