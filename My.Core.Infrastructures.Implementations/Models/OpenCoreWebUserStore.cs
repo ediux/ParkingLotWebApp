@@ -27,79 +27,55 @@ namespace My.Core.Infrastructures.Implementations.Models
         private bool disposed = false;
         SafeHandle handle = new SafeFileHandle(IntPtr.Zero, true);
 
-        IApplicationUserRoleRepository userrolerepo;
+        private IApplicationUserRepository userRepo;
+        private IApplicationRoleRepository roleRepo;
+        private IApplicationUserLoginRepository userloginRepo;
 
+        private const string DefaultAdminsRoleName = "Admins";
+        private const string DefaultUserRoleName = "Users";
 
         public OpenCoreWebUserStore(DbContext context)
         {
-            userrolerepo = RepositoryHelper.GetApplicationUserRoleRepository();
-            userrolerepo.UnitOfWork.Context = context;
-            userrolerepo.UnitOfWork.ConnectionString = context.Database.Connection.ConnectionString;
+            userRepo = RepositoryHelper.GetApplicationUserRepository();
+            roleRepo = RepositoryHelper.GetApplicationRoleRepository(userRepo.UnitOfWork);
+            userloginRepo = RepositoryHelper.GetApplicationUserLoginRepository(userRepo.UnitOfWork);
         }
 
         #region 使用者
         public async Task CreateAsync(ApplicationUser user)
         {
-            user = userrolerepo.ApplicationUserRepository.Add(user);
+            user = userRepo.Add(user);
+            var role = roleRepo.FindByName("Users");
 
-            if (Roles.SingleOrDefault(s => s.Name == "Users") != null)
+            if (role != null)
             {
-                await AddToRoleAsync(user, "Users");
-                throw new Exception("Users Role is not existed.");
-            }          
-            await userrolerepo.UnitOfWork.CommitAsync();
+                user.ApplicationRole.Add(role);
+                //throw new Exception("Users Role is not existed.");
+            }
+            await userRepo.UnitOfWork.CommitAsync();
         }
 
         public async Task DeleteAsync(ApplicationUser user)
         {
             user.Void = true;
-            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
-            await userrolerepo.UnitOfWork.CommitAsync();
+            await UpdateAsync(user);
         }
 
         public async Task<ApplicationUser> FindByIdAsync(int userId)
         {
-            return await userrolerepo.ApplicationUserRepository.FindUserByIdAsync(userId, false);
+            return await userRepo.FindUserByIdAsync(userId, false);
         }
 
         public async Task<ApplicationUser> FindByNameAsync(string userName)
         {
-            return await userrolerepo.ApplicationUserRepository.FindUserByLoginAccountAsync(userName, false);
+            return await userRepo.FindUserByLoginAccountAsync(userName, false);
         }
 
         public async Task UpdateAsync(ApplicationUser user)
         {
-            var oriuser = userrolerepo.ApplicationUserRepository.Get(user.Id);
-            var pwdhasher = new PasswordHasher();
-
-            if (!string.IsNullOrEmpty(user.Password) || oriuser.PasswordHash != user.PasswordHash)
-            {
-                user.PasswordHash = pwdhasher.HashPassword(user.Password ?? "");
-
-                if (oriuser.PasswordHash != user.PasswordHash)
-                {
-                    oriuser.Password = string.Empty;
-                    oriuser.PasswordHash = user.PasswordHash;
-
-                }
-            }
-
-
-            oriuser.UserName = user.UserName;
-            oriuser.DisplayName = user.DisplayName;
-            oriuser.Address = user.Address;
-            oriuser.EMail = user.EMail;
-            oriuser.EMailConfirmed = false;
-            oriuser.LastUpdateTime = DateTime.UtcNow;
-            
-            if (user.TwoFactorEnabled)
-            {
-                oriuser.PhoneNumber = user.PhoneNumber;
-                oriuser.PhoneConfirmed = false;
-            }
-
-            userrolerepo.UnitOfWork.Context.Entry(oriuser).State = EntityState.Modified;
-            await userrolerepo.UnitOfWork.CommitAsync();
+            user.LastActivityTime = DateTime.UtcNow;
+            user = userRepo.Update(user);
+            await userRepo.UnitOfWork.CommitAsync();
         }
 
         public void Dispose()
@@ -130,244 +106,289 @@ namespace My.Core.Infrastructures.Implementations.Models
         #region User Role Store
         public async Task AddToRoleAsync(ApplicationUser user, string roleName)
         {
-            int roleid = userrolerepo.ApplicationRoleRepository.FindByName(roleName).Id;
-            userrolerepo.Add(new ApplicationUserRole() { UserId = user.Id, RoleId = roleid, Void = false });
-            await userrolerepo.UnitOfWork.CommitAsync();
+            if (user == null)
+            {
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+            ApplicationRole role = roleRepo.FindByName(roleName);
+            if (role == null)
+            {
+                throw new ArgumentException(string.Format("Role '{0}' does not exist!", roleName), "roleName");
+            }
+            user.ApplicationRole.Add(role);
+            await UpdateAsync(role);
         }
 
         public Task<System.Collections.Generic.IList<string>> GetRolesAsync(ApplicationUser user)
         {
-            return Task<System.Collections.Generic.IList<string>>.Run(() =>
+            if (user == null)
             {
-                var roles = from q in user.ApplicationUserRole
-                            select q.ApplicationRole.Name;
+                throw new NullReferenceException("The variable user can not be null!");
+            }
 
-                return (System.Collections.Generic.IList<string>)roles.ToList();
+            return Task.Run(() =>
+            {
+                var roles = from q in user.ApplicationRole
+                            select q.Name;
+
+                return roles.ToList() as System.Collections.Generic.IList<string>;
             });
         }
 
         public Task<bool> IsInRoleAsync(ApplicationUser user, string roleName)
         {
-            return Task<bool>.Run(() =>
+            if (user == null)
             {
-                var userinroles = from q in user.ApplicationUserRole
-                                  where q.ApplicationRole.Name.Equals(roleName, StringComparison.InvariantCultureIgnoreCase)
-                                  select q;
-                return userinroles.Any();
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+
+            return Task.Run(() =>
+            {
+                return user.ApplicationRole.Any(p => p.Name.Equals(roleName, StringComparison.InvariantCultureIgnoreCase));
             });
         }
 
         public async Task RemoveFromRoleAsync(ApplicationUser user, string roleName)
         {
-            var role = userrolerepo.ApplicationRoleRepository.FindByName(roleName);
+            if (user == null)
+            {
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+
+            var role = user.ApplicationRole.SingleOrDefault(p => p.Name == roleName);
 
             if (role == null)
             {
-                throw new ArgumentException(string.Format("Role {0} not existed.", roleName), "roleName");
+                throw new ArgumentException(string.Format("User '{0}' does not exist in role '{1}'!", user.UserName, roleName), "roleName");
             }
 
-            if (user == null)
-                throw new ArgumentNullException("user");
-
-            var r = userrolerepo.Get(user.Id, role.Id);
-            userrolerepo.Delete(r);
-            await userrolerepo.UnitOfWork.CommitAsync();
+            user.ApplicationRole.Remove(role);
+            await UpdateAsync(user);
         }
         #endregion
 
         #region EMail Stroe
         public async Task<ApplicationUser> FindByEmailAsync(string email)
         {
-            var findemail = await userrolerepo
-                .ApplicationUserRepository
+            var findemail = await userRepo
                 .FindByEmailAsync(email);
             return findemail;
         }
 
         public Task<string> GetEmailAsync(ApplicationUser user)
         {
-            return Task.Run(() =>
+            if (user == null)
             {
-                try
-                {
-                    return user.EMail;
-                }
-                catch (Exception)
-                {
-                    return string.Empty;
-                }
+                throw new NullReferenceException("The variable user can not be null!");
+            }
 
-            });
+            return Task.FromResult(user.EMail);
         }
 
         public Task<bool> GetEmailConfirmedAsync(ApplicationUser user)
         {
-            return Task<bool>.Run(() =>
+            if (user == null)
             {
-                return user.EMailConfirmed;
-            });
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+
+            return Task.FromResult(user.EMailConfirmed);
         }
 
-        public Task SetEmailAsync(ApplicationUser user, string email)
+        public async Task SetEmailAsync(ApplicationUser user, string email)
         {
-            //userrolerepo.ApplicationUserRepository.ApplicationUserProfileRefRepository.UserProfileRepository.
-            return Task.Run(() =>
+            if (user == null)
             {
-                user.EMail = email;
-                user.LastUpdateTime = DateTime.Now.ToUniversalTime();
-                userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
-                userrolerepo.UnitOfWork.Commit();
-            });
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+
+            user.EMail = email;
+            await SetEmailConfirmedAsync(user, true);
         }
 
-        public Task SetEmailConfirmedAsync(ApplicationUser user, bool confirmed)
+        public async Task SetEmailConfirmedAsync(ApplicationUser user, bool confirmed)
         {
-            return Task.Run(() =>
+            if (user == null)
             {
+                throw new NullReferenceException("The variable user can not be null!");
+            }
 
-                user.EMailConfirmed = confirmed;
-                user.LastUpdateTime = DateTime.Now.ToUniversalTime();
-                userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
-                userrolerepo.UnitOfWork.Commit();
-            });
+            user.EMailConfirmed = confirmed;
+            user.LastUpdateTime = DateTime.Now.ToUniversalTime();
+            await UpdateAsync(user);
         }
         #endregion
 
         #region Lockout Store
         public Task<int> GetAccessFailedCountAsync(ApplicationUser user)
         {
-            return Task<int>.Run(() =>
-            {
-                return user.AccessFailedCount;
-            });
+            return Task.FromResult(user.AccessFailedCount);
         }
 
         public Task<bool> GetLockoutEnabledAsync(ApplicationUser user)
         {
-            return Task<bool>.Run(() =>
+            if (user == null)
             {
-                return user.LockoutEnabled.HasValue ? user.LockoutEnabled.Value : false;
-            });
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+
+            return Task.FromResult(user.LockoutEnabled ?? false);
         }
 
         public Task<System.DateTimeOffset> GetLockoutEndDateAsync(ApplicationUser user)
         {
-            return Task<System.DateTimeOffset>.Run(() =>
+            if (user == null)
             {
-                return user.LockoutEndDate.HasValue ? user.LockoutEndDate.Value : new System.DateTimeOffset(new DateTime(1754, 1, 1).ToUniversalTime());
-            });
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+            return Task.FromResult(user.LockoutEndDate ?? new System.DateTimeOffset(new DateTime(1754, 1, 1, 0, 0, 0, DateTimeKind.Utc)));
         }
 
-        public Task<int> IncrementAccessFailedCountAsync(ApplicationUser user)
+        public async Task<int> IncrementAccessFailedCountAsync(ApplicationUser user)
         {
-            return Task<int>.Run(() =>
+            if (user == null)
             {
-                user.AccessFailedCount += 1;
-                user.LastActivityTime = DateTime.Now;
-                userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
-                userrolerepo.UnitOfWork.Commit();
-                user = userrolerepo.ApplicationUserRepository.Reload(user);
+                throw new NullReferenceException("The variable user can not be null!");
+            }
 
-                return user.AccessFailedCount;
-            });
+            user.AccessFailedCount += 1;
+            await UpdateAsync(user);
+            user = userRepo.Reload(user);
+
+            return user.AccessFailedCount;
+
         }
 
-        public Task ResetAccessFailedCountAsync(ApplicationUser user)
+        public async Task ResetAccessFailedCountAsync(ApplicationUser user)
         {
-            return Task.Run(() =>
+            if (user == null)
             {
-                user.AccessFailedCount = 0;
-                user.LastActivityTime = DateTime.Now;
+                throw new NullReferenceException("The variable user can not be null!");
+            }
 
-                user.LockoutEnabled = false;
-                user.LockoutEndDate = DateTime.Now;
-                userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
-                userrolerepo.UnitOfWork.Commit();
-            });
+            user.AccessFailedCount = 0;
+            user.LastActivityTime = DateTime.Now;
+
+            user.LockoutEnabled = false;
+            user.LockoutEndDate = DateTime.Now;
+            await UpdateAsync(user);
+
         }
 
-        public Task SetLockoutEnabledAsync(ApplicationUser user, bool enabled)
+        public async Task SetLockoutEnabledAsync(ApplicationUser user, bool enabled)
         {
-            return Task.Run(() =>
+            if (user == null)
             {
-                user.AccessFailedCount = 0;
-                user.LastActivityTime = DateTime.Now;
-                user.LastUpdateUserId = user.Id;
-                user.LockoutEnabled = enabled;
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+            user.AccessFailedCount = 0;
+            user.LastActivityTime = DateTime.Now;
+            user.LastUpdateUserId = user.Id;
+            user.LockoutEnabled = enabled;
 
-                userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
-                userrolerepo.UnitOfWork.Commit();
-            });
+            await UpdateAsync(user);
+
         }
 
-        public Task SetLockoutEndDateAsync(ApplicationUser user, System.DateTimeOffset lockoutEnd)
+        public async Task SetLockoutEndDateAsync(ApplicationUser user, System.DateTimeOffset lockoutEnd)
         {
-            return Task.Run(() =>
+            if (user == null)
             {
-                user.AccessFailedCount = 0;
-                user.LastActivityTime = DateTime.Now;
+                throw new NullReferenceException("The variable user can not be null!");
+            }
 
-                user.LockoutEndDate = new DateTime(lockoutEnd.Ticks);
-                userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
-                userrolerepo.UnitOfWork.Commit();
-            });
+            user.AccessFailedCount = 0;
+            user.LastActivityTime = DateTime.Now;
+
+            user.LockoutEndDate = new DateTime(lockoutEnd.Ticks);
+
+            await UpdateAsync(user);
+
         }
         #endregion
 
         #region Login Store
-        public Task AddLoginAsync(ApplicationUser user, UserLoginInfo login)
+        public async Task AddLoginAsync(ApplicationUser user, UserLoginInfo login)
         {
-            return Task.Run(() =>
+            if (user == null)
             {
-                user.ApplicationUserLogin.Add(new ApplicationUserLogin()
-                {
-                    LoginProvider = login.LoginProvider,
-                    ProviderKey = login.ProviderKey,
-                    UserId = user.Id
-                });
+                throw new NullReferenceException("The variable user can not be null!");
+            }
 
-                userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
-                userrolerepo.UnitOfWork.Commit();
+            if (login == null)
+            {
+                throw new NullReferenceException("The variable login can not be null!");
+            }
+            user.ApplicationUserLogin.Add(new ApplicationUserLogin()
+            {
+                LoginProvider = login.LoginProvider,
+                ProviderKey = login.ProviderKey,
+                UserId = user.Id
             });
+
+            await UpdateAsync(user);
         }
 
         public Task<ApplicationUser> FindAsync(UserLoginInfo login)
         {
-            return Task<ApplicationUser>.Run(() =>
+            if (login == null)
             {
-                var founduser = from q in userrolerepo.ApplicationUserRepository.All()
-                                from l in q.ApplicationUserLogin
-                                where l.LoginProvider == login.LoginProvider
-                                && l.ProviderKey == login.ProviderKey
-                                select q;
+                throw new NullReferenceException("The variable login can not be null!");
+            }
 
-                return founduser.SingleOrDefault();
-            });
+            ApplicationUserLogin founduserlogin = userloginRepo.Get(login.LoginProvider, login.ProviderKey);
+
+            if (founduserlogin == null)
+            {
+                throw new Exception(string.Format("Can not find user for external sign-in provider '{0}'!", login.LoginProvider));
+            }
+
+            return Task.FromResult(founduserlogin.ApplicationUser);
         }
 
         public Task<System.Collections.Generic.IList<UserLoginInfo>> GetLoginsAsync(ApplicationUser user)
         {
-            return Task<System.Collections.Generic.IList<UserLoginInfo>>.Run(() =>
+            if (user == null)
             {
-                var founduser = from q in userrolerepo.ApplicationUserRepository.All()
-                                from l in q.ApplicationUserLogin
-                                select l;
+                throw new NullReferenceException("The variable user can not be null!");
+            }
 
-                return (System.Collections.Generic.IList<UserLoginInfo>)(founduser.ToList()
-                    .ConvertAll(c => new UserLoginInfo(c.LoginProvider, c.ProviderKey)));
-            });
+
+            return Task.FromResult(user.ApplicationUserLogin
+                .ToList()
+                .ConvertAll(c=>new UserLoginInfo(c.LoginProvider,c.ProviderKey))
+                as System.Collections.Generic.IList<UserLoginInfo>);
+
         }
 
         public async Task RemoveLoginAsync(ApplicationUser user, UserLoginInfo login)
         {
-            var foundlogininfo = (from q in user.ApplicationUserLogin
-                                  where q.LoginProvider == login.LoginProvider
-                                  && q.ProviderKey == login.ProviderKey
-                                  select q).Single();
+            if (user == null)
+            {
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+
+            if (login == null)
+            {
+                throw new NullReferenceException("The variable login can not be null!");
+            }
+
+
+            var foundlogininfo = user.ApplicationUserLogin.SingleOrDefault(q =>
+                     q.LoginProvider == login.LoginProvider
+                                  && q.ProviderKey == login.ProviderKey);
+
+            if (foundlogininfo == null)
+            {
+                throw new Exception(string.Format("Can not remove user '{0}' from external sign-in provider '{1}'!",
+                    user.UserName,
+                    login.LoginProvider
+                    ));
+            }
 
             user.ApplicationUserLogin.Remove(foundlogininfo);
-            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
-            await userrolerepo.UnitOfWork.CommitAsync();
+
+            await UpdateAsync(user);
 
         }
         #endregion
@@ -375,30 +396,38 @@ namespace My.Core.Infrastructures.Implementations.Models
         #region Password Store
         public Task<string> GetPasswordHashAsync(ApplicationUser user)
         {
-            return Task<string>.Run(() =>
+            if (user == null)
             {
-                return user.PasswordHash;
-            });
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+
+            return Task.FromResult(user.PasswordHash);
         }
 
         public Task<bool> HasPasswordAsync(ApplicationUser user)
         {
-            return Task<bool>.Run(() =>
+            if (user == null)
             {
-                if (!string.IsNullOrEmpty(user.Password))
-                    return true;
-                if (!string.IsNullOrEmpty(user.PasswordHash))
-                    return true;
-                return false;
-            });
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+
+            if (!string.IsNullOrEmpty(user.Password))
+                return Task.FromResult(true);
+            if (!string.IsNullOrEmpty(user.PasswordHash))
+                return Task.FromResult(true);
+            return Task.FromResult(false);
         }
 
         public async Task SetPasswordHashAsync(ApplicationUser user, string passwordHash)
         {
+            if (user == null)
+            {
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+
             user.PasswordHash = passwordHash;
             user.LastActivityTime = user.LastUpdateTime = DateTime.Now.ToUniversalTime();
-            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
-            await userrolerepo.UnitOfWork.CommitAsync();
+            await UpdateAsync(user);
 
         }
         #endregion
@@ -406,22 +435,32 @@ namespace My.Core.Infrastructures.Implementations.Models
         #region Phone Number Store
         public Task<string> GetPhoneNumberAsync(ApplicationUser user)
         {
-            return Task.Run(() =>
+            if (user == null)
             {
-                return user.PhoneNumber;
-            });
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+
+            return Task.FromResult(user.PhoneNumber);
         }
 
         public Task<bool> GetPhoneNumberConfirmedAsync(ApplicationUser user)
         {
-            return Task<bool>.Run(() =>
+            if (user == null)
             {
-                return user.PhoneConfirmed;
-            });
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+
+            return Task.FromResult(user.PhoneConfirmed);
+
         }
 
         public async Task SetPhoneNumberAsync(ApplicationUser user, string phoneNumber)
         {
+            if (user == null)
+            {
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+
             var profile = user;
 
             profile.PhoneNumber = phoneNumber;
@@ -430,19 +469,22 @@ namespace My.Core.Infrastructures.Implementations.Models
             if (GetTwoFactorEnabledAsync(user).Result)
                 profile.PhoneConfirmed = false;
 
-            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
-            await userrolerepo.UnitOfWork.CommitAsync();
+            await UpdateAsync(user);
 
         }
 
         public async Task SetPhoneNumberConfirmedAsync(ApplicationUser user, bool confirmed)
         {
+            if (user == null)
+            {
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+
             var profile = user;
 
             profile.PhoneConfirmed = confirmed;
 
-            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
-            await userrolerepo.UnitOfWork.CommitAsync();
+            await UpdateAsync(user);
 
 
         }
@@ -451,89 +493,127 @@ namespace My.Core.Infrastructures.Implementations.Models
         #region Security Stamp Store
         public Task<string> GetSecurityStampAsync(ApplicationUser user)
         {
-            return Task.Run(() =>
+            if (user == null)
             {
-                return user.SecurityStamp;
-            });
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+
+            return Task.FromResult(user.SecurityStamp);
         }
 
         public async Task SetSecurityStampAsync(ApplicationUser user, string stamp)
         {
+            if (user == null)
+            {
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+
             user.SecurityStamp = stamp;
-            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
-            await userrolerepo.UnitOfWork.CommitAsync();
+            await UpdateAsync(user);
         }
         #endregion
 
         #region TwoFactor
         public Task<bool> GetTwoFactorEnabledAsync(ApplicationUser user)
         {
-            return Task<bool>.Run(() =>
+            if (user == null)
             {
-                return user.TwoFactorEnabled;
-            });
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+
+            return Task.FromResult(user.TwoFactorEnabled);
         }
 
         public async Task SetTwoFactorEnabledAsync(ApplicationUser user, bool enabled)
         {
+            if (user == null)
+            {
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+
             user.TwoFactorEnabled = enabled;
-            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
-            await userrolerepo.UnitOfWork.CommitAsync();
+            await UpdateAsync(user);
         }
         #endregion
 
         #region Role Store
         public async Task CreateAsync(ApplicationRole role)
         {
-            userrolerepo.ApplicationRoleRepository.Add(role);
-            await userrolerepo.UnitOfWork.CommitAsync();
+            if (role == null)
+            {
+                throw new NullReferenceException("The variable role can not be null!");
+            }
+
+            roleRepo.Add(role);
+            await UpdateAsync(role);
         }
 
         public async Task DeleteAsync(ApplicationRole role)
         {
+            if (role == null)
+            {
+                throw new NullReferenceException("The variable role can not be null!");
+            }
+
             role.Void = true;
+            roleRepo.UnitOfWork.Context.Entry(role).State = EntityState.Modified;
             await UpdateAsync(role);
         }
 
         Task<ApplicationRole> IRoleStore<ApplicationRole, int>.FindByIdAsync(int roleId)
         {
-            return Task<ApplicationRole>.Run(() =>
+            return Task.Run(() =>
             {
-                return userrolerepo.ApplicationRoleRepository.FindById(roleId);
+                return roleRepo.FindById(roleId);
             });
         }
 
         Task<ApplicationRole> IRoleStore<ApplicationRole, int>.FindByNameAsync(string roleName)
         {
-            return Task<ApplicationRole>.Run(() =>
+            return Task.Run(() =>
             {
-                return userrolerepo.ApplicationRoleRepository.FindByName(roleName);
+                return roleRepo.FindByName(roleName);
             });
         }
 
         public async Task UpdateAsync(ApplicationRole role)
         {
-            userrolerepo.UnitOfWork.Context.Entry(role).State = EntityState.Modified;
-            await userrolerepo.UnitOfWork.CommitAsync();
+            if (role == null)
+            {
+                throw new NullReferenceException("The variable role can not be null!");
+            }
+
+            roleRepo.UnitOfWork.Context.Entry(role).State = EntityState.Modified;
+            await roleRepo.UnitOfWork.CommitAsync();
         }
         #endregion
 
         #region 可用來查詢的使用者清單屬性
         public System.Linq.IQueryable<ApplicationUser> Users
         {
-            get { return userrolerepo.ApplicationUserRepository.All(); }
+            get { return userRepo.All(); }
         }
         #endregion
 
         #region 可用來查詢的角色清單
         public System.Linq.IQueryable<ApplicationRole> Roles
         {
-            get { return userrolerepo.ApplicationRoleRepository.All(); }
+            get { return roleRepo.All(); }
         }
         #endregion
 
         public async Task AddClaimAsync(ApplicationUser user, Claim claim)
         {
+            if (user == null)
+            {
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+
+            if (claim == null)
+            {
+                throw new NullReferenceException("The variable claim can not be null!");
+            }
+
             user.ApplicationUserClaim.Add(new ApplicationUserClaim()
             {
                 ClaimType = claim.ValueType,
@@ -541,24 +621,44 @@ namespace My.Core.Infrastructures.Implementations.Models
                 UserId = user.Id
             });
 
-            userrolerepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
-            await userrolerepo.UnitOfWork.CommitAsync();
+            userRepo.UnitOfWork.Context.Entry(user).State = EntityState.Modified;
+            await userRepo.UnitOfWork.CommitAsync();
         }
 
         public Task<System.Collections.Generic.IList<Claim>> GetClaimsAsync(ApplicationUser user)
         {
-            return Task<System.Collections.Generic.IList<Claim>>.Run(() =>
+            if (user == null)
+            {
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+
+            return Task.Run(() =>
             {
                 return user.ApplicationUserClaim.ToList().ConvertAll<Claim>(c => new Claim(c.ClaimType, c.ClaimValue)) as System.Collections.Generic.IList<Claim>;
             });
         }
 
-        public Task RemoveClaimAsync(ApplicationUser user, Claim claim)
+        public async Task RemoveClaimAsync(ApplicationUser user, Claim claim)
         {
-            return Task.Run(() =>
+            if (user == null)
             {
+                throw new NullReferenceException("The variable user can not be null!");
+            }
+            if (claim == null)
+            {
+                throw new NullReferenceException("The variable claim can not be null!");
+            }
 
-            });
+            ApplicationUserClaim userclaim = user.ApplicationUserClaim.SingleOrDefault(s => s.ClaimType == claim.ValueType
+              && s.ClaimValue == claim.Value);
+
+            if (userclaim == null)
+            {
+                throw new Exception(string.Format("ClaimType '{0}' not found.", claim.ValueType));
+            }
+
+            user.ApplicationUserClaim.Remove(userclaim);
+            await UpdateAsync(user);
         }
     }
 }

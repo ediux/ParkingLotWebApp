@@ -29,7 +29,6 @@
           <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
           <Property Name="Void" Type="bit" Nullable="false" />
           <Property Name="DisplayName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Address" Type="nvarchar(max)" />
           <Property Name="EMail" Type="nvarchar" MaxLength="512" />
           <Property Name="EMailConfirmed" Type="bit" Nullable="false" />
           <Property Name="PhoneNumber" Type="nvarchar" MaxLength="10" />
@@ -71,7 +70,6 @@
           </Key>
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="RoleId" Type="int" Nullable="false" />
-          <Property Name="Void" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_ApplicationUserClaim_ToApplicationUser">
           <End Role="ApplicationUser" Type="Self.ApplicationUser" Multiplicity="1" />
@@ -148,26 +146,10 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="OpenWebSiteModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="ApplicationUserRole">
-          <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="RoleId" />
-          </Key>
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="RoleId" Type="Int32" Nullable="false" />
-          <Property Name="Void" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ApplicationRole" Relationship="OpenWebSiteModel.FK_ApplicationUserRole_ToApplicationRole" FromRole="ApplicationUserRole" ToRole="ApplicationRole" />
-          <NavigationProperty Name="ApplicationUser" Relationship="OpenWebSiteModel.FK_ApplicationUserRole_ToApplicationUser" FromRole="ApplicationUserRole" ToRole="ApplicationUser" />
-        </EntityType>
         <EntityContainer Name="OpenWebSiteEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="ApplicationUserRole" EntityType="Self.ApplicationUserRole" />
           <EntitySet Name="ApplicationUserLogin" EntityType="OpenWebSiteModel.ApplicationUserLogin" />
           <EntitySet Name="ApplicationUserClaim" EntityType="OpenWebSiteModel.ApplicationUserClaim" />
           <EntitySet Name="ApplicationRole" EntityType="OpenWebSiteModel.ApplicationRole" />
-          <AssociationSet Name="FK_ApplicationUserRole_ToApplicationRole" Association="OpenWebSiteModel.FK_ApplicationUserRole_ToApplicationRole">
-            <End Role="ApplicationRole" EntitySet="ApplicationRole" />
-            <End Role="ApplicationUserRole" EntitySet="ApplicationUserRole" />
-          </AssociationSet>
           <EntitySet Name="ApplicationUser" EntityType="OpenWebSiteModel.ApplicationUser" />
           <AssociationSet Name="FK_ApplicationUserClaim_ToApplicationUser" Association="OpenWebSiteModel.FK_ApplicationUserClaim_ToApplicationUser">
             <End Role="ApplicationUser" EntitySet="ApplicationUser" />
@@ -177,9 +159,9 @@
             <End Role="ApplicationUser" EntitySet="ApplicationUser" />
             <End Role="ApplicationUserLogin" EntitySet="ApplicationUserLogin" />
           </AssociationSet>
-          <AssociationSet Name="FK_ApplicationUserRole_ToApplicationUser" Association="OpenWebSiteModel.FK_ApplicationUserRole_ToApplicationUser">
+          <AssociationSet Name="ApplicationUserRole" Association="OpenWebSiteModel.ApplicationUserRole">
+            <End Role="ApplicationRole" EntitySet="ApplicationRole" />
             <End Role="ApplicationUser" EntitySet="ApplicationUser" />
-            <End Role="ApplicationUserRole" EntitySet="ApplicationUserRole" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="ApplicationUserLogin">
@@ -213,20 +195,8 @@
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="LastUpdateUserId" Type="Int32" Nullable="false" />
           <Property Name="LastUpdateTime" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="ApplicationUserRole" Relationship="OpenWebSiteModel.FK_ApplicationUserRole_ToApplicationRole" FromRole="ApplicationRole" ToRole="ApplicationUserRole" />
+          <NavigationProperty Name="ApplicationUser" Relationship="OpenWebSiteModel.ApplicationUserRole" FromRole="ApplicationRole" ToRole="ApplicationUser" />
         </EntityType>
-        <Association Name="FK_ApplicationUserRole_ToApplicationRole">
-          <End Type="OpenWebSiteModel.ApplicationRole" Role="ApplicationRole" Multiplicity="1" />
-          <End Type="OpenWebSiteModel.ApplicationUserRole" Role="ApplicationUserRole" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ApplicationRole">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ApplicationUserRole">
-              <PropertyRef Name="RoleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="ApplicationUser">
           <Key>
             <PropertyRef Name="Id" />
@@ -239,7 +209,6 @@
           <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
           <Property Name="Void" Type="Boolean" Nullable="false" />
           <Property Name="DisplayName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="EMail" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
           <Property Name="EMailConfirmed" Type="Boolean" Nullable="false" />
           <Property Name="PhoneNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
@@ -257,7 +226,7 @@
           <Property Name="ResetPasswordToken" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ApplicationUserClaim" Relationship="OpenWebSiteModel.FK_ApplicationUserClaim_ToApplicationUser" FromRole="ApplicationUser" ToRole="ApplicationUserClaim" />
           <NavigationProperty Name="ApplicationUserLogin" Relationship="OpenWebSiteModel.FK_ApplicationUserLogin_ToApplicationUser" FromRole="ApplicationUser" ToRole="ApplicationUserLogin" />
-          <NavigationProperty Name="ApplicationUserRole" Relationship="OpenWebSiteModel.FK_ApplicationUserRole_ToApplicationUser" FromRole="ApplicationUser" ToRole="ApplicationUserRole" />
+          <NavigationProperty Name="ApplicationRole" Relationship="OpenWebSiteModel.ApplicationUserRole" FromRole="ApplicationUser" ToRole="ApplicationRole" />
         </EntityType>
         <Association Name="FK_ApplicationUserClaim_ToApplicationUser">
           <End Type="OpenWebSiteModel.ApplicationUser" Role="ApplicationUser" Multiplicity="1" />
@@ -283,17 +252,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ApplicationUserRole_ToApplicationUser">
-          <End Type="OpenWebSiteModel.ApplicationUser" Role="ApplicationUser" Multiplicity="1" />
-          <End Type="OpenWebSiteModel.ApplicationUserRole" Role="ApplicationUserRole" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ApplicationUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ApplicationUserRole">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
+        <Association Name="ApplicationUserRole">
+          <End Type="OpenWebSiteModel.ApplicationRole" Role="ApplicationRole" Multiplicity="*" />
+          <End Type="OpenWebSiteModel.ApplicationUser" Role="ApplicationUser" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -301,15 +262,6 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="OpenWebSiteModelStoreContainer" CdmEntityContainer="OpenWebSiteEntities">
-          <EntitySetMapping Name="ApplicationUserRole">
-            <EntityTypeMapping TypeName="OpenWebSiteModel.ApplicationUserRole">
-              <MappingFragment StoreEntitySet="ApplicationUserRole">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
-                <ScalarProperty Name="Void" ColumnName="Void" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ApplicationUserLogin">
             <EntityTypeMapping TypeName="OpenWebSiteModel.ApplicationUserLogin">
               <MappingFragment StoreEntitySet="ApplicationUserLogin">
@@ -360,7 +312,6 @@
                 <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
                 <ScalarProperty Name="EMailConfirmed" ColumnName="EMailConfirmed" />
                 <ScalarProperty Name="EMail" ColumnName="EMail" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
                 <ScalarProperty Name="Void" ColumnName="Void" />
                 <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
@@ -372,6 +323,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="ApplicationUserRole" TypeName="OpenWebSiteModel.ApplicationUserRole" StoreEntitySet="ApplicationUserRole">
+            <EndProperty Name="ApplicationUser">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="ApplicationRole">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

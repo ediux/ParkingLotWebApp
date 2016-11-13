@@ -114,8 +114,8 @@ namespace ParkingLotWebApp.Controllers
         {
             ETAs eTAs = db.Get(id);
             eTAs.Void = true;
-            eTAs.LastUpdateUserId = User.Identity.GetUserId<int>();
-            eTAs.LastUpdateUTCTime = DateTime.UtcNow;
+            //eTAs.LastUpdateUserId = User.Identity.GetUserId<int>();
+            //eTAs.LastUpdateUTCTime = DateTime.UtcNow;
             db.UnitOfWork.Context.Entry(eTAs).State = EntityState.Modified;
             db.UnitOfWork.Commit();
             return RedirectToAction("Index");

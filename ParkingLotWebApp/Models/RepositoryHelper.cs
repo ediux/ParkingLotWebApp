@@ -84,6 +84,20 @@ namespace ParkingLotWebApp.Models
 			return repository;
 		}		
 
+		public static ParkingAreaRepository GetParkingAreaRepository()
+		{
+			var repository = new ParkingAreaRepository();
+			repository.UnitOfWork = GetWbParkSystemEntitiesUnitOfWork();
+			return repository;
+		}
+
+		public static ParkingAreaRepository GetParkingAreaRepository(IUnitOfWork unitOfWork)
+		{
+			var repository = new ParkingAreaRepository();
+			repository.UnitOfWork = unitOfWork;
+			return repository;
+		}		
+
 		public static ParkingLotsDetailRepository GetParkingLotsDetailRepository()
 		{
 			var repository = new ParkingLotsDetailRepository();
@@ -112,20 +126,6 @@ namespace ParkingLotWebApp.Models
 			return repository;
 		}		
 
-		public static ParkingLotsRecoed_HTRepository GetParkingLotsRecoed_HTRepository()
-		{
-			var repository = new ParkingLotsRecoed_HTRepository();
-			repository.UnitOfWork = GetWbParkSystemEntitiesUnitOfWork();
-			return repository;
-		}
-
-		public static ParkingLotsRecoed_HTRepository GetParkingLotsRecoed_HTRepository(IUnitOfWork unitOfWork)
-		{
-			var repository = new ParkingLotsRecoed_HTRepository();
-			repository.UnitOfWork = unitOfWork;
-			return repository;
-		}		
-
 		public static ParkingLotsRecordRepository GetParkingLotsRecordRepository()
 		{
 			var repository = new ParkingLotsRecordRepository();
@@ -136,6 +136,20 @@ namespace ParkingLotWebApp.Models
 		public static ParkingLotsRecordRepository GetParkingLotsRecordRepository(IUnitOfWork unitOfWork)
 		{
 			var repository = new ParkingLotsRecordRepository();
+			repository.UnitOfWork = unitOfWork;
+			return repository;
+		}		
+
+		public static ParkingLotsRecord_HTRepository GetParkingLotsRecord_HTRepository()
+		{
+			var repository = new ParkingLotsRecord_HTRepository();
+			repository.UnitOfWork = GetWbParkSystemEntitiesUnitOfWork();
+			return repository;
+		}
+
+		public static ParkingLotsRecord_HTRepository GetParkingLotsRecord_HTRepository(IUnitOfWork unitOfWork)
+		{
+			var repository = new ParkingLotsRecord_HTRepository();
 			repository.UnitOfWork = unitOfWork;
 			return repository;
 		}		

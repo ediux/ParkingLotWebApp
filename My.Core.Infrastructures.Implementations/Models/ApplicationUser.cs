@@ -19,7 +19,7 @@ namespace My.Core.Infrastructures.Implementations.Models
         {
             this.ApplicationUserClaim = new HashSet<ApplicationUserClaim>();
             this.ApplicationUserLogin = new HashSet<ApplicationUserLogin>();
-            this.ApplicationUserRole = new HashSet<ApplicationUserRole>();
+            this.ApplicationRole = new HashSet<ApplicationRole>();
         }
     
         public int Id { get; set; }
@@ -30,7 +30,6 @@ namespace My.Core.Infrastructures.Implementations.Models
         public bool TwoFactorEnabled { get; set; }
         public bool Void { get; set; }
         public string DisplayName { get; set; }
-        public string Address { get; set; }
         public string EMail { get; set; }
         public bool EMailConfirmed { get; set; }
         public string PhoneNumber { get; set; }
@@ -52,6 +51,6 @@ namespace My.Core.Infrastructures.Implementations.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ApplicationUserLogin> ApplicationUserLogin { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ApplicationUserRole> ApplicationUserRole { get; set; }
+        public virtual ICollection<ApplicationRole> ApplicationRole { get; set; }
     }
 }

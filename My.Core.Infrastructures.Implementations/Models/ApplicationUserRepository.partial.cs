@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace My.Core.Infrastructures.Implementations.Models
             {
                 await WriteUserOperationLogAsync(OperationCodeEnum.Account_ChangePassword_Start, currentLoginedUser);
 
-                UnitOfWork.Context.Entry<ApplicationUser>(UpdateUserData).State = System.Data.Entity.EntityState.Modified;
+                UnitOfWork.Context.Entry(UpdateUserData).State = System.Data.Entity.EntityState.Modified;
 
                 await UnitOfWork.CommitAsync();
 
@@ -449,6 +450,39 @@ namespace My.Core.Infrastructures.Implementations.Models
                 throw ex;
             }
         }
+
+        public ApplicationUser Update(ApplicationUser user)
+        {
+            var oriuser = Get(user.Id);
+            var pwdhasher = new PasswordHasher();
+
+            if (!string.IsNullOrEmpty(user.Password))
+            {
+                user.PasswordHash = pwdhasher.HashPassword(user.Password ?? "");
+
+                if (oriuser.PasswordHash != user.PasswordHash)
+                {
+                    oriuser.Password = string.Empty;
+                    oriuser.PasswordHash = user.PasswordHash;
+                }
+            }
+
+            oriuser.UserName = user.UserName;
+            oriuser.DisplayName = user.DisplayName;       
+            oriuser.EMail = user.EMail;
+            oriuser.EMailConfirmed = false;
+            oriuser.LastUpdateTime = DateTime.UtcNow;
+
+            if (user.TwoFactorEnabled)
+            {
+                oriuser.PhoneNumber = user.PhoneNumber;
+                oriuser.PhoneConfirmed = false;
+            }
+
+            UnitOfWork.Context.Entry(oriuser).State = EntityState.Modified;
+
+            return oriuser;
+        }
         #endregion
 
 
@@ -528,5 +562,7 @@ namespace My.Core.Infrastructures.Implementations.Models
         Task<ApplicationUser> FindByEmailAsync(string email);
 
         Task SetEmailAsync(ApplicationUser user, string email);
+
+        ApplicationUser Update(ApplicationUser user);
     }
 }

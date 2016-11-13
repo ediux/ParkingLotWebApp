@@ -147,16 +147,6 @@
       <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ApplicationUserRepository.partial.cs" />
-    <Compile Include="Models\ApplicationUserRole.cs">
-      <DependentUpon>ApplicationDbModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ApplicationUserRole.Partial.cs">
-      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ApplicationUserRoleRepository.cs">
-      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ApplicationUserRoleRepository.partial.cs" />
     <Compile Include="Models\Edward.IRepository.EF6.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
