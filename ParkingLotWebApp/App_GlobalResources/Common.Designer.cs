@@ -187,6 +187,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 刪除關聯 的當地語系化字串。
+        /// </summary>
+        public static string Delete_Relation {
+            get {
+                return ResourceManager.GetString("Delete_Relation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 您確定要刪除{0}? 的當地語系化字串。
         /// </summary>
         public static string DeleteConfirmMessage {
@@ -210,6 +219,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         public static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 編輯關聯 的當地語系化字串。
+        /// </summary>
+        public static string Edit_Relation {
+            get {
+                return ResourceManager.GetString("Edit_Relation", resourceCulture);
             }
         }
         
@@ -358,7 +376,7 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
-        ///   查詢類似 華邦eParking管理系統 的當地語系化字串。
+        ///   查詢類似 華邦eParking 的當地語系化字串。
         /// </summary>
         public static string WebSiteName {
             get {

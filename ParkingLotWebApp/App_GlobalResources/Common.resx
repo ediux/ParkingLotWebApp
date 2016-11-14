@@ -164,11 +164,17 @@
     <value>您確定要刪除{0}?</value>
     <comment>Are you sure you want to delete this?</comment>
   </data>
+  <data name="Delete_Relation" xml:space="preserve">
+    <value>刪除關聯</value>
+  </data>
   <data name="Details" xml:space="preserve">
     <value>詳細</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>編輯</value>
+  </data>
+  <data name="Edit_Relation" xml:space="preserve">
+    <value>編輯關聯</value>
   </data>
   <data name="HelloWorld" xml:space="preserve">
     <value>嗨, {0} !</value>
@@ -220,7 +226,7 @@
     <value>帳號清單</value>
   </data>
   <data name="WebSiteName" xml:space="preserve">
-    <value>華邦eParking管理系統</value>
+    <value>華邦eParking</value>
     <comment>網站名稱</comment>
   </data>
 </root>

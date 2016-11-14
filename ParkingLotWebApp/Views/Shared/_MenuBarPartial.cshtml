@@ -1,0 +1,36 @@
+﻿<div id="top-menu" class="top-menu">
+    <!-- begin top-menu nav -->
+    <ul class="nav">
+        <li>
+            <a href="@Url.Action("Index", "Home")">
+                <i class="fa fa-dashboard"></i>
+                <span>儀錶板</span>
+            </a>
+        </li>
+        @if (User.IsInRole("Admins"))
+        {
+            <li>
+                <a href="@Url.Action("Index", "Cars")">
+
+                    <i class="fa fa-laptop"></i>
+                    <span>@WebPages.ETAs_Cars_Binding</span>
+                </a>
+            </li>
+            <li>
+                <a href="@Url.Action( "ListRemainParkingGridAmounts", "ParkingLotsFloor")">
+
+                    <i class="fa fa-laptop"></i>
+                    <span>剩餘車位數量維護</span>
+                </a>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "News")">
+
+                    <i class="fa fa-laptop"></i>
+                    <span>公告維護</span>
+                </a>
+            </li>
+        }
+    </ul>
+    <!-- end top-menu nav -->
+</div>

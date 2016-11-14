@@ -1,67 +1,104 @@
 ﻿@model IEnumerable<ParkingLotWebApp.Models.ETAs>
 
 @{
-    ViewBag.Title = WebPages.Cars_Lists;
+    ViewBag.Title = WebPages.ETAs_Cars_BindingList;
+    bool IsAdmins = User.IsInRole("Admins");
+    bool IsRoot = (User.Identity != null) ? User.Identity.Name.Equals("root", StringComparison.InvariantCultureIgnoreCase) : false;
 }
 
-<h2>@ViewBag.Title</h2>
-<h4>@WebPages.Cars</h4>
-@if (User.Identity.IsAuthenticated && User.Identity.Name.Equals("root", StringComparison.InvariantCultureIgnoreCase))
-{
-    <p>
-        @Html.ActionLink(WebPages.Cars_Create_New, "Create")
-    </p>
+@section pageheader{
+    <h1 class="page-header">@WebPages.ETAs_Cars_Binding <small>@ViewBag.Title</small></h1>
+}
+@section breadcrumb{
+    <li class="active">@WebPages.ETAs_Cars_Binding</li>
 }
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Code)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Cars.CarNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Cars.CarPurposeTypes.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(x => x.Cars.Employee.Code)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreateUTCTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastUpdateUTCTime)
-        </th>
-        <th></th>
-    </tr>
+<!-- begin col-4 -->
+<div class="col-md-12">
+    <!-- begin panel -->
+    <div class="panel panel-inverse" data-sortable-id="form-slider-switcher-3">
+        <div class="panel-heading">
+            <div class="panel-heading-btn">
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a> 
+            </div>
+            <h4 class="panel-title">@WebPages.ETAs_Cars_BindingList</h4>
+        </div>
+        @if (User.Identity.IsAuthenticated && User.Identity.Name.Equals("root", StringComparison.InvariantCultureIgnoreCase))
+        {
+            <div class="panel-toolbar">
+                <div class="btn-group" role="group" aria-label="First group">
+                    <a href="@Url.Action("Create")" class="btn btn-white" title="@WebPages.Cars_Create_New"><i class="glyphicon glyphicon-plus"></i></a>
+                </div>        
+            </div>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => (item.Cars ?? new ParkingLotWebApp.Models.Cars() { CarNumber = "" }).CarNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => ((item.Cars ?? new ParkingLotWebApp.Models.Cars() { CarNumber = "" }).CarPurposeTypes ?? new ParkingLotWebApp.Models.CarPurposeTypes()).Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => ((item.Cars ?? new ParkingLotWebApp.Models.Cars() { CarNumber = "" }).Employee ?? new ParkingLotWebApp.Models.Employee() { }).Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreateUTCTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastUpdateUTCTime)
-            </td>
-            <td>
-                @Html.ActionLink(Common.Edit, "Edit", new { id = item.Id }) |
-                @Html.ActionLink(Common.Delete, "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
+        }
+        <div class="panel-body">
+            <table class="table table-hover">
+                <tr class="info">
+                    <th>
+                        @Html.DisplayNameFor(model => model.Code)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Cars.CarNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Cars.CarPurposeTypes.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(x => x.Cars.Employee.Code)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreateUTCTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LastUpdateUTCTime)
+                    </th>
+                    <th></th>
+                </tr>
 
-</table>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Code)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => (item.Cars ?? new ParkingLotWebApp.Models.Cars() { CarNumber = "" }).CarNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => ((item.Cars ?? new ParkingLotWebApp.Models.Cars() { CarNumber = "" }).CarPurposeTypes ?? new ParkingLotWebApp.Models.CarPurposeTypes()).Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => ((item.Cars ?? new ParkingLotWebApp.Models.Cars() { CarNumber = "" }).Employee ?? new ParkingLotWebApp.Models.Employee() { }).Code)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreateUTCTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastUpdateUTCTime)
+                        </td>
+                        <td>
+                            @Html.ActionLink(Common.Edit_Relation, "Edit", new { id = item.Id })
+                            @if (IsAdmins && item.Cars != null)
+                            {
+                                @:| @Html.ActionLink(Common.Delete_Relation, "Delete", new { id = item.Id })
+                            }
+                            @if (IsRoot && item.Cars != null)
+                            {
+                                @:| @Html.ActionLink(Common.Delete, "DeleteCar", new { id = item.CarRefId })
+                }
+                        </td>
+                    </tr>
+                }
+
+            </table>      
+        </div>
+    </div>
+    <!-- end panel -->
+</div>
+<!-- end col-4 -->
+
+
+
+ 

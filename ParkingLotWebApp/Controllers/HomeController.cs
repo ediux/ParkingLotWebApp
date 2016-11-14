@@ -70,17 +70,12 @@ namespace ParkingLotWebApp.Controllers
 
             return View(model);
         }
-
+#if DEBUG
         public ActionResult Theme()
         {
 
             return View();
         }
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
+#endif
     }
 }

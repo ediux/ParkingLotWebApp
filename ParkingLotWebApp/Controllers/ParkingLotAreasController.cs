@@ -12,6 +12,7 @@ using ParkingLotWebApp;
 
 namespace ParkingLotWebApp.Controllers
 {
+    [Authorize]
     public class ParkingLotAreasController : Controller
     {
         private IParkingLotsDetailRepository db = RepositoryHelper.GetParkingLotsDetailRepository();

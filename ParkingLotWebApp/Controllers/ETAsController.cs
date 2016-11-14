@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity;
 
 namespace ParkingLotWebApp.Controllers
 {
+    [Authorize]
     public class ETAsController : Controller
     {
         //private ParkingLotModelEntities db = new ParkingLotModelEntities();

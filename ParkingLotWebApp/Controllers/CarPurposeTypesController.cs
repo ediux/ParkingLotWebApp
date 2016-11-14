@@ -10,6 +10,7 @@ using ParkingLotWebApp.Models;
 
 namespace ParkingLotWebApp.Controllers
 {
+    [Authorize]
     public class CarPurposeTypesController : BaseController
     {
         //private WbParkSystemEntities db = new WbParkSystemEntities();

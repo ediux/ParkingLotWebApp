@@ -32,14 +32,6 @@
         <dd>
             @Html.DisplayFor(model => model.Employee.Name)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ETAs.Code)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ETAs.Code)
-        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.CreateUserId)
         </dt>
@@ -76,5 +68,5 @@
 </div>
 <p>
     @Html.ActionLink(Common.Edit, "Edit", new { id = Model.Id }) |
-    @Html.ActionLink(string.Format(Common.Back_To,WebPages.Cars_Lists), "Index")
+    @Html.ActionLink(string.Format(Common.Back_To,WebPages.ETAs_Cars_BindingList), "Index")
 </p>

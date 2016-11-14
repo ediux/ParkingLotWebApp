@@ -13,6 +13,7 @@ using System.Data.Entity.Validation;
 
 namespace ParkingLotWebApp.Controllers
 {
+    [Authorize]
     public class NewsController : Controller
     {
         private IAnnouncementDetailRepository db = RepositoryHelper.GetAnnouncementDetailRepository();

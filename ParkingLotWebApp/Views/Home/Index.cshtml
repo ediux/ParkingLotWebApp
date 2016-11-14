@@ -6,34 +6,55 @@
     }
 }
 @model ParkingLotWebApp.Models.HomeIndexViewModel
-
+@section PAGECSS{
+    <link href="/assets/plugins/switchery/switchery.min.css" rel="stylesheet" />
+    <link href="/assets/plugins/powerange/powerange.min.css" rel="stylesheet" />
+}
+@section PAGEJS{
+    <script src="/assets/plugins/switchery/switchery.min.js"></script>
+    <script src="/assets/plugins/powerange/powerange.min.js"></script>
+    <script src="/assets/js/form-slider-switcher.demo.min.js"></script>
+}
 @if (!IsAjax)
 {
-    <h2>儀錶板</h2>
-    <h4>剩餘車位數量查詢</h4>
+    @section breadcrumb{
+        <li class="active">儀錶板</li>
+    }
+    @section pageheader{
+        <h1 class="page-header">儀錶板 <small>剩餘車位數量查詢</small></h1>
+    }
 
     <div class="row" style="margin-top:20px;" id="autorefresh">
-        <div class="col-xs-4 col-md-2" id="selectAreas">
-            @using (Ajax.BeginForm("Index", null, new AjaxOptions
-            {
-                UpdateTargetId = "selectAreas",
-                HttpMethod = "Post",
-                OnSuccess = "refreshSelect"
-            }, new { @id = "selectlocationform", @class = "form-horizontal", @role = "form" }))
-            {
-                @Html.AntiForgeryToken()
-                foreach (var key in Model.Areas.Keys)
-                {
-                    <div class="form-group">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="areaId" value="@key" @((Model.SelectedAreas[key]) ? Html.Raw("checked") : Html.Raw("")) />
-                                @Model.Areas[key]
-                            </label>
-                        </div>
+        <div class="col-xs-4 col-md-2">
+            <div class="panel panel-inverse" data-sortable-id="ui-widget-1">
+                <div class="panel-heading">
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
                     </div>
-                }
-            }
+                    <h4 class="panel-title">停車區域</h4>
+                </div>
+                <div class="panel-body" id="selectAreas">
+                   @using (Ajax.BeginForm("Index", null, new AjaxOptions
+                   {
+                       UpdateTargetId = "selectAreas",
+                       HttpMethod = "Post",
+                       OnSuccess = "refreshSelect"
+                   }, new { @id = "selectlocationform", @class = "form-horizontal", @role = "form" }))
+                   {
+                    @Html.AntiForgeryToken()
+                       foreach (var key in Model.Areas.Keys)
+                       {
+                        <p>
+                            <input type="checkbox" name="areaId" value="@key" data-render="switchery" data-theme="default" @((Model.SelectedAreas[key]) ? Html.Raw("checked") : Html.Raw("")) />
+                            <span class="text-muted m-l-5 m-r-20">@Model.Areas[key]</span>
+                        </p>
+ 
+                       }
+                   }
+                </div>
+            </div>
+            
         </div>
         <div class="col-xs-8 col-md-10" id="showFloors">
             @using (Ajax.BeginForm("Reload", null, new AjaxOptions
@@ -47,51 +68,57 @@
                 @Html.Hidden("shared_areaId", "")
                 foreach (int key in Model.Areas.Keys)
                 {
-
-
                     if (Model.SelectedAreas[key])
                     {
                         <div class="col-xs-12 col-md-4">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        @if (Model.RemainSummary[key].All(w => w.NoneFloor == false))
-                                        {
-                                            <th colspan="3">@Model.Areas[key]</th>
-                                        }
-                                        else
-                                        {
-                                            <th colspan="2">@Model.Areas[key]</th>
-                                        }
-                                    </tr>
-                                    <tr>
-                                        @if (Model.RemainSummary[key].All(p => p.NoneFloor == false))
-                                        {
-                                            <th>樓層</th>
-                                        }
-                                        <th>@WebPages.ParkingLotsFloor_CarLastGrid</th>
-                                        <th>@WebPages.ParkingLotsFloor_MotoLastGrid</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item_n in Model.RemainSummary[key])
-                                    {
-                                        <tr>
-                                            @if (item_n.NoneFloor == false)
+                            <div class="panel panel-inverse" data-sortable-id="form-slider-switcher-3">
+                                <div class="panel-heading">                              
+                                    <h4 class="panel-title">@Model.Areas[key]</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            @*<tr>
+                                                @if (Model.RemainSummary[key].All(w => w.NoneFloor == false))
+                                                {
+                                                    <th colspan="3">@Model.Areas[key]</th>
+                                                }
+                                                else
+                                                {
+                                                    <th colspan="2">@Model.Areas[key]</th>
+                                                }
+                                            </tr>*@
+                                            <tr>
+                                                @if (Model.RemainSummary[key].All(p => p.NoneFloor == false))
+                                                {
+                                                    <th>樓層</th>
+                                                }
+                                                <th>@WebPages.ParkingLotsFloor_CarLastGrid</th>
+                                                <th>@WebPages.ParkingLotsFloor_MotoLastGrid</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item_n in Model.RemainSummary[key])
                                             {
-                                                <td>@item_n.樓層名稱</td>
-                                                <td>@item_n.剩餘停車格數</td>
-                                                <td>@item_n.剩餘機車格數</td>
+                                                <tr>
+                                                    @if (item_n.NoneFloor == false)
+                                                    {
+                                                        <td>@item_n.樓層名稱</td>
+                                                        <td>@item_n.剩餘停車格數</td>
+                                                        <td>@item_n.剩餘機車格數</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>@item_n.剩餘停車格數</td>
+                                                        <td>@item_n.剩餘機車格數</td>
+                                                    }
+                                                </tr>
                                             }
-                                            else
-                                            {
-                                                <td>@item_n.剩餘停車格數</td>
-                                                <td>@item_n.剩餘機車格數</td>
-                                            }
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+         
                         </div>
                     }
 
@@ -134,7 +161,11 @@
                 $('#autoreload').submit();
             }
             function init() {
+                FormSliderSwitcher.init();
                 $.ajaxSetup({ cache: false });
+                $('#selectlocationform').live('change', function () {
+                    $('#selectlocationform').submit();
+                });
                 $('#selectlocationform').on('click', ':checkbox', function () {                                       
                     console.debug('areaId triggered.');
                     $('#selectlocationform').submit();
@@ -143,9 +174,7 @@
                 console.debug('event registered.');
                 autoReload();
             }
-            $(document).ready(function () {
-                init();
-            });
+          
         </script>
     }
 }
@@ -161,14 +190,10 @@ else
         @Html.AntiForgeryToken()
         foreach (var key in Model.Areas.Keys)
         {
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" name="areaId" value="@key" @((Model.SelectedAreas[key]) ? Html.Raw("checked") : Html.Raw("")) />
-                        @Model.Areas[key]
-                    </label>
-                </div>
-            </div>
+            <p>
+                <input type="checkbox" name="areaId" value="@key" data-render="switchery" data-theme="default" @((Model.SelectedAreas[key]) ? Html.Raw("checked") : Html.Raw("")) />
+                <span class="text-muted m-l-5 m-r-20">@Model.Areas[key]</span>
+            </p>
         }
     }
     <script>

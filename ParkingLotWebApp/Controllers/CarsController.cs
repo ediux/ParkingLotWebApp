@@ -12,6 +12,7 @@ using System.Data.Entity.Validation;
 
 namespace ParkingLotWebApp.Controllers
 {
+    [Authorize]
     [HandleError(ExceptionType = typeof(DbEntityValidationException),
       View = "DbEntityValidationException")]
     public class CarsController : Controller
@@ -34,17 +35,18 @@ namespace ParkingLotWebApp.Controllers
         public ActionResult Index()
         {
             var cars = db_etc.Where(w => w.Void == false)
-                .Include(c => c.Cars);                
+                .Include(c => c.Cars);
 
-            return View(cars                
+            return View(cars
                 .OrderBy(o => o.Cars.CarNumber)
                 .OrderBy(o => o.Cars.CarType)
                 .OrderBy(o => o.Code)
                 .OrderBy(o => o.Cars.Employee.Code)
-                .OrderBy(o => o.Cars.Employee.Name)                
+                .OrderBy(o => o.Cars.Employee.Name)
                 .OrderByDescending(o => o.CreateUTCTime)
                 .ToList());
         }
+
 
         // GET: Cars/Details/5
         public ActionResult Details(int? id)
@@ -53,7 +55,7 @@ namespace ParkingLotWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cars cars = db.Get(id);
+            ETAs cars = db_etc.Get(id);
             if (cars == null)
             {
                 return HttpNotFound();
@@ -112,7 +114,12 @@ namespace ParkingLotWebApp.Controllers
             //selectetc.Insert(0, null);
             //ViewBag.EmpId = new SelectList(selectemp, "Id", "Name", etcbycars.Cars.EmpId);
             //ViewBag.ETCsID = new SelectList(selectetc, "Id", "Code", cars.ETCsID);
-            ViewBag.CarPurposeType = new SelectList(db_carPurpose.All(), "Id", "Name", etcbycars.Cars.CarPurposeTypeID);
+            int carpurposetypeid = 0;
+            if (etcbycars.Cars != null)
+            {
+                carpurposetypeid = etcbycars.Cars.CarPurposeTypeID??0;
+            }
+            ViewBag.CarPurposeType = new SelectList(db_carPurpose.All(), "Id", "Name", carpurposetypeid);
             //etcbycars.Cars.Employee = etcbycars.Cars.Employee ?? new Models.Employee();                
             return View(etcbycars);
         }
@@ -122,7 +129,7 @@ namespace ParkingLotWebApp.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id,FormCollection collection)
+        public ActionResult Edit(int id, FormCollection collection)
         {
             var cars = db_etc.Get(id);
 
@@ -130,10 +137,10 @@ namespace ParkingLotWebApp.Controllers
             {
                 string emp_code = collection["Cars.Employee.Code"];
 
-                if (string.IsNullOrEmpty(emp_code)==false && emp_code.ToUpper().StartsWith("REMOVE:"))
+                if (string.IsNullOrEmpty(emp_code) == false && emp_code.ToUpper().StartsWith("REMOVE:"))
                 {
                     //刪除員工對應
-                    if(cars.Cars != null)
+                    if (cars.Cars != null)
                     {
                         if (cars.Cars.Employee != null)
                         {
@@ -160,7 +167,7 @@ namespace ParkingLotWebApp.Controllers
                         cars.Cars.EmpId = emp.Id;
                     }
                 }
-              
+
 
                 db.UnitOfWork.Context.Entry(cars).State = EntityState.Modified;
                 db.UnitOfWork.Commit();
@@ -184,12 +191,12 @@ namespace ParkingLotWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cars cars = db.Get(id);
-            if (cars == null)
+            ETAs etc = db_etc.Get(id);
+            if (etc == null)
             {
                 return HttpNotFound();
             }
-            return View(cars);
+            return View(etc);
         }
 
         // POST: Cars/Delete/5
@@ -197,11 +204,40 @@ namespace ParkingLotWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Cars cars = db.Get(id);
-            cars.Void = true;
-            cars.LastUpdateUserId = User.Identity.GetUserId<int>();
-            cars.LastUpdateUTCTime = DateTime.Now.ToUniversalTime();
-            db.UnitOfWork.Context.Entry(cars).State = EntityState.Modified;
+            ETAs etc = db_etc.Get(id);
+            etc.CarRefId = null;
+            etc.Cars = null;
+            etc.LastUpdateUserId = User.Identity.GetUserId<int>();
+            etc.LastUpdateUTCTime = DateTime.Now.ToUniversalTime();
+            db_etc.UnitOfWork.Context.Entry(etc).State = EntityState.Modified;
+            db_etc.UnitOfWork.Commit();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult DeleteCar(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Cars car = db.Get(id);
+            if (car == null)
+            {
+                return HttpNotFound();
+            }
+            return View(car);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteCar(int id, FormatException collection)
+        {
+            Cars car = db.Get(id);
+            car.ETAs.Clear();   //斷開所有ETC的關聯
+            car.Void = true;
+            car.LastUpdateUserId = User.Identity.GetUserId<int>();
+            car.LastUpdateUTCTime = DateTime.Now.ToUniversalTime();
+            db.UnitOfWork.Context.Entry(car).State = EntityState.Modified;
             db.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }

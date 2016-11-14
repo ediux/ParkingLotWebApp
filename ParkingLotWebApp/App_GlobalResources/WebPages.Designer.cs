@@ -268,6 +268,24 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 ETC與車輛綁定維護 的當地語系化字串。
+        /// </summary>
+        public static string ETAs_Cars_Binding {
+            get {
+                return ResourceManager.GetString("ETAs_Cars_Binding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 ETC與車輛綁定清單 的當地語系化字串。
+        /// </summary>
+        public static string ETAs_Cars_BindingList {
+            get {
+                return ResourceManager.GetString("ETAs_Cars_BindingList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 建立eTag資料 的當地語系化字串。
         /// </summary>
         public static string ETAs_Create {

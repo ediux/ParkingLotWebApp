@@ -13,12 +13,12 @@ namespace ParkingLotWebApp.Models
     public partial class ParkingAreaMetaData
     {
         [Required]
-        [Display(Name ="行政區域系統代碼")]
+        [Display(Name = "區域代碼")]
         public int AreaId { get; set; }
         
         [StringLength(25, ErrorMessage="欄位長度不得大於 25 個字元")]
         [Required]
-        [Display(Name ="地區名稱")]
+        [Display(Name = "區域名稱")]
         public string Name { get; set; }
         [Required]
         [Display(Name ="Void",ResourceType =typeof(MUI))]

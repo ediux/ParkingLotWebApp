@@ -19,46 +19,54 @@
         if (Model.SelectedAreas[key])
         {
             <div class="col-xs-12 col-md-4">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            @if (Model.RemainSummary[key].All(w => w.NoneFloor == false))
-                            {
-                                <th colspan="3">@Model.Areas[key]</th>
-                            }
-                            else
-                            {
-                                <th colspan="2">@Model.Areas[key]</th>
-                            }
-                        </tr>
-                        <tr>
-                            @if (Model.RemainSummary[key].All(p => p.NoneFloor == false))
-                            {
-                                <th>樓層</th>
-                            }
-                            <th>@WebPages.ParkingLotsFloor_CarTotalGrid</th>
-                            <th>@WebPages.ParkingLotsFloor_CarLastGrid</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item_n in Model.RemainSummary[key])
+                <div class="panel panel-inverse" data-sortable-id="form-slider-switcher-3">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">@Model.Areas[key]</h4>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                @*<tr>
+                                    @if (Model.RemainSummary[key].All(w => w.NoneFloor == false))
+                                    {
+                                        <th colspan="3">@Model.Areas[key]</th>
+                                    }
+                                    else
+                                    {
+                                        <th colspan="2">@Model.Areas[key]</th>
+                                    }
+                                </tr>*@
+                                <tr>
+                                    @if (Model.RemainSummary[key].All(p => p.NoneFloor == false))
+                                    {
+                                        <th>樓層</th>
+                                    }
+                                    <th>@WebPages.ParkingLotsFloor_CarTotalGrid</th>
+                                    <th>@WebPages.ParkingLotsFloor_CarLastGrid</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item_n in Model.RemainSummary[key])
                         {
-                            <tr>
-                                @if (item_n.NoneFloor == false)
-                                {
-                                    <td>@item_n.樓層名稱</td>
-                                    <td>@item_n.總停車格數</td>
-                                    <td>@item_n.剩餘停車格數</td>
+                                    <tr>
+                                        @if (item_n.NoneFloor == false)
+                                        {
+                                            <td>@item_n.樓層名稱</td>
+                                            <td>@item_n.總停車格數</td>
+                                            <td>@item_n.剩餘停車格數</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@item_n.總停車格數</td>
+                                            <td>@item_n.剩餘停車格數</td>
+                                        }
+                                    </tr>
                                 }
-                                else
-                                {
-                                    <td>@item_n.總停車格數</td>
-                                    <td>@item_n.剩餘停車格數</td>
-                                }
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                            </tbody>
+                        </table>             
+                    </div>
+                </div>
+    
             </div>
         }
     }

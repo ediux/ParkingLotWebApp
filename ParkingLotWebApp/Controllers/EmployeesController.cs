@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity;
 
 namespace ParkingLotWebApp.Controllers
 {
+    [Authorize]
     public class EmployeesController : Controller
     {
         private IEmployeeRepository db;

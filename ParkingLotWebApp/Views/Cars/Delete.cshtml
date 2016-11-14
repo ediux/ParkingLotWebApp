@@ -1,31 +1,35 @@
-﻿@model ParkingLotWebApp.Models.Cars
+﻿@model ParkingLotWebApp.Models.ETAs
 
 @{
-    ViewBag.Title = WebPages.Cars_Delete;
+    ViewBag.Title = "刪除eTag綁定資訊";
 }
 
 <h2>@ViewBag.Title</h2>
 
-<h3>@string.Format(Common.DeleteConfirmMessage,WebPages.Cars_This)</h3>
+<h3>@string.Format(Common.DeleteConfirmMessage,"這台車的eTag綁定資訊嗎?")</h3>
 <div>
     <h4>@WebPages.Cars</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.CarNumber)
+            @Html.DisplayNameFor(model => model.Code)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.CarNumber)
+            @Html.DisplayFor(model => model.Code)
         </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.CarType)
+            @Html.DisplayNameFor(model => model.Cars.CarNumber)
         </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.CarType)
+            @Html.DisplayFor(model => model.Cars.CarNumber)
         </dd>       
+        <dt>
+            @Html.DisplayNameFor(model => model.Cars.CarPurposeTypes.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Cars.CarPurposeTypes.Name)
+        </dd>
     </dl>
 
     @using (Html.BeginForm()) {
@@ -33,7 +37,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="@Common.Delete" class="btn btn-default" /> |
-            @Html.ActionLink(string.Format(Common.Back_To,WebPages.Cars_Lists), "Index")
+            @Html.ActionLink(string.Format(Common.Back_To,WebPages.ETAs_Cars_BindingList), "Index")
         </div>
     }
 </div>
