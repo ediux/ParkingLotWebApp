@@ -153,6 +153,38 @@
     </ul>
 </li>
     }
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                </div>
+                <h4 class="panel-title">@ViewBag.Title</h4>
+            </div>
+            <div class="panel-toolbar">
+                @if (ViewBag.ReturnUrl != null)
+                {
+                    <div class="btn-group m-r-5" role="group" aria-label="First group">
+                        <a href="@ViewBag.ReturnUrl" class="btn btn-white" title="@string.Format(Common.Back_To, WebPages.Cars_Edit)"><i class="glyphicon glyphicon-arrow-left"></i></a>
+                    </div>
+                    <div class="btn-group m-l-5" role="group" aria-label="Second group">
+                        <a href="@Url.Action("Create",new { ReturnUrl=Request.RawUrl })" class="btn btn-white" title="@WebPages.CarPurposeTypes_Create_New"><i class="glyphicon glyphicon-plus"></i></a>
+                    </div>
+                }
+                else
+                {
+                    <div class="btn-group m-l-5" role="group" aria-label="First group">
+                        <a href="@Url.Action("Create")" class="btn btn-white" title="@WebPages.CarPurposeTypes_Create_New"><i class="glyphicon glyphicon-plus"></i></a>
+                    </div>
+                }
+            </div>
+            <div class="panel-body">
+            </div>
+        </div>
+    </div>
+</div>
 			    <!-- begin col-4 -->
 <div class="col-md-4">
     <!-- begin panel -->
