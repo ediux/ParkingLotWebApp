@@ -37,8 +37,8 @@
                 }
             </div>
             <div class="panel-body">
-                <table class="table">
-                    <tr>
+                <table class="table table-hover table-bordered">
+                    <tr class="info">
                         <th>
                             @Html.DisplayNameFor(model => model.Name)
                         </th>
@@ -51,9 +51,9 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Name)
                             </td>
-                            <td>
-                                @Html.ActionLink(Common.Rename, "Edit", new { id = item.Id }) |
-                                @Html.ActionLink(Common.Delete, "Delete", new { id = item.Id })
+                            <td class="text-right">
+                                <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-primary m-r-5" title="@Common.Rename"><i class="glyphicon glyphicon-refresh"></i></a>
+                                <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger m-r-5" title="@Common.Delete"><i class="glyphicon glyphicon-remove"></i></a>
                             </td>
                         </tr>
                     }
