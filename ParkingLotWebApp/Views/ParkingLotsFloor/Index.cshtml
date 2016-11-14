@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<ParkingLotWebApp.Models.ParkingLotsFloor>
-
 @{
     var areaname = ViewBag.AreaName as string;
     if (ViewBag.returnUrl != null)
@@ -12,79 +11,108 @@
         ViewBag.Title = WebPages.ParkingLotFloors_Index;
     }
 }
-<h2>@ViewBag.Title</h2>
-
-@{
-    if (ViewBag.returnUrl != null)
-    {
-        <p>
-            @Html.ActionLink(string.Format(WebPages.ParkingLotFloors_Create_FromArea,areaname), "Create", new { id = ViewBag.AreaId }) |
-            @Html.ActionLink(string.Format(Common.Back_To, WebPages.ParkingLotAreas_Index), "Index", "ParkingLotAreas", null, null)
-        </p>
-    }
-    else
-    {
-        <p>
-            @Html.ActionLink(WebPages.ParkingLotFloors_Create_New, "Create")
-        </p>
-    }
+@section pageheader{
+    <h1 class="page-header">@WebPages.ParkingLotFloors <small>@ViewBag.Title</small></h1>
 }
-<table class="table">
-    <tr>
-        @if (ViewBag.returnUrl == null)
-        {
-            <th>
-                @Html.DisplayNameFor(model => model.ParkingLotsDetail.Name)
-            </th>
-        }
-        <th>
-            @Html.DisplayNameFor(model => model.FloorOrder)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FloorName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CarTotalGrid)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CarLastGrid)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastUpdate)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
+@section breadcrumb{
+    <li><a href="@Url.Action("Index","Manage")">管理</a></li>
+    <li><a href="@Url.Action("Index","ParkingLotAreas")">@WebPages.ParkingLotAreas_Index</a></li>
+    <li class="active">@ViewBag.Title</li>
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                </div>
+                <h4 class="panel-title">@ViewBag.Title</h4>
+            </div>
+            <div class="panel-toolbar">
+                @{
+                    if (ViewBag.returnUrl != null)
+                    {
+                        <div class="btn-group m-r-5" role="group" aria-label="First group">
+                            <a href="@Url.Action("Index", "ParkingLotAreas")" class="btn btn-white" title="@string.Format(Common.Back_To, WebPages.ParkingLotAreas_Index)"><i class="glyphicon glyphicon-arrow-left"></i></a>
+                        </div>
+                        <div class="btn-group m-l-5" role="group" aria-label="Second group">
+                            <a href="@Url.Action("Create",new { id = ViewBag.AreaId })" class="btn btn-white" title="@string.Format(WebPages.ParkingLotFloors_Create_FromArea, areaname)"><i class="glyphicon glyphicon-plus"></i></a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="btn-group m-l-5" role="group" aria-label="Second group">
+                            <a href="@Url.Action("Create")" class="btn btn-white" title="@WebPages.ParkingLotFloors_Create_New"><i class="glyphicon glyphicon-plus"></i></a>
+                        </div>
+                    }
+                }               
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr class="info">
+                            @if (ViewBag.returnUrl == null)
+                            {
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ParkingLotsDetail.Name)
+                                </th>
+                            }
+                            <th>
+                                @Html.DisplayNameFor(model => model.FloorOrder)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FloorName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CarTotalGrid)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CarLastGrid)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.LastUpdate)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
             {
-        <tr>
-            @if (ViewBag.returnUrl == null)
-            {
-                <th>
-                    @Html.DisplayFor(model => item.ParkingLotsDetail.Name)
-                </th>
-            }
-            <td>
-                @Html.DisplayFor(modelItem => item.FloorOrder)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FloorName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CarTotalGrid)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CarLastGrid)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastUpdate)
-            </td>
+                            <tr>
+                                @if (ViewBag.returnUrl == null)
+                                {
+                                    <th>
+                                        @Html.DisplayFor(model => item.ParkingLotsDetail.Name)
+                                    </th>
+                                }
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FloorOrder)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FloorName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CarTotalGrid)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CarLastGrid)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LastUpdate)
+                                </td>
 
-            <td>
-                @Html.ActionLink(Common.Edit, "Edit", new { id = item.ID }) |
-                @Html.ActionLink(Common.Delete, "Delete", new { id = item.ID })
-            </td>
-        </tr>
-    }
+                                <td>
+                                    <a href="@Url.Action("Edit", new { id = item.ID })" class="btn btn-primary m-r-5" title="@Common.Edit"><i class="glyphicon glyphicon-edit"></i></a>
+                                    <a href="@Url.Action("Delete", new { id = item.ID })" class="btn btn-danger m-r-5" title="@Common.Delete"><i class="glyphicon glyphicon-remove"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
 
-</table>
+            </div>
+        </div>
+    </div>
+</div>
+
