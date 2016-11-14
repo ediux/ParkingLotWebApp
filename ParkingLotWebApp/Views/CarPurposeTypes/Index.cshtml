@@ -3,34 +3,68 @@
 @{
     ViewBag.Title = WebPages.CarPurposeTypes_Index;
 }
+@section pageheader{
+    <h1 class="page-header">@WebPages.CarPurposeTypes <small>@ViewBag.Title</small></h1>
+}
+@section breadcrumb{
+    <li class="active">@ViewBag.Title</li>
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                </div>
+                <h4 class="panel-title">@ViewBag.Title</h4>
+            </div>
+            <div class="panel-toolbar">
+                @if (ViewBag.ReturnUrl != null)
+                {
+                    <div class="btn-group m-r-5" role="group" aria-label="First group">
+                        <a href="@ViewBag.ReturnUrl" class="btn btn-white" title="@string.Format(Common.Back_To, WebPages.Cars_Edit)"><i class="glyphicon glyphicon-arrow-left"></i></a>
+                    </div>
+                    <div class="btn-group m-l-5" role="group" aria-label="Second group">
+                        <a href="@Url.Action("Create",new { ReturnUrl=Request.RawUrl })" class="btn btn-white" title="@WebPages.CarPurposeTypes_Create_New"><i class="glyphicon glyphicon-plus"></i></a>
+                    </div>
+                }
+                else
+                {
+                    <div class="btn-group m-l-5" role="group" aria-label="First group">
+                        <a href="@Url.Action("Create")" class="btn btn-white" title="@WebPages.CarPurposeTypes_Create_New"><i class="glyphicon glyphicon-plus"></i></a>
+                    </div>
+                }
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th></th>
+                    </tr>
 
-<h2>@ViewBag.Title</h2>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.ActionLink(Common.Rename, "Edit", new { id = item.Id }) |
+                                @Html.ActionLink(Common.Delete, "Delete", new { id = item.Id })
+                            </td>
+                        </tr>
+                    }
 
-<p>
-    @Html.ActionLink(WebPages.CarPurposeTypes_Create_New, "Create") @if (ViewBag.ReturnUrl != null)
-    {
-        @:| <a href="@ViewBag.ReturnUrl">@string.Format(Common.Back_To,WebPages.Cars_Edit)</a>
-    }
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th></th>
-    </tr>
+                </table>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.ActionLink(Common.Rename, "Edit", new { id = item.Id }) |                
-                @Html.ActionLink(Common.Delete, "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
+            </div>
+        </div>
+    </div>
+</div>
 
-</table>
+
+
+
