@@ -1,40 +1,55 @@
 ﻿@model ParkingLotWebApp.Models.CarPurposeTypes
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = WebPages.CarPurposeTypes_Delete;
 }
+@section pageheader{
+    <h1 class="page-header">@WebPages.CarPurposeTypes <small>@ViewBag.Title</small></h1>
+}
+@section breadcrumb{
+    <li><a href="@Url.Action("Index")">@WebPages.CarPurposeTypes</a></li>
+    <li class="active">@ViewBag.Title</li>
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                </div>
+                <h4 class="panel-title">@ViewBag.Title</h4>
+            </div>
+            <div class="panel-toolbar">
+                <div class="btn-group m-r-5" role="group" aria-label="First group">
+                    <a href="@Url.Action("Index")" class="btn btn-white" title="@string.Format(Common.Back_To, WebPages.CarPurposeTypes_Index)"><i class="glyphicon glyphicon-arrow-left"></i></a>
+                </div>
+            </div>
+            <div class="panel-body">
+                <h3>@string.Format(Common.DeleteConfirmMessage, WebPages.CarPurposeTypes_This)</h3>
+                <div>
+                    <h4>@WebPages.CarPurposeTypes</h4>
+                    <hr />
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </dt>
 
-<h2>刪除車輛用途&nbsp;</h2>
-
-<h3>@string.Format(Common.DeleteConfirmMessage, WebPages.CarPurposeTypes_This)</h3>
-<div>
-    <h4>@WebPages.CarPurposeTypes</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Void)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Void)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="@Common.Delete" class="btn btn-default" /> |
-            @Html.ActionLink(string.Format(Common.Back_To, WebPages.CarPurposeTypes_Index), "Index")
+                        <dd>
+                            @Html.DisplayFor(model => model.Name)
+                        </dd>                       
+                    </dl>
+                </div>
+            </div>
+            <div class="panel-footer text-right">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="submit" value="@Common.Delete" class="btn btn-danger" />
+                }                
+            </div>
         </div>
-    }
+    </div>
 </div>
+
+
