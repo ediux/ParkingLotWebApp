@@ -4,69 +4,89 @@
     ViewBag.Title = WebPages.Cars_Details;
 }
 
-<h2>@ViewBag.Title</h2>
+@section pageheader{
+    <h1 class="page-header">@WebPages.Cars <small>@ViewBag.Title</small></h1>
+}
+@section breadcrumb{
+    <li><a href="@Url.Action("Index")">@WebPages.ETAs_Cars_BindingList</a></li>
+    <li class="active">@ViewBag.Title</li>
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                </div>
+                <h4 class="panel-title">@ViewBag.Title</h4>
+            </div>
+            <div class="panel-toolbar">
+                <div class="btn-group m-r-5" role="group" aria-label="First group">
+                    <a href="@Url.Action("Index")" class="btn btn-white" title="@string.Format(Common.Back_To, WebPages.ETAs_Cars_BindingList)"><i class="glyphicon glyphicon-arrow-left"></i></a>
+                </div>
+                <div class="btn-group m-r-5" role="group" aria-label="Second group">
+                    <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-white" title="@Common.Edit"><i class="glyphicon glyphicon-edit"></i></a>
+                </div>
+            </div>
+            <div class="panel-body">
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.CarNumber)
+                    </dt>
 
-<div>
-    <h4>@WebPages.Cars</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.CarNumber)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.CarNumber)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.CarNumber)
-        </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.CarType)
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.CarType)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.CarType)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Employee.Name)
+                    </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.CarType)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Employee.Name)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Employee.Name)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.CreateUserId)
+                    </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Employee.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CreateUserId)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.CreateUserId)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.CreateUserId)
-        </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.CreateUTCTime)
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.CreateUTCTime)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.CreateUTCTime)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.CreateUTCTime)
-        </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.LastUpdateUserId)
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.LastUpdateUserId)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.LastUpdateUserId)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.LastUpdateUserId)
-        </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.LastUpdateUTCTime)
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.LastUpdateUTCTime)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.LastUpdateUTCTime)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.LastUpdateUTCTime)
-        </dd>
-
-    </dl>
+                </dl>
+            </div>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink(Common.Edit, "Edit", new { id = Model.Id }) |
-    @Html.ActionLink(string.Format(Common.Back_To,WebPages.ETAs_Cars_BindingList), "Index")
-</p>

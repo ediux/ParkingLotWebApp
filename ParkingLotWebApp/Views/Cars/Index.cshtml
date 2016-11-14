@@ -79,15 +79,16 @@
                             @Html.DisplayFor(modelItem => item.LastUpdateUTCTime)
                         </td>
                         <td>
-                            @Html.ActionLink(Common.Edit_Relation, "Edit", new { id = item.Id })
+                            <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-primary m-r-5" title="@Common.Edit_Relation"><i class="glyphicon glyphicon-edit"></i></a>                            
                             @if (IsAdmins && item.Cars != null)
                             {
-                                @:| @Html.ActionLink(Common.Delete_Relation, "Delete", new { id = item.Id })
+                                <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-warning m-r-5" title="@Common.Delete_Relation"><i class="glyphicon glyphicon-eject"></i></a>
+                                
                             }
                             @if (IsRoot && item.Cars != null)
                             {
-                                @:| @Html.ActionLink(Common.Delete, "DeleteCar", new { id = item.CarRefId })
-                }
+                                <a href="@Url.Action("DeleteCar", new { id = item.CarRefId })" class="btn btn-warning m-r-5" title="@Common.Delete_Relation"><i class="glyphicon glyphicon-remove"></i></a>                                
+                            }
                         </td>
                     </tr>
                 }
