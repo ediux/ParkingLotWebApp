@@ -4,39 +4,67 @@
     ViewBag.Title = WebPages.ParkingLotAreas_Index;
 }
 
-<h2>@ViewBag.Title</h2>
-
-<p>
-    @Html.ActionLink(WebPages.ParkingLotAreas_Create_New, "Create")
-    
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th> 
-        <th>
-            @Html.DisplayNameFor(model => model.LastUpdate)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-     
-        <td>
-            @Html.DisplayFor(modelItem => item.LastUpdate)
-        </td>
-        <td>
-            @Html.ActionLink(Common.Edit, "Edit", new { id=item.ID }) |
-            @Html.ActionLink(Common.Details, "Details", new { id = item.ID }) |
-            @Html.ActionLink(Common.Delete, "Delete", new { id=item.ID }) |
-            @Html.ActionLink(WebPages.ParkingLotAreas_FloorsLink, "Index", "ParkingLotsFloor", new { id = item.ID, returnUrl = Url.Action("Index", "ParkingLotAreas", null) }, null)
-        </td>
-    </tr>
+@section pageheader{
+    <h1 class="page-header">@WebPages.ParkingLotAreas <small>@ViewBag.Title</small></h1>
 }
+@section breadcrumb{
+    <li><a href="@Url.Action("Index","Manage")">管理</a></li>
+    <li class="active">@ViewBag.Title</li>
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                </div>
+                <h4 class="panel-title">@ViewBag.Title</h4>
+            </div>
+            <div class="panel-toolbar">
+                <div class="btn-group m-r-5" role="group" aria-label="First group">
+                    <a href="@Url.Action("Index","Manage")" class="btn btn-white" title="@Common.BackToManage"><i class="glyphicon glyphicon-arrow-left"></i></a>
+                </div>
+                    <div class="btn-group m-l-5" role="group" aria-label="First group">
+                        <a href="@Url.Action("Create")" class="btn btn-white" title="@WebPages.ParkingLotAreas_Create_New"><i class="glyphicon glyphicon-plus"></i></a>
+                    </div>
+          
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr class="info">
+                            <th>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.LastUpdate)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
 
-</table>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LastUpdate)
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("Edit", new { id = item.ID })" class="btn btn-primary m-r-5" title="@Common.Edit"><i class="glyphicon glyphicon-edit"></i></a>
+                                    <a href="@Url.Action("Details", new { id = item.ID })" class="btn btn-info m-r-5" title="@Common.Details"><i class="glyphicon glyphicon-info-sign"></i></a>
+                                    <a href="@Url.Action("Delete", new { id = item.ID })" class="btn btn-danger m-r-5" title="@Common.Delete"><i class="glyphicon glyphicon-remove"></i></a>
+                                    <a href="@Url.Action("Index", "ParkingLotsFloor", new { id = item.ID, returnUrl = Url.Action("Index", "ParkingLotAreas", null) })" class="btn btn-success m-r-5" title="@WebPages.ParkingLotAreas_FloorsLink"><i class="glyphicon glyphicon-list"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
