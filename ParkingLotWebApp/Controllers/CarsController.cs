@@ -117,7 +117,7 @@ namespace ParkingLotWebApp.Controllers
             int carpurposetypeid = 0;
             if (etcbycars.Cars != null)
             {
-                carpurposetypeid = etcbycars.Cars.CarPurposeTypeID??0;
+                carpurposetypeid = etcbycars.Cars.CarPurposeTypeID ?? 0;
             }
             ViewBag.CarPurposeType = new SelectList(db_carPurpose.All(), "Id", "Name", carpurposetypeid);
             //etcbycars.Cars.Employee = etcbycars.Cars.Employee ?? new Models.Employee();                
@@ -156,19 +156,37 @@ namespace ParkingLotWebApp.Controllers
                     {
                         cars.Cars.EmpId = emp.Id;
                     }
-                    else
-                    {
-                        emp = Employee.Create(User.Identity.GetUserId<int>());
-                        emp.Code = emp_code;
-                        emp.Name = emp_code;
-                        db_emp.Add(emp);
-                        db_emp.UnitOfWork.Commit();
-                        emp = db_emp.Reload(emp);
-                        cars.Cars.EmpId = emp.Id;
-                    }
                 }
 
+                string car_carNumber = collection["Cars.CarNumber"];
 
+                if (cars.Cars != null && cars.Cars.CarNumber != car_carNumber)
+                {
+                    var foundnumber = db.All().SingleOrDefault(s => s.CarNumber.Equals(car_carNumber, StringComparison.InvariantCultureIgnoreCase));
+
+                    if (foundnumber != null)
+                    {
+                        cars.CarRefId = foundnumber.Id;
+                        cars.LastUpdateUserId = User.Identity.GetUserId<int>();
+                        cars.LastUpdateUTCTime = DateTime.Now;
+                    }
+                    else {
+                        Cars tmpNewCar = new Cars();
+                        tmpNewCar.CarNumber = car_carNumber;
+                        tmpNewCar.CarPurposeTypeID = int.Parse(collection["Cars.CarPurposeTypeID"]);
+                        tmpNewCar.CarType = "C";
+                        tmpNewCar.CreateUserId = User.Identity.GetUserId<int>();
+                        tmpNewCar.CreateUTCTime = DateTime.Now;
+                        tmpNewCar.Void = false;
+                        tmpNewCar.LastUpdateUserId = User.Identity.GetUserId<int>();
+                        tmpNewCar.LastUpdateUTCTime = tmpNewCar.CreateUTCTime;
+                        db.Add(tmpNewCar);
+                        db.UnitOfWork.Commit();
+                        tmpNewCar = db.Reload(tmpNewCar);
+                        cars.CarRefId = tmpNewCar.Id;
+                    }
+                }
+                cars.Cars.CarPurposeTypeID = int.Parse(collection["Cars.CarPurposeTypeID"]);
                 db.UnitOfWork.Context.Entry(cars).State = EntityState.Modified;
                 db.UnitOfWork.Commit();
 

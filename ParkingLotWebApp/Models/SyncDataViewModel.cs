@@ -12,16 +12,27 @@ namespace ParkingLotWebApp.Models
         public string CarID { get; set; }
         public Nullable<int> CarPurposeTypeID { get; set; }
 
+        public DateTime CreateTime { get; set; }
+        public DateTime? LastUpdateTiem { get; set; }
+        public DateTime? LastUploadTime { get; set; }
     }
     public class SyncDataViewModel
     {
         public SyncDataViewModel()
         {
-            ETCBinding = new Collection<ETCBinding>();
-            CarPurposeTypes = new Collection<CarPurposeTypes>();
+            etcbinding = new List<ETCBinding>();
+            carpurposetypes = new List<CarPurposeTypes>();
+            _settings = new Dictionary<string, object>();
         }
-        public virtual ICollection<ETCBinding> ETCBinding { get; set; }
+        private IList<ETCBinding> etcbinding;
 
-        public virtual ICollection<CarPurposeTypes> CarPurposeTypes { get; set; }
+        public virtual IList<ETCBinding> ETCBinding { get { return etcbinding; } set { etcbinding = value; } }
+
+        private IList<CarPurposeTypes> carpurposetypes;
+        public virtual IList<CarPurposeTypes> CarPurposeTypes { get { return carpurposetypes; } set { carpurposetypes = value; } }
+
+        private IDictionary<string, object> _settings;
+
+        public IDictionary<string, object> AppSettings { get { return _settings; } set { _settings = value; } }
     }
 }

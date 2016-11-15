@@ -84,7 +84,7 @@
                                         @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                @*<div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
                                         <div class="checkbox">
                                             <label>
@@ -92,7 +92,7 @@
                                             </label>
                                         </div>
                                     </div>
-                                </div>
+                                </div>*@
                                 <div class="form-group">
                                     @Html.TextArea(Html.NameFor(model => model.Content).ToString(), Html.Raw(Model.Content).ToString(),new { @class="ckeditor" })
                                 </div>

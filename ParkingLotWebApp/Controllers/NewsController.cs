@@ -61,7 +61,7 @@ namespace ParkingLotWebApp.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Caption,Content,StartTime,EndTime,Void,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime,IsTop")] NewsPostViewModel newspostViewModel)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Caption,Content,StartTime,EndTime,Void,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime")] NewsPostViewModel newspostViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -149,7 +149,7 @@ namespace ParkingLotWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [OutputCache(Duration = 0, VaryByParam = "none", Location = System.Web.UI.OutputCacheLocation.Server)]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Caption,Content,StartTime,EndTime,Void,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime,Body_Id,Content,Version,IsTop")] NewsPostViewModel viewModel)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Caption,Content,StartTime,EndTime,Void,CreateUserId,CreateUTCTime,LastUpdateUserId,LastUpdateUTCTime")] NewsPostViewModel viewModel)
         {
 
             if (viewModel == null)

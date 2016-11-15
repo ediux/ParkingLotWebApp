@@ -55,48 +55,48 @@ namespace ParkingLotWebApp.Models
 
                         Add(dbeTAs);
                     }
-                    else
-                    {
-                        //資料庫已經有此Tag資料
-                        //已經有對應車輛
-                        if (dbeTAs.CarRefId != null && dbeTAs.CarRefId.HasValue)
-                        {
-                            if (eTAs.CarID != dbeTAs.Cars.CarNumber)
-                            {
-                                //車號不一致
-                                var found_car = db_cars.All().SingleOrDefault(s => s.CarNumber == eTAs.CarID && s.CarType == "C");
+                    //else
+                    //{
+                    //    //資料庫已經有此Tag資料
+                    //    //已經有對應車輛
+                    //    if (dbeTAs.CarRefId != null && dbeTAs.CarRefId.HasValue)
+                    //    {
+                    //        if (eTAs.CarID != dbeTAs.Cars.CarNumber)
+                    //        {
+                    //            //車號不一致
+                    //            var found_car = db_cars.All().SingleOrDefault(s => s.CarNumber == eTAs.CarID && s.CarType == "C");
 
-                                if (found_car == null)
-                                {
-                                    //沒找到車號->新增
-                                    found_car = CreateCarRefData(ctr, db_cars, eTAs);                                   
-                                }
+                    //            if (found_car == null)
+                    //            {
+                    //                //沒找到車號->新增
+                    //                found_car = CreateCarRefData(ctr, db_cars, eTAs);                                   
+                    //            }
 
-                                dbeTAs.Cars = found_car;
-                                dbeTAs.CarRefId = found_car.Id;
-                                dbeTAs.LastUpdateUTCTime = DateTime.Now;
+                    //            dbeTAs.Cars = found_car;
+                    //            dbeTAs.CarRefId = found_car.Id;
+                    //            dbeTAs.LastUpdateUTCTime = DateTime.Now;
 
-                                UnitOfWork.Context.Entry(dbeTAs).State = EntityState.Modified;
-                            }
-                        }
-                        else
-                        {
-                            //完全沒對應
-                            var found_car = db_cars.All().SingleOrDefault(s => s.CarNumber == eTAs.CarID && s.CarType == "C");
+                    //            UnitOfWork.Context.Entry(dbeTAs).State = EntityState.Modified;
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        //完全沒對應
+                    //        var found_car = db_cars.All().SingleOrDefault(s => s.CarNumber == eTAs.CarID && s.CarType == "C");
 
-                            if (found_car == null)
-                            {
-                                //沒找到車號->新增
-                                found_car = CreateCarRefData(ctr, db_cars, eTAs);
-                            }
+                    //        if (found_car == null)
+                    //        {
+                    //            //沒找到車號->新增
+                    //            found_car = CreateCarRefData(ctr, db_cars, eTAs);
+                    //        }
 
-                            dbeTAs.Cars = found_car;
-                            dbeTAs.CarRefId = found_car.Id;
-                            dbeTAs.LastUpdateUTCTime = DateTime.Now;
+                    //        dbeTAs.Cars = found_car;
+                    //        dbeTAs.CarRefId = found_car.Id;
+                    //        dbeTAs.LastUpdateUTCTime = DateTime.Now;
 
-                            UnitOfWork.Context.Entry(dbeTAs).State = EntityState.Modified;
-                        }
-                    }
+                    //        UnitOfWork.Context.Entry(dbeTAs).State = EntityState.Modified;
+                    //    }
+                    //}
 
                 }
                 catch (Exception)
@@ -127,9 +127,10 @@ namespace ParkingLotWebApp.Models
             found_car.CarPurposeTypeID = eTAs.CarPurposeTypeID;
             found_car.CarType = "C";
             found_car.LastUpdateUserId = found_car.CreateUserId = ctr.User.Identity.GetUserId<int>();
-            found_car.LastUpdateUTCTime = found_car.CreateUTCTime = DateTime.Now;
+            found_car.CreateUTCTime = DateTime.Now;
+            found_car.LastUpdateUTCTime = eTAs.LastUploadTime??eTAs.CreateTime;
             found_car.EmpId = null;
-
+            eTAs.LastUpdateTiem = DateTime.Now;
             db_cars.Add(found_car);
             db_cars.UnitOfWork.Commit();    //先commit一次
             found_car = db_cars.Reload(found_car);  //重新讀取
@@ -141,7 +142,9 @@ namespace ParkingLotWebApp.Models
             ETAs dbeTAs = new ETAs();
             dbeTAs.Code = eTAs.ETCID;
             dbeTAs.LastUpdateUserId = dbeTAs.CreateUserId = ctr.User.Identity.GetUserId<int>();
-            dbeTAs.LastUpdateUTCTime = dbeTAs.CreateUTCTime = DateTime.Now;
+            dbeTAs.CreateUTCTime = eTAs.CreateTime;
+            dbeTAs.LastUpdateUTCTime = eTAs.LastUploadTime;
+            eTAs.LastUpdateTiem = DateTime.Now;
             return dbeTAs;
         }
 

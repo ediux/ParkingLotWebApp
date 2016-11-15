@@ -8,7 +8,7 @@ namespace ParkingLotWebApp.Models
     using System.ComponentModel.DataAnnotations;
 
     [MetadataType(typeof(ParkingLotsFloorMetaData))]
-    public partial class ParkingLotsFloor
+    public partial class ParkingLotsFloor : IValidatableObject
     {
         public static ParkingLotsFloor Create()
         {
@@ -16,6 +16,14 @@ namespace ParkingLotWebApp.Models
             {
                 LastUpdate = DateTime.Now
             };
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (this.CarLastGrid > this.CarTotalGrid)
+            {
+                yield return new ValidationResult("剩餘車格位數必須小於總車格位數!");
+            }
         }
     }
     

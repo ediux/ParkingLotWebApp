@@ -208,7 +208,7 @@ namespace ParkingLotWebApp.Controllers
 
         [HttpPost]
         [AjaxValidateAntiForgeryToken]
-        public ActionResult EditRemainParkingGridAmounts([Bind(Include = "ID,CarLastGrid,MotoLastGrid")]ParkingLotsFloor ParkingLotsFloor)
+        public ActionResult EditRemainParkingGridAmounts([Bind(Include = "ID,CarLastGrid,CarTotalGrid")]ParkingLotsFloor ParkingLotsFloor)
         {
             if (ParkingLotsFloor != null)
             {
