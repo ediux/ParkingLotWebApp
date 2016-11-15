@@ -26,7 +26,7 @@ namespace My.Core.Infrastructures.Implementations.Models
         [Display(Name = "Void", ResourceType = typeof(MUI))]
         public bool Void { get; set; }
         [Required]
-        [UIHint("UTCLocalTimeDisplay")]
+        [UIHint("UserIDMappingDisplay")]
         [Display(Name = "CreateUserId", ResourceType = typeof(MUI))]
         public int CreateUserId { get; set; }
         [Required]

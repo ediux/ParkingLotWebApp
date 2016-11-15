@@ -51,7 +51,8 @@ namespace ParkingLotWebApp.Controllers
             model.EndTime = model.StartTime.AddDays(1);
             model.LastUpdateUserId = model.CreateUserId = User.Identity.GetUserId<int>();
             model.LastUpdateUTCTime = model.CreateUTCTime = DateTime.Now.ToUniversalTime();
-
+            var news_List =  db.All().ToList();
+            ViewBag.NewsList = news_List.OrderByDescending(o => o.ToTop).OrderByDescending(o => o.StartDate);
             return View(model);
         }
 
@@ -100,7 +101,8 @@ namespace ParkingLotWebApp.Controllers
 
                 return RedirectToAction("Index");  //重導至新增內文的控制器
             }
-
+            var news_List = await db.All().ToListAsync();
+            ViewBag.NewsList = news_List.OrderByDescending(o => o.ToTop).OrderByDescending(o => o.StartDate);
             return View(newspostViewModel);
         }
 
@@ -113,6 +115,8 @@ namespace ParkingLotWebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+
+
             try
             {
                 AnnouncementDetail news_Header = await db.GetAsync(id);
@@ -121,6 +125,8 @@ namespace ParkingLotWebApp.Controllers
                 {
                     return HttpNotFound();
                 }
+                var news_List = await db.All().ToListAsync();
+                ViewBag.NewsList = news_List.OrderByDescending(o => o.ToTop).OrderByDescending(o => o.StartDate);
 
                 NewsPostViewModel viewmodel = new NewsPostViewModel(news_Header);
                 viewmodel.Content = HttpUtility.HtmlDecode(viewmodel.Content);

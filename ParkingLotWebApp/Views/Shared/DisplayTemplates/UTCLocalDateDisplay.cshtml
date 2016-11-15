@@ -1,16 +1,14 @@
-﻿@{ ViewData[ViewData.TemplateInfo.HtmlFieldPrefix] = ViewData.TemplateInfo.FormattedModelValue;
+﻿@model DateTime?
+    @{
+        DateTime UTCTime;
+        if (Model != null && Model.HasValue)
+        {
+            UTCTime = new DateTime(Model.Value.Ticks, DateTimeKind.Utc).ToLocalTime();
+        }
+        else
+        {
+            UTCTime = DateTime.Now;
+        }
 
-    DateTime OriTime;
-
-    if (ViewData.TemplateInfo.FormattedModelValue is System.DateTime)
-    {
-        OriTime = (System.DateTime)ViewData.TemplateInfo.FormattedModelValue;
     }
-    else
-    {
-        OriTime = DateTime.Parse((string)ViewData.TemplateInfo.FormattedModelValue);
-    }
-
-    DateTime UTCTime = new DateTime(OriTime.Ticks, DateTimeKind.Utc).ToLocalTime();
-}
-@UTCTime.ToString("yyyy/MM/dd")
+    @UTCTime.ToString("yyyy/MM/dd")
