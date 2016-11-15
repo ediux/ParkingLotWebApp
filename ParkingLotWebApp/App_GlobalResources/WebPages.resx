@@ -336,4 +336,13 @@
   <data name="ParkingLotFloors_Edit" xml:space="preserve">
     <value>編輯樓層資訊</value>
   </data>
+  <data name="ParkingLotFloors_This" xml:space="preserve">
+    <value>這層樓的資訊嗎</value>
+  </data>
+  <data name="ParkingLotFloors_Delete" xml:space="preserve">
+    <value>刪除樓層</value>
+  </data>
+  <data name="ParkingLotFloors_Details" xml:space="preserve">
+    <value>樓層詳細資訊</value>
+  </data>
 </root>

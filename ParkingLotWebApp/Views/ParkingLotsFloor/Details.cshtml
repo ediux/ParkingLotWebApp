@@ -1,7 +1,24 @@
-﻿@model ParkingLotWebApp.Models.ParkingLotFloors
+﻿@model ParkingLotWebApp.Models.ParkingLotsFloor
 
 @{
     ViewBag.Title = "Details";
+    bool HasReturn = (bool)(ViewBag.HasReturn ?? false);
+}
+@section pageheader{
+    <h1 class="page-header">@WebPages.ParkingLotFloors <small>@ViewBag.Title</small></h1>
+}
+@section breadcrumb{
+    <li><a href="@Url.Action("Index","Manage")">管理</a></li>
+    <li><a href="@Url.Action("Index")">@WebPages.ParkingLotAreas_Index</a></li>
+    @if (HasReturn)
+    {
+        <li><a href="@Url.Action("Index",new { id=Model.ParkingLotsID })">@string.Format(WebPages.ParkingLotFloors_Index_fromArea, Model.ParkingLotsDetail.Name)</a></li>
+    }
+    else
+    {
+        <li><a href="@Url.Action("Index")">@WebPages.ParkingLotFloors_Index</a></li>
+    }
+    <li class="active">@ViewBag.Title</li>
 }
 
 <h2>Details</h2>

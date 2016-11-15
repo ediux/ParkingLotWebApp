@@ -33,20 +33,20 @@ namespace ParkingLotWebApp.Controllers
             return View(ParkingLotsFloor.ToList());
         }
 
-        // GET: ParkingLotsFloor/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ParkingLotsFloor ParkingLotsFloor = db.Get(id);
-            if (ParkingLotsFloor == null)
-            {
-                return HttpNotFound();
-            }
-            return View(ParkingLotsFloor);
-        }
+        //// GET: ParkingLotsFloor/Details/5
+        //public ActionResult Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    ParkingLotsFloor ParkingLotsFloor = db.Get(id);
+        //    if (ParkingLotsFloor == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(ParkingLotsFloor);
+        //}
 
         // GET: ParkingLotsFloor/Create
         public ActionResult Create(int? id)
@@ -99,8 +99,9 @@ namespace ParkingLotWebApp.Controllers
         }
 
         // GET: ParkingLotsFloor/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id, bool? HasReturn)
         {
+            ViewBag.HasReturn = HasReturn;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -109,7 +110,7 @@ namespace ParkingLotWebApp.Controllers
             if (ParkingLotsFloor == null)
             {
                 return HttpNotFound();
-            }            
+            }
             ViewBag.ParkingLotsDetail = new SelectList(db_area.Where(w => w.Void == false), "ID", "Name", ParkingLotsFloor.ParkingLotsID);
             return View(ParkingLotsFloor);
         }
@@ -120,21 +121,30 @@ namespace ParkingLotWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = @"ID,ParkingLotsID,FloorOrder,FloorName,CarTotalGrid
-      ,CarLastGrid,MotoTotalGrid,MotoLastGrid,Void,LastUpdate")] ParkingLotsFloor ParkingLotsFloor)
+      ,CarLastGrid,MotoTotalGrid,MotoLastGrid,Void,LastUpdate")] ParkingLotsFloor ParkingLotsFloor, bool? HasReturn)
         {
+            ViewBag.HasReturn = HasReturn;
             if (ModelState.IsValid)
             {
                 db.UnitOfWork.Context.Entry(ParkingLotsFloor).State = EntityState.Modified;
                 db.UnitOfWork.Commit();
-                return RedirectToAction("Index");
+                if (HasReturn != null && HasReturn.HasValue)
+                {
+                    return RedirectToAction("Index", new { id = ParkingLotsFloor.ParkingLotsID });
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
             }
             ViewBag.ParkingLotsID = new SelectList(db_area.Where(w => w.Void == false), "ID", "Name", ParkingLotsFloor.ParkingLotsID);
             return View(ParkingLotsFloor);
         }
 
         // GET: ParkingLotsFloor/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? id, bool? HasReturn)
         {
+            ViewBag.HasReturn = HasReturn;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -150,12 +160,22 @@ namespace ParkingLotWebApp.Controllers
         // POST: ParkingLotsFloor/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id, bool? HasReturn)
         {
+            ViewBag.HasReturn = HasReturn;
             ParkingLotsFloor ParkingLotsFloor = db.Get(id);
             db.Delete(ParkingLotsFloor);
             db.UnitOfWork.Commit();
-            return RedirectToAction("Index");
+
+            if (HasReturn != null && HasReturn.HasValue)
+            {
+                return RedirectToAction("Index", new { id = ParkingLotsFloor.ParkingLotsID });
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+
         }
 
         public ActionResult ListRemainParkingGridAmounts()

@@ -520,6 +520,24 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 刪除樓層 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotFloors_Delete {
+            get {
+                return ResourceManager.GetString("ParkingLotFloors_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 樓層詳細資訊 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotFloors_Details {
+            get {
+                return ResourceManager.GetString("ParkingLotFloors_Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 編輯樓層資訊 的當地語系化字串。
         /// </summary>
         public static string ParkingLotFloors_Edit {
@@ -552,6 +570,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         public static string ParkingLotFloors_ListRemainParkingGridAmounts {
             get {
                 return ResourceManager.GetString("ParkingLotFloors_ListRemainParkingGridAmounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 這層樓的資訊嗎 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotFloors_This {
+            get {
+                return ResourceManager.GetString("ParkingLotFloors_This", resourceCulture);
             }
         }
         
