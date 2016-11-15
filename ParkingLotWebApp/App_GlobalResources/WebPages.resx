@@ -333,4 +333,7 @@
   <data name="ETAs_Cars_BindingList" xml:space="preserve">
     <value>ETC與車輛綁定清單</value>
   </data>
+  <data name="ParkingLotFloors_Edit" xml:space="preserve">
+    <value>編輯樓層資訊</value>
+  </data>
 </root>

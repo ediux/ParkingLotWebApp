@@ -520,6 +520,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 編輯樓層資訊 的當地語系化字串。
+        /// </summary>
+        public static string ParkingLotFloors_Edit {
+            get {
+                return ResourceManager.GetString("ParkingLotFloors_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 所有停車樓樓層總覽 的當地語系化字串。
         /// </summary>
         public static string ParkingLotFloors_Index {

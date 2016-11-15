@@ -109,8 +109,8 @@ namespace ParkingLotWebApp.Controllers
             if (ParkingLotsFloor == null)
             {
                 return HttpNotFound();
-            }
-            ViewBag.ParkingLotsID = new SelectList(db_area.Where(w => w.Void == false), "ID", "Name", ParkingLotsFloor.ParkingLotsID);
+            }            
+            ViewBag.ParkingLotsDetail = new SelectList(db_area.Where(w => w.Void == false), "ID", "Name", ParkingLotsFloor.ParkingLotsID);
             return View(ParkingLotsFloor);
         }
 
