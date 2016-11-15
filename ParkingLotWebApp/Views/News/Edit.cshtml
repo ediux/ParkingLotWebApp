@@ -134,12 +134,6 @@
 @Scripts.Render("~/bundles/ckeditor/js")
 <script src="~/Scripts/ckeditor/lang/@(System.Globalization.CultureInfo.CurrentUICulture.Name.ToLowerInvariant()).js" type="text/javascript"></script>*@
 <script type="text/javascript">
-    function onSuccess() {
-        window.location.reload();
-    }
-    function deletePost() {
-        $('#replacepageholder').load('@Url.Action("Delete","News",new { id=Model.Id })');
-    }
     function init() {
         $('.input-daterange').datepicker({
             format: 'yyyy/mm/dd',
