@@ -384,7 +384,8 @@ namespace ParkingLotWebApp.Controllers
                     if (user != null)
                     {
                         var role = RoleManager.FindById(registerViewModel.RoleId);
-                        user.ApplicationRole.Add(role);
+                        //user.ApplicationRole.Add(role);
+                        UserManager.AddToRole(user.Id, role.Name);
                         UserManager.Update(user);
 
                         return RedirectToAction("AllUsers");

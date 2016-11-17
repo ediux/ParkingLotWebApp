@@ -35,18 +35,41 @@ namespace ParkingLotWebApp.Controllers
         public ActionResult Index()
         {
             var cars = db_etc.Where(w => w.Void == false)
-                .Include(c => c.Cars);
+                .Include(c => c.Cars)
+                .OrderByDescending(o => o.Cars.LastUpdateUTCTime)
+                .OrderByDescending(o => o.Cars.CarNumber); ;
 
             return View(cars
-                .OrderBy(o => o.Cars.CarNumber)
-                .OrderBy(o => o.Cars.CarType)
-                .OrderBy(o => o.Code)
-                .OrderBy(o => o.Cars.Employee.Code)
-                .OrderBy(o => o.Cars.Employee.Name)
-                .OrderByDescending(o => o.CreateUTCTime)
                 .ToList());
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Search(FormCollection collection)
+        {
+            string etagid = collection["SearchTagId"];
+            string carnumber = collection["SearchCarNumber"];
+            string empid = collection["SearchEmpNo"];
+
+            var cars = db_etc.Where(w => w.Void == false)
+                .Include(c => c.Cars);
+
+            if (!string.IsNullOrEmpty(etagid))
+                cars = cars.Where(w => w.Code.Contains(etagid));
+
+            if (!string.IsNullOrEmpty(carnumber))
+                cars = cars.Where(w => w.Cars.CarNumber.Contains(carnumber));
+
+            if (!string.IsNullOrEmpty(empid))
+                cars = cars.Where(w => w.Cars.Employee.Code.Contains(empid));
+
+            cars = cars
+                .OrderByDescending(o => o.Cars.LastUpdateUTCTime)
+                .OrderByDescending(o => o.Cars.CarNumber);
+
+            return View("Index", cars
+                .ToList());
+        }
 
         // GET: Cars/Details/5
         public ActionResult Details(int? id)
@@ -170,7 +193,8 @@ namespace ParkingLotWebApp.Controllers
                         cars.LastUpdateUserId = User.Identity.GetUserId<int>();
                         cars.LastUpdateUTCTime = DateTime.Now;
                     }
-                    else {
+                    else
+                    {
                         Cars tmpNewCar = new Cars();
                         tmpNewCar.CarNumber = car_carNumber;
                         tmpNewCar.CarPurposeTypeID = int.Parse(collection["Cars.CarPurposeTypeID"]);

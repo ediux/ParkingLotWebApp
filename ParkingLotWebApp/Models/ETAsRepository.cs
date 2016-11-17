@@ -16,6 +16,7 @@ namespace ParkingLotWebApp.Models
         {
             ICarsRepository db_cars = RepositoryHelper.GetCarsRepository(UnitOfWork);
             ICarPurposeTypesRepository db_cartypes = RepositoryHelper.GetCarPurposeTypesRepository(UnitOfWork);
+            IETAsRepository db_etc = RepositoryHelper.GetETAsRepository();
 
             if (ctr.ModelState.IsValid == false)
             {
@@ -26,81 +27,87 @@ namespace ParkingLotWebApp.Models
             {
                 try
                 {
-                    ETAs dbeTAs = All().SingleOrDefault(w => w.Code.Equals(eTAs.ETCID, StringComparison.InvariantCultureIgnoreCase));
-
-                    bool isNew = false; //旗標註明是否為新資料
-
-                    if (dbeTAs == null)
+                    if (eTAs.LastUploadTime != null)
                     {
-                        //當etc tag無資料
-                        //新增一筆ETC資料
-                        dbeTAs = CreateETCData(ctr, eTAs);
-                        isNew = true;
-                    }
+                        ETAs dbeTAs = All().SingleOrDefault(w => w.Code.Equals(eTAs.ETCID, StringComparison.InvariantCultureIgnoreCase));
 
-                    if (isNew)
-                    {
-                        //如果ETC是新增的
-                        //尋找車號
-                        var found_car = db_cars.All().SingleOrDefault(s => s.CarNumber == eTAs.CarID && s.CarType == "C");
+                        bool isNew = false; //旗標註明是否為新資料
 
-                        if (found_car == null)
+                        if (dbeTAs == null)
                         {
-                            found_car = CreateCarRefData(ctr, db_cars, eTAs);
+                            //當etc tag無資料
+                            //新增一筆ETC資料
+                            dbeTAs = CreateETCData(ctr, eTAs);
+                            isNew = true;
                         }
 
-                        dbeTAs.Cars = found_car;
-                        dbeTAs.CarRefId = found_car.Id;
-                        dbeTAs.LastUpdateUTCTime = DateTime.Now;
+                        if (isNew)
+                        {
+                            //如果ETC是新增的
+                            //尋找車號
+                            var found_car = db_cars.All().SingleOrDefault(s => s.CarNumber == eTAs.CarID && s.CarType == "C");
 
-                        Add(dbeTAs);
+                            if (found_car == null && string.IsNullOrEmpty(eTAs.CarID) == false)
+                            {
+                                found_car = CreateCarRefData(ctr, db_cars, eTAs);
+                                dbeTAs.Cars = found_car;
+                                dbeTAs.CarRefId = found_car.Id;
+                            }
+
+
+                            dbeTAs.LastUpdateUTCTime = DateTime.Now;
+
+                            Add(dbeTAs);
+                        }
+                        else
+                        {
+                            //資料庫已經有此Tag資料
+                            //已經有對應車輛
+                            if (dbeTAs.CarRefId != null && dbeTAs.CarRefId.HasValue)
+                            {
+                                if (eTAs.CarID != dbeTAs.Cars.CarNumber)
+                                {
+                                    //車號不一致
+                                    var found_car = db_cars.All().SingleOrDefault(s => s.CarNumber == eTAs.CarID && s.CarType == "C");
+
+                                    if (found_car == null)
+                                    {
+                                        //沒找到車號->新增
+                                        found_car = CreateCarRefData(ctr, db_cars, eTAs);
+                                    }
+
+                                    dbeTAs.Cars = found_car;
+                                    dbeTAs.CarRefId = found_car.Id;
+                                    dbeTAs.LastUpdateUTCTime = DateTime.Now;
+
+                                    UnitOfWork.Context.Entry(dbeTAs).State = EntityState.Modified;
+                                }
+                            }
+                            else
+                            {
+                                //完全沒對應
+                                var found_car = db_cars.All().SingleOrDefault(s => s.CarNumber == eTAs.CarID && s.CarType == "C");
+
+                                if (found_car == null)
+                                {
+                                    //沒找到車號->新增
+                                    found_car = CreateCarRefData(ctr, db_cars, eTAs);
+                                }
+
+                                dbeTAs.Cars = found_car;
+                                dbeTAs.CarRefId = found_car.Id;
+                                dbeTAs.LastUpdateUTCTime = DateTime.Now;
+
+                                UnitOfWork.Context.Entry(dbeTAs).State = EntityState.Modified;
+                            }
+                        }
                     }
-                    //else
-                    //{
-                    //    //資料庫已經有此Tag資料
-                    //    //已經有對應車輛
-                    //    if (dbeTAs.CarRefId != null && dbeTAs.CarRefId.HasValue)
-                    //    {
-                    //        if (eTAs.CarID != dbeTAs.Cars.CarNumber)
-                    //        {
-                    //            //車號不一致
-                    //            var found_car = db_cars.All().SingleOrDefault(s => s.CarNumber == eTAs.CarID && s.CarType == "C");
-
-                    //            if (found_car == null)
-                    //            {
-                    //                //沒找到車號->新增
-                    //                found_car = CreateCarRefData(ctr, db_cars, eTAs);                                   
-                    //            }
-
-                    //            dbeTAs.Cars = found_car;
-                    //            dbeTAs.CarRefId = found_car.Id;
-                    //            dbeTAs.LastUpdateUTCTime = DateTime.Now;
-
-                    //            UnitOfWork.Context.Entry(dbeTAs).State = EntityState.Modified;
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        //完全沒對應
-                    //        var found_car = db_cars.All().SingleOrDefault(s => s.CarNumber == eTAs.CarID && s.CarType == "C");
-
-                    //        if (found_car == null)
-                    //        {
-                    //            //沒找到車號->新增
-                    //            found_car = CreateCarRefData(ctr, db_cars, eTAs);
-                    //        }
-
-                    //        dbeTAs.Cars = found_car;
-                    //        dbeTAs.CarRefId = found_car.Id;
-                    //        dbeTAs.LastUpdateUTCTime = DateTime.Now;
-
-                    //        UnitOfWork.Context.Entry(dbeTAs).State = EntityState.Modified;
-                    //    }
-                    //}
+                    
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+
                     continue;
                 }
             }
@@ -111,9 +118,10 @@ namespace ParkingLotWebApp.Models
             }
             catch (DbUpdateConcurrencyException)
             {
-                throw;
+               
             }
 
+            syncdata.ETCBinding = new Collection<ETCBinding>(db_etc.Where(w => w.Void == false).ToList().ConvertAll(c=>new ETCBinding { CarID = c.Cars.CarNumber, CarPurposeTypeID = c.Cars.CarPurposeTypeID, ETCID=c.Code, CreateTime = c.CreateUTCTime, LastUpdateTiem = c.LastUpdateUTCTime, LastUploadTime =c.LastUpdateUTCTime }));
             syncdata.CarPurposeTypes = new Collection<CarPurposeTypes>(db_cartypes.All().ToList());
 
             return syncdata;
@@ -128,7 +136,7 @@ namespace ParkingLotWebApp.Models
             found_car.CarType = "C";
             found_car.LastUpdateUserId = found_car.CreateUserId = ctr.User.Identity.GetUserId<int>();
             found_car.CreateUTCTime = DateTime.Now;
-            found_car.LastUpdateUTCTime = eTAs.LastUploadTime??eTAs.CreateTime;
+            found_car.LastUpdateUTCTime = eTAs.LastUploadTime ?? eTAs.CreateTime;
             found_car.EmpId = null;
             eTAs.LastUpdateTiem = DateTime.Now;
             db_cars.Add(found_car);
@@ -166,7 +174,7 @@ namespace ParkingLotWebApp.Models
             {
                 //當etc tag無資料
                 //新增一筆ETC資料
-                dbeTAs = CreateETCData(ctr, eTAs);                
+                dbeTAs = CreateETCData(ctr, eTAs);
                 isNew = true;
             }
 

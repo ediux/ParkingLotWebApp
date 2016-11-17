@@ -37,7 +37,9 @@ namespace ParkingLotWebApp.Controllers
                               {
                                   CarID = q.Cars.CarNumber,
                                   CarPurposeTypeID = q.Cars.CarPurposeTypeID ?? 0,
-                                  ETCID = q.Code
+                                  ETCID = q.Code,
+                                  CreateTime = q.CreateUTCTime,
+                                  LastUpdateTiem = q.LastUpdateUTCTime
                               };
 
             model.ETCBinding = new Collection<ETCBinding>(etcsyncdata.ToList());
@@ -57,17 +59,21 @@ namespace ParkingLotWebApp.Controllers
 
             if (eTAs != null)
             {
-                ETCBinding bindingdata = new ETCBinding() {  ETCID = eTAs.Code };
+                ETCBinding bindingdata = new ETCBinding() { ETCID = eTAs.Code,
+                    CreateTime = eTAs.CreateUTCTime,
+                    LastUpdateTiem = eTAs.LastUpdateUTCTime
+                };
 
-                if(eTAs.CarRefId != null)
+                if (eTAs.CarRefId != null)
                 {
                     bindingdata.CarID = eTAs.Cars.CarNumber;
                     bindingdata.CarPurposeTypeID = eTAs.Cars.CarPurposeTypeID;
                 }
 
+
                 model.ETCBinding.Add(bindingdata);
             }
-                
+
 
             model.CarPurposeTypes = new Collection<CarPurposeTypes>(db_cartypes.All().ToList());
 

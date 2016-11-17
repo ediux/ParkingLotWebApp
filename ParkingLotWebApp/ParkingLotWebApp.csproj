@@ -484,6 +484,7 @@
       <DependentUpon>WbParkSystemModel.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\PreRelease.pubxml" />
+    <None Include="Properties\PublishProfiles\Production.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Scripts\ckeditor\ckeditor.js" />

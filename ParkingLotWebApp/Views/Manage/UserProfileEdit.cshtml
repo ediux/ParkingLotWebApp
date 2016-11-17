@@ -67,7 +67,6 @@
                 @Html.DropDownListFor(model=>model.RoleId, (SelectList)ViewBag.Role,"請選擇..." , new { @class = "form-control" })
             </div>
         </div>
-        @Model.RoleId
         @Html.HiddenFor(model => model.CreateUserId)
         @Html.HiddenFor(model => model.CreateTime)
         @Html.HiddenFor(model => model.LastUpdateUserId)
