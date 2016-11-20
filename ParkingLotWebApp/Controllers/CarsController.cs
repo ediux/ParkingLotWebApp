@@ -36,11 +36,20 @@ namespace ParkingLotWebApp.Controllers
         {
             var cars = db_etc.Where(w => w.Void == false)
                 .Include(c => c.Cars)
-                .OrderByDescending(o => o.Cars.LastUpdateUTCTime)
-                .OrderByDescending(o => o.Cars.CarNumber); ;
+                .OrderByDescending(o => o.Cars.LastUpdateUTCTime);
+
+            // cars = cars.OrderByDescending(o => o.Cars.CarNumber);
+            ViewBag.SearchTagId = "";
+            ViewBag.SearchCarNumber = "";
+            ViewBag.SearchEmpNo = "";
 
             return View(cars
                 .ToList());
+        }
+
+        public ActionResult Search()
+        {
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -50,6 +59,10 @@ namespace ParkingLotWebApp.Controllers
             string etagid = collection["SearchTagId"];
             string carnumber = collection["SearchCarNumber"];
             string empid = collection["SearchEmpNo"];
+
+            ViewBag.SearchTagId = etagid;
+            ViewBag.SearchCarNumber = carnumber;
+            ViewBag.SearchEmpNo = empid;
 
             var cars = db_etc.Where(w => w.Void == false)
                 .Include(c => c.Cars);
