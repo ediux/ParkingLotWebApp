@@ -30,6 +30,7 @@ namespace ParkingLotWebApp.Models
         public int CreateUserId { get; set; }
         [Required]
         [Display(Name = "建立時間")]
+        [UIHint("UTCLocalTimeDisplay")]
         public System.DateTime CreateUTCTime { get; set; }
         [Display(Name = "最後更新者")]
         [UIHint("UserIDMappingDisplay")]
