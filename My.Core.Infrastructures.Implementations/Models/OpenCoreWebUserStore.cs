@@ -115,8 +115,10 @@ namespace My.Core.Infrastructures.Implementations.Models
             {
                 throw new ArgumentException(string.Format("Role '{0}' does not exist!", roleName), "roleName");
             }
+            user.ApplicationRole.Clear();
             user.ApplicationRole.Add(role);
             await UpdateAsync(role);
+            await UpdateAsync(user);
         }
 
         public Task<System.Collections.Generic.IList<string>> GetRolesAsync(ApplicationUser user)
@@ -545,7 +547,7 @@ namespace My.Core.Infrastructures.Implementations.Models
             }
 
             roleRepo.Add(role);
-            await UpdateAsync(role);
+            await roleRepo.UnitOfWork.CommitAsync();
         }
 
         public async Task DeleteAsync(ApplicationRole role)
