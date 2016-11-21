@@ -18,10 +18,10 @@
 @if (!IsAjax)
 {
     @section breadcrumb{
-        <li class="active">華邦中科場停管系統</li>
+        <li class="active">首頁</li>
     }
     @section pageheader{
-        <h1 class="page-header">華邦中科場停管系統 <small>剩餘車位數量查詢</small></h1>
+        <h1 class="page-header">華邦中科廠停管系統 <small>剩餘車位數量查詢</small></h1>
     }
 
     <div class="row" style="margin-top:20px;" id="autorefresh">
@@ -76,46 +76,7 @@
                                     <h4 class="panel-title">@Model.Areas[key]</h4>
                                 </div>
                                 <div class="panel-body">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            @*<tr>
-                                                @if (Model.RemainSummary[key].All(w => w.NoneFloor == false))
-                                                {
-                                                    <th colspan="3">@Model.Areas[key]</th>
-                                                }
-                                                else
-                                                {
-                                                    <th colspan="2">@Model.Areas[key]</th>
-                                                }
-                                            </tr>*@
-                                            <tr>
-                                                @if (Model.RemainSummary[key].All(p => p.NoneFloor == false))
-                                                {
-                                                    <th>樓層</th>
-                                                }
-                                                <th>@WebPages.ParkingLotsFloor_CarLastGrid</th>
-                                                <th>@WebPages.ParkingLotsFloor_MotoLastGrid</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var item_n in Model.RemainSummary[key])
-                                            {
-                                                <tr>
-                                                    @if (item_n.NoneFloor == false)
-                                                    {
-                                                        <td>@item_n.樓層名稱</td>
-                                                        <td>@item_n.剩餘停車格數</td>
-                                                        <td>@item_n.剩餘機車格數</td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td>@item_n.剩餘停車格數</td>
-                                                        <td>@item_n.剩餘機車格數</td>
-                                                    }
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </table>
+
                                 </div>
                             </div>
          
