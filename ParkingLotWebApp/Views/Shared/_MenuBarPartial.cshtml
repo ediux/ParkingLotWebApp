@@ -12,24 +12,33 @@
             <li>
                 <a href="@Url.Action("Index", "Cars")">
 
-                    <i class="fa fa-laptop"></i>
+                    <i class="glyphicon glyphicon-list"></i>
                     <span>@WebPages.ETAs_Cars_Binding</span>
                 </a>
             </li>
+        }
+        @if (User.IsInRole("警衛") || User.IsInRole("Admins"))
+        {
             <li>
                 <a href="@Url.Action( "ListRemainParkingGridAmounts", "ParkingLotsFloor")">
 
-                    <i class="fa fa-laptop"></i>
+                    <i class="glyphicon glyphicon-question-sign"></i>
                     <span>剩餘車位數量維護</span>
                 </a>
             </li>
+        }
+
+        @if (User.IsInRole("Admins"))
+        {
             <li>
                 <a href="@Url.Action("Index", "News")">
 
-                    <i class="fa fa-laptop"></i>
+                    <i class="glyphicon glyphicon-bullhorn"></i>
                     <span>公告維護</span>
                 </a>
             </li>
+        }
+
         }
     </ul>
     <!-- end top-menu nav -->
