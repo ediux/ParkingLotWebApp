@@ -184,6 +184,7 @@ namespace ParkingLotWebApp.Controllers
         {
             if (userId <= 0 || code == null)
             {
+                Elmah.ErrorSignal.FromCurrentContext().Raise(new Exception("ConfirmEmail:使用者不存在!"));
                 return View("Error");
             }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
@@ -295,6 +296,7 @@ namespace ParkingLotWebApp.Controllers
             var userId = await SignInManager.GetVerifiedUserIdAsync();
             if (userId <= 0)
             {
+                Elmah.ErrorSignal.FromCurrentContext().Raise(new Exception("找不到目前登入的帳號!"));
                 return View("Error");
             }
             var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);

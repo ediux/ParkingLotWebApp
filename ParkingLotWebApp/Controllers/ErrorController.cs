@@ -11,6 +11,7 @@ namespace ParkingLotWebApp.Controllers
         // GET: Error
         public ActionResult Index()
         {
+            
             return View("Error");
         }
     }

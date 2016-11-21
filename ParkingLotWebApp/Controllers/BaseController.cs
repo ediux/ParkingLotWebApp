@@ -10,6 +10,7 @@ namespace ParkingLotWebApp.Controllers
     {
         protected override void OnException(ExceptionContext filterContext)
         {
+            Elmah.ErrorSignal.FromCurrentContext().Raise(filterContext.Exception);
             base.OnException(filterContext);
         }
 
