@@ -72,6 +72,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
@@ -219,6 +220,8 @@
     <Compile Include="Controllers\ParkingLotFloorsController.cs" />
     <Compile Include="Controllers\SQLiteSync.cs" />
     <Compile Include="Filters\AjaxValidateAntiForgeryTokenAttribute.cs" />
+    <Compile Include="Filters\ComponentRegistrationAttribute.cs" />
+    <Compile Include="Filters\DbAuthorizeAttribute.cs" />
     <Compile Include="Filters\ElmahErrorAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -315,6 +318,7 @@
     <Compile Include="Models\IUnitOfWork.cs">
       <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MenuViewModel.cs" />
     <Compile Include="Models\NewsPostViewModel.cs" />
     <Compile Include="Models\ParkingArea.cs">
       <DependentUpon>WbParkSystemModel.tt</DependentUpon>
@@ -965,7 +969,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -1068,6 +1074,9 @@
     <Content Include="Views\Cars\DeleteCar.cshtml" />
     <Content Include="Views\Shared\_LayoutColorAdmin.cshtml" />
     <Content Include="Views\Shared\_MenuBarPartial.cshtml" />
+    <Content Include="Views\Shared\_SubMenuBarPartial.cshtml" />
+    <Content Include="Views\Manage\MenuList.cshtml" />
+    <Content Include="Views\Manage\CreateMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
