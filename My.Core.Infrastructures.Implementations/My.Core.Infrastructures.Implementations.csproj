@@ -76,6 +76,7 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
@@ -86,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="Base\DefaultCacheProvider.cs" />
     <Compile Include="Base\OpenCoreWebExtensions.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbModel.Context.cs">
@@ -161,9 +163,36 @@
       <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Menus.cs">
+      <DependentUpon>ApplicationDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Menus.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MenusRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\OpenCoreWebUserStore.cs" />
     <Compile Include="Models\OpenWebSiteEntities.partial.cs" />
     <Compile Include="Models\RepositoryHelper.cs">
+      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\System_ControllerActions.cs">
+      <DependentUpon>ApplicationDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\System_ControllerActions.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\System_ControllerActionsRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\System_Controllers.cs">
+      <DependentUpon>ApplicationDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\System_Controllers.Partial.cs">
+      <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\System_ControllersRepository.cs">
       <DependentUpon>Edward.IRepository.EF6.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
