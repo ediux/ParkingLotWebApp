@@ -22,7 +22,7 @@
     <link href="~/Content/Site.css" rel="stylesheet" />
     <!-- ================== END BASE CSS STYLE ================== -->
     <!-- ================== BEGIN PAGE CSS STYLE ================== -->
-    @RenderSection("PAGECSS",required:false)
+    @RenderSection("PAGECSS", required: false)
     <!-- ================== END PAGE CSS STYLE ================== -->
     <!-- ================== BEGIN BASE JS ================== -->
     <script src="~/assets/plugins/pace/pace.min.js"></script>
@@ -40,7 +40,7 @@
             <div class="container-fluid">
                 <!-- begin mobile sidebar expand / collapse button -->
                 <div class="navbar-header">   
-                    <a href="@Url.Action("Index","Home")" class="navbar-brand"><img src="~/assets/img/logo.png" style="margin-top: -15px;" width="220" height="54" /></a>
+                    <a href="@Url.Action("Index", "Home")" class="navbar-brand"><p class="text-danger" style="font-size:xx-large; font-style:italic; font-weight:600;">Winbond<span class="m-l-15" style="font-size:medium;font-style:normal;font-weight:400; color:black;">eParking</span></p></a>
                     <button type="button" class="navbar-toggle" data-click="top-menu-toggled">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -50,9 +50,9 @@
                 <!-- end mobile sidebar expand / collapse button -->
                 <!-- begin header navigation right -->
                 <ul class="nav navbar-nav navbar-right">
-                    @RenderSection("searchbox",required:false)
+                    @RenderSection("searchbox", required: false)
 
-                    @RenderSection("NotificationsArea", required:false)
+                    @RenderSection("NotificationsArea", required: false)
                  
                     @Html.Partial("_LoginPartial")
                 </ul>
@@ -69,7 +69,8 @@
             }
         }
         <!-- begin #top-menu -->
-        @Html.Partial("_MenuBarPartial")
+        @{ Html.RenderAction("Menu", "Manage"); }
+        @*@Html.Partial("_MenuBarPartial")*@
         <!-- end #top-menu -->
         <!-- begin #content -->
         <div id="content" class="content">
@@ -83,7 +84,6 @@
             @RenderSection("pageheader", required: false)
             <!-- end page-header -->
             @RenderBody()
-
         </div>
         <!-- end #content -->
         <!-- begin theme-panel -->
