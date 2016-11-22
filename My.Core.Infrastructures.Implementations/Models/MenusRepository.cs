@@ -41,6 +41,12 @@ namespace My.Core.Infrastructures.Implementations.Models
             {
                 //Get the Customer data
                 customerData = ObjectSet.ToList();
+                Cache.Set(key, customerData, 60);                
+            }
+
+            if (customerData.Count == 0)
+            {
+                customerData = ObjectSet.ToList();
                 Cache.Set(key, customerData, 60);
             }
 

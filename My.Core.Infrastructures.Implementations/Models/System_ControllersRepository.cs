@@ -11,11 +11,11 @@ namespace My.Core.Infrastructures.Implementations.Models
         public void ScanForComponentRegistration(Type WebAppType)
         {
             ISystem_ControllerActionsRepository actionRepo = RepositoryHelper.GetSystem_ControllerActionsRepository(UnitOfWork);
+            var Controllers = WebAppType.Assembly.GetTypes().Where(s => s.FullName.EndsWith("Controller", StringComparison.InvariantCultureIgnoreCase));
 
             if (ObjectSet.Count() == 0)
             {
                 //資料表為空
-                var Controllers = WebAppType.Assembly.GetTypes().Where(s => s.FullName.EndsWith("Controller", StringComparison.InvariantCultureIgnoreCase));
 
                 if (Controllers.Any())
                 {
@@ -32,16 +32,29 @@ namespace My.Core.Infrastructures.Implementations.Models
                         ctrcls.Void = false;
 
                         Add(ctrcls);
-                        UnitOfWork.Commit();
-                        ctrcls = Reload(ctrcls);
+                        UnitOfWork.Commit();                                             
+                    }
+                }
+            }
+
+            if (actionRepo.All().Count() == 0)
+            {
+                if (Controllers.Any())
+                {
+                    foreach (var ctrl in Controllers)
+                    {
+                        System_Controllers ctrcls = All().SingleOrDefault(w => w.ClassName == ctrl.Name);
+
+                        if (ctrcls == null)
+                            continue;
 
                         var actions = ctrl.GetMethods();
                         if (actions.Any())
                         {
-                            actions = actions.Where(w => w.ReturnType == typeof(ActionResult) 
+                            actions = actions.Where(w => w.ReturnType == typeof(ActionResult)
                             || w.ReturnType == typeof(JsonResult)).ToArray();
 
-                            foreach(var action in actions)
+                            foreach (var action in actions)
                             {
                                 if (action.GetCustomAttributes(true).OfType<HttpPostAttribute>().Any())
                                     continue;
@@ -58,7 +71,7 @@ namespace My.Core.Infrastructures.Implementations.Models
                                 actiondata.Name = action.Name;
                                 actiondata.Void = false;
 
-                                actionRepo.Add(actiondata);                                
+                                actionRepo.Add(actiondata);
                             }
                             actionRepo.UnitOfWork.Commit();
                         }

@@ -26,6 +26,7 @@ namespace My.Core.Infrastructures.Implementations.Models
         public string IconCSS { get; set; }
         [Required]
         [Display(Name = "是否為外部URL")]
+        [UIHint("YesNoDisplay")]
         public bool IsExternalLinks { get; set; }
 
         [StringLength(2048, ErrorMessage = "欄位長度不得大於 2048 個字元")]
