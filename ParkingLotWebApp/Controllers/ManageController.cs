@@ -25,8 +25,12 @@ namespace ParkingLotWebApp.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManager;
+        private MenusRepository _menuRepo;
+
         public ManageController()
         {
+            _menuRepo = My.Core.Infrastructures.Implementations.Models.RepositoryHelper.GetMenusRepository();
+
         }
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -415,7 +419,7 @@ namespace ParkingLotWebApp.Controllers
 
         public async Task<ActionResult> UserProfileEdit(int id)
         {
-            
+
             ApplicationUser user = await UserManager.FindByIdAsync(id);
             UserProfileViewModel viewmodel = new UserProfileViewModel();
             viewmodel.Id = user.Id;
@@ -506,12 +510,12 @@ namespace ParkingLotWebApp.Controllers
                 //    UserManager.AddToRole(dbuser.Id, RoleManager.FindById(user.RoleId).Name);
                 //    //dbuser.ApplicationUserRole.Add(new ApplicationUserRole() { RoleId = user.RoleId, UserId = user.Id, Void = false });                    
                 //}
-                              
+
                 var dbrole = dbuser.ApplicationRole.FirstOrDefault();
 
                 if (dbrole != null)
                 {
-                    if(dbrole.Id != user.RoleId)
+                    if (dbrole.Id != user.RoleId)
                     {
                         UserManager.RemoveFromRoles(dbuser.Id, dbuser.ApplicationRole.Select(s => s.Name).ToArray());
                         UserManager.AddToRole(dbuser.Id, RoleManager.FindById(user.RoleId).Name);
@@ -612,6 +616,43 @@ namespace ParkingLotWebApp.Controllers
                 return RedirectToAction("AllRoles");
             }
             return View(role);
+        }
+
+        [AllowAnonymous]
+        [OutputCache(Duration = 7200, Location = System.Web.UI.OutputCacheLocation.Client)]
+        public ActionResult Menu()
+        {
+            int currentUserId = User.Identity.GetUserId<int>();
+
+            ApplicationUser user = UserManager.FindById(currentUserId);
+
+            if (user != null)
+            {
+                List<Menus> menus = user.ApplicationRole.SelectMany(s => s.Menus).Distinct().ToList();
+                return View("_MenuBarPartial", menus);
+            }
+
+            return View("_MenuBarPartial", new List<Menus>());
+        }
+
+        public ActionResult MenuList()
+        {
+            var model = _menuRepo.GetRootMenus().ToList();
+            return View(model);
+        }
+
+        public ActionResult CreateMenu()
+        {
+            ViewBag.ParentMenuId = new SelectList(_menuRepo.All().Where(w => w.Void == false).ToList());
+            var newmodel = new Menus();
+            return View(newmodel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Action()
+        {
+            return View();
         }
 
         protected override void Dispose(bool disposing)
