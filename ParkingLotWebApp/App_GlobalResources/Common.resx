@@ -188,11 +188,20 @@
   <data name="Longitude" xml:space="preserve">
     <value>經度</value>
   </data>
+  <data name="MenuManagement" xml:space="preserve">
+    <value>選單管理</value>
+  </data>
   <data name="News_NoMessage" xml:space="preserve">
     <value>此公告無內容!!</value>
   </data>
   <data name="OK" xml:space="preserve">
     <value>確認</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>密碼</value>
+  </data>
+  <data name="PermissionManagement" xml:space="preserve">
+    <value>權限管理</value>
   </data>
   <data name="ProfileEdit" xml:space="preserve">
     <value>編輯 {0} 的資料</value>
@@ -209,6 +218,9 @@
   <data name="SignUp" xml:space="preserve">
     <value>註冊</value>
   </data>
+  <data name="SystemManagement" xml:space="preserve">
+    <value>系統管理</value>
+  </data>
   <data name="Tel" xml:space="preserve">
     <value>電話</value>
   </data>
@@ -224,6 +236,12 @@
   </data>
   <data name="UserLists" xml:space="preserve">
     <value>帳號清單</value>
+  </data>
+  <data name="UserProfileChange" xml:space="preserve">
+    <value>變更帳戶設定</value>
+  </data>
+  <data name="UsersAndRolesManagement" xml:space="preserve">
+    <value>使用者與角色管理</value>
   </data>
   <data name="WebSiteName" xml:space="preserve">
     <value>華邦eParking</value>

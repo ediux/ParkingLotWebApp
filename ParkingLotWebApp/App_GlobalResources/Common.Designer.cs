@@ -268,6 +268,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 選單管理 的當地語系化字串。
+        /// </summary>
+        public static string MenuManagement {
+            get {
+                return ResourceManager.GetString("MenuManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 此公告無內容!! 的當地語系化字串。
         /// </summary>
         public static string News_NoMessage {
@@ -282,6 +291,24 @@ namespace ParkingLotWebApp.App_GlobalResources {
         public static string OK {
             get {
                 return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 密碼 的當地語系化字串。
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 權限管理 的當地語系化字串。
+        /// </summary>
+        public static string PermissionManagement {
+            get {
+                return ResourceManager.GetString("PermissionManagement", resourceCulture);
             }
         }
         
@@ -331,6 +358,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 系統管理 的當地語系化字串。
+        /// </summary>
+        public static string SystemManagement {
+            get {
+                return ResourceManager.GetString("SystemManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 電話 的當地語系化字串。
         /// </summary>
         public static string Tel {
@@ -372,6 +408,24 @@ namespace ParkingLotWebApp.App_GlobalResources {
         public static string UserLists {
             get {
                 return ResourceManager.GetString("UserLists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 變更帳戶設定 的當地語系化字串。
+        /// </summary>
+        public static string UserProfileChange {
+            get {
+                return ResourceManager.GetString("UserProfileChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 使用者與角色管理 的當地語系化字串。
+        /// </summary>
+        public static string UsersAndRolesManagement {
+            get {
+                return ResourceManager.GetString("UsersAndRolesManagement", resourceCulture);
             }
         }
         
