@@ -25,12 +25,14 @@ namespace ParkingLotWebApp.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManager;
-        private MenusRepository _menuRepo;
-
+        private IMenusRepository _menuRepo;
+        private ISystem_ControllerActionsRepository _actionRepo;
+        private ISystem_ControllersRepository _ctrlRepo;
         public ManageController()
         {
             _menuRepo = My.Core.Infrastructures.Implementations.Models.RepositoryHelper.GetMenusRepository();
-
+            _actionRepo = My.Core.Infrastructures.Implementations.Models.RepositoryHelper.GetSystem_ControllerActionsRepository(_menuRepo.UnitOfWork);
+            _ctrlRepo = My.Core.Infrastructures.Implementations.Models.RepositoryHelper.GetSystem_ControllersRepository(_menuRepo.UnitOfWork);
         }
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -619,7 +621,7 @@ namespace ParkingLotWebApp.Controllers
         }
 
         [AllowAnonymous]
-        [OutputCache(Duration = 7200, Location = System.Web.UI.OutputCacheLocation.Client)]
+        //[OutputCache(Duration = 60, Location = System.Web.UI.OutputCacheLocation.Client)]
         public ActionResult Menu()
         {
             int currentUserId = User.Identity.GetUserId<int>();
@@ -643,16 +645,32 @@ namespace ParkingLotWebApp.Controllers
 
         public ActionResult CreateMenu()
         {
-            ViewBag.ParentMenuId = new SelectList(_menuRepo.All().Where(w => w.Void == false).ToList());
+            ViewBag.ParentMenuId = new SelectList(_menuRepo.All().Where(w => w.Void == false).ToList(), "Id", "Name");
+            ViewBag.System_ControllerActionsId = new SelectList(_actionRepo.All().Where(w => w.Void == false)
+               .Select(s => new ControllerActionViewModel() { Id = s.Id, Name = s.Name + "(" + s.System_Controllers.Name + ")" }).ToList(), "Id", "Name");
             var newmodel = new Menus();
             return View(newmodel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Action()
+        public ActionResult CreateMenu([Bind(Include = "Name,IconCSS,IsExternalLinks,ExternalURL,ParentMenuId,System_ControllerActionsId")]Menus menu)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                menu.LastUpdateUserId = menu.CreateUserId = User.Identity.GetUserId<int>();
+                menu.LastUpdateTime = menu.CreateTime = DateTime.Now;
+                menu.Void = false;
+
+                _menuRepo.Add(menu);
+                _menuRepo.UnitOfWork.Commit();
+                return RedirectToAction("MenuList");
+            }
+            ViewBag.ParentMenuId = new SelectList(_menuRepo.All().Where(w => w.Void == false).ToList(), "Id", "Name");
+            //ViewBag.System_ControllerActionsId = new SelectList(_actionRepo.All().Where(w => w.Void == false).ToList(), "Id", "Name");
+            ViewBag.System_ControllerActionsId = new SelectList(_actionRepo.All().Where(w => w.Void == false)
+               .Select(s => new ControllerActionViewModel() { Id = s.Id, Name = s.Name + "(" + s.System_Controllers.Name + ")" }).ToList(), "Id", "Name");
+            return View(menu);
         }
 
         protected override void Dispose(bool disposing)

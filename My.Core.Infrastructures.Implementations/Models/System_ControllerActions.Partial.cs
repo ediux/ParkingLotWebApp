@@ -18,7 +18,7 @@ namespace My.Core.Infrastructures.Implementations.Models
 
         [StringLength(256, ErrorMessage = "欄位長度不得大於 256 個字元")]
         [Required]
-        [Display(Name = "控制器路由名稱")]
+        [Display(Name = "動作名稱")]
         public string Name { get; set; }
         [Display(Name = "所屬控制器")]
         public Nullable<int> ControllerId { get; set; }

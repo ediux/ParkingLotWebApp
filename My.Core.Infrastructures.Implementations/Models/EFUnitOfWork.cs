@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Threading.Tasks;
 
@@ -15,7 +16,24 @@ namespace My.Core.Infrastructures.Implementations.Models
 
 		public void Commit()
 		{
-			Context.SaveChanges();
+            try
+            {
+                Context.SaveChanges();
+            }
+            catch(System.Data.Entity.Validation.DbEntityValidationException dbva)
+            {
+                List<string> msg = new List<string>();
+                foreach(var o in dbva.EntityValidationErrors)
+                {
+                    foreach(var i in o.ValidationErrors)
+                    {
+                        msg.Add(string.Format("{0}:{1}", i.PropertyName, i.ErrorMessage));
+                    }
+                }
+
+                throw new System.Exception(string.Join(",", msg.ToArray()));
+            }
+			
 		}
 		
 		public async Task CommitAsync()

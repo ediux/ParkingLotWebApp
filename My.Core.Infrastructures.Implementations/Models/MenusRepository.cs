@@ -51,17 +51,7 @@ namespace My.Core.Infrastructures.Implementations.Models
         {
             return All().Where(w => w.ParentMenuId == null && w.Void == false);
         }
-
-        public override Menus Add(Menus entity)
-        {
-            if (Cache.IsSet(key))
-            {
-                List<Menus> customerData = Cache.Get(key) as List<Menus>;
-                customerData.Add(entity);
-                Cache.Set(key, customerData, 60);
-            }
-            return base.Add(entity);
-        }
+        
     }
 
     public partial interface IMenusRepository : IRepositoryBase<Menus>

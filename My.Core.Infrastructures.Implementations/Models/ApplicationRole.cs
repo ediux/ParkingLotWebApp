@@ -33,5 +33,7 @@ namespace My.Core.Infrastructures.Implementations.Models
         public virtual ICollection<ApplicationUser> ApplicationUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Menus> Menus { get; set; }
+        public virtual ApplicationRole ApplicationRole1 { get; set; }
+        public virtual ApplicationRole ApplicationRole2 { get; set; }
     }
 }

@@ -283,6 +283,7 @@
     <Compile Include="Models\CarsRepository.cs">
       <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ControllerActionViewModel.cs" />
     <Compile Include="Models\Edward.IRepository.EF6.MultiEDMX.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

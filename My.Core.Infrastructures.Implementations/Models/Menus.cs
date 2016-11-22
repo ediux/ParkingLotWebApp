@@ -18,7 +18,6 @@ namespace My.Core.Infrastructures.Implementations.Models
         public Menus()
         {
             this.ChildMenus = new HashSet<Menus>();
-            this.System_ControllerActions = new HashSet<System_ControllerActions>();
             this.ApplicationRole = new HashSet<ApplicationRole>();
         }
     
@@ -33,13 +32,13 @@ namespace My.Core.Infrastructures.Implementations.Models
         public System.DateTime CreateTime { get; set; }
         public Nullable<int> LastUpdateUserId { get; set; }
         public Nullable<System.DateTime> LastUpdateTime { get; set; }
+        public Nullable<int> System_ControllerActionsId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Menus> ChildMenus { get; set; }
         public virtual Menus ParentMenu { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<System_ControllerActions> System_ControllerActions { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ApplicationRole> ApplicationRole { get; set; }
+        public virtual System_ControllerActions System_ControllerActions { get; set; }
     }
 }

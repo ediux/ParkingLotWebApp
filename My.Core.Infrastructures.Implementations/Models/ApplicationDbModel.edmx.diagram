@@ -17,8 +17,9 @@
         <EntityTypeShape EntityType="OpenWebSiteModel.System_Controllers" Width="1.5" PointX="3" PointY="16.375" />
         <AssociationConnector Association="OpenWebSiteModel.FK_Menus_ParentMenus" />
         <AssociationConnector Association="OpenWebSiteModel.FK_System_ControllerActions_System_Controllers" />
-        <AssociationConnector Association="OpenWebSiteModel.MenuControllerMapping" />
         <AssociationConnector Association="OpenWebSiteModel.MenusInRoles" />
+        <AssociationConnector Association="OpenWebSiteModel.FK_ApplicationRole_ApplicationRole" />
+        <AssociationConnector Association="OpenWebSiteModel.FK_Menus_System_ControllerActions" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

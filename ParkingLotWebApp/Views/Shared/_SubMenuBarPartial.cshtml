@@ -9,11 +9,13 @@
         }
         else
         {
-            foreach (var action in item.System_ControllerActions)
+            if (item.System_ControllerActions != null)
             {
-                <li><a href="@Url.Action(action.Name,action.System_Controllers.Name)">@item.Name</a></li>
-            }
-            
+                if (item.System_ControllerActions.System_Controllers != null)
+                {
+                    <li><a href="@Url.Action(item.System_ControllerActions.Name,item.System_ControllerActions.System_Controllers.Name)">@item.Name</a></li>
+                }
+            }            
         }
         if (item.ChildMenus.Any(v => v.Void == false))
         {

@@ -51,15 +51,18 @@ namespace My.Core.Infrastructures.Implementations.Models
         [Display(Name = "LastUpdateTime", ResourceType = typeof(MUI))]
         [UIHint("UTCLocalTimeDisplay")]
         public Nullable<System.DateTime> LastUpdateTime { get; set; }
-
+        
+        public Nullable<int> System_ControllerActionsId { get; set; }
         [Newtonsoft.Json.JsonIgnore]
         [Display(Name = "子選單")]
         public virtual ICollection<Menus> ChildMenus { get; set; }
         [Display(Name = "上層選單")]
         public virtual Menus ParentMenu { get; set; }
-        [Display(Name = "對應控制器動作")]
-        public virtual ICollection<System_ControllerActions> System_ControllerActions { get; set; }
+                
         [Display(Name = "應用程式角色")]
         public virtual ICollection<ApplicationRole> ApplicationRole { get; set; }
+
+        [Display(Name = "對應控制器動作")]
+        public virtual System_ControllerActions System_ControllerActions { get; set; }
     }
 }

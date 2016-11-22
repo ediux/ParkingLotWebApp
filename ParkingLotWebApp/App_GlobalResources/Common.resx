@@ -151,6 +151,9 @@
   <data name="Create" xml:space="preserve">
     <value>建立</value>
   </data>
+  <data name="CreateMenu" xml:space="preserve">
+    <value>建立選單</value>
+  </data>
   <data name="CreateNewUserInAdminsMode" xml:space="preserve">
     <value>新增帳號</value>
   </data>
@@ -187,6 +190,9 @@
   </data>
   <data name="Longitude" xml:space="preserve">
     <value>經度</value>
+  </data>
+  <data name="MenuList" xml:space="preserve">
+    <value>選單列表</value>
   </data>
   <data name="MenuManagement" xml:space="preserve">
     <value>選單管理</value>

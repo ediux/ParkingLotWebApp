@@ -18,6 +18,11 @@ namespace ParkingLotWebApp
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            My.Core.Infrastructures.Implementations.Models.ISystem_ControllersRepository ctrRepo = My.Core.Infrastructures.Implementations.Models.RepositoryHelper.GetSystem_ControllersRepository();
+            ctrRepo.ScanForComponentRegistration(typeof(ParkingLotWebApp.MvcApplication));
+            ctrRepo.Dispose();
+            ctrRepo = null;
         }
 
         protected void Application_BeginRequest(Object sender, EventArgs e)

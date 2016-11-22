@@ -160,6 +160,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 建立選單 的當地語系化字串。
+        /// </summary>
+        public static string CreateMenu {
+            get {
+                return ResourceManager.GetString("CreateMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 新增帳號 的當地語系化字串。
         /// </summary>
         public static string CreateNewUserInAdminsMode {
@@ -264,6 +273,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         public static string Longitude {
             get {
                 return ResourceManager.GetString("Longitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 選單列表 的當地語系化字串。
+        /// </summary>
+        public static string MenuList {
+            get {
+                return ResourceManager.GetString("MenuList", resourceCulture);
             }
         }
         
