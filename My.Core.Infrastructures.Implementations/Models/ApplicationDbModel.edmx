@@ -71,6 +71,65 @@
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="RoleId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="MenuControllerMapping">
+          <Key>
+            <PropertyRef Name="MenuId" />
+            <PropertyRef Name="ControllerActionId" />
+          </Key>
+          <Property Name="MenuId" Type="int" Nullable="false" />
+          <Property Name="ControllerActionId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Menus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="IconCSS" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsExternalLinks" Type="bit" Nullable="false" />
+          <Property Name="ExternalURL" Type="nvarchar" MaxLength="2048" />
+          <Property Name="Void" Type="bit" Nullable="false" />
+          <Property Name="ParentMenuId" Type="int" />
+          <Property Name="CreateUserId" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="smalldatetime" Nullable="false" />
+          <Property Name="LastUpdateUserId" Type="int" />
+          <Property Name="LastUpdateTime" Type="smalldatetime" />
+        </EntityType>
+        <EntityType Name="MenusInRoles">
+          <Key>
+            <PropertyRef Name="MenuId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="MenuId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="System_ControllerActions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="ControllerId" Type="int" />
+          <Property Name="Void" Type="bit" Nullable="false" />
+          <Property Name="CreateUserId" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="smalldatetime" Nullable="false" />
+          <Property Name="LastUpdateUserId" Type="int" />
+          <Property Name="LastUpdateTime" Type="smalldatetime" />
+        </EntityType>
+        <EntityType Name="System_Controllers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="ClassName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Namespace" Type="nvarchar" MaxLength="512" Nullable="false" />
+          <Property Name="Void" Type="bit" Nullable="false" />
+          <Property Name="CreateUserId" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="smalldatetime" Nullable="false" />
+          <Property Name="LastUpdateUserId" Type="int" />
+          <Property Name="LastUpdateTime" Type="smalldatetime" />
+        </EntityType>
         <Association Name="FK_ApplicationUserClaim_ToApplicationUser">
           <End Role="ApplicationUser" Type="Self.ApplicationUser" Multiplicity="1" />
           <End Role="ApplicationUserClaim" Type="Self.ApplicationUserClaim" Multiplicity="*" />
@@ -119,12 +178,89 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MenuControllerMapping_Menus">
+          <End Role="Menus" Type="Self.Menus" Multiplicity="1" />
+          <End Role="MenuControllerMapping" Type="Self.MenuControllerMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Menus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MenuControllerMapping">
+              <PropertyRef Name="MenuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MenuControllerMapping_System_ControllerActions">
+          <End Role="System_ControllerActions" Type="Self.System_ControllerActions" Multiplicity="1" />
+          <End Role="MenuControllerMapping" Type="Self.MenuControllerMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="System_ControllerActions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MenuControllerMapping">
+              <PropertyRef Name="ControllerActionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Menus_ParentMenus">
+          <End Role="Menus" Type="Self.Menus" Multiplicity="0..1" />
+          <End Role="Menus1" Type="Self.Menus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Menus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Menus1">
+              <PropertyRef Name="ParentMenuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MenusInRoles_ApplicationRole">
+          <End Role="ApplicationRole" Type="Self.ApplicationRole" Multiplicity="1" />
+          <End Role="MenusInRoles" Type="Self.MenusInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApplicationRole">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MenusInRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MenusInRoles_Menus">
+          <End Role="Menus" Type="Self.Menus" Multiplicity="1" />
+          <End Role="MenusInRoles" Type="Self.MenusInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Menus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MenusInRoles">
+              <PropertyRef Name="MenuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_System_ControllerActions_System_Controllers">
+          <End Role="System_Controllers" Type="Self.System_Controllers" Multiplicity="0..1" />
+          <End Role="System_ControllerActions" Type="Self.System_ControllerActions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="System_Controllers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="System_ControllerActions">
+              <PropertyRef Name="ControllerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="OpenWebSiteModelStoreContainer">
           <EntitySet Name="ApplicationRole" EntityType="Self.ApplicationRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ApplicationUser" EntityType="Self.ApplicationUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ApplicationUserClaim" EntityType="Self.ApplicationUserClaim" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ApplicationUserLogin" EntityType="Self.ApplicationUserLogin" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ApplicationUserRole" EntityType="Self.ApplicationUserRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MenuControllerMapping" EntityType="Self.MenuControllerMapping" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Menus" EntityType="Self.Menus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MenusInRoles" EntityType="Self.MenusInRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="System_ControllerActions" EntityType="Self.System_ControllerActions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="System_Controllers" EntityType="Self.System_Controllers" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_ApplicationUserClaim_ToApplicationUser" Association="Self.FK_ApplicationUserClaim_ToApplicationUser">
             <End Role="ApplicationUser" EntitySet="ApplicationUser" />
             <End Role="ApplicationUserClaim" EntitySet="ApplicationUserClaim" />
@@ -140,6 +276,30 @@
           <AssociationSet Name="FK_ApplicationUserRole_ToApplicationUser" Association="Self.FK_ApplicationUserRole_ToApplicationUser">
             <End Role="ApplicationUser" EntitySet="ApplicationUser" />
             <End Role="ApplicationUserRole" EntitySet="ApplicationUserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MenuControllerMapping_Menus" Association="Self.FK_MenuControllerMapping_Menus">
+            <End Role="Menus" EntitySet="Menus" />
+            <End Role="MenuControllerMapping" EntitySet="MenuControllerMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MenuControllerMapping_System_ControllerActions" Association="Self.FK_MenuControllerMapping_System_ControllerActions">
+            <End Role="System_ControllerActions" EntitySet="System_ControllerActions" />
+            <End Role="MenuControllerMapping" EntitySet="MenuControllerMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Menus_ParentMenus" Association="Self.FK_Menus_ParentMenus">
+            <End Role="Menus" EntitySet="Menus" />
+            <End Role="Menus1" EntitySet="Menus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MenusInRoles_ApplicationRole" Association="Self.FK_MenusInRoles_ApplicationRole">
+            <End Role="ApplicationRole" EntitySet="ApplicationRole" />
+            <End Role="MenusInRoles" EntitySet="MenusInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MenusInRoles_Menus" Association="Self.FK_MenusInRoles_Menus">
+            <End Role="Menus" EntitySet="Menus" />
+            <End Role="MenusInRoles" EntitySet="MenusInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_System_ControllerActions_System_Controllers" Association="Self.FK_System_ControllerActions_System_Controllers">
+            <End Role="System_Controllers" EntitySet="System_Controllers" />
+            <End Role="System_ControllerActions" EntitySet="System_ControllerActions" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -162,6 +322,25 @@
           <AssociationSet Name="ApplicationUserRole" Association="OpenWebSiteModel.ApplicationUserRole">
             <End Role="ApplicationRole" EntitySet="ApplicationRole" />
             <End Role="ApplicationUser" EntitySet="ApplicationUser" />
+          </AssociationSet>
+          <EntitySet Name="Menus" EntityType="OpenWebSiteModel.Menus" />
+          <EntitySet Name="System_ControllerActions" EntityType="OpenWebSiteModel.System_ControllerActions" />
+          <EntitySet Name="System_Controllers" EntityType="OpenWebSiteModel.System_Controllers" />
+          <AssociationSet Name="FK_Menus_ParentMenus" Association="OpenWebSiteModel.FK_Menus_ParentMenus">
+            <End Role="Menus" EntitySet="Menus" />
+            <End Role="Menus1" EntitySet="Menus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_System_ControllerActions_System_Controllers" Association="OpenWebSiteModel.FK_System_ControllerActions_System_Controllers">
+            <End Role="System_Controllers" EntitySet="System_Controllers" />
+            <End Role="System_ControllerActions" EntitySet="System_ControllerActions" />
+          </AssociationSet>
+          <AssociationSet Name="MenuControllerMapping" Association="OpenWebSiteModel.MenuControllerMapping">
+            <End Role="Menus" EntitySet="Menus" />
+            <End Role="System_ControllerActions" EntitySet="System_ControllerActions" />
+          </AssociationSet>
+          <AssociationSet Name="MenusInRoles" Association="OpenWebSiteModel.MenusInRoles">
+            <End Role="ApplicationRole" EntitySet="ApplicationRole" />
+            <End Role="Menus" EntitySet="Menus" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="ApplicationUserLogin">
@@ -196,6 +375,7 @@
           <Property Name="LastUpdateUserId" Type="Int32" Nullable="false" />
           <Property Name="LastUpdateTime" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="ApplicationUser" Relationship="OpenWebSiteModel.ApplicationUserRole" FromRole="ApplicationRole" ToRole="ApplicationUser" />
+          <NavigationProperty Name="Menus" Relationship="OpenWebSiteModel.MenusInRoles" FromRole="ApplicationRole" ToRole="Menus" />
         </EntityType>
         <EntityType Name="ApplicationUser">
           <Key>
@@ -255,6 +435,88 @@
         <Association Name="ApplicationUserRole">
           <End Type="OpenWebSiteModel.ApplicationRole" Role="ApplicationRole" Multiplicity="*" />
           <End Type="OpenWebSiteModel.ApplicationUser" Role="ApplicationUser" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Menus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="IconCSS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsExternalLinks" Type="Boolean" Nullable="false" />
+          <Property Name="ExternalURL" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
+          <Property Name="Void" Type="Boolean" Nullable="false" />
+          <Property Name="ParentMenuId" Type="Int32" />
+          <Property Name="CreateUserId" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="LastUpdateUserId" Type="Int32" />
+          <Property Name="LastUpdateTime" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="ChildMenus" Relationship="OpenWebSiteModel.FK_Menus_ParentMenus" FromRole="Menus" ToRole="Menus1" />
+          <NavigationProperty Name="ParentMenu" Relationship="OpenWebSiteModel.FK_Menus_ParentMenus" FromRole="Menus1" ToRole="Menus" />
+          <NavigationProperty Name="System_ControllerActions" Relationship="OpenWebSiteModel.MenuControllerMapping" FromRole="Menus" ToRole="System_ControllerActions" />
+          <NavigationProperty Name="ApplicationRole" Relationship="OpenWebSiteModel.MenusInRoles" FromRole="Menus" ToRole="ApplicationRole" />
+        </EntityType>
+        <EntityType Name="System_ControllerActions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="ControllerId" Type="Int32" />
+          <Property Name="Void" Type="Boolean" Nullable="false" />
+          <Property Name="CreateUserId" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="LastUpdateUserId" Type="Int32" />
+          <Property Name="LastUpdateTime" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="System_Controllers" Relationship="OpenWebSiteModel.FK_System_ControllerActions_System_Controllers" FromRole="System_ControllerActions" ToRole="System_Controllers" />
+          <NavigationProperty Name="Menus" Relationship="OpenWebSiteModel.MenuControllerMapping" FromRole="System_ControllerActions" ToRole="Menus" />
+        </EntityType>
+        <EntityType Name="System_Controllers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="ClassName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Namespace" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="Void" Type="Boolean" Nullable="false" />
+          <Property Name="CreateUserId" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="LastUpdateUserId" Type="Int32" />
+          <Property Name="LastUpdateTime" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="System_ControllerActions" Relationship="OpenWebSiteModel.FK_System_ControllerActions_System_Controllers" FromRole="System_Controllers" ToRole="System_ControllerActions" />
+        </EntityType>
+        <Association Name="FK_Menus_ParentMenus">
+          <End Type="OpenWebSiteModel.Menus" Role="Menus" Multiplicity="0..1" />
+          <End Type="OpenWebSiteModel.Menus" Role="Menus1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Menus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Menus1">
+              <PropertyRef Name="ParentMenuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_System_ControllerActions_System_Controllers">
+          <End Type="OpenWebSiteModel.System_Controllers" Role="System_Controllers" Multiplicity="0..1" />
+          <End Type="OpenWebSiteModel.System_ControllerActions" Role="System_ControllerActions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="System_Controllers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="System_ControllerActions">
+              <PropertyRef Name="ControllerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MenuControllerMapping">
+          <End Type="OpenWebSiteModel.Menus" Role="Menus" Multiplicity="*" />
+          <End Type="OpenWebSiteModel.System_ControllerActions" Role="System_ControllerActions" Multiplicity="*" />
+        </Association>
+        <Association Name="MenusInRoles">
+          <End Type="OpenWebSiteModel.ApplicationRole" Role="ApplicationRole" Multiplicity="*" />
+          <End Type="OpenWebSiteModel.Menus" Role="Menus" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -326,6 +588,68 @@
           <AssociationSetMapping Name="ApplicationUserRole" TypeName="OpenWebSiteModel.ApplicationUserRole" StoreEntitySet="ApplicationUserRole">
             <EndProperty Name="ApplicationUser">
               <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="ApplicationRole">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Menus">
+            <EntityTypeMapping TypeName="OpenWebSiteModel.Menus">
+              <MappingFragment StoreEntitySet="Menus">
+                <ScalarProperty Name="LastUpdateTime" ColumnName="LastUpdateTime" />
+                <ScalarProperty Name="LastUpdateUserId" ColumnName="LastUpdateUserId" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
+                <ScalarProperty Name="ParentMenuId" ColumnName="ParentMenuId" />
+                <ScalarProperty Name="Void" ColumnName="Void" />
+                <ScalarProperty Name="ExternalURL" ColumnName="ExternalURL" />
+                <ScalarProperty Name="IsExternalLinks" ColumnName="IsExternalLinks" />
+                <ScalarProperty Name="IconCSS" ColumnName="IconCSS" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="System_ControllerActions">
+            <EntityTypeMapping TypeName="OpenWebSiteModel.System_ControllerActions">
+              <MappingFragment StoreEntitySet="System_ControllerActions">
+                <ScalarProperty Name="LastUpdateTime" ColumnName="LastUpdateTime" />
+                <ScalarProperty Name="LastUpdateUserId" ColumnName="LastUpdateUserId" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
+                <ScalarProperty Name="Void" ColumnName="Void" />
+                <ScalarProperty Name="ControllerId" ColumnName="ControllerId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="System_Controllers">
+            <EntityTypeMapping TypeName="OpenWebSiteModel.System_Controllers">
+              <MappingFragment StoreEntitySet="System_Controllers">
+                <ScalarProperty Name="LastUpdateTime" ColumnName="LastUpdateTime" />
+                <ScalarProperty Name="LastUpdateUserId" ColumnName="LastUpdateUserId" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
+                <ScalarProperty Name="Void" ColumnName="Void" />
+                <ScalarProperty Name="Namespace" ColumnName="Namespace" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="MenuControllerMapping" TypeName="OpenWebSiteModel.MenuControllerMapping" StoreEntitySet="MenuControllerMapping">
+            <EndProperty Name="System_ControllerActions">
+              <ScalarProperty Name="Id" ColumnName="ControllerActionId" />
+            </EndProperty>
+            <EndProperty Name="Menus">
+              <ScalarProperty Name="Id" ColumnName="MenuId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="MenusInRoles" TypeName="OpenWebSiteModel.MenusInRoles" StoreEntitySet="MenusInRoles">
+            <EndProperty Name="Menus">
+              <ScalarProperty Name="Id" ColumnName="MenuId" />
             </EndProperty>
             <EndProperty Name="ApplicationRole">
               <ScalarProperty Name="Id" ColumnName="RoleId" />

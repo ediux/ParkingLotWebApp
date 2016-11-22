@@ -12,26 +12,25 @@ namespace My.Core.Infrastructures.Implementations.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ApplicationRole
+    public partial class System_Controllers
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ApplicationRole()
+        public System_Controllers()
         {
-            this.ApplicationUser = new HashSet<ApplicationUser>();
-            this.Menus = new HashSet<Menus>();
+            this.System_ControllerActions = new HashSet<System_ControllerActions>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
+        public string ClassName { get; set; }
+        public string Namespace { get; set; }
         public bool Void { get; set; }
         public int CreateUserId { get; set; }
         public System.DateTime CreateTime { get; set; }
-        public int LastUpdateUserId { get; set; }
-        public System.DateTime LastUpdateTime { get; set; }
+        public Nullable<int> LastUpdateUserId { get; set; }
+        public Nullable<System.DateTime> LastUpdateTime { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ApplicationUser> ApplicationUser { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Menus> Menus { get; set; }
+        public virtual ICollection<System_ControllerActions> System_ControllerActions { get; set; }
     }
 }

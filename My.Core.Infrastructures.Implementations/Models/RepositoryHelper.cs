@@ -70,5 +70,47 @@ namespace My.Core.Infrastructures.Implementations.Models
 			repository.UnitOfWork = unitOfWork;
 			return repository;
 		}		
+
+		public static MenusRepository GetMenusRepository()
+		{
+			var repository = new MenusRepository();
+			repository.UnitOfWork = GetUnitOfWork();
+			return repository;
+		}
+
+		public static MenusRepository GetMenusRepository(IUnitOfWork unitOfWork)
+		{
+			var repository = new MenusRepository();
+			repository.UnitOfWork = unitOfWork;
+			return repository;
+		}		
+
+		public static System_ControllerActionsRepository GetSystem_ControllerActionsRepository()
+		{
+			var repository = new System_ControllerActionsRepository();
+			repository.UnitOfWork = GetUnitOfWork();
+			return repository;
+		}
+
+		public static System_ControllerActionsRepository GetSystem_ControllerActionsRepository(IUnitOfWork unitOfWork)
+		{
+			var repository = new System_ControllerActionsRepository();
+			repository.UnitOfWork = unitOfWork;
+			return repository;
+		}		
+
+		public static System_ControllersRepository GetSystem_ControllersRepository()
+		{
+			var repository = new System_ControllersRepository();
+			repository.UnitOfWork = GetUnitOfWork();
+			return repository;
+		}
+
+		public static System_ControllersRepository GetSystem_ControllersRepository(IUnitOfWork unitOfWork)
+		{
+			var repository = new System_ControllersRepository();
+			repository.UnitOfWork = unitOfWork;
+			return repository;
+		}		
 	}
 }

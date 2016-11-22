@@ -29,5 +29,8 @@ namespace My.Core.Infrastructures.Implementations.Models
         public virtual DbSet<ApplicationUserClaim> ApplicationUserClaim { get; set; }
         public virtual DbSet<ApplicationRole> ApplicationRole { get; set; }
         public virtual DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public virtual DbSet<Menus> Menus { get; set; }
+        public virtual DbSet<System_ControllerActions> System_ControllerActions { get; set; }
+        public virtual DbSet<System_Controllers> System_Controllers { get; set; }
     }
 }

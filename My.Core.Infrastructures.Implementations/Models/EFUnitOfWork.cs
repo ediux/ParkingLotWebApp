@@ -15,7 +15,7 @@ namespace My.Core.Infrastructures.Implementations.Models
 
 		public void Commit()
 		{
-            Context.SaveChanges();            
+			Context.SaveChanges();
 		}
 		
 		public async Task CommitAsync()

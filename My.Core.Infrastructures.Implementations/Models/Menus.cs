@@ -12,26 +12,34 @@ namespace My.Core.Infrastructures.Implementations.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ApplicationRole
+    public partial class Menus
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ApplicationRole()
+        public Menus()
         {
-            this.ApplicationUser = new HashSet<ApplicationUser>();
-            this.Menus = new HashSet<Menus>();
+            this.ChildMenus = new HashSet<Menus>();
+            this.System_ControllerActions = new HashSet<System_ControllerActions>();
+            this.ApplicationRole = new HashSet<ApplicationRole>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
+        public string IconCSS { get; set; }
+        public bool IsExternalLinks { get; set; }
+        public string ExternalURL { get; set; }
         public bool Void { get; set; }
+        public Nullable<int> ParentMenuId { get; set; }
         public int CreateUserId { get; set; }
         public System.DateTime CreateTime { get; set; }
-        public int LastUpdateUserId { get; set; }
-        public System.DateTime LastUpdateTime { get; set; }
+        public Nullable<int> LastUpdateUserId { get; set; }
+        public Nullable<System.DateTime> LastUpdateTime { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ApplicationUser> ApplicationUser { get; set; }
+        public virtual ICollection<Menus> ChildMenus { get; set; }
+        public virtual Menus ParentMenu { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Menus> Menus { get; set; }
+        public virtual ICollection<System_ControllerActions> System_ControllerActions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ApplicationRole> ApplicationRole { get; set; }
     }
 }

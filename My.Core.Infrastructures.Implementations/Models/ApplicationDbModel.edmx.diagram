@@ -12,6 +12,13 @@
         <AssociationConnector Association="OpenWebSiteModel.FK_ApplicationUserClaim_ToApplicationUser" />
         <AssociationConnector Association="OpenWebSiteModel.FK_ApplicationUserLogin_ToApplicationUser" />
         <AssociationConnector Association="OpenWebSiteModel.ApplicationUserRole" />
+        <EntityTypeShape EntityType="OpenWebSiteModel.Menus" Width="1.5" PointX="3" PointY="11" />
+        <EntityTypeShape EntityType="OpenWebSiteModel.System_ControllerActions" Width="1.5" PointX="5.25" PointY="11.375" />
+        <EntityTypeShape EntityType="OpenWebSiteModel.System_Controllers" Width="1.5" PointX="3" PointY="16.375" />
+        <AssociationConnector Association="OpenWebSiteModel.FK_Menus_ParentMenus" />
+        <AssociationConnector Association="OpenWebSiteModel.FK_System_ControllerActions_System_Controllers" />
+        <AssociationConnector Association="OpenWebSiteModel.MenuControllerMapping" />
+        <AssociationConnector Association="OpenWebSiteModel.MenusInRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
