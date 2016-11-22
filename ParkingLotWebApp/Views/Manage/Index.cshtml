@@ -1,115 +1,195 @@
 ﻿@model My.Core.Infrastructures.Implementations.Models.IndexViewModel
 @{
-    ViewBag.Title = "管理";
+    ViewBag.Title = Common.SystemManagement;
 }
 
-<h2>@ViewBag.Title.</h2>
+@section pageheader{
+    <h1 class="page-header">@Common.WebSiteName <small>@ViewBag.Title</small></h1>
+}
+@section breadcrumb{
+    <li class="active">@ViewBag.Title</li>
+}
 
-<p class="text-success">@ViewBag.StatusMessage</p>
-<div>
-    <h4>變更帳戶設定</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>密碼:</dt>
-        <dd>
-            [
-            @if (Model.HasPassword)
+<div class="row">
+    @if (string.IsNullOrEmpty((string)ViewBag.StatusMessage) == false)
+    {
+        <div class="alert alert-success fade in m-b-15">
+            <strong>Success!</strong>
+            @ViewBag.StatusMessage
+            <span class="close" data-dismiss="alert">&times;</span>
+        </div>
+    }
+    <div class="col-md-4">
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                </div>
+                <h4 class="panel-title">@Common.UserProfileChange</h4>
+            </div>
+            <div class="panel-body">
+                <dl class="dl-horizontal">
+                    <dt>密碼:</dt>
+                    <dd>
+                        [
+                        @if (Model.HasPassword)
             {
-                @Html.ActionLink("變更密碼", "ChangePassword")
-            }
-            else
-            {
-                @Html.ActionLink("建立", "SetPassword")
-            }
-            ]
-        </dd>
-        @*
-            <dt>外部登入:</dt>
-            <dd>
-                @Model.Logins.Count [
-                @Html.ActionLink("管理", "ManageLogins") ]
-            </dd>
-
-                電話號碼可以當做雙因素驗證系統中的第二個驗證因素。
-
-                 請參閱<a href="http://go.microsoft.com/fwlink/?LinkId=403804">此文章</a>
-                    以了解設定此 ASP.NET 應用程式以支援使用 SMS 進行雙因素驗證的詳細資料。
-
-                雙因素驗證設定完成之後，請取消註解以下區塊
-        *@
-        @*
-            <dt>電話號碼:</dt>
-            <dd>
-                @(Model.PhoneNumber ?? "None") [
-                @if (Model.PhoneNumber != null)
-                {
-                    @Html.ActionLink("變更", "AddPhoneNumber")
-                    @: &nbsp;|&nbsp;
-                    @Html.ActionLink("移除", "RemovePhoneNumber")
-                }
-                else
-                {
-                    @Html.ActionLink("新增", "AddPhoneNumber")
-                }
-                ]
-            </dd>
-        *@
-        @*<dt>雙因素驗證:</dt>
-            <dd>
-                <p>
-                    並未設定雙因素驗證提供者。請參閱<a href="http://go.microsoft.com/fwlink/?LinkId=403804">此文章</a>
-                    以了解設定此 ASP.NET 應用程式以支援雙因素驗證的詳細資料。
-                </p>
-             @if (Model.TwoFactor)
-                    {
-                        using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            <text>已啟用
-                            <input type="submit" value="停用" class="btn btn-link" />
-                            </text>
+                            @Html.ActionLink("變更密碼", "ChangePassword")
                         }
-                    }
-                    else
-                    {
-                        using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        else
                         {
-                            @Html.AntiForgeryToken()
-                            <text>已停用
-                            <input type="submit" value="啟用" class="btn btn-link" />
-                            </text>
+                            @Html.ActionLink("建立", "SetPassword")
                         }
-                    }
-                </dd>*@
-    </dl>
+                        ]
+                    </dd>
+                    @*
+                        <dt>外部登入:</dt>
+                        <dd>
+                            @Model.Logins.Count [
+                            @Html.ActionLink("管理", "ManageLogins") ]
+                        </dd>
 
+                            電話號碼可以當做雙因素驗證系統中的第二個驗證因素。
+
+                             請參閱<a href="http://go.microsoft.com/fwlink/?LinkId=403804">此文章</a>
+                                以了解設定此 ASP.NET 應用程式以支援使用 SMS 進行雙因素驗證的詳細資料。
+
+                            雙因素驗證設定完成之後，請取消註解以下區塊
+                    *@
+                    @*
+                        <dt>電話號碼:</dt>
+                        <dd>
+                            @(Model.PhoneNumber ?? "None") [
+                            @if (Model.PhoneNumber != null)
+                            {
+                                @Html.ActionLink("變更", "AddPhoneNumber")
+                                @: &nbsp;|&nbsp;
+                                @Html.ActionLink("移除", "RemovePhoneNumber")
+                            }
+                            else
+                            {
+                                @Html.ActionLink("新增", "AddPhoneNumber")
+                            }
+                            ]
+                        </dd>
+                    *@
+                    @*<dt>雙因素驗證:</dt>
+                        <dd>
+                            <p>
+                                並未設定雙因素驗證提供者。請參閱<a href="http://go.microsoft.com/fwlink/?LinkId=403804">此文章</a>
+                                以了解設定此 ASP.NET 應用程式以支援雙因素驗證的詳細資料。
+                            </p>
+                         @if (Model.TwoFactor)
+                                {
+                                    using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <text>已啟用
+                                        <input type="submit" value="停用" class="btn btn-link" />
+                                        </text>
+                                    }
+                                }
+                                else
+                                {
+                                    using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <text>已停用
+                                        <input type="submit" value="啟用" class="btn btn-link" />
+                                        </text>
+                                    }
+                                }
+                            </dd>*@
+                </dl>
+            </div>
+        </div>
+    </div>
     @if (User.IsInRole("Admins"))
     {
-        <h4>系統管理</h4>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>帳號管理</dt>
-            <dd>[ @Html.ActionLink("維護", "AllUsers") ]</dd>
-            @if (User.Identity.Name.Equals("root", StringComparison.InvariantCultureIgnoreCase))
-            {
-                <dt>角色管理</dt>
-                <dd>[ @Html.ActionLink("維護", "AllRoles") ]</dd>
-            }
-        </dl>
-        <h4>停車場維護作業</h4>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>停車區域:</dt>
-            <dd>[ @Html.ActionLink("維護", "Index", "ParkingLotAreas") ]</dd>
-            @if (User.Identity.Name.Equals("root", StringComparison.InvariantCultureIgnoreCase))
-            {
-                <dt>員工資料:</dt>
-                    <dd>[ @Html.ActionLink("維護", "Index", "Employees") ]</dd>
-                    <dt>ETC對應:</dt>
-                    <dd>[ @Html.ActionLink("維護", "Index", "ETAs") ]</dd>
-            }
-
-        </dl>
+        <div class="col-md-4">
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    </div>
+                    <h4 class="panel-title">@Common.UsersAndRolesManagement</h4>
+                </div>
+                <div class="panel-body">
+                    <dl class="dl-horizontal">
+                        <dt>帳號管理</dt>
+                        <dd>[ @Html.ActionLink("維護", "AllUsers") ]</dd>
+                        @if (User.Identity.Name.Equals("root", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            <dt>角色管理</dt>
+                            <dd>[ @Html.ActionLink("維護", "AllRoles") ]</dd>
+                        }
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    </div>
+                    <h4 class="panel-title">@Common.PermissionManagement</h4>
+                </div>
+                <div class="panel-body">
+                    <dl class="dl-horizontal">
+                        <dt>@Common.MenuManagement</dt>
+                        <dd>[ @Html.ActionLink("維護", "MenuList") ]</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
     }
-
+    else
+    {
+        <div class="col-md-4"></div>
+        <div class="col-md-4"></div>
+    }
 </div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                </div>
+                <h4 class="panel-title">@WebPages.ParkingLotAreas</h4>
+            </div>
+            <div class="panel-body">
+                <dl class="dl-horizontal">
+                    <dt>停車區域:</dt>
+                    <dd>[ @Html.ActionLink("維護", "Index", "ParkingLotAreas") ]</dd>
+                    @if (User.Identity.Name.Equals("root", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        <dt>員工資料:</dt>
+                        <dd>[ @Html.ActionLink("維護", "Index", "Employees") ]</dd>
+                        <dt>ETC對應:</dt>
+                        <dd>[ @Html.ActionLink("維護", "Index", "ETAs") ]</dd>
+                    }
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+    </div>
+</div>
+
+
