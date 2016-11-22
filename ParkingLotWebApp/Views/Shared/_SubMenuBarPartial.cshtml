@@ -1,0 +1,23 @@
+﻿@using My.Core.Infrastructures.Implementations.Models
+@model List<Menus>
+<ul class="sub-menu">
+    @foreach (Menus item in Model)
+    {
+        if (item.IsExternalLinks)
+        {
+            <li><a href="@item.ExternalURL">@item.Name</a></li>
+        }
+        else
+        {
+            foreach (var action in item.System_ControllerActions)
+            {
+                <li><a href="@Url.Action(action.Name,action.System_Controllers.Name)">@item.Name</a></li>
+            }
+            
+        }
+        if (item.ChildMenus.Any(v => v.Void == false))
+        {
+            @Html.Partial("_SubMenuBarPartial", item.ChildMenus.ToList())
+        }
+    }
+</ul>

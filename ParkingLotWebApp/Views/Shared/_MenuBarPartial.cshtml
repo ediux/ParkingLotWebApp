@@ -1,45 +1,111 @@
-﻿<div id="top-menu" class="top-menu">
+﻿@using My.Core.Infrastructures.Implementations.Models
+@model List<Menus>
+@{
+    Layout = "";
+}
+<div id="top-menu" class="top-menu">
     <!-- begin top-menu nav -->
     <ul class="nav">
-        <li>
-            <a href="@Url.Action("Index", "Home")">
-                <i class="fa fa-dashboard"></i>
-                <span>儀錶板</span>
-            </a>
-        </li>
-        @if (User.IsInRole("Admins"))
+        @foreach (Menus menuitem in Model)
         {
-            <li>
-                <a href="@Url.Action("Index", "Cars")">
+            if (menuitem.ChildMenus.Any(v => v.Void == false))
+            {
 
-                    <i class="glyphicon glyphicon-list"></i>
-                    <span>@WebPages.ETAs_Cars_Binding</span>
-                </a>
-            </li>
+                if (menuitem.IsExternalLinks)
+                {
+                    <li>
+                        <a href="@menuitem.ExternalURL">
+                            @if (string.IsNullOrEmpty(menuitem.IconCSS) == false)
+                            {
+                                <i class="@menuitem.IconCSS"></i>
+                            }
+                            <span>@menuitem.Name</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    foreach (var action in menuitem.System_ControllerActions)
+                    {
+                        <li>
+                            <a href="@Url.Action(action.Name, action.System_Controllers.Name)">
+                                @if (string.IsNullOrEmpty(menuitem.IconCSS) == false)
+                                {
+                                    <i class="@menuitem.IconCSS"></i>
+                                }
+                                <span>@menuitem.Name</span>
+                            </a>
+                        </li>
+                    }
+
+                }
+
+            }
+            else
+            {
+                if (menuitem.IsExternalLinks)
+                {
+                    <li class="has-sub">
+                        <a href="@menuitem.ExternalURL">
+                            <b class="caret pull-right"></b>
+                            <i class="@menuitem.IconCSS"></i>
+                            <span>@menuitem.Name</span>
+                        </a>
+                        @Html.Partial("_SubMenuBarPartial", menuitem.ChildMenus.ToList())
+                    </li>
+                }
+                else
+                {
+                    foreach (var action in menuitem.System_ControllerActions)
+                    {
+                        <li class="has-sub">
+                            <a href="@Url.Action(action.Name,action.System_Controllers.Name)">
+                                <b class="caret pull-right"></b>
+                                <i class="@menuitem.IconCSS"></i>
+                                <span>@menuitem.Name</span>
+                            </a>
+                            @Html.Partial("_SubMenuBarPartial", menuitem.ChildMenus.ToList())
+                        </li>
+                    }
+                }
+
+            }
+
         }
-        @if (User.IsInRole("警衛") || User.IsInRole("Admins"))
-        {
-            <li>
-                <a href="@Url.Action( "ListRemainParkingGridAmounts", "ParkingLotsFloor")">
 
-                    <i class="glyphicon glyphicon-question-sign"></i>
-                    <span>剩餘車位數量維護</span>
-                </a>
-            </li>
-        }
+        @*@if (User.IsInRole("Admins"))
+            {
+                <li>
+                    <a href="@Url.Action("Index", "Cars")">
 
-        @if (User.IsInRole("Admins"))
-        {
-            <li>
-                <a href="@Url.Action("Index", "News")">
+                        <i class="glyphicon glyphicon-list"></i>
+                        <span>@WebPages.ETAs_Cars_Binding</span>
+                    </a>
+                </li>
+            }
+            @if (User.IsInRole("警衛") || User.IsInRole("Admins"))
+            {
+                <li>
+                    <a href="@Url.Action( "ListRemainParkingGridAmounts", "ParkingLotsFloor")">
 
-                    <i class="glyphicon glyphicon-bullhorn"></i>
-                    <span>公告維護</span>
-                </a>
-            </li>
-        }
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                        <span>剩餘車位數量維護</span>
+                    </a>
+                </li>
+            }
 
-        }
+            @if (User.IsInRole("Admins"))
+            {
+                <li>
+                    <a href="@Url.Action("Index", "News")">
+
+                        <i class="glyphicon glyphicon-bullhorn"></i>
+                        <span>公告維護</span>
+                    </a>
+                </li>
+            }
+
+            }*@
     </ul>
     <!-- end top-menu nav -->
 </div>
