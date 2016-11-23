@@ -64,7 +64,7 @@ namespace My.Core.Infrastructures.Implementations.Models
         {
             if (user != null)
             {
-                var getmenus = user.ApplicationRole.SelectMany(s=>s.Menus).Where(w=>w.Void==false)
+                var getmenus = user.ApplicationRole.SelectMany(s => s.Menus).Where(w => w.Void == false && w.AllowAnonymous == false)
                     .Union(ObjectSet.Where(w => w.AllowAnonymous == true
                 && w.Void == false
                 && (w.ParentMenuId == null
