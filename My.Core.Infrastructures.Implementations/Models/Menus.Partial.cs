@@ -52,14 +52,18 @@ namespace My.Core.Infrastructures.Implementations.Models
         [Display(Name = "LastUpdateTime", ResourceType = typeof(MUI))]
         [UIHint("UTCLocalTimeDisplay")]
         public Nullable<System.DateTime> LastUpdateTime { get; set; }
-        
+        [Display(Name = "允許匿名")]
+        [UIHint("YesNoDisplay")]
+        public bool AllowAnonymous { get; set; }
         public Nullable<int> System_ControllerActionsId { get; set; }
+        [Display(Name = "顯示順位")]
+        public int Order { get; set; }
         [Newtonsoft.Json.JsonIgnore]
         [Display(Name = "子選單")]
         public virtual ICollection<Menus> ChildMenus { get; set; }
         [Display(Name = "上層選單")]
         public virtual Menus ParentMenu { get; set; }
-                
+
         [Display(Name = "應用程式角色")]
         public virtual ICollection<ApplicationRole> ApplicationRole { get; set; }
 

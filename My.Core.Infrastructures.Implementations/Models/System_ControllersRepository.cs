@@ -19,7 +19,7 @@ namespace My.Core.Infrastructures.Implementations.Models
 
                 if (Controllers.Any())
                 {
-                    foreach(var ctrl in Controllers)
+                    foreach (var ctrl in Controllers)
                     {
                         System_Controllers ctrcls = new Models.System_Controllers();
                         ctrcls.ClassName = ctrl.Name;
@@ -30,55 +30,28 @@ namespace My.Core.Infrastructures.Implementations.Models
                         ctrcls.LastUpdateUserId = 0;
                         ctrcls.Namespace = ctrl.Namespace;
                         ctrcls.Void = false;
+                        ctrcls.AllowAnonymous = ctrl.GetCustomAttributes(true).OfType<AllowAnonymousAttribute>().Any();
 
                         Add(ctrcls);
-                        UnitOfWork.Commit();                                             
+                        UnitOfWork.Commit();
                     }
                 }
             }
-
-            if (actionRepo.All().Count() == 0)
+            if (Controllers.Any())
             {
-                if (Controllers.Any())
+                foreach (var ctrl in Controllers)
                 {
-                    foreach (var ctrl in Controllers)
+                    try
                     {
-                        System_Controllers ctrcls = All().SingleOrDefault(w => w.ClassName == ctrl.Name);
-
-                        if (ctrcls == null)
-                            continue;
-
-                        var actions = ctrl.GetMethods();
-                        if (actions.Any())
-                        {
-                            actions = actions.Where(w => w.ReturnType == typeof(ActionResult)
-                            || w.ReturnType == typeof(JsonResult)).ToArray();
-
-                            foreach (var action in actions)
-                            {
-                                if (action.GetCustomAttributes(true).OfType<HttpPostAttribute>().Any())
-                                    continue;
-
-                                if (actionRepo.Where(w => w.Name == action.Name && w.System_Controllers.Id == ctrcls.Id).Any())
-                                    continue;
-
-                                System_ControllerActions actiondata = new Models.System_ControllerActions();
-                                actiondata.ControllerId = ctrcls.Id;
-                                actiondata.CreateTime = DateTime.Now;
-                                actiondata.CreateUserId = 0;
-                                actiondata.LastUpdateTime = DateTime.Now;
-                                actiondata.LastUpdateUserId = 0;
-                                actiondata.Name = action.Name;
-                                actiondata.Void = false;
-
-                                actionRepo.Add(actiondata);
-                            }
-                            actionRepo.UnitOfWork.Commit();
-                        }
+                        actionRepo.ScanForComponentRegistration(ctrl, All().SingleOrDefault(s => s.ClassName == ctrl.Name));
                     }
+                    catch (Exception ex)
+                    {
+                        Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
+                    }
+                    
                 }
             }
-            
         }
     }
 

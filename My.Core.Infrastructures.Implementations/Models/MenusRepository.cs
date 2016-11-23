@@ -26,7 +26,7 @@ namespace My.Core.Infrastructures.Implementations.Models
         }
         public override IQueryable<Menus> All()
         {
-            return GetCache().AsQueryable();
+            return GetCache().Where(w => w.Void == false).AsQueryable();
         }
         public void ClearCache(string key)
         {
@@ -37,11 +37,11 @@ namespace My.Core.Infrastructures.Implementations.Models
         {
             List<Menus> customerData = Cache.Get(key) as List<Menus>;
 
-            if (Cache.IsSet(key)==false)
+            if (Cache.IsSet(key) == false)
             {
                 //Get the Customer data
                 customerData = ObjectSet.ToList();
-                Cache.Set(key, customerData, 60);                
+                Cache.Set(key, customerData, 60);
             }
 
             if (customerData.Count == 0)
@@ -50,19 +50,41 @@ namespace My.Core.Infrastructures.Implementations.Models
                 Cache.Set(key, customerData, 60);
             }
 
+            if (customerData.Count != ObjectSet.Count())
+            {
+                _cache.Invalidate(key);
+                customerData = ObjectSet.ToList();
+                Cache.Set(key, customerData, 60);
+            }
+
             return customerData.AsQueryable();
         }
 
-        public IQueryable<Menus> GetRootMenus()
+        public IQueryable<Menus> GetRootMenus(ApplicationUser user)
         {
-            return All().Where(w => w.ParentMenuId == null && w.Void == false);
+            if (user != null)
+            {
+                var getmenus = user.ApplicationRole.SelectMany(s=>s.Menus).Where(w=>w.Void==false)
+                    .Union(ObjectSet.Where(w => w.AllowAnonymous == true
+                && w.Void == false
+                && (w.ParentMenuId == null
+                || w.ParentMenuId == 0))).Distinct().OrderBy(o => o.Order);
+
+                return getmenus.AsQueryable();
+            }
+
+            return ObjectSet.Where(w => w.AllowAnonymous == true
+                && w.Void == false
+                && (w.ParentMenuId == null
+                || w.ParentMenuId == 0)).OrderBy(o => o.Order);
+
         }
-        
+
     }
 
     public partial interface IMenusRepository : IRepositoryBase<Menus>
     {
         ICacheProvider Cache { get; }
-        IQueryable<Menus> GetRootMenus();
+        IQueryable<Menus> GetRootMenus(ApplicationUser user);
     }
 }

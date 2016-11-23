@@ -8,7 +8,7 @@ namespace My.Core.Infrastructures.Implementations.Models
 		DbContext Context { get; set; }
 
         /// <summary>
-        /// 提交資料庫變更耀球的非同步方法。
+        /// 提交資料庫變更耀球的同步方法。
         /// </summary>
 		void Commit();
 		bool LazyLoadingEnabled { get; set; }

@@ -56,7 +56,7 @@ namespace My.Core.Infrastructures.Implementations
                     if (HttpContext.Current != null)
                     {
                         //只有root帳號才能強制重設密碼
-                        if(HttpContext.Current.User.Identity.Name.Equals("root", StringComparison.InvariantCultureIgnoreCase))
+                        if (HttpContext.Current.User.Identity.Name.Equals("root", StringComparison.InvariantCultureIgnoreCase))
                         {
                             user.PasswordHash = PasswordHasher.HashPassword(newPassword);
                             user.ResetPasswordToken = await GeneratePasswordResetTokenAsync(userId);
@@ -71,7 +71,7 @@ namespace My.Core.Infrastructures.Implementations
             return IdentityResult.Failed("使用者不存在!");
         }
 
-        
+
         public async Task<bool> CheckAccountIsExist(ApplicationUser user)
         {
             try
@@ -113,7 +113,7 @@ namespace My.Core.Infrastructures.Implementations
 
                 user.Password = "";
                 user.PasswordHash = PasswordHasher.HashPassword(password);
-                
+
                 await Store.CreateAsync(user);
                 user = await FindByNameAsync(user.UserName);
                 user.ResetPasswordToken = await GeneratePasswordResetTokenAsync(user.Id);
@@ -208,6 +208,20 @@ namespace My.Core.Infrastructures.Implementations
             return roleManager;
         }
 
+        public async override Task<IdentityResult> UpdateAsync(ApplicationRole role)
+        {
+            try
+            {
+                await Store.UpdateAsync(role);
+                return IdentityResult.Success;
+            }
+            catch (Exception ex)
+            {
+                Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
+                throw;
+            }
+
+        }
     }
     // 設定在此應用程式中使用的應用程式登入管理員。
     public class ApplicationSignInManager : SignInManager<ApplicationUser, int>
@@ -215,7 +229,7 @@ namespace My.Core.Infrastructures.Implementations
         public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)
             : base(userManager, authenticationManager)
         {
-        }        
+        }
 
         public override Task<ClaimsIdentity> CreateUserIdentityAsync(ApplicationUser user)
         {

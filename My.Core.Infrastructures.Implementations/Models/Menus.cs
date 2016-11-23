@@ -33,6 +33,8 @@ namespace My.Core.Infrastructures.Implementations.Models
         public Nullable<int> LastUpdateUserId { get; set; }
         public Nullable<System.DateTime> LastUpdateTime { get; set; }
         public Nullable<int> System_ControllerActionsId { get; set; }
+        public bool AllowAnonymous { get; set; }
+        public int Order { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Menus> ChildMenus { get; set; }

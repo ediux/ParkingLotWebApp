@@ -57,6 +57,17 @@ namespace My.Core.Infrastructures.Implementations.Models
 		T Reload(T entity);
 
 		Task<T> ReloadAsync(T entity);
-	}
+
+        /// <summary>
+        /// 提交資料庫變更耀球的同步方法。
+        /// </summary>
+        void Commit();
+
+        /// <summary>
+        /// 提交資料庫變更耀球的非同步方法。
+        /// </summary>
+        /// <returns>非同步執行結果。</returns>
+        Task CommitAsync();
+    }
 }
 

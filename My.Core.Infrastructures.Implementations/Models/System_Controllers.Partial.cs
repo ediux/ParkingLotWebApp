@@ -48,6 +48,9 @@ namespace My.Core.Infrastructures.Implementations.Models
         [Display(Name = "LastUpdateTime", ResourceType = typeof(MUI))]
         [UIHint("UTCLocalTimeDisplay")]
         public Nullable<System.DateTime> LastUpdateTime { get; set; }
+        [Display(Name = "允許匿名")]
+        [UIHint("YesNoDisplay")]
+        public bool AllowAnonymous { get; set; }
         [Newtonsoft.Json.JsonIgnore]
         [Display(Name = "動作清單")]
         public virtual ICollection<System_ControllerActions> System_ControllerActions { get; set; }

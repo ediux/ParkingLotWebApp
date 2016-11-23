@@ -7,44 +7,44 @@ using System.Threading.Tasks;
 
 namespace My.Core.Infrastructures.Implementations.Models
 {
-	public partial class EFRepository<T> : IRepositoryBase<T> where T : class
-	{
-		public IUnitOfWork UnitOfWork { get; set; }
-		
-		private IDbSet<T> _objectset;
-		protected IDbSet<T> ObjectSet
-		{
-			get
-			{
-				if (_objectset == null)
-				{
-					_objectset = UnitOfWork.Context.Set<T>();
-				}
-				return _objectset;
-			}
-		}
+    public partial class EFRepository<T> : IRepositoryBase<T> where T : class
+    {
+        public IUnitOfWork UnitOfWork { get; set; }
 
-		public virtual IQueryable<T> All()
-		{
-			return ObjectSet.AsQueryable();
-		}
+        private IDbSet<T> _objectset;
+        protected IDbSet<T> ObjectSet
+        {
+            get
+            {
+                if (_objectset == null)
+                {
+                    _objectset = UnitOfWork.Context.Set<T>();
+                }
+                return _objectset;
+            }
+        }
 
-		public IQueryable<T> Where(Expression<Func<T, bool>> expression)
-		{
-			return ObjectSet.Where(expression);
-		}
+        public virtual IQueryable<T> All()
+        {
+            return ObjectSet.AsQueryable();
+        }
 
-		public virtual T Add(T entity)
-		{
-			return ObjectSet.Add(entity);
-		}
+        public IQueryable<T> Where(Expression<Func<T, bool>> expression)
+        {
+            return ObjectSet.Where(expression);
+        }
 
-		public virtual void Delete(T entity)
-		{
-			ObjectSet.Remove(entity);
-		}
+        public virtual T Add(T entity)
+        {
+            return ObjectSet.Add(entity);
+        }
 
-		public Task<IQueryable<T>> AllAsync()
+        public virtual void Delete(T entity)
+        {
+            ObjectSet.Remove(entity);
+        }
+
+        public Task<IQueryable<T>> AllAsync()
         {
             return Task.Run(() => ObjectSet.AsQueryable());
         }
@@ -72,10 +72,10 @@ namespace My.Core.Infrastructures.Implementations.Models
 
         public async Task<T> ReloadAsync(T entity)
         {
-           await UnitOfWork.Context.Entry(entity).ReloadAsync();
+            await UnitOfWork.Context.Entry(entity).ReloadAsync();
             return entity;
         }
-		#region IDisposable Support
+        #region IDisposable Support
         private bool disposedValue = false; // 偵測多餘的呼叫
 
         protected virtual void Dispose(bool disposing)
@@ -109,6 +109,16 @@ namespace My.Core.Infrastructures.Implementations.Models
             // TODO: 如果上方的完成項已被覆寫，即取消下行的註解狀態。
             // GC.SuppressFinalize(this);
         }
+
+        public virtual void Commit()
+        {
+            UnitOfWork.Context.SaveChanges();
+        }
+
+        public virtual async Task CommitAsync()
+        {
+            await UnitOfWork.Context.SaveChangesAsync();
+        }
         #endregion
-	}
+    }
 }

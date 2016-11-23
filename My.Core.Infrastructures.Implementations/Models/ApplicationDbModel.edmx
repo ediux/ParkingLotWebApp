@@ -86,7 +86,9 @@
           <Property Name="CreateTime" Type="smalldatetime" Nullable="false" />
           <Property Name="LastUpdateUserId" Type="int" />
           <Property Name="LastUpdateTime" Type="smalldatetime" />
+          <Property Name="AllowAnonymous" Type="bit" Nullable="false" />
           <Property Name="System_ControllerActionsId" Type="int" />
+          <Property Name="Order" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="MenusInRoles">
           <Key>
@@ -108,6 +110,7 @@
           <Property Name="CreateTime" Type="smalldatetime" Nullable="false" />
           <Property Name="LastUpdateUserId" Type="int" />
           <Property Name="LastUpdateTime" Type="smalldatetime" />
+          <Property Name="AllowAnonymous" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="System_Controllers">
           <Key>
@@ -122,19 +125,8 @@
           <Property Name="CreateTime" Type="smalldatetime" Nullable="false" />
           <Property Name="LastUpdateUserId" Type="int" />
           <Property Name="LastUpdateTime" Type="smalldatetime" />
+          <Property Name="AllowAnonymous" Type="bit" Nullable="false" />
         </EntityType>
-        <Association Name="FK_ApplicationRole_ApplicationRole">
-          <End Role="ApplicationRole" Type="Self.ApplicationRole" Multiplicity="1" />
-          <End Role="ApplicationRole1" Type="Self.ApplicationRole" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="ApplicationRole">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ApplicationRole1">
-              <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ApplicationUserClaim_ToApplicationUser">
           <End Role="ApplicationUser" Type="Self.ApplicationUser" Multiplicity="1" />
           <End Role="ApplicationUserClaim" Type="Self.ApplicationUserClaim" Multiplicity="*" />
@@ -156,6 +148,18 @@
             </Principal>
             <Dependent Role="ApplicationUserLogin">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApplicationUserRole_ToApplicationRole">
+          <End Role="ApplicationRole" Type="Self.ApplicationRole" Multiplicity="1" />
+          <End Role="ApplicationUserRole" Type="Self.ApplicationUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApplicationRole">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ApplicationUserRole">
+              <PropertyRef Name="RoleId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -241,10 +245,6 @@
           <EntitySet Name="MenusInRoles" EntityType="Self.MenusInRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_ControllerActions" EntityType="Self.System_ControllerActions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_Controllers" EntityType="Self.System_Controllers" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_ApplicationRole_ApplicationRole" Association="Self.FK_ApplicationRole_ApplicationRole">
-            <End Role="ApplicationRole" EntitySet="ApplicationRole" />
-            <End Role="ApplicationRole1" EntitySet="ApplicationRole" />
-          </AssociationSet>
           <AssociationSet Name="FK_ApplicationUserClaim_ToApplicationUser" Association="Self.FK_ApplicationUserClaim_ToApplicationUser">
             <End Role="ApplicationUser" EntitySet="ApplicationUser" />
             <End Role="ApplicationUserClaim" EntitySet="ApplicationUserClaim" />
@@ -252,6 +252,10 @@
           <AssociationSet Name="FK_ApplicationUserLogin_ToApplicationUser" Association="Self.FK_ApplicationUserLogin_ToApplicationUser">
             <End Role="ApplicationUser" EntitySet="ApplicationUser" />
             <End Role="ApplicationUserLogin" EntitySet="ApplicationUserLogin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApplicationUserRole_ToApplicationRole" Association="Self.FK_ApplicationUserRole_ToApplicationRole">
+            <End Role="ApplicationRole" EntitySet="ApplicationRole" />
+            <End Role="ApplicationUserRole" EntitySet="ApplicationUserRole" />
           </AssociationSet>
           <AssociationSet Name="FK_ApplicationUserRole_ToApplicationUser" Association="Self.FK_ApplicationUserRole_ToApplicationUser">
             <End Role="ApplicationUser" EntitySet="ApplicationUser" />
@@ -356,8 +360,6 @@
           <Property Name="LastUpdateTime" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="ApplicationUser" Relationship="OpenWebSiteModel.ApplicationUserRole" FromRole="ApplicationRole" ToRole="ApplicationUser" />
           <NavigationProperty Name="Menus" Relationship="OpenWebSiteModel.MenusInRoles" FromRole="ApplicationRole" ToRole="Menus" />
-          <NavigationProperty Name="ApplicationRole1" Relationship="OpenWebSiteModel.FK_ApplicationRole_ApplicationRole" FromRole="ApplicationRole" ToRole="ApplicationRole1" />
-          <NavigationProperty Name="ApplicationRole2" Relationship="OpenWebSiteModel.FK_ApplicationRole_ApplicationRole" FromRole="ApplicationRole1" ToRole="ApplicationRole" />
         </EntityType>
         <EntityType Name="ApplicationUser">
           <Key>
@@ -437,7 +439,9 @@
           <NavigationProperty Name="ParentMenu" Relationship="OpenWebSiteModel.FK_Menus_ParentMenus" FromRole="Menus1" ToRole="Menus" />
           <NavigationProperty Name="ApplicationRole" Relationship="OpenWebSiteModel.MenusInRoles" FromRole="Menus" ToRole="ApplicationRole" />
           <Property Name="System_ControllerActionsId" Type="Int32" />
+          <Property Name="AllowAnonymous" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="System_ControllerActions" Relationship="OpenWebSiteModel.FK_Menus_System_ControllerActions" FromRole="Menus" ToRole="System_ControllerActions" />
+          <Property Name="Order" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="System_ControllerActions">
           <Key>
@@ -453,6 +457,7 @@
           <Property Name="LastUpdateTime" Type="DateTime" Precision="0" />
           <NavigationProperty Name="System_Controllers" Relationship="OpenWebSiteModel.FK_System_ControllerActions_System_Controllers" FromRole="System_ControllerActions" ToRole="System_Controllers" />
           <NavigationProperty Name="Menus" Relationship="OpenWebSiteModel.FK_Menus_System_ControllerActions" FromRole="System_ControllerActions" ToRole="Menus" />
+          <Property Name="AllowAnonymous" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="System_Controllers">
           <Key>
@@ -468,6 +473,7 @@
           <Property Name="LastUpdateUserId" Type="Int32" />
           <Property Name="LastUpdateTime" Type="DateTime" Precision="0" />
           <NavigationProperty Name="System_ControllerActions" Relationship="OpenWebSiteModel.FK_System_ControllerActions_System_Controllers" FromRole="System_Controllers" ToRole="System_ControllerActions" />
+          <Property Name="AllowAnonymous" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_Menus_ParentMenus">
           <End Type="OpenWebSiteModel.Menus" Role="Menus" Multiplicity="0..1" />
@@ -599,7 +605,9 @@
           <EntitySetMapping Name="Menus">
             <EntityTypeMapping TypeName="OpenWebSiteModel.Menus">
               <MappingFragment StoreEntitySet="Menus">
+                <ScalarProperty Name="Order" ColumnName="Order" />
                 <ScalarProperty Name="System_ControllerActionsId" ColumnName="System_ControllerActionsId" />
+                <ScalarProperty Name="AllowAnonymous" ColumnName="AllowAnonymous" />
                 <ScalarProperty Name="LastUpdateTime" ColumnName="LastUpdateTime" />
                 <ScalarProperty Name="LastUpdateUserId" ColumnName="LastUpdateUserId" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
@@ -617,6 +625,7 @@
           <EntitySetMapping Name="System_ControllerActions">
             <EntityTypeMapping TypeName="OpenWebSiteModel.System_ControllerActions">
               <MappingFragment StoreEntitySet="System_ControllerActions">
+                <ScalarProperty Name="AllowAnonymous" ColumnName="AllowAnonymous" />
                 <ScalarProperty Name="LastUpdateTime" ColumnName="LastUpdateTime" />
                 <ScalarProperty Name="LastUpdateUserId" ColumnName="LastUpdateUserId" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
@@ -631,6 +640,7 @@
           <EntitySetMapping Name="System_Controllers">
             <EntityTypeMapping TypeName="OpenWebSiteModel.System_Controllers">
               <MappingFragment StoreEntitySet="System_Controllers">
+                <ScalarProperty Name="AllowAnonymous" ColumnName="AllowAnonymous" />
                 <ScalarProperty Name="LastUpdateTime" ColumnName="LastUpdateTime" />
                 <ScalarProperty Name="LastUpdateUserId" ColumnName="LastUpdateUserId" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
