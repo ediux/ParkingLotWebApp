@@ -170,6 +170,9 @@
   <data name="DeleteMenu" xml:space="preserve">
     <value>刪除選單</value>
   </data>
+  <data name="DeleteRole" xml:space="preserve">
+    <value>刪除角色</value>
+  </data>
   <data name="Delete_Relation" xml:space="preserve">
     <value>刪除關聯</value>
   </data>
@@ -229,6 +232,15 @@
   </data>
   <data name="RoleAssign" xml:space="preserve">
     <value>角色指派</value>
+  </data>
+  <data name="RoleDetails" xml:space="preserve">
+    <value>角色詳細資訊</value>
+  </data>
+  <data name="RoleList" xml:space="preserve">
+    <value>角色列表</value>
+  </data>
+  <data name="RoleThis" xml:space="preserve">
+    <value>這個角色</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>儲存</value>
