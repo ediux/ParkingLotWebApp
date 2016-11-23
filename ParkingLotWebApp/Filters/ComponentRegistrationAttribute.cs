@@ -15,7 +15,7 @@ namespace ParkingLotWebApp.Filters
             ISystem_ControllersRepository CtrRepo = RepositoryHelper.GetSystem_ControllersRepository();
             ISystem_ControllerActionsRepository ActionRepo = RepositoryHelper.GetSystem_ControllerActionsRepository(CtrRepo.UnitOfWork);
 
-            base.OnActionExecuting(filterContext);
+           
         }
     }
 }

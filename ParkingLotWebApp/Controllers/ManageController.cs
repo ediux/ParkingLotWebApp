@@ -14,6 +14,7 @@ using PagedList;
 using System.Net;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using System.Data.Entity;
 
 namespace ParkingLotWebApp.Controllers
 {
@@ -606,14 +607,19 @@ namespace ParkingLotWebApp.Controllers
 
         [HttpPost, ActionName("DeleteRole")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteRoleConfirmed(int id)
+        public ActionResult DeleteRoleConfirmed(int id,FormCollection collection)
         {
-            var role = RoleManager.FindById(id);
+            IApplicationRoleRepository _roleRepo = My.Core.Infrastructures.Implementations.Models.RepositoryHelper.GetApplicationRoleRepository();
+
+            var role = _roleRepo.Get(id);
             role.Void = true;
             role.LastUpdateTime = DateTime.UtcNow;
             role.LastUpdateUserId = User.Identity.GetUserId<int>();
-            var result = RoleManager.Update(role);
-            if (result.Succeeded)
+            _roleRepo.UnitOfWork.Context.Entry(role).State = EntityState.Modified;
+            _roleRepo.Commit();
+            role = _roleRepo.Reload(role);
+
+            if (role!=null)
             {
                 return RedirectToAction("AllRoles");
             }
@@ -630,16 +636,16 @@ namespace ParkingLotWebApp.Controllers
 
             if (user != null)
             {
-                List<Menus> menus = user.ApplicationRole.SelectMany(s => s.Menus).Distinct().ToList();
+                List<Menus> menus = _menuRepo.GetRootMenus(user).ToList();
                 return View("_MenuBarPartial", menus);
             }
 
-            return View("_MenuBarPartial", new List<Menus>());
+            return View("_MenuBarPartial", _menuRepo.GetRootMenus(null).ToList());
         }
 
         public ActionResult MenuList()
         {
-            var model = _menuRepo.GetRootMenus().ToList();
+            var model = _menuRepo.All().ToList();
             return View(model);
         }
 
@@ -654,7 +660,7 @@ namespace ParkingLotWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateMenu([Bind(Include = "Name,IconCSS,IsExternalLinks,ExternalURL,ParentMenuId,System_ControllerActionsId")]Menus menu)
+        public ActionResult CreateMenu([Bind(Include = "Name,IconCSS,IsExternalLinks,ExternalURL,ParentMenuId,System_ControllerActionsId,AllowAnonymous,Order")]Menus menu)
         {
             if (ModelState.IsValid)
             {
@@ -671,6 +677,176 @@ namespace ParkingLotWebApp.Controllers
             ViewBag.System_ControllerActionsId = new SelectList(_actionRepo.All().Where(w => w.Void == false)
                .Select(s => new ControllerActionViewModel() { Id = s.Id, Name = s.Name + "(" + s.System_Controllers.Name + ")" }).ToList(), "Id", "Name");
             return View(menu);
+        }
+
+        public ActionResult EditMenu(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Menus menu = _menuRepo.Get(id);
+            ViewBag.ParentMenuId = new SelectList(_menuRepo.All().Where(w => w.Void == false).ToList(), "Id", "Name", menu.ParentMenuId);
+            //ViewBag.System_ControllerActionsId = new SelectList(_actionRepo.All().Where(w => w.Void == false).ToList(), "Id", "Name");
+            ViewBag.System_ControllerActionsId = new SelectList(_actionRepo.All().Where(w => w.Void == false)
+               .Select(s => new ControllerActionViewModel() { Id = s.Id, Name = s.Name + "(" + s.System_Controllers.Name + ")" }).ToList(), "Id", "Name", menu.System_ControllerActionsId);
+            if (menu == null)
+            {
+                return HttpNotFound();
+            }
+            return View(menu);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditMenu([Bind(Include = "Id,Name,IconCSS,IsExternalLinks,ExternalURL,ParentMenuId,System_ControllerActionsId,AllowAnonymous,Order")]Menus menu)
+        {
+            if (ModelState.IsValid)
+            {
+                this.ApplyXSSProtected(menu);
+                Menus menuindb = _menuRepo.Get(menu.Id);
+
+                menuindb.Name = menu.Name;
+                menuindb.IconCSS = menu.IconCSS;
+                menuindb.IsExternalLinks = menu.IsExternalLinks;
+                menuindb.ExternalURL = menu.ExternalURL;
+                menuindb.ParentMenuId = menu.ParentMenuId;
+                menuindb.System_ControllerActionsId = menu.System_ControllerActionsId;
+                menuindb.Void = menu.Void;
+                menuindb.Order = menu.Order;
+
+                _menuRepo.UnitOfWork.Context.Entry(menuindb).State = EntityState.Modified;
+                _menuRepo.UnitOfWork.Commit();
+
+                return RedirectToAction("Index");
+            }
+            ViewBag.ParentMenuId = new SelectList(_menuRepo.All().Where(w => w.Void == false).ToList(), "Id", "Name", menu.ParentMenuId);
+            ViewBag.System_ControllerActionsId = new SelectList(_actionRepo.All().Where(w => w.Void == false)
+               .Select(s => new ControllerActionViewModel() { Id = s.Id, Name = s.Name + "(" + s.System_Controllers.Name + ")" }).ToList(), "Id", "Name", menu.System_ControllerActionsId);
+            return View(menu);
+        }
+
+        public ActionResult MenuDetails(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Menus menu = _menuRepo.Get(id);
+            if (menu == null)
+            {
+                return HttpNotFound();
+            }
+            return View(menu);
+        }
+
+        public ActionResult DeleteMenu(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Menus menu = _menuRepo.Get(id);
+            if (menu == null)
+            {
+                return HttpNotFound();
+            }
+            return View(menu);
+
+        }
+
+        [HttpPost]
+        [ActionName("DeleteMenu")]
+        [ValidateAntiForgeryToken]
+        public ActionResult ConfirmDeleteMenu(int id)
+        {
+            Menus menu = _menuRepo.Get(id);
+
+            menu.Void = true;
+            menu.LastUpdateUserId = User.Identity.GetUserId<int>();
+            menu.LastUpdateTime = DateTime.UtcNow;
+            _menuRepo.UnitOfWork.Context.Entry(menu).State = EntityState.Modified;
+            _menuRepo.UnitOfWork.Commit();
+
+            return RedirectToAction("MenuList");
+        }
+
+        public ActionResult ListMenuInRoles(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Menus menu = _menuRepo.Get(id);
+            ViewBag.RoleId = new SelectList(RoleManager.Roles.Where(w => w.Void == false).ToList(), "Id", "Name");
+            ViewBag.MenuId = id;
+            if (menu == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(menu.ApplicationRole.Where(w=>w.Void==false).ToList());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddMenuInRole(int? id, FormCollection collection)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Menus menu = _menuRepo.Get(id);
+
+            if (string.IsNullOrEmpty(collection["RoleId"]) == false)
+            {
+                int RoleId = 0;
+
+                if (int.TryParse(collection["RoleId"], out RoleId) == false)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                IApplicationRoleRepository _roleRepo = My.Core.Infrastructures.Implementations.Models.RepositoryHelper.GetApplicationRoleRepository(_menuRepo.UnitOfWork);
+
+                ApplicationRole role = _roleRepo.Get(RoleId);
+                menu.ApplicationRole.Add(role);
+
+                _menuRepo.UnitOfWork.Context.Entry(role).State = EntityState.Modified;
+                _menuRepo.UnitOfWork.Context.Entry(menu).State = EntityState.Modified;
+                _menuRepo.Commit();
+            }
+
+            return RedirectToAction("EditMenu", new { id = id });
+        }
+
+        public ActionResult RemoveMenuFromRole(int? id, int? RoleId)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if (RoleId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Menus menu = _menuRepo.Get(id);
+
+            IApplicationRoleRepository _roleRepo = My.Core.Infrastructures.Implementations.Models.RepositoryHelper.GetApplicationRoleRepository(_menuRepo.UnitOfWork);
+
+            ApplicationRole role = _roleRepo.Get(RoleId);
+
+            menu.LastUpdateUserId = User.Identity.GetUserId<int>();
+            menu.LastUpdateTime = DateTime.Now;
+            menu.ApplicationRole.Remove(role);
+
+            _menuRepo.UnitOfWork.Context.Entry(role).State = EntityState.Modified;
+            _menuRepo.UnitOfWork.Context.Entry(menu).State = EntityState.Modified;
+            _menuRepo.Commit();
+
+            return RedirectToAction("EditMenu", new { id = id });
         }
 
         protected override void Dispose(bool disposing)

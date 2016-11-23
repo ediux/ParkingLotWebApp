@@ -167,6 +167,9 @@
     <value>您確定要刪除{0}?</value>
     <comment>Are you sure you want to delete this?</comment>
   </data>
+  <data name="DeleteMenu" xml:space="preserve">
+    <value>刪除選單</value>
+  </data>
   <data name="Delete_Relation" xml:space="preserve">
     <value>刪除關聯</value>
   </data>
@@ -191,11 +194,20 @@
   <data name="Longitude" xml:space="preserve">
     <value>經度</value>
   </data>
+  <data name="MenuDetails" xml:space="preserve">
+    <value>選單詳細資訊</value>
+  </data>
+  <data name="MenuEdit" xml:space="preserve">
+    <value>編輯選單</value>
+  </data>
   <data name="MenuList" xml:space="preserve">
     <value>選單列表</value>
   </data>
   <data name="MenuManagement" xml:space="preserve">
     <value>選單管理</value>
+  </data>
+  <data name="MenuThis" xml:space="preserve">
+    <value>這個選單</value>
   </data>
   <data name="News_NoMessage" xml:space="preserve">
     <value>此公告無內容!!</value>

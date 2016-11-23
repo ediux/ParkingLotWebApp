@@ -214,6 +214,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 刪除選單 的當地語系化字串。
+        /// </summary>
+        public static string DeleteMenu {
+            get {
+                return ResourceManager.GetString("DeleteMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 詳細 的當地語系化字串。
         /// </summary>
         public static string Details {
@@ -277,6 +286,24 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 選單詳細資訊 的當地語系化字串。
+        /// </summary>
+        public static string MenuDetails {
+            get {
+                return ResourceManager.GetString("MenuDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 編輯選單 的當地語系化字串。
+        /// </summary>
+        public static string MenuEdit {
+            get {
+                return ResourceManager.GetString("MenuEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 選單列表 的當地語系化字串。
         /// </summary>
         public static string MenuList {
@@ -291,6 +318,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         public static string MenuManagement {
             get {
                 return ResourceManager.GetString("MenuManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 這個選單 的當地語系化字串。
+        /// </summary>
+        public static string MenuThis {
+            get {
+                return ResourceManager.GetString("MenuThis", resourceCulture);
             }
         }
         

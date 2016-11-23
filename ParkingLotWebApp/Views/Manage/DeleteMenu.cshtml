@@ -1,0 +1,98 @@
+﻿@model My.Core.Infrastructures.Implementations.Models.Menus
+
+@{
+    ViewBag.Title = Common.DeleteMenu;
+}
+@section pageheader{
+    <h1 class="page-header">@WebPages.ParkingLotAreas <small>@ViewBag.Title</small></h1>
+}
+@section breadcrumb{
+    <li><a href="@Url.Action("Index", "Manage")">@Common.SystemManagement</a></li>
+    <li><a href="javascript:;">@Common.PermissionManagement</a></li>
+    <li><a href="javascript:;">@Common.MenuManagement</a></li>
+    <li><a href="@Url.Action("MenuList", "Manage")">@Common.MenuList</a></li>
+    <li class="active">@ViewBag.Title</li>
+}
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                </div>
+                <h4 class="panel-title">@ViewBag.Title</h4>
+            </div>
+            <div class="panel-toolbar">
+                <div class="btn-group m-r-5" role="group" aria-label="First group">
+                    <a href="@Url.Action("MenuList")" class="btn btn-white" title="@string.Format(Common.Back_To, Common.MenuList)"><i class="glyphicon glyphicon-arrow-left"></i></a>
+                </div>
+            </div>
+            <div class="panel-body">
+                <h3>@string.Format(Common.DeleteConfirmMessage, Common.MenuThis)</h3>
+                <div>
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </dt>
+
+                        <dd>
+                            <i class="@Model.IconCSS"></i> @Html.DisplayFor(model => model.Name)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.IsExternalLinks)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.IsExternalLinks)
+                        </dd>
+                        @if (Model.IsExternalLinks)
+                        {
+                            <dt>
+                                @Html.DisplayNameFor(model => model.ExternalURL)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.ExternalURL)
+                            </dd>
+                        }
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.AllowAnonymous)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.AllowAnonymous)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.ParentMenu)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.ParentMenu.Name)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.System_ControllerActions)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.System_ControllerActions.Name) (@Html.DisplayFor(model => model.System_ControllerActions.System_Controllers.Name))
+                        </dd>
+                        
+                    </dl>
+                </div>
+            </div>
+            <div class="panel-footer text-right">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="submit" value="@Common.Delete" class="btn btn-danger" />
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

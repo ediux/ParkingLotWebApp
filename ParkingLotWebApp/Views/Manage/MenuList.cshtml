@@ -1,13 +1,15 @@
 ﻿@model IEnumerable<My.Core.Infrastructures.Implementations.Models.Menus>
 
 @{
-    ViewBag.Title = "選單列表";
+    ViewBag.Title = Common.MenuList;
 }
 @section pageheader{
     <h1 class="page-header">系統選單設定 <small>@ViewBag.Title</small></h1>
 }
 @section breadcrumb{
-    <li><a href="@Url.Action("Index","Manage")">管理</a></li>
+    <li><a href="@Url.Action("Index","Manage")">@Common.SystemManagement</a></li>
+    <li><a href="javascript:;">@Common.PermissionManagement</a></li>
+    <li><a href="javascript:;">@Common.MenuManagement</a></li>
     <li class="active">@ViewBag.Title</li>
 }
 <div class="row">
@@ -29,22 +31,14 @@
                 </div>
             </div>
             <table class="table table-responsive table-hover">
-                <tr>
+                <tr class="info">
                     <th>
                         @Html.DisplayNameFor(model => model.Name)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.IconCSS)
                     </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsExternalLinks)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ExternalURL)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Void)
-                    </th>
+                  
                     <th>
                         @Html.DisplayNameFor(model => model.CreateUserId)
                     </th>
@@ -58,7 +52,7 @@
                         @Html.DisplayNameFor(model => model.LastUpdateTime)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.ParentMenu.Name)
+                        @Html.DisplayNameFor(model => model.ParentMenu)
                     </th>
                     <th></th>
                 </tr>
@@ -66,21 +60,12 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>
+                        <td class="text-justify">
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td>
                             <i class="@item.IconCSS"></i>
                             @Html.DisplayFor(modelItem => item.IconCSS)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IsExternalLinks)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ExternalURL)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Void)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.CreateUserId)
@@ -98,9 +83,9 @@
                             @Html.DisplayFor(modelItem => item.ParentMenu.Name)
                         </td>
                         <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                            <a href="@Url.Action("EditMenu", new { id = item.Id })" class="btn btn-primary btn-xs m-r-5" title="@Common.Edit"><i class="glyphicon glyphicon-edit"></i></a>
+                            <a href="@Url.Action("MenuDetails", new { id = item.Id })" class="btn btn-info btn-xs m-r-5" title="@Common.Details"><i class="glyphicon glyphicon-info-sign"></i></a>
+                            <a href="@Url.Action("DeleteMenu", new { id = item.Id })" class="btn btn-danger btn-xs m-r-5" title="@Common.Delete"><i class="glyphicon glyphicon-remove"></i></a>
                         </td>
                     </tr>
                 }

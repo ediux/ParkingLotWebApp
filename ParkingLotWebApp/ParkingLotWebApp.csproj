@@ -1079,6 +1079,10 @@
     <Content Include="Views\Manage\MenuList.cshtml" />
     <Content Include="Views\Manage\CreateMenu.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\YesNoDisplay.cshtml" />
+    <Content Include="Views\Manage\EditMenu.cshtml" />
+    <Content Include="Views\Manage\MenuDetails.cshtml" />
+    <Content Include="Views\Manage\DeleteMenu.cshtml" />
+    <Content Include="Views\Manage\ListMenuInRoles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
