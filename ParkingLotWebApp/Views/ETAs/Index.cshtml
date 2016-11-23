@@ -26,65 +26,66 @@
             @if (IsRoot)
             {
                 <div class="panel-toolbar">
-                    <div class="btn-group m-l-5" role="group" aria-label="First group">
+                    <div class="btn-group m-r-5" role="group" aria-label="First group">
+                        <a href="@Url.Action("Index","Manage")" class="btn btn-white" title="@Common.BackToManage"><i class="glyphicon glyphicon-arrow-left"></i></a>
+                    </div>
+                    <div class="btn-group m-l-5" role="group" aria-label="Second group">
                         <a href="@Url.Action("Create")" class="btn btn-white" title="@WebPages.ETAs_Create"><i class="glyphicon glyphicon-plus"></i></a>
                     </div>
                 </div>
             }
-            <div class="panel-body">
-                <table class="table table-hover table-bordered">
-                    <tr class="info">
-                        <th>
-                            @Html.DisplayNameFor(model => model.Code)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Void)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.CreateUserId)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.CreateUTCTime)
-                        </th>
-                        @*<th>
-                                @Html.DisplayNameFor(model => model.LastUpdateUserId)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.LastUpdateUTCTime)
-                            </th>*@
-                        <th></th>
-                    </tr>
+            <table class="table table-hover table-bordered table-responsive">
+                <tr class="info">
+                    <th>
+                        @Html.DisplayNameFor(model => model.Code)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Void)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreateUserId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreateUTCTime)
+                    </th>
+                    @*<th>
+                    @Html.DisplayNameFor(model => model.LastUpdateUserId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastUpdateUTCTime)
+                </th>*@
+                    <th></th>
+                </tr>
 
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Code)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Void)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CreateUserId)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CreateUTCTime)
-                            </td>
-                            @*<td>
-                                    @Html.DisplayFor(modelItem => item.LastUpdateUserId)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.LastUpdateUTCTime)
-                                </td>*@
-                            <td>
-                                <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-primary m-r-5" title="@Common.Edit"><i class="glyphicon glyphicon-edit"></i></a>
-                                <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-info m-r-5" title="@Common.Details"><i class="glyphicon glyphicon-info-sign"></i></a>
-                                <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger m-r-5" title="@Common.Delete"><i class="glyphicon glyphicon-remove"></i></a>
-                            </td>
-                        </tr>
-                    }
-                </table>
-            </div>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Code)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Void)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreateUserId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreateUTCTime)
+                        </td>
+                        @*<td>
+                        @Html.DisplayFor(modelItem => item.LastUpdateUserId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastUpdateUTCTime)
+                    </td>*@
+                        <td>
+                            <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-primary btn-xs m-r-5" title="@Common.Edit"><i class="glyphicon glyphicon-edit"></i></a>
+                            <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-info btn-xs m-r-5" title="@Common.Details"><i class="glyphicon glyphicon-info-sign"></i></a>
+                            <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger btn-xs m-r-5" title="@Common.Delete"><i class="glyphicon glyphicon-remove"></i></a>
+                        </td>
+                    </tr>
+                }
+            </table>
         </div>
     </div>
 </div>

@@ -1,66 +1,103 @@
 ﻿@model My.Core.Infrastructures.Implementations.Models.ApplicationRole
 
 @{
-    ViewBag.Title = "RoleDetails";
+    ViewBag.Title = Common.RoleDetails;
 }
+@section pageheader{
+    <h1 class="page-header">@Common.ApplicationRole <small>@ViewBag.Title</small></h1>
+}
+@section breadcrumb{
+    <li><a href="@Url.Action("Index","Manage")">@Common.SystemManagement</a></li>
+    <li><a href="javascript:;">@Common.ApplicationRole</a></li>
+    <li><a href="@Url.Action("AllRoles","Manage")">@Common.RoleList</a></li>
+    <li class="active">@ViewBag.Title</li>
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                </div>
+                <h4 class="panel-title">@ViewBag.Title</h4>
+            </div>
+            <div class="panel-toolbar">
+                <div class="btn-group m-r-5" role="group" aria-label="First group">
+                    <a href="@Url.Action("AllRoles")" class="btn btn-white" title="@Common.BackToRole"><i class="glyphicon glyphicon-arrow-left"></i></a>
+                </div>
+                <div class="btn-group m-r-5" role="group" aria-label="Second group">
+                    <a href="@Url.Action("RoleEdit", new { id = Model.Id })" class="btn btn-white" title="@Common.Edit"><i class="glyphicon glyphicon-edit"></i></a>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div>
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </dt>
 
-<h2>RoleDetails</h2>
+                        <dd>
+                            @Html.DisplayFor(model => model.Name)
+                        </dd>
 
-<div>
-    <h4>ApplicationRole</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Void)
+                        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+                        <dd>
+                            @Html.DisplayFor(model => model.Void)
+                        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Void)
-        </dt>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.CreateUserId)
+                        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Void)
-        </dd>
+                        <dd>
+                            @Html.DisplayFor(model => model.CreateUserId)
+                        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.CreateUserId)
-        </dt>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.CreateTime)
+                        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.CreateUserId)
-        </dd>
+                        <dd>
+                            @Html.DisplayFor(model => model.CreateTime)
+                        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.CreateTime)
-        </dt>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.LastUpdateUserId)
+                        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.CreateTime)
-        </dd>
+                        <dd>
+                            @Html.DisplayFor(model => model.LastUpdateUserId)
+                        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.LastUpdateUserId)
-        </dt>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.LastUpdateTime)
+                        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.LastUpdateUserId)
-        </dd>
+                        <dd>
+                            @Html.DisplayFor(model => model.LastUpdateTime)
+                        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.LastUpdateTime)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LastUpdateTime)
-        </dd>
-
-    </dl>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "AllRoles")
-</p>
+@*<h2>RoleDetails</h2>
+
+    <div>
+        <h4>ApplicationRole</h4>
+        <hr />
+        <dl class="dl-horizontal">
+
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "AllRoles")
+    </p>*@

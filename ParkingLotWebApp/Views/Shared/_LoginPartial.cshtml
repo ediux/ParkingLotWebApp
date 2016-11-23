@@ -9,7 +9,7 @@
         </a>
         <ul class="dropdown-menu animated fadeInLeft">
             <li class="arrow"></li>
-            @*<li><a href="javascript:;">Edit Profile</a></li>*@
+            <li><a href="@Url.Action("UserProfileEdit","Manage",new { id=User.Identity.GetUserId<int>()})">@Common.UserProfileChange</a></li>
             <li>@Html.ActionLink("管理", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })</li>
             <li class="divider"></li>
             <li><a href="javascript:document.getElementById('logoutForm').submit()">登出</a></li>
@@ -21,5 +21,5 @@ else
 {
 
     <li>@Html.ActionLink("註冊", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("登入", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    <li>@Html.ActionLink("登入", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
 }
