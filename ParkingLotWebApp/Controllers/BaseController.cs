@@ -21,10 +21,10 @@ namespace ParkingLotWebApp.Controllers
                 return;
             }
 
-            if(filterContext.HttpContext.Response.StatusCode == 404)
-            {
+            //if(filterContext.HttpContext.Response.StatusCode == 404)
+            //{
 
-            }
+            //}
             base.OnException(filterContext);
         }
 
