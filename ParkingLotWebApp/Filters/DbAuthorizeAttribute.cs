@@ -17,11 +17,6 @@ namespace ParkingLotWebApp.Filters
 
         }
 
-        protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
-        {
-            base.HandleUnauthorizedRequest(filterContext);
-        }
-
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             if (httpContext == null)
@@ -34,14 +29,5 @@ namespace ParkingLotWebApp.Filters
             return base.AuthorizeCore(httpContext);
         }
 
-        public override void OnAuthorization(AuthorizationContext filterContext)
-        {
-            base.OnAuthorization(filterContext);
-        }
-
-        protected override HttpValidationStatus OnCacheAuthorization(HttpContextBase httpContext)
-        {
-            return base.OnCacheAuthorization(httpContext);
-        }
     }
 }
