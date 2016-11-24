@@ -11,6 +11,7 @@ using System.Web.Http.Description;
 using ParkingLotWebApp.Models;
 using System.Collections.ObjectModel;
 using Microsoft.AspNet.Identity;
+using System.Text;
 
 namespace ParkingLotWebApp.Controllers
 {
@@ -133,6 +134,7 @@ namespace ParkingLotWebApp.Controllers
             eTAs = db.BatchSyncFormDevice(this, eTAs);
 
             return Ok(eTAs);
+            //return Content(HttpStatusCode.OK, Newtonsoft.Json.JsonConvert.SerializeObject(eTAs), new System.Net.Http.Formatting.JsonMediaTypeFormatter());
         }
 
         // DELETE: api/SQLiteSync/5
