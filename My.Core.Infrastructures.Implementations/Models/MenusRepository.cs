@@ -9,52 +9,45 @@ namespace My.Core.Infrastructures.Implementations.Models
 {
     public partial class MenusRepository : EFRepository<Menus>, IMenusRepository, IDataRepository<Menus>
     {
-        private ICacheProvider _cache;
+       
         private const string key = "Menus";
         public MenusRepository()
         {
-            _cache = new DefaultCacheProvider();
+           
         }
 
-        public ICacheProvider Cache
-        {
-            get
-            {
-                return _cache;
-            }
 
-        }
         public override IQueryable<Menus> All()
         {
             return GetCache().Where(w => w.Void == false).AsQueryable();
         }
         public void ClearCache(string key)
         {
-            _cache.Invalidate(key);
+            UnitOfWork.Invalidate(key);
         }
 
         public IQueryable<Menus> GetCache()
         {
-            List<Menus> customerData = Cache.Get(key) as List<Menus>;
+            List<Menus> customerData = UnitOfWork.Get(key) as List<Menus>;
 
-            if (Cache.IsSet(key) == false)
+            if (UnitOfWork.IsSet(key) == false)
             {
                 //Get the Customer data
                 customerData = ObjectSet.ToList();
-                Cache.Set(key, customerData, 60);
+                UnitOfWork.Set(key, customerData, 60);
             }
 
             if (customerData.Count == 0)
             {
                 customerData = ObjectSet.ToList();
-                Cache.Set(key, customerData, 60);
+                UnitOfWork.Set(key, customerData, 60);
             }
 
             if (customerData.Count != ObjectSet.Count())
             {
-                _cache.Invalidate(key);
+                UnitOfWork.Invalidate(key);
                 customerData = ObjectSet.ToList();
-                Cache.Set(key, customerData, 60);
+                UnitOfWork.Set(key, customerData, 60);
             }
 
             return customerData.AsQueryable();
@@ -84,7 +77,6 @@ namespace My.Core.Infrastructures.Implementations.Models
 
     public partial interface IMenusRepository : IRepositoryBase<Menus>
     {
-        ICacheProvider Cache { get; }
         IQueryable<Menus> GetRootMenus(ApplicationUser user);
     }
 }
