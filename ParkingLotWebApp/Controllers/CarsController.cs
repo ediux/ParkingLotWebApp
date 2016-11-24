@@ -15,7 +15,7 @@ namespace ParkingLotWebApp.Controllers
     [Authorize]
     [HandleError(ExceptionType = typeof(DbEntityValidationException),
       View = "DbEntityValidationException")]
-    public class CarsController : Controller
+    public class CarsController : BaseController
     {
         //private ParkingLotModelEntities db = new ParkingLotModelEntities();
         private ICarsRepository db;

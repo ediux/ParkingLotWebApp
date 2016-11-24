@@ -11,6 +11,20 @@ namespace ParkingLotWebApp.Controllers
         protected override void OnException(ExceptionContext filterContext)
         {
             Elmah.ErrorSignal.FromCurrentContext().Raise(filterContext.Exception);
+
+            if(filterContext.Exception is System.Data.Entity.Validation.DbEntityValidationException)
+            {
+                filterContext.ExceptionHandled = true;
+
+                filterContext.Result = View("DbEntityValidationException", filterContext.Exception);
+   
+                return;
+            }
+
+            if(filterContext.HttpContext.Response.StatusCode == 404)
+            {
+
+            }
             base.OnException(filterContext);
         }
 
