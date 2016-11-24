@@ -673,7 +673,7 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
-        ///   查詢類似 汽車剩餘車格數 的當地語系化字串。
+        ///   查詢類似 尚餘車位數 的當地語系化字串。
         /// </summary>
         public static string ParkingLotsFloor_CarLastGrid {
             get {
@@ -682,7 +682,7 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
-        ///   查詢類似 汽車總車格數 的當地語系化字串。
+        ///   查詢類似 總車位數 的當地語系化字串。
         /// </summary>
         public static string ParkingLotsFloor_CarTotalGrid {
             get {

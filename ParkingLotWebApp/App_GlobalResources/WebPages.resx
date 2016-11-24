@@ -304,10 +304,10 @@
     <value>字串格式不正確，請輸入格式如:00:00~24:00.</value>
   </data>
   <data name="ParkingLotsFloor_CarLastGrid" xml:space="preserve">
-    <value>汽車剩餘車格數</value>
+    <value>尚餘車位數</value>
   </data>
   <data name="ParkingLotsFloor_CarTotalGrid" xml:space="preserve">
-    <value>汽車總車格數</value>
+    <value>總車位數</value>
   </data>
   <data name="ParkingLotsFloor_FloorName" xml:space="preserve">
     <value>樓層名稱</value>
