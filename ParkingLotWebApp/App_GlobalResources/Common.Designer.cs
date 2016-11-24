@@ -223,6 +223,15 @@ namespace ParkingLotWebApp.App_GlobalResources {
         }
         
         /// <summary>
+        ///   查詢類似 刪除角色 的當地語系化字串。
+        /// </summary>
+        public static string DeleteRole {
+            get {
+                return ResourceManager.GetString("DeleteRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 詳細 的當地語系化字串。
         /// </summary>
         public static string Details {
@@ -390,6 +399,33 @@ namespace ParkingLotWebApp.App_GlobalResources {
         public static string RoleAssign {
             get {
                 return ResourceManager.GetString("RoleAssign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 角色詳細資訊 的當地語系化字串。
+        /// </summary>
+        public static string RoleDetails {
+            get {
+                return ResourceManager.GetString("RoleDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 角色列表 的當地語系化字串。
+        /// </summary>
+        public static string RoleList {
+            get {
+                return ResourceManager.GetString("RoleList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 這個角色 的當地語系化字串。
+        /// </summary>
+        public static string RoleThis {
+            get {
+                return ResourceManager.GetString("RoleThis", resourceCulture);
             }
         }
         

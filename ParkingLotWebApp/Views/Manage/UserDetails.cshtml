@@ -3,116 +3,154 @@
 @{
     ViewBag.Title = string.Format(Common.UserDetails,Model.DisplayName);
 }
+@section pageheader{
+    <h1 class="page-header">@Common.ApplicationUser <small>@ViewBag.Title</small></h1>
+}
+@section breadcrumb{
+    <li><a href="@Url.Action("Index","Manage")">@Common.SystemManagement</a></li>
+    <li><a href="javascript:;">@Common.ApplicationUser</a></li>
+    <li><a href="@Url.Action("AllUsers","Manage")">@Common.UserLists</a></li>
+    <li class="active">@ViewBag.Title</li>
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                </div>
+                <h4 class="panel-title">@ViewBag.Title</h4>
+            </div>
+            <div class="panel-toolbar">
+                <div class="btn-group m-r-5" role="group" aria-label="First group">
+                    <a href="@Url.Action("AllUsers")" class="btn btn-white" title="@Common.Back_To_UserList"><i class="glyphicon glyphicon-arrow-left"></i></a>
+                </div>
+                <div class="btn-group m-r-5" role="group" aria-label="Second group">
+                    <a href="@Url.Action("UserProfileEdit", new { id = Model.Id })" class="btn btn-white" title="@Common.Edit"><i class="glyphicon glyphicon-edit"></i></a>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div>
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.UserName)
+                        </dt>
 
-<h2>@ViewBag.Title</h2>
+                        <dd>
+                            @Html.DisplayFor(model => model.UserName)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.DisplayName)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.DisplayName)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.EMail)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.EMail)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.EMailConfirmed)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.EMailConfirmed)
+                        </dd>
+
+
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.PhoneNumber)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.PhoneNumber)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.PhoneConfirmed)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.PhoneConfirmed)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.TwoFactorEnabled)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.TwoFactorEnabled)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Void)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Void)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.CreateUserId)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.CreateUserId)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.CreateTime)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.CreateTime)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.LastUpdateUserId)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.LastUpdateUserId)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.LastUpdateTime)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.LastUpdateTime)
+                        </dd>
+                        <dt>
+                            @MUI.RoleName
+                        </dt>
+
+                        <dd>
+                            @ViewBag.RoleName
+                        </dd> 
+
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*<h2>@ViewBag.Title</h2>
 <div>
     <h4>@Common.ApplicationUser</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DisplayName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DisplayName)
-        </dd>      
-        <dt>
-            @Html.DisplayNameFor(model => model.EMail)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EMail)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EMailConfirmed)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EMailConfirmed)
-        </dd>
-
-
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PhoneConfirmed)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PhoneConfirmed)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.TwoFactorEnabled)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TwoFactorEnabled)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Void)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Void)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CreateUserId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreateUserId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreateTime)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreateTime)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.LastUpdateUserId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LastUpdateUserId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.LastUpdateTime)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LastUpdateTime)
-        </dd><dt>
-    @MUI.RoleName
-</dt>
-
-<dd>
-    @ViewBag.RoleName 
-</dd> 
+        
 
     </dl>
 </div>
 <p>
     @Html.ActionLink(Common.Edit, "UserProfileEdit", new { id = Model.Id }) |
     @Html.ActionLink(Common.Back_To_UserList, "AllUsers")
-</p>
+</p>*@

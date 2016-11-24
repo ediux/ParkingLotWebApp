@@ -2,77 +2,103 @@
 @using PagedList
 @model IEnumerable<My.Core.Infrastructures.Implementations.Models.ApplicationUser>
 
-@{ 
+@{
     ViewBag.Title = Common.UserLists;
 }
-
-<h2>@ViewBag.Title</h2>
-
-<p>
-    @Html.ActionLink(Common.CreateNewUserInAdminsMode, "RegisterUserInAdminsMode") | @Html.ActionLink(Common.BackToManage, "Index")
-</p>
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.UserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Void)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DisplayName)
-        </th>
-     
-        <th>
-            @Html.DisplayNameFor(model => model.EMail)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreateTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastActivityTime)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Void)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DisplayName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EMail)
-            </td>       
-            <td>
-                @Html.DisplayFor(modelItem => item.CreateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastActivityTime)
-            </td>            
-            <td>
-                @Html.ActionLink(Common.Edit, "UserProfileEdit", new { id = item.Id }) |
-                @Html.ActionLink(Common.Details, "UserDetails", new { id = item.Id }) |
-                @Html.ActionLink(Common.Delete, "DeleteUser", new { id = item.Id })
-            </td>
-        </tr>
-    }
-
-</table>
-@{
-    var data = Model as IPagedList;
+@section pageheader{
+    <h1 class="page-header">@Common.ApplicationUser <small>@ViewBag.Title</small></h1>
 }
-<hr/>
-<div class="text-center">
-    @Html.PagedListPager(data, p => Url.Action("AllUsers",new { pageid=p }))
+@section breadcrumb{
+    <li><a href="@Url.Action("Index","Manage")">@Common.SystemManagement</a></li>
+    <li><a href="javascript:;">@Common.ApplicationUser</a></li>
+    <li class="active">@ViewBag.Title</li>
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                </div>
+                <h4 class="panel-title">@ViewBag.Title</h4>
+            </div>
+            <div class="panel-toolbar">
+                <div class="btn-group m-r-5" role="group" aria-label="First group">
+                    <a href="@Url.Action("Index","Manage")" class="btn btn-white" title="@Common.BackToManage"><i class="glyphicon glyphicon-arrow-left"></i></a>
+                </div>
+                <div class="btn-group m-l-5" role="group" aria-label="First group">
+                    <a href="@Url.Action("RegisterUserInAdminsMode")" class="btn btn-white" title="@Common.CreateNewUserInAdminsMode"><i class="glyphicon glyphicon-plus"></i></a>
+                </div>
+            </div>
+            <table class="table table-responsive table-hover">
+                <thead>
+                    <tr class="info">
+                        <th>
+                            @Html.DisplayNameFor(model => model.UserName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Void)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DisplayName)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.EMail)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CreateTime)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LastActivityTime)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Void)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DisplayName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EMail)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreateTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastActivityTime)
+                            </td>
+                            <td>
+                                <a href="@Url.Action("UserProfileEdit", new { id = item.Id })" class="btn btn-primary btn-xs m-r-5" title="@Common.Edit"><i class="glyphicon glyphicon-edit"></i></a>
+                                <a href="@Url.Action("UserDetails", new { id = item.Id })" class="btn btn-info btn-xs m-r-5" title="@Common.Details"><i class="glyphicon glyphicon-info-sign"></i></a>
+                                <a href="@Url.Action("DeleteUser", new { id = item.Id })" class="btn btn-danger btn-xs m-r-5" title="@Common.Delete"><i class="glyphicon glyphicon-remove"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    @{
+                        var data = Model as IPagedList;
+                    }
+                    <tr class="text-center">
+                        <td colspan="7">@Html.PagedListPager(data, p => Url.Action("AllUsers", new { pageid = p }))</td>
+                    </tr>                   
+                </tfoot>
+            </table>
+        </div>
+    </div>
 </div>
+
 @section pagecss{
     <link href="~/Content/PagedList.css" rel="stylesheet" />
 }
