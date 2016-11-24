@@ -198,9 +198,13 @@ namespace ParkingLotWebApp.Controllers
 
             var model = db_area.GetListRemainParkingGridAmounts();
 
-            foreach (var selected in sId)
+            int[] keys = model.SelectedAreas.Keys.ToArray();
+
+            foreach (var selected in keys)
             {
-                model.SelectedAreas[selected] = true;
+                model.SelectedAreas[selected] = false;
+                if (sId.Contains(selected))
+                    model.SelectedAreas[selected] = true;
             }
 
             return View(model);
