@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace My.Core.Infrastructures.Implementations.Models
 {
-	public partial interface IUnitOfWork
+	public partial interface IUnitOfWork : ICacheProvider
 	{
 		DbContext Context { get; set; }
 
