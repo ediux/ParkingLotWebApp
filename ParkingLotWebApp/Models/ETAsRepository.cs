@@ -102,12 +102,12 @@ namespace ParkingLotWebApp.Models
                             }
                         }
                     }
-                    
+
 
                 }
                 catch (Exception ex)
                 {
-
+                    Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
                     continue;
                 }
             }
@@ -115,14 +115,42 @@ namespace ParkingLotWebApp.Models
             try
             {
                 UnitOfWork.Commit();    //提交變更要求
+
+                List<ETAs> result = db_etc.Where(w => w.Void == false).ToList();
+                List<ETCBinding> converteddata = new List<ETCBinding>();
+                if (result != null && result.Count > 0)
+                {
+                    foreach(ETAs d in result)
+                    {
+                        ETCBinding ndata = new ETCBinding();
+                        if (d == null)
+                            continue;
+
+                        ndata.ETCID = d.Code;
+                        ndata.CreateTime = d.CreateUTCTime;
+                        ndata.LastUpdateTiem = d.LastUpdateUTCTime;
+                        ndata.LastUploadTime = d.LastUpdateUTCTime;
+
+                        if (d.Cars != null)
+                        {
+                            ndata.CarID = d.Cars.CarNumber;
+                            ndata.CarPurposeTypeID = d.Cars.CarPurposeTypeID;
+
+                        }
+
+                        converteddata.Add(ndata);
+                    }
+                }
+                syncdata.ETCBinding = converteddata;
+                syncdata.CarPurposeTypes = new Collection<CarPurposeTypes>(db_cartypes.All().ToList());
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
-               
+                Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
             }
 
-            syncdata.ETCBinding = new Collection<ETCBinding>(db_etc.Where(w => w.Void == false).ToList().ConvertAll(c=>new ETCBinding { CarID = c.Cars.CarNumber, CarPurposeTypeID = c.Cars.CarPurposeTypeID, ETCID=c.Code, CreateTime = c.CreateUTCTime, LastUpdateTiem = c.LastUpdateUTCTime, LastUploadTime =c.LastUpdateUTCTime }));
-            syncdata.CarPurposeTypes = new Collection<CarPurposeTypes>(db_cartypes.All().ToList());
+
+
 
             return syncdata;
         }
