@@ -63,7 +63,7 @@ namespace ParkingLotWebApp.Models
                         ID = s.ID
                     }).ToList());
                 result.Areas.Add(k, areadatas[k]);
-                result.SelectedAreas.Add(k, false);
+                result.SelectedAreas.Add(k, true);
             }
 
 
