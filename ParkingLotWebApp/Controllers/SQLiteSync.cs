@@ -14,6 +14,7 @@ using Microsoft.AspNet.Identity;
 
 namespace ParkingLotWebApp.Controllers
 {
+    [Filters.ElmahError]
     public class SQLiteSyncController : ApiController
     {
         private IETAsRepository db;

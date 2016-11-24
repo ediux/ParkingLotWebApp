@@ -8,7 +8,7 @@ using System;
 
 namespace ParkingLotWebApp.Controllers
 {
-    public class ParkingLotsFloorController : Controller
+    public class ParkingLotsFloorController : BaseController
     {
         private IParkingLotsFloorRepository db = RepositoryHelper.GetParkingLotsFloorRepository();
         private IParkingLotsDetailRepository db_area = RepositoryHelper.GetParkingLotsDetailRepository();

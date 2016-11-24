@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace ParkingLotWebApp.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private IParkingLotsDetailRepository db;
         private IParkingLotsFloorRepository db_floor;
