@@ -72,14 +72,57 @@
                     {
                         <div class="col-xs-12 col-md-4">
                             <div class="panel panel-inverse" data-sortable-id="form-slider-switcher-3">
-                                <div class="panel-heading">                              
-                                    <h4 class="panel-title">@Model.Areas[key]</h4>
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">@Model.Areas[key]-總尚餘車位數:@Model.RemainSummary[key].Sum(s => s.剩餘停車格數)</h4>
                                 </div>
-                                <div class="panel-body">
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Admins"))
+                                {
+                                    <div class="panel-body">
+                                        <table class="table table-bordered table-hover table-responsive">
+                                            <thead>
+                                                @*<tr>
+                                                        @if (Model.RemainSummary[key].All(w => w.NoneFloor == false))
+                                                        {
+                                                            <th colspan="3">@Model.Areas[key]</th>
+                                                        }
+                                                        else
+                                                        {
+                                                            <th colspan="2">@Model.Areas[key]</th>
+                                                        }
+                                                    </tr>*@
+                                                <tr>
+                                                    @if (Model.RemainSummary[key].All(p => p.NoneFloor == false))
+                                                    {
+                                                        <th>樓層</th>
+                                                    }
+                                                    <th>@WebPages.ParkingLotsFloor_CarTotalGrid</th>
+                                                    <th>@WebPages.ParkingLotsFloor_CarLastGrid</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item_n in Model.RemainSummary[key])
+                                                {
+                                                    <tr>
+                                                        @if (item_n.NoneFloor == false)
+                                                        {
+                                                            <td>@item_n.樓層名稱</td>
+                                                            <td>@item_n.總停車格數</td>
+                                                            <td>@item_n.剩餘停車格數</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>@item_n.總停車格數</td>
+                                                            <td>@item_n.剩餘停車格數</td>
+                                                        }
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
 
-                                </div>
                             </div>
-         
+
                         </div>
                     }
 
