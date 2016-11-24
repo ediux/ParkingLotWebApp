@@ -25,7 +25,7 @@ namespace ParkingLotWebApp.Controllers
             return View(model);
         }
 
-        [HttpPost]      
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Index(FormCollection collection)
         {
@@ -40,9 +40,13 @@ namespace ParkingLotWebApp.Controllers
 
             var model = db.GetListRemainParkingGridAmounts();
 
-            foreach (var key in sId)
+            int[] keys = model.SelectedAreas.Keys.ToArray();
+
+            foreach (var selected in keys)
             {
-                model.SelectedAreas[key] = true;
+                model.SelectedAreas[selected] = false;
+                if (sId.Contains(selected))
+                    model.SelectedAreas[selected] = true;
             }
 
             return View(model);
@@ -63,10 +67,22 @@ namespace ParkingLotWebApp.Controllers
 
             var model = db.GetListRemainParkingGridAmounts();
 
-            foreach (var key in sId)
+            int[] keys = model.SelectedAreas.Keys.ToArray();
+
+            foreach (var selected in keys)
             {
-                model.SelectedAreas[key] = true;
+                model.SelectedAreas[selected] = false;
             }
+
+            if (sId != null && sId.Length > 0)
+            {
+                foreach (var selected in keys)
+                {
+                    if (sId.Contains(selected))
+                        model.SelectedAreas[selected] = true;
+                }
+            }
+
 
             return View(model);
         }
