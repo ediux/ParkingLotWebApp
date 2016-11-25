@@ -31,70 +31,73 @@
                     <a href="@Url.Action("RegisterUserInAdminsMode")" class="btn btn-white" title="@Common.CreateNewUserInAdminsMode"><i class="glyphicon glyphicon-plus"></i></a>
                 </div>
             </div>
-            <table class="table table-responsive table-hover">
-                <thead>
-                    <tr class="info">
-                        <th>
-                            @Html.DisplayNameFor(model => model.UserName)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Void)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.DisplayName)
-                        </th>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr class="info">
+                            <th>
+                                @Html.DisplayNameFor(model => model.UserName)
+                            </th>
+                            <th class="hidden-xs hidden-sm">
+                                @Html.DisplayNameFor(model => model.Void)
+                            </th>
+                            <th class="hidden-xs hidden-sm">
+                                @Html.DisplayNameFor(model => model.DisplayName)
+                            </th>
 
-                        <th>
-                            @Html.DisplayNameFor(model => model.EMail)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.CreateTime)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.LastActivityTime)
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.UserName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Void)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DisplayName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.EMail)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CreateTime)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.LastActivityTime)
-                            </td>
-                            <td>
-                                <a href="@Url.Action("UserProfileEdit", new { id = item.Id })" class="btn btn-primary btn-xs m-r-5" title="@Common.Edit"><i class="glyphicon glyphicon-edit"></i></a>
-                                <a href="@Url.Action("UserDetails", new { id = item.Id })" class="btn btn-info btn-xs m-r-5" title="@Common.Details"><i class="glyphicon glyphicon-info-sign"></i></a>
-                                <a href="@Url.Action("DeleteUser", new { id = item.Id })" class="btn btn-danger btn-xs m-r-5" title="@Common.Delete"><i class="glyphicon glyphicon-remove"></i></a>
-                            </td>
+                            <th>
+                                @Html.DisplayNameFor(model => model.EMail)
+                            </th>
+                            <th class="hidden-xs hidden-sm">
+                                @Html.DisplayNameFor(model => model.CreateTime)
+                            </th>
+                            <th class="hidden-xs hidden-sm">
+                                @Html.DisplayNameFor(model => model.LastActivityTime)
+                            </th>
+                            <th></th>
                         </tr>
-                    }
-                </tbody>
-                <tfoot>
-                    @{
-                        var data = Model as IPagedList;
-                    }
-                    <tr class="text-center">
-                        <td colspan="7">@Html.PagedListPager(data, p => Url.Action("AllUsers", new { pageid = p }))</td>
-                    </tr>                   
-                </tfoot>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserName)
+                                </td>
+                                <td class="hidden-xs hidden-sm">
+                                    @Html.DisplayFor(modelItem => item.Void)
+                                </td>
+                                <td class="hidden-xs hidden-sm">
+                                    @Html.DisplayFor(modelItem => item.DisplayName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EMail)
+                                </td>
+                                <td class="hidden-xs hidden-sm">
+                                    @Html.DisplayFor(modelItem => item.CreateTime)
+                                </td>
+                                <td class="hidden-xs hidden-sm">
+                                    @Html.DisplayFor(modelItem => item.LastActivityTime)
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("UserProfileEdit", new { id = item.Id })" class="btn btn-primary btn-xs m-r-5" title="@Common.Edit"><i class="glyphicon glyphicon-edit"></i></a>
+                                    <a href="@Url.Action("UserDetails", new { id = item.Id })" class="btn btn-info btn-xs m-r-5" title="@Common.Details"><i class="glyphicon glyphicon-info-sign"></i></a>
+                                    <a href="@Url.Action("DeleteUser", new { id = item.Id })" class="btn btn-danger btn-xs m-r-5" title="@Common.Delete"><i class="glyphicon glyphicon-remove"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        @{
+                            var data = Model as IPagedList;
+                        }
+                        <tr class="text-center">
+                            <td colspan="7">@Html.PagedListPager(data, p => Url.Action("AllUsers", new { pageid = p }))</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+          
         </div>
     </div>
 </div>
