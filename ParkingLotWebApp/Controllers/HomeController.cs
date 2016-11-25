@@ -74,14 +74,13 @@ namespace ParkingLotWebApp.Controllers
                 model.SelectedAreas[selected] = false;
             }
 
-            if (sId != null && sId.Length > 0)
-            {
+  
                 foreach (var selected in keys)
                 {
                     if (sId.Contains(selected))
                         model.SelectedAreas[selected] = true;
                 }
-            }
+ 
 
 
             return View(model);
