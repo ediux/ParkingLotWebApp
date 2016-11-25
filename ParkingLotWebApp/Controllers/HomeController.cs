@@ -20,8 +20,9 @@ namespace ParkingLotWebApp.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.AreaId = "";
+
             var model = db.GetListRemainParkingGridAmounts();
+            ViewBag.AreaId = string.Join(",", model.SelectedAreas.Keys.Select(s => s.ToString()).ToArray());
             return View(model);
         }
 
@@ -30,7 +31,7 @@ namespace ParkingLotWebApp.Controllers
         public ActionResult Index(FormCollection collection)
         {
             string selects = collection["areaId"];
-            ViewBag.AreaId = selects;
+            
             int[] sId = new int[] { };
 
             if (!string.IsNullOrEmpty(selects))
@@ -39,7 +40,7 @@ namespace ParkingLotWebApp.Controllers
             }
 
             var model = db.GetListRemainParkingGridAmounts();
-
+ViewBag.AreaId = selects;
             int[] keys = model.SelectedAreas.Keys.ToArray();
 
             foreach (var selected in keys)
@@ -74,13 +75,13 @@ namespace ParkingLotWebApp.Controllers
                 model.SelectedAreas[selected] = false;
             }
 
-  
-                foreach (var selected in keys)
-                {
-                    if (sId.Contains(selected))
-                        model.SelectedAreas[selected] = true;
-                }
- 
+
+            foreach (var selected in keys)
+            {
+                if (sId.Contains(selected))
+                    model.SelectedAreas[selected] = true;
+            }
+
 
 
             return View(model);
