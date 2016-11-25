@@ -22,35 +22,38 @@
             </div>
         }
     </div>
-    <table class="table table-responsive table-hover">
-        <tr class="info">
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tr class="info">
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
 
-            <th></th>
-        </tr>
+                <th></th>
+            </tr>
 
-        @if (Model.Count() > 0)
-        {
-            foreach (var item in Model)
+            @if (Model.Count() > 0)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-left">
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+
+                        <td class="text-right">
+                            <a href="@Url.Action("RemoveMenuFromRole", new { id = (int)ViewBag.MenuId, RoleId = item.Id })" class="btn btn-danger btn-sm m-r-5" title="移除權限"><i class="glyphicon glyphicon-remove"></i></a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
             {
                 <tr>
-                    <td class="text-left">
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-
-                    <td class="text-right">
-                        <a href="@Url.Action("RemoveMenuFromRole", new { id = (int)ViewBag.MenuId, RoleId = item.Id })" class="btn btn-danger btn-sm m-r-5" title="移除權限"><i class="glyphicon glyphicon-remove"></i></a>
-                    </td>
+                    <td colspan="2" class="text-center">沒有允許使用這個選單的角色</td>
                 </tr>
             }
-        }
-        else
-        {
-            <tr>
-                <td colspan="2" class="text-center">沒有允許使用這個選單的角色</td>
-            </tr>
-        }
-    </table>
+        </table>
+    </div>
+  
 </div>
