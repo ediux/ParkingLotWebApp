@@ -714,11 +714,12 @@ namespace ParkingLotWebApp.Controllers
                 menuindb.System_ControllerActionsId = menu.System_ControllerActionsId;
                 menuindb.Void = menu.Void;
                 menuindb.Order = menu.Order;
+                menuindb.AllowAnonymous = menu.AllowAnonymous;
 
                 _menuRepo.UnitOfWork.Context.Entry(menuindb).State = EntityState.Modified;
                 _menuRepo.UnitOfWork.Commit();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("MenuList");
             }
             ViewBag.ParentMenuId = new SelectList(_menuRepo.All().Where(w => w.Void == false).ToList(), "Id", "Name", menu.ParentMenuId);
             ViewBag.System_ControllerActionsId = new SelectList(_actionRepo.All().Where(w => w.Void == false)
