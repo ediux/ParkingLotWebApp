@@ -68,34 +68,37 @@
                 </div>
             </div>
         }
-        <div class="panel-body">
+        <div class="table-responsive">
             <table class="table table-hover table-bordered">
-                <tr class="info">
-                    <th colspan="7" class="text-left">
-                        @Model.Count()
-                    </th>
-                </tr>
-                <tr class="info">
-                    <th>
-                        @Html.DisplayNameFor(model => model.Code)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Cars.CarNumber)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Cars.CarPurposeTypes.Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(x => x.Cars.Employee.Code)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.CreateUTCTime)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.LastUpdateUTCTime)
-                    </th>
-                    <th></th>
-                </tr>
+                <thead>
+                    <tr class="info">
+                        <th colspan="7" class="text-left">
+                            總筆數: @Model.Count()
+                        </th>
+                    </tr>
+                    <tr class="info">
+                        <th>
+                            @Html.DisplayNameFor(model => model.Code)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Cars.CarNumber)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Cars.CarPurposeTypes.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(x => x.Cars.Employee.Code)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CreateUTCTime)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LastUpdateUTCTime)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+      
 
                 @foreach (var item in Model)
                 {
@@ -119,15 +122,15 @@
                             @Html.DisplayFor(modelItem => item.LastUpdateUTCTime)
                         </td>
                         <td>
-                            <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-primary m-r-5" title="@Common.Edit_Relation"><i class="glyphicon glyphicon-edit"></i></a>
+                            <a href="@Url.Action("Edit", new { id = item.Id,SearchTagId = ViewBag.SearchTagId, SearchCarNumber= ViewBag.SearchCarNumber, SearchEmpNo=ViewBag.SearchEmpNo })" class="btn btn-xs btn-primary m-r-5" title="@Common.Edit_Relation"><i class="glyphicon glyphicon-edit"></i></a>
                             @if (IsAdmins && item.Cars != null)
                             {
-                                <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-warning m-r-5" title="@Common.Delete_Relation"><i class="glyphicon glyphicon-eject"></i></a>
+                                <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-xs btn-warning m-r-5" title="@Common.Delete_Relation"><i class="glyphicon glyphicon-eject"></i></a>
 
                             }
                             @if (IsRoot && item.Cars != null)
                             {
-                                <a href="@Url.Action("DeleteCar", new { id = item.CarRefId })" class="btn btn-danger m-r-5" title="刪除車輛"><i class="glyphicon glyphicon-remove"></i></a>
+                                <a href="@Url.Action("DeleteCar", new { id = item.CarRefId })" class="btn btn-xs btn-danger m-r-5" title="刪除車輛"><i class="glyphicon glyphicon-remove"></i></a>
                             }
                         </td>
                     </tr>

@@ -9,6 +9,21 @@
     {
         isAdmins = true;
     }
+
+    bool isSearched = false;
+
+    string SearchTagId = ViewBag.SearchTagId??"";
+    string SearchCarNumber = ViewBag.SearchCarNumber??"";
+    string SearchEmpNo = ViewBag.SearchEmpNo??"";
+
+    if (!string.IsNullOrEmpty(SearchTagId))
+    { isSearched = true; }
+
+    if (!string.IsNullOrEmpty(SearchCarNumber))
+    { isSearched = true; }
+
+    if (!string.IsNullOrEmpty(SearchEmpNo))
+    { isSearched = true; }
 }
 
 @section pageheader{
@@ -30,12 +45,22 @@
         </div>
         <div class="panel-toolbar">
             <div class="btn-group" role="group" aria-label="First group">
-                <a href="@Url.Action("Index")" class="btn btn-white" title="@string.Format(Common.Back_To, WebPages.Cars_Lists)"><i class="glyphicon glyphicon-arrow-left"></i></a>            
+                @if (isSearched)
+                {
+                    <a href="@Url.Action("Search",new {SearchTagId, SearchCarNumber,SearchEmpNo })" class="btn btn-white" title="@string.Format(Common.Back_To, WebPages.Cars_Lists)"><i class="glyphicon glyphicon-arrow-left"></i></a>
+                }
+                else
+                {
+                    <a href="@Url.Action("Index")" class="btn btn-white" title="@string.Format(Common.Back_To, WebPages.Cars_Lists)"><i class="glyphicon glyphicon-arrow-left"></i></a>
+                }
             </div>
         </div>
         @using (Html.BeginForm())
             {
             @Html.AntiForgeryToken()
+            @Html.Hidden("SearchTagId", SearchTagId)
+            @Html.Hidden("SearchCarNumber", SearchCarNumber)
+            @Html.Hidden("SearchEmpNo", SearchEmpNo)
             <div class="panel-body">
                 <div class="form-horizontal">
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -65,7 +90,7 @@
                                     @Html.ValidationMessageFor(model => model.Cars.CarPurposeTypeID, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="col-md-3">
-                                    @Html.ActionLink("車輛用途維護", "Index", "CarPurposeTypes", new { ReturnUrl = Url.Action("Edit", "Cars", new { id = Model.Id }) }, new { @class = "btn btn-primary" })
+                                    @Html.ActionLink("車輛用途維護", "Index", "CarPurposeTypes", new { ReturnUrl = Url.Action("Edit", "Cars", new { id = Model.Id, SearchTagId, SearchCarNumber, SearchEmpNo }) }, new { @class = "btn btn-primary" })
                                 </div>
                             </div>
                         }
@@ -106,7 +131,7 @@
 
                         </div>
                     </div>
-                    @Html.HiddenFor(model => model.Cars.Employee.Name)                    
+                    @Html.HiddenFor(model => model.Cars.Employee.Name)
                     @Html.HiddenFor(model => model.Void)
                     @Html.HiddenFor(model => model.CreateUserId)
                     @Html.HiddenFor(model => model.CreateUTCTime)
@@ -117,13 +142,12 @@
                 </div>
 
             </div>
-                <div class="panel-footer text-right">
-                    <input type="submit" value="@Common.Save" class="btn btn-default" />
-                </div>
+            <div class="panel-footer text-right">
+                <input type="submit" value="@Common.Save" class="btn btn-default" />
+            </div>
         }
 
     </div>
     <!-- end panel -->
 
 </div>
-

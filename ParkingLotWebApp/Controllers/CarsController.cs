@@ -32,24 +32,49 @@ namespace ParkingLotWebApp.Controllers
         }
 
         // GET: Cars
-        public ActionResult Index()
+        public ActionResult Index(string SearchTagId, string SearchCarNumber, string SearchEmpNo)
         {
             var cars = db_etc.Where(w => w.Void == false)
                 .Include(c => c.Cars)
                 .OrderByDescending(o => o.Cars.LastUpdateUTCTime);
 
             // cars = cars.OrderByDescending(o => o.Cars.CarNumber);
-            ViewBag.SearchTagId = "";
-            ViewBag.SearchCarNumber = "";
-            ViewBag.SearchEmpNo = "";
+            ViewBag.SearchTagId = SearchTagId?? "";
+            ViewBag.SearchCarNumber = SearchCarNumber?? "";
+            ViewBag.SearchEmpNo = SearchEmpNo??"";
 
             return View(cars
                 .ToList());
         }
 
-        public ActionResult Search()
+        public ActionResult Search(string SearchTagId, string SearchCarNumber, string SearchEmpNo)
         {
-            return RedirectToAction("Index");
+            string etagid = SearchTagId;
+            string carnumber = SearchCarNumber;
+            string empid = SearchEmpNo;
+
+            ViewBag.SearchTagId = etagid;
+            ViewBag.SearchCarNumber = carnumber;
+            ViewBag.SearchEmpNo = empid;
+
+            var cars = db_etc.Where(w => w.Void == false)
+                .Include(c => c.Cars);
+
+            if (!string.IsNullOrEmpty(etagid))
+                cars = cars.Where(w => w.Code.Contains(etagid));
+
+            if (!string.IsNullOrEmpty(carnumber))
+                cars = cars.Where(w => w.Cars.CarNumber.Contains(carnumber));
+
+            if (!string.IsNullOrEmpty(empid))
+                cars = cars.Where(w => w.Cars.Employee.Code.Contains(empid));
+
+            cars = cars
+                .OrderByDescending(o => o.Cars.LastUpdateUTCTime)
+                .OrderByDescending(o => o.Cars.CarNumber);
+
+            return View("Index", cars
+                .ToList());
         }
 
         [HttpPost]
@@ -133,8 +158,12 @@ namespace ParkingLotWebApp.Controllers
         }
 
         // GET: Cars/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id,string SearchTagId,string SearchCarNumber, string SearchEmpNo)
         {
+            ViewBag.SearchTagId = SearchTagId;
+            ViewBag.SearchCarNumber = SearchCarNumber;
+            ViewBag.SearchEmpNo = SearchEmpNo;
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -167,6 +196,14 @@ namespace ParkingLotWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, FormCollection collection)
         {
+            string SearchTagId = collection["SearchTagId"];
+            string SearchCarNumber = collection["SearchCarNumber"];
+            string SearchEmpNo = collection["SearchEmpNo"];
+
+            ViewBag.SearchTagId = collection["SearchTagId"];
+            ViewBag.SearchCarNumber = collection["SearchCarNumber"];
+            ViewBag.SearchEmpNo = collection["SearchEmpNo"];
+
             var cars = db_etc.Get(id);
 
             if (TryValidateModel(cars))
@@ -227,6 +264,10 @@ namespace ParkingLotWebApp.Controllers
                 db.UnitOfWork.Context.Entry(cars).State = EntityState.Modified;
                 db.UnitOfWork.Commit();
 
+                if(!string.IsNullOrEmpty(SearchTagId) || !string.IsNullOrEmpty(SearchCarNumber) || !string.IsNullOrEmpty(SearchEmpNo))
+                {
+                    return RedirectToAction("Search", new { SearchTagId, SearchCarNumber , SearchEmpNo });
+                }
                 return RedirectToAction("Index");
             }
             var selectemp = db_emp.Where(w => w.Void == false).ToList();

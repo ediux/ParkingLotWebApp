@@ -26,7 +26,7 @@
                     <a href="@Url.Action("Create")" class="btn btn-white" title="@WebPages.Employees_Create_New"><i class="glyphicon glyphicon-plus"></i></a>
                 </div>
             </div>
-            <div class="panel-body">
+            <div class="table-responsive">
                 <table class="table table-hover table-bordered">
                     <thead>
                         <tr class="info">
@@ -80,15 +80,14 @@
                                     @Html.DisplayFor(modelItem => item.LastUpdateUTCTime)
                                 </td>
                                 <td>
-                                    <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-primary m-r-5" title="@Common.Edit"><i class="glyphicon glyphicon-edit"></i></a> 
-                                    <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-info m-r-5" title="@Common.Details"><i class="glyphicon glyphicon-info-sign"></i></a> 
-                                    <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger m-r-5" title="@Common.Delete"><i class="glyphicon glyphicon-remove"></i></a> 
+                                    <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-primary m-r-5" title="@Common.Edit"><i class="glyphicon glyphicon-edit"></i></a>
+                                    <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-info m-r-5" title="@Common.Details"><i class="glyphicon glyphicon-info-sign"></i></a>
+                                    <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger m-r-5" title="@Common.Delete"><i class="glyphicon glyphicon-remove"></i></a>
                                 </td>
                             </tr>
                         }
                     </tbody>
                 </table>
-
             </div>
         </div>
     </div>

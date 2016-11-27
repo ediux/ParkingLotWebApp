@@ -420,9 +420,9 @@ namespace ParkingLotWebApp.Controllers
             return View(user);
         }
 
-        public async Task<ActionResult> UserProfileEdit(int id)
+        public async Task<ActionResult> UserProfileEdit(int id,string returnUrl)
         {
-
+            ViewBag.ReturnUrl = returnUrl;
             ApplicationUser user = await UserManager.FindByIdAsync(id);
             UserProfileViewModel viewmodel = new UserProfileViewModel();
             viewmodel.Id = user.Id;
@@ -461,7 +461,7 @@ namespace ParkingLotWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UserProfileEdit(UserProfileViewModel user)
+        public ActionResult UserProfileEdit(UserProfileViewModel user, string returnUrl)
         {
             if (ModelState.IsValid)
             {
@@ -529,7 +529,7 @@ namespace ParkingLotWebApp.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("AllUsers");
+                    return Redirect(returnUrl);
                 }
             }
             var options = RoleManager.Roles.Where(w => w.Void == false).ToList();
