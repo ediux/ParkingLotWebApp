@@ -19,6 +19,7 @@ namespace My.Core.Infrastructures.Implementations.Models
         {
             this.ApplicationUser = new HashSet<ApplicationUser>();
             this.Menus = new HashSet<Menus>();
+            this.System_ControllerActions = new HashSet<System_ControllerActions>();
         }
     
         public int Id { get; set; }
@@ -33,5 +34,7 @@ namespace My.Core.Infrastructures.Implementations.Models
         public virtual ICollection<ApplicationUser> ApplicationUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Menus> Menus { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<System_ControllerActions> System_ControllerActions { get; set; }
     }
 }

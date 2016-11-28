@@ -18,6 +18,7 @@ namespace My.Core.Infrastructures.Implementations.Models
         public System_ControllerActions()
         {
             this.Menus = new HashSet<Menus>();
+            this.ApplicationRole = new HashSet<ApplicationRole>();
         }
     
         public int Id { get; set; }
@@ -33,5 +34,7 @@ namespace My.Core.Infrastructures.Implementations.Models
         public virtual System_Controllers System_Controllers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Menus> Menus { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ApplicationRole> ApplicationRole { get; set; }
     }
 }
