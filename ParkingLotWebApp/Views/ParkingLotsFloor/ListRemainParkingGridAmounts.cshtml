@@ -27,7 +27,7 @@
         <script src="/assets/js/form-slider-switcher.demo.min.js"></script>
     }
     <div class="row" style="margin-top:20px;" id="partialArea">
-        <div class="col-xs-4 col-md-2">
+        <div class="col-xs-12 col-md-4">
             <div class="panel panel-inverse" data-sortable-id="ui-widget-1">
                 <div class="panel-heading">
                     <div class="panel-heading-btn">
@@ -57,7 +57,55 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-8 col-md-10">
+        <div class="col-xs-12 col-md-8">
+            @foreach (int key in Model.RemainSummary.Keys)
+            {
+                if (Model.SelectedAreas[key])
+                {
+                    <div class="col-xs-12 col-md-4">
+                        <div class="panel panel-inverse" data-sortable-id="form-slider-switcher-3">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">@Model.Areas[key]-總尚餘車位數:@Model.RemainSummary[key].Sum(s => s.剩餘停車格數)</h4>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr class="info">
+                                            @if (Model.RemainSummary[key].All(p => p.NoneFloor == false))
+                                            {
+                                                <th>樓層</th>
+                                            }
+                                            <th>@WebPages.ParkingLotsFloor_CarTotalGrid</th>
+                                            <th>@WebPages.ParkingLotsFloor_CarLastGrid</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item_n in Model.RemainSummary[key])
+                                        {
+                                            <tr id="@Html.Raw(Model.Areas[key]+"_"+item_n.樓層名稱)">
+                                                @if (item_n.NoneFloor == false)
+                                                {
+                                                    <td>@item_n.樓層名稱</td>
+                                                    <td id="car_total_@item_n.ID">@item_n.總停車格數</td>
+                                                    <td id="car_@item_n.ID">@item_n.剩餘停車格數</td>
+                                                    <td><a href="javascript:showEditModal('car_@Model.RemainSummary[key][0].ID','moto_@Model.RemainSummary[key][0].ID',@Model.RemainSummary[key][0].ID,'@Model.Areas[key]','@Model.RemainSummary[key][0].樓層名稱',@Model.RemainSummary[key][0].總停車格數,@Model.RemainSummary[key][0].剩餘停車格數,@Model.RemainSummary[key][0].總機車格數,@Model.RemainSummary[key][0].剩餘機車格數);" class="btn btn-xs btn-primary">@ParkingLotWebApp.App_GlobalResources.Common.Edit</a></td>
+                                                }
+                                                else
+                                                {
+                                                    <td id="car_total_@item_n.ID">@item_n.總停車格數</td>
+                                                    <td id="car_@item_n.ID">@item_n.剩餘停車格數</td>
+                                                    <td><a href="javascript:showEditModal('car_@Model.RemainSummary[key][0].ID','moto_@Model.RemainSummary[key][0].ID',@Model.RemainSummary[key][0].ID,'@Model.Areas[key]','@Model.RemainSummary[key][0].樓層名稱',@Model.RemainSummary[key][0].總停車格數,@Model.RemainSummary[key][0].剩餘停車格數,@Model.RemainSummary[key][0].總機車格數,@Model.RemainSummary[key][0].剩餘機車格數);" class="btn btn-xs btn-primary">@ParkingLotWebApp.App_GlobalResources.Common.Edit</a></td>
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
         </div>
     </div>
     <div class="modal fade" id="EditRemainGridModal">
@@ -97,7 +145,7 @@
 }
 else
 {
-    <div class="col-xs-4 col-md-2">
+    <div class="col-xs-12 col-md-4">
         <div class="panel panel-inverse" data-sortable-id="ui-widget-1">
             <div class="panel-heading">
                 <div class="panel-heading-btn">
@@ -128,7 +176,7 @@ else
         </div>
 
     </div>
-    <div class="col-xs-8 col-md-10">
+    <div class="col-xs-12 col-md-8">
         @foreach (int key in Model.RemainSummary.Keys)
         {
             if (Model.SelectedAreas[key])
@@ -138,10 +186,10 @@ else
                         <div class="panel-heading">
                             <h4 class="panel-title">@Model.Areas[key]-總尚餘車位數:@Model.RemainSummary[key].Sum(s => s.剩餘停車格數)</h4>
                         </div>
-                        <div class="panel-body">
+                        <div class="table-responsive">
                             <table class="table table-bordered table-hover">
                                 <thead>
-                                    <tr>
+                                    <tr class="info">
                                         @if (Model.RemainSummary[key].All(p => p.NoneFloor == false))
                                         {
                                             <th>樓層</th>
@@ -160,13 +208,13 @@ else
                                                 <td>@item_n.樓層名稱</td>
                                                 <td id="car_total_@item_n.ID">@item_n.總停車格數</td>
                                                 <td id="car_@item_n.ID">@item_n.剩餘停車格數</td>
-                                                <td><a href="javascript:showEditModal('car_@Model.RemainSummary[key][0].ID','moto_@Model.RemainSummary[key][0].ID',@Model.RemainSummary[key][0].ID,'@Model.Areas[key]','@Model.RemainSummary[key][0].樓層名稱',@Model.RemainSummary[key][0].總停車格數,@Model.RemainSummary[key][0].剩餘停車格數,@Model.RemainSummary[key][0].總機車格數,@Model.RemainSummary[key][0].剩餘機車格數);" class="btn btn-primary">@ParkingLotWebApp.App_GlobalResources.Common.Edit</a></td>
+                                                <td><a href="javascript:showEditModal('car_@Model.RemainSummary[key][0].ID','moto_@Model.RemainSummary[key][0].ID',@Model.RemainSummary[key][0].ID,'@Model.Areas[key]','@Model.RemainSummary[key][0].樓層名稱',@Model.RemainSummary[key][0].總停車格數,@Model.RemainSummary[key][0].剩餘停車格數,@Model.RemainSummary[key][0].總機車格數,@Model.RemainSummary[key][0].剩餘機車格數);" class="btn btn-xs btn-primary">@ParkingLotWebApp.App_GlobalResources.Common.Edit</a></td>
                                             }
                                             else
                                             {
                                                 <td id="car_total_@item_n.ID">@item_n.總停車格數</td>
                                                 <td id="car_@item_n.ID">@item_n.剩餘停車格數</td>
-                                                <td><a href="javascript:showEditModal('car_@Model.RemainSummary[key][0].ID','moto_@Model.RemainSummary[key][0].ID',@Model.RemainSummary[key][0].ID,'@Model.Areas[key]','@Model.RemainSummary[key][0].樓層名稱',@Model.RemainSummary[key][0].總停車格數,@Model.RemainSummary[key][0].剩餘停車格數,@Model.RemainSummary[key][0].總機車格數,@Model.RemainSummary[key][0].剩餘機車格數);" class="btn btn-primary">@ParkingLotWebApp.App_GlobalResources.Common.Edit</a></td>
+                                                <td><a href="javascript:showEditModal('car_@Model.RemainSummary[key][0].ID','moto_@Model.RemainSummary[key][0].ID',@Model.RemainSummary[key][0].ID,'@Model.Areas[key]','@Model.RemainSummary[key][0].樓層名稱',@Model.RemainSummary[key][0].總停車格數,@Model.RemainSummary[key][0].剩餘停車格數,@Model.RemainSummary[key][0].總機車格數,@Model.RemainSummary[key][0].剩餘機車格數);" class="btn btn-xs btn-primary">@ParkingLotWebApp.App_GlobalResources.Common.Edit</a></td>
                                             }
                                         </tr>
                                     }
