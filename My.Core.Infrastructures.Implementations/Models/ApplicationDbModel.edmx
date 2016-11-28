@@ -5,6 +5,14 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="OpenWebSiteModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ActionsInRoles">
+          <Key>
+            <PropertyRef Name="ActionId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="ActionId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="ApplicationRole">
           <Key>
             <PropertyRef Name="Id" />
@@ -127,6 +135,30 @@
           <Property Name="LastUpdateTime" Type="smalldatetime" />
           <Property Name="AllowAnonymous" Type="bit" Nullable="false" />
         </EntityType>
+        <Association Name="FK_ActionsInRoles_ActionsInRoles">
+          <End Role="ApplicationRole" Type="Self.ApplicationRole" Multiplicity="1" />
+          <End Role="ActionsInRoles" Type="Self.ActionsInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApplicationRole">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ActionsInRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActionsInRoles_System_ControllerActions">
+          <End Role="System_ControllerActions" Type="Self.System_ControllerActions" Multiplicity="1" />
+          <End Role="ActionsInRoles" Type="Self.ActionsInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="System_ControllerActions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ActionsInRoles">
+              <PropertyRef Name="ActionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ApplicationUserClaim_ToApplicationUser">
           <End Role="ApplicationUser" Type="Self.ApplicationUser" Multiplicity="1" />
           <End Role="ApplicationUserClaim" Type="Self.ApplicationUserClaim" Multiplicity="*" />
@@ -236,6 +268,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="OpenWebSiteModelStoreContainer">
+          <EntitySet Name="ActionsInRoles" EntityType="Self.ActionsInRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ApplicationRole" EntityType="Self.ApplicationRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ApplicationUser" EntityType="Self.ApplicationUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ApplicationUserClaim" EntityType="Self.ApplicationUserClaim" Schema="dbo" store:Type="Tables" />
@@ -245,6 +278,14 @@
           <EntitySet Name="MenusInRoles" EntityType="Self.MenusInRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_ControllerActions" EntityType="Self.System_ControllerActions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_Controllers" EntityType="Self.System_Controllers" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ActionsInRoles_ActionsInRoles" Association="Self.FK_ActionsInRoles_ActionsInRoles">
+            <End Role="ApplicationRole" EntitySet="ApplicationRole" />
+            <End Role="ActionsInRoles" EntitySet="ActionsInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActionsInRoles_System_ControllerActions" Association="Self.FK_ActionsInRoles_System_ControllerActions">
+            <End Role="System_ControllerActions" EntitySet="System_ControllerActions" />
+            <End Role="ActionsInRoles" EntitySet="ActionsInRoles" />
+          </AssociationSet>
           <AssociationSet Name="FK_ApplicationUserClaim_ToApplicationUser" Association="Self.FK_ApplicationUserClaim_ToApplicationUser">
             <End Role="ApplicationUser" EntitySet="ApplicationUser" />
             <End Role="ApplicationUserClaim" EntitySet="ApplicationUserClaim" />
@@ -326,6 +367,10 @@
             <End Role="System_ControllerActions" EntitySet="System_ControllerActions" />
             <End Role="Menus" EntitySet="Menus" />
           </AssociationSet>
+          <AssociationSet Name="ActionsInRoles" Association="OpenWebSiteModel.ActionsInRoles">
+            <End Role="ApplicationRole" EntitySet="ApplicationRole" />
+            <End Role="System_ControllerActions" EntitySet="System_ControllerActions" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="ApplicationUserLogin">
           <Key>
@@ -360,6 +405,7 @@
           <Property Name="LastUpdateTime" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="ApplicationUser" Relationship="OpenWebSiteModel.ApplicationUserRole" FromRole="ApplicationRole" ToRole="ApplicationUser" />
           <NavigationProperty Name="Menus" Relationship="OpenWebSiteModel.MenusInRoles" FromRole="ApplicationRole" ToRole="Menus" />
+          <NavigationProperty Name="System_ControllerActions" Relationship="OpenWebSiteModel.ActionsInRoles" FromRole="ApplicationRole" ToRole="System_ControllerActions" />
         </EntityType>
         <EntityType Name="ApplicationUser">
           <Key>
@@ -458,6 +504,7 @@
           <NavigationProperty Name="System_Controllers" Relationship="OpenWebSiteModel.FK_System_ControllerActions_System_Controllers" FromRole="System_ControllerActions" ToRole="System_Controllers" />
           <NavigationProperty Name="Menus" Relationship="OpenWebSiteModel.FK_Menus_System_ControllerActions" FromRole="System_ControllerActions" ToRole="Menus" />
           <Property Name="AllowAnonymous" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ApplicationRole" Relationship="OpenWebSiteModel.ActionsInRoles" FromRole="System_ControllerActions" ToRole="ApplicationRole" />
         </EntityType>
         <EntityType Name="System_Controllers">
           <Key>
@@ -526,6 +573,10 @@
               <PropertyRef Name="System_ControllerActionsId" />
             </Dependent>
           </ReferentialConstraint>
+        </Association>
+        <Association Name="ActionsInRoles">
+          <End Type="OpenWebSiteModel.ApplicationRole" Role="ApplicationRole" Multiplicity="*" />
+          <End Type="OpenWebSiteModel.System_ControllerActions" Role="System_ControllerActions" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -656,6 +707,14 @@
           <AssociationSetMapping Name="MenusInRoles" TypeName="OpenWebSiteModel.MenusInRoles" StoreEntitySet="MenusInRoles">
             <EndProperty Name="Menus">
               <ScalarProperty Name="Id" ColumnName="MenuId" />
+            </EndProperty>
+            <EndProperty Name="ApplicationRole">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ActionsInRoles" TypeName="OpenWebSiteModel.ActionsInRoles" StoreEntitySet="ActionsInRoles">
+            <EndProperty Name="System_ControllerActions">
+              <ScalarProperty Name="Id" ColumnName="ActionId" />
             </EndProperty>
             <EndProperty Name="ApplicationRole">
               <ScalarProperty Name="Id" ColumnName="RoleId" />

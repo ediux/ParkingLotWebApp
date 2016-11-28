@@ -20,6 +20,7 @@
         <AssociationConnector Association="OpenWebSiteModel.MenusInRoles" />
         <AssociationConnector Association="OpenWebSiteModel.FK_ApplicationRole_ApplicationRole" />
         <AssociationConnector Association="OpenWebSiteModel.FK_Menus_System_ControllerActions" />
+        <AssociationConnector Association="OpenWebSiteModel.ActionsInRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

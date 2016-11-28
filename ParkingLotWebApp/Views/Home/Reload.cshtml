@@ -14,8 +14,6 @@
 
     foreach (int key in Model.Areas.Keys)
     {
-
-
         if (Model.SelectedAreas[key])
         {
             <div class="col-xs-12 col-sm-4">
@@ -25,20 +23,10 @@
                     </div>
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Admins"))
                     {
-                        <div class="panel-body">
-                            <table class="table table-bordered table-hover table-responsive">
-                                <thead>
-                                    @*<tr>
-                                            @if (Model.RemainSummary[key].All(w => w.NoneFloor == false))
-                                            {
-                                                <th colspan="3">@Model.Areas[key]</th>
-                                            }
-                                            else
-                                            {
-                                                <th colspan="2">@Model.Areas[key]</th>
-                                            }
-                                        </tr>*@
-                                    <tr>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover ">
+                                <thead> 
+                                    <tr class="info">
                                         @if (Model.RemainSummary[key].All(p => p.NoneFloor == false))
                                         {
                                             <th>樓層</th>

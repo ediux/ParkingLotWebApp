@@ -216,6 +216,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\ParkingCounterController.cs" />
     <Compile Include="Controllers\ParkingLotAreasController.cs" />
     <Compile Include="Controllers\ParkingLotFloorsController.cs" />
     <Compile Include="Controllers\SQLiteSync.cs" />
@@ -284,6 +285,7 @@
       <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ControllerActionViewModel.cs" />
+    <Compile Include="Models\CounterViewModel.cs" />
     <Compile Include="Models\Edward.IRepository.EF6.MultiEDMX.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
