@@ -74,4 +74,10 @@ namespace ParkingLotWebApp.Filters
            
         }
     }
+
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
+    public class ApiComponentRegistrationAttribut:  FilterAttribute, System.Web.Http.Filters.IFilter
+    {
+        
+    }
 }
