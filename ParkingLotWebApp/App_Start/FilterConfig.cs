@@ -12,7 +12,9 @@ namespace ParkingLotWebApp
             //    ExceptionType = typeof(System.Data.Entity.Validation.DbEntityValidationException),
             //    View = "DbEntityValidationException"
             //}, 0);
-            filters.Add(new HandleErrorAttribute() { View = "Error" }, 1);
+            filters.Add(new ParkingLotWebApp.Filters.ComponentRegistrationAttribute(), 0);
+            filters.Add(new Filters.DbAuthorizeAttribute(), 1);
+            filters.Add(new HandleErrorAttribute() { View = "Error" }, 2);
         }
     }
 }
