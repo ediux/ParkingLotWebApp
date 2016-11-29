@@ -208,13 +208,13 @@ else
                                                 <td>@item_n.樓層名稱</td>
                                                 <td id="car_total_@item_n.ID">@item_n.總停車格數</td>
                                                 <td id="car_@item_n.ID">@item_n.剩餘停車格數</td>
-                                                <td><a href="javascript:showEditModal('car_@Model.RemainSummary[key][0].ID','moto_@Model.RemainSummary[key][0].ID',@Model.RemainSummary[key][0].ID,'@Model.Areas[key]','@Model.RemainSummary[key][0].樓層名稱',@Model.RemainSummary[key][0].總停車格數,@Model.RemainSummary[key][0].剩餘停車格數,@Model.RemainSummary[key][0].總機車格數,@Model.RemainSummary[key][0].剩餘機車格數);" class="btn btn-xs btn-primary">@ParkingLotWebApp.App_GlobalResources.Common.Edit</a></td>
+                                                <td><a href="javascript:showEditModal('car_@item_n.ID','moto_@item_n.ID',@item_n.ID,'@Model.Areas[key]','@item_n.樓層名稱',@item_n.總停車格數,@Model.RemainSummary[key][0].剩餘停車格數,@item_n.總機車格數,@item_n.剩餘機車格數);" class="btn btn-primary">@ParkingLotWebApp.App_GlobalResources.Common.Edit</a></td>
                                             }
                                             else
                                             {
                                                 <td id="car_total_@item_n.ID">@item_n.總停車格數</td>
                                                 <td id="car_@item_n.ID">@item_n.剩餘停車格數</td>
-                                                <td><a href="javascript:showEditModal('car_@Model.RemainSummary[key][0].ID','moto_@Model.RemainSummary[key][0].ID',@Model.RemainSummary[key][0].ID,'@Model.Areas[key]','@Model.RemainSummary[key][0].樓層名稱',@Model.RemainSummary[key][0].總停車格數,@Model.RemainSummary[key][0].剩餘停車格數,@Model.RemainSummary[key][0].總機車格數,@Model.RemainSummary[key][0].剩餘機車格數);" class="btn btn-xs btn-primary">@ParkingLotWebApp.App_GlobalResources.Common.Edit</a></td>
+                                                <td><a href="javascript:showEditModal('car_@item_n.ID','moto_@item_n.ID',@item_n.ID,'@Model.Areas[key]','@item_n.樓層名稱',@item_n.總停車格數,@Model.RemainSummary[key][0].剩餘停車格數,@item_n.總機車格數,@item_n.剩餘機車格數);" class="btn btn-primary">@ParkingLotWebApp.App_GlobalResources.Common.Edit</a></td>
                                             }
                                         </tr>
                                     }
