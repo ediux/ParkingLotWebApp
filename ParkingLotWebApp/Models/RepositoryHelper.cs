@@ -14,6 +14,20 @@ namespace ParkingLotWebApp.Models
 			return new WbParkSystemEntitiesUnitOfWork();
 		}			
 			
+		public static AlterFloorLogRepository GetAlterFloorLogRepository()
+		{
+			var repository = new AlterFloorLogRepository();
+			repository.UnitOfWork = GetWbParkSystemEntitiesUnitOfWork();
+			return repository;
+		}
+
+		public static AlterFloorLogRepository GetAlterFloorLogRepository(IUnitOfWork unitOfWork)
+		{
+			var repository = new AlterFloorLogRepository();
+			repository.UnitOfWork = unitOfWork;
+			return repository;
+		}		
+
 		public static AnnouncementDetailRepository GetAnnouncementDetailRepository()
 		{
 			var repository = new AnnouncementDetailRepository();
@@ -122,6 +136,20 @@ namespace ParkingLotWebApp.Models
 		public static ParkingLotsFloorRepository GetParkingLotsFloorRepository(IUnitOfWork unitOfWork)
 		{
 			var repository = new ParkingLotsFloorRepository();
+			repository.UnitOfWork = unitOfWork;
+			return repository;
+		}		
+
+		public static ParkingLotsFloorLEDRepository GetParkingLotsFloorLEDRepository()
+		{
+			var repository = new ParkingLotsFloorLEDRepository();
+			repository.UnitOfWork = GetWbParkSystemEntitiesUnitOfWork();
+			return repository;
+		}
+
+		public static ParkingLotsFloorLEDRepository GetParkingLotsFloorLEDRepository(IUnitOfWork unitOfWork)
+		{
+			var repository = new ParkingLotsFloorLEDRepository();
 			repository.UnitOfWork = unitOfWork;
 			return repository;
 		}		
