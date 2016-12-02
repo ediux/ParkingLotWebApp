@@ -14,8 +14,8 @@
             {
                 <li>@Html.ActionLink("系統管理", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })</li>
             }
-            <li class="divider"></li>
-            <li><a href="javascript:BookmarkApp.addBookmark($(this));">加到我的最愛</a></li>
+            @*<li class="divider"></li>
+            <li><a href="javascript:BookmarkApp.addBookmark($(this));">加到我的最愛</a></li>*@
             <li class="divider"></li>
             <li><a href="javascript:document.getElementById('logoutForm').submit()">登出</a></li>
         </ul>
@@ -24,7 +24,7 @@
 }
 else
 {
-    <li><a href="javascript:addBookmarkForBrowser('華邦e停車','http://202.39.229.116');">加到我的最愛</a></li>
+    @*<li><a href="javascript:BookmarkApp.addBookmark($(this));">加到我的最愛</a></li>*@
     <li>@Html.ActionLink("註冊", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
     <li>@Html.ActionLink("登入", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
 }

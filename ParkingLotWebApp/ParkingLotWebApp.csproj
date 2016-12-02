@@ -227,6 +227,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AlterFloorLog.cs">
+      <DependentUpon>WbParkSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AlterFloorLogRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\AnnouncementDetail.cs">
       <DependentUpon>WbParkSystemModel.tt</DependentUpon>
     </Compile>
@@ -346,6 +352,12 @@
     </Compile>
     <Compile Include="Models\ParkingLotsFloor.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingLotsFloorLED.cs">
+      <DependentUpon>WbParkSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParkingLotsFloorLEDRepository.cs">
+      <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ParkingLotsFloorRepository.cs">
       <DependentUpon>Edward.IRepository.EF6.MultiEDMX.tt</DependentUpon>
