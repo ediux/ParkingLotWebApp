@@ -277,7 +277,7 @@
     <value>{0}的樓層總覽</value>
   </data>
   <data name="ParkingLotFloors_ListRemainParkingGridAmounts" xml:space="preserve">
-    <value>剩餘車位數量維護</value>
+    <value>尚餘車位數量維護</value>
   </data>
   <data name="ParkingLotsDetail_Address" xml:space="preserve">
     <value>地址</value>
@@ -316,7 +316,7 @@
     <value>樓層順序</value>
   </data>
   <data name="ParkingLotsFloor_MotoLastGrid" xml:space="preserve">
-    <value>機車剩餘車格數</value>
+    <value>機車尚餘車格數</value>
   </data>
   <data name="ParkingLotsFloor_MotoTotalGrid" xml:space="preserve">
     <value>機車總車格數</value>
