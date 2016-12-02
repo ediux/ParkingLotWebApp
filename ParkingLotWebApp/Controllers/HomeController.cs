@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace ParkingLotWebApp.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : BaseController
     {
         private IParkingLotsDetailRepository db;
@@ -51,6 +52,14 @@ ViewBag.AreaId = selects;
             }
 
             return View(model);
+        }
+
+        [ChildActionOnly]
+        public ActionResult Reload()
+        {
+            var model = db.GetListRemainParkingGridAmounts();
+            ViewBag.AreaId = string.Join(",", model.SelectedAreas.Keys.Select(s => s.ToString()).ToArray());
+            return PartialView(model);
         }
 
         [OutputCache(VaryByParam = "*", Duration = 0, NoStore = true)]
