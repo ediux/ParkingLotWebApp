@@ -56,6 +56,7 @@ namespace ParkingLotWebApp.Filters
             }
 
             filterContext.Result = new HttpUnauthorizedResult();
+            //base.OnAuthorization(filterContext);
         }
 
     }
