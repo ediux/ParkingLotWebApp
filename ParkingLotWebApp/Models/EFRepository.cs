@@ -9,7 +9,9 @@ namespace ParkingLotWebApp.Models
 {
 	public partial class EFRepository<T> : IRepositoryBase<T> where T : class
 	{
-		public IUnitOfWork UnitOfWork { get; set; }
+        private IUnitOfWork _unitofwork;
+		public IUnitOfWork UnitOfWork { get {
+                return _unitofwork; } set { _unitofwork = value; } }
 		
 		private IDbSet<T> _objectset;
 		protected IDbSet<T> ObjectSet

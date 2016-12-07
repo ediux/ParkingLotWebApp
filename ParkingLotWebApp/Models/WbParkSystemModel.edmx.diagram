@@ -26,6 +26,8 @@
         <AssociationConnector Association="WbParkSystemModel.FK_PushPhoneDetail_Cars" />
         <AssociationConnector Association="WbParkSystemModel.FK_Cars_CarPurposeTypes" />
         <AssociationConnector Association="WbParkSystemModel.FK_Cars_Employee" />
+        <EntityTypeShape EntityType="WbParkSystemModel.AlterFloorLog" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="WbParkSystemModel.ParkingLotsFloorLED" Width="1.5" PointX="2.75" PointY="0.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

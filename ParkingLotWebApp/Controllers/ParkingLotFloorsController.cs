@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using ParkingLotWebApp.Models;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Collections.Generic;
 
 namespace ParkingLotWebApp.Controllers
 {
@@ -214,20 +215,63 @@ namespace ParkingLotWebApp.Controllers
         [AjaxValidateAntiForgeryToken]
         public ActionResult EditRemainParkingGridAmounts([Bind(Include = "ID,CarLastGrid,CarTotalGrid")]ParkingLotsFloor ParkingLotsFloor)
         {
-            if (ParkingLotsFloor != null)
+            try
             {
-                ParkingLotsFloor data = db.Get(ParkingLotsFloor.ID);
-                if (data != null)
-                {
-                    data.CarLastGrid = ParkingLotsFloor.CarLastGrid;
-                    data.MotoLastGrid = ParkingLotsFloor.MotoLastGrid;
-                    data.LastUpdate = DateTime.Now;
-                    db.UnitOfWork.Commit();
-                    db.UnitOfWork.Context.Entry(data).Reload();
-                    return Content(Newtonsoft.Json.JsonConvert.SerializeObject(new { Success = true, Data = data }), "application/json");
-                }
+                ParkingLotsFloor = db.Update(ParkingLotsFloor);
+
+                if (ParkingLotsFloor != null)
+                    return Content(Newtonsoft.Json.JsonConvert.SerializeObject(new { Success = true, Data = ParkingLotsFloor }), "application/json");
+
+                return Content(Newtonsoft.Json.JsonConvert.SerializeObject(new { Success = false, Data = ParkingLotsFloor }), "application/json");
             }
-            return Content(Newtonsoft.Json.JsonConvert.SerializeObject(new { Success = false, Data = ParkingLotsFloor }), "application/json");
+            catch (Exception ex)
+            {
+                Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
+
+                if(ex is System.Data.Entity.Validation.DbEntityValidationException)
+                {
+                    System.Data.Entity.Validation.DbEntityValidationException va_ex = (System.Data.Entity.Validation.DbEntityValidationException)ex;
+
+                    List<String> vaerrstrings = new List<string>();
+                     
+                    foreach(var valex in va_ex.EntityValidationErrors)
+                    {              
+                        foreach(var err in valex.ValidationErrors)
+                        {
+                            vaerrstrings.Add(string.Format("{0}:{1}", err.PropertyName, err.ErrorMessage));
+                        }
+                    }
+
+                    return Content(Newtonsoft.Json.JsonConvert.SerializeObject(new
+                    {
+                        Success = false,
+                        Data = ParkingLotsFloor,
+                        Exception = new
+                        {
+                            Message = va_ex.Message,
+                            StackTrace = va_ex.StackTrace,
+                            EntityValidationErrors = vaerrstrings.ToArray()
+                        }
+                    }), "application/json");
+                }
+                
+                return Content(Newtonsoft.Json.JsonConvert.SerializeObject(new
+                {
+                    Success = false,
+                    Data = new { },
+                    Exception = new
+                    {
+                        Message = ex.Message,
+                        StackTrace = ex.StackTrace,
+                        InnerException = new
+                        {
+                            Message = (ex.InnerException != null) ? ex.InnerException.Message : "",
+                            StackTrace = (ex.InnerException != null) ? ex.InnerException.StackTrace : ""
+                        }
+                    }
+                }), "application/json");
+            }
+
         }
 
 

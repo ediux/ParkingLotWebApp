@@ -5,6 +5,17 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="WbParkSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AlterFloorLog">
+          <Key>
+            <PropertyRef Name="ParkingLotsFloorID" />
+            <PropertyRef Name="AlterTime" />
+          </Key>
+          <Property Name="ParkingLotsFloorID" Type="int" Nullable="false" />
+          <Property Name="AlterTime" Type="datetime" Nullable="false" />
+          <Property Name="OldValue" Type="int" Nullable="false" />
+          <Property Name="NewValue" Type="int" Nullable="false" />
+          <Property Name="EmployeeID" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="AnnouncementDetail">
           <Key>
             <PropertyRef Name="No" />
@@ -106,6 +117,22 @@
           <Property Name="LastUpdate" Type="datetime" />
           <Property Name="CarLastGridRFID" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="ParkingLotsFloorLED">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParkingLotsID" Type="int" Nullable="false" />
+          <Property Name="FloorOrder" Type="smallint" Nullable="false" />
+          <Property Name="FloorName" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="CarTotalGrid" Type="int" Nullable="false" />
+          <Property Name="CarLastGrid" Type="int" Nullable="false" />
+          <Property Name="MotoTotalGrid" Type="int" Nullable="false" />
+          <Property Name="MotoLastGrid" Type="int" Nullable="false" />
+          <Property Name="Void" Type="bit" Nullable="false" />
+          <Property Name="LastUpdate" Type="datetime" />
+          <Property Name="CarLastGridRFID" Type="int" Nullable="false" />
+        </EntityType>
         <!--產生期間發現錯誤:
 警告 6002: 資料表/檢視 'WbParkSystem.dbo.ParkingLotsRecord' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
         <EntityType Name="ParkingLotsRecord">
@@ -161,30 +188,6 @@
           <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PushPhone" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Cars_CarPurposeTypes">
-          <End Role="CarPurposeTypes" Type="Self.CarPurposeTypes" Multiplicity="0..1" />
-          <End Role="Cars" Type="Self.Cars" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CarPurposeTypes">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Cars">
-              <PropertyRef Name="CarPurposeTypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Cars_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
-          <End Role="Cars" Type="Self.Cars" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Cars">
-              <PropertyRef Name="EmpId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ETAs_Cars">
           <End Role="Cars" Type="Self.Cars" Multiplicity="0..1" />
           <End Role="ETAs" Type="Self.ETAs" Multiplicity="*" />
@@ -245,18 +248,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PushPhoneDetail_Cars">
-          <End Role="Cars" Type="Self.Cars" Multiplicity="0..1" />
-          <End Role="PushPhoneDetail" Type="Self.PushPhoneDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cars">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="PushPhoneDetail">
-              <PropertyRef Name="CarRefId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PushPhoneDetail_PushPhoneType">
           <End Role="PushPhoneType" Type="Self.PushPhoneType" Multiplicity="1" />
           <End Role="PushPhoneDetail" Type="Self.PushPhoneDetail" Multiplicity="*" />
@@ -294,6 +285,7 @@
           <Parameter Name="CarType" Type="char" Mode="In" />
         </Function>
         <EntityContainer Name="WbParkSystemModelStoreContainer">
+          <EntitySet Name="AlterFloorLog" EntityType="Self.AlterFloorLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AnnouncementDetail" EntityType="Self.AnnouncementDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CarPurposeTypes" EntityType="Self.CarPurposeTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cars" EntityType="Self.Cars" Schema="dbo" store:Type="Tables" />
@@ -302,6 +294,7 @@
           <EntitySet Name="ParkingArea" EntityType="Self.ParkingArea" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParkingLotsDetail" EntityType="Self.ParkingLotsDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParkingLotsFloor" EntityType="Self.ParkingLotsFloor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParkingLotsFloorLED" EntityType="Self.ParkingLotsFloorLED" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PushPhoneDetail" EntityType="Self.PushPhoneDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PushPhoneType" EntityType="Self.PushPhoneType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParkingLotsRecord" EntityType="Self.ParkingLotsRecord" store:Type="Tables" store:Schema="dbo">
@@ -326,14 +319,6 @@
     [ParkingLotsRecord_HT].[Code] AS [Code]
     FROM [dbo].[ParkingLotsRecord_HT] AS [ParkingLotsRecord_HT]</DefiningQuery>
           </EntitySet>
-          <AssociationSet Name="FK_Cars_CarPurposeTypes" Association="Self.FK_Cars_CarPurposeTypes">
-            <End Role="CarPurposeTypes" EntitySet="CarPurposeTypes" />
-            <End Role="Cars" EntitySet="Cars" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Cars_Employee" Association="Self.FK_Cars_Employee">
-            <End Role="Employee" EntitySet="Employee" />
-            <End Role="Cars" EntitySet="Cars" />
-          </AssociationSet>
           <AssociationSet Name="FK_ETAs_Cars" Association="Self.FK_ETAs_Cars">
             <End Role="Cars" EntitySet="Cars" />
             <End Role="ETAs" EntitySet="ETAs" />
@@ -353,10 +338,6 @@
           <AssociationSet Name="FK_ParkingLotsRecord_ParkingLotsFloor" Association="Self.FK_ParkingLotsRecord_ParkingLotsFloor">
             <End Role="ParkingLotsFloor" EntitySet="ParkingLotsFloor" />
             <End Role="ParkingLotsRecord" EntitySet="ParkingLotsRecord" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PushPhoneDetail_Cars" Association="Self.FK_PushPhoneDetail_Cars">
-            <End Role="Cars" EntitySet="Cars" />
-            <End Role="PushPhoneDetail" EntitySet="PushPhoneDetail" />
           </AssociationSet>
           <AssociationSet Name="FK_PushPhoneDetail_PushPhoneType" Association="Self.FK_PushPhoneDetail_PushPhoneType">
             <End Role="PushPhoneType" EntitySet="PushPhoneType" />
@@ -452,6 +433,8 @@
             <End Role="Employee" EntitySet="Employee" />
             <End Role="Cars" EntitySet="Cars" />
           </AssociationSet>
+          <EntitySet Name="AlterFloorLog" EntityType="WbParkSystemModel.AlterFloorLog" />
+          <EntitySet Name="ParkingLotsFloorLED" EntityType="WbParkSystemModel.ParkingLotsFloorLED" />
           </EntityContainer>
         <EntityType Name="Employee">
           <Key>
@@ -756,6 +739,33 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="AlterFloorLog">
+          <Key>
+            <PropertyRef Name="ParkingLotsFloorID" />
+            <PropertyRef Name="AlterTime" />
+          </Key>
+          <Property Name="ParkingLotsFloorID" Type="Int32" Nullable="false" />
+          <Property Name="AlterTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="OldValue" Type="Int32" Nullable="false" />
+          <Property Name="NewValue" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ParkingLotsFloorLED">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParkingLotsID" Type="Int32" Nullable="false" />
+          <Property Name="FloorOrder" Type="Int16" Nullable="false" />
+          <Property Name="FloorName" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CarTotalGrid" Type="Int32" Nullable="false" />
+          <Property Name="CarLastGrid" Type="Int32" Nullable="false" />
+          <Property Name="MotoTotalGrid" Type="Int32" Nullable="false" />
+          <Property Name="MotoLastGrid" Type="Int32" Nullable="false" />
+          <Property Name="Void" Type="Boolean" Nullable="false" />
+          <Property Name="LastUpdate" Type="DateTime" Precision="3" />
+          <Property Name="CarLastGridRFID" Type="Int32" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -980,6 +990,34 @@
                 <ScalarProperty Name="Void" ColumnName="Void" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AlterFloorLog">
+            <EntityTypeMapping TypeName="WbParkSystemModel.AlterFloorLog">
+              <MappingFragment StoreEntitySet="AlterFloorLog">
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="NewValue" ColumnName="NewValue" />
+                <ScalarProperty Name="OldValue" ColumnName="OldValue" />
+                <ScalarProperty Name="AlterTime" ColumnName="AlterTime" />
+                <ScalarProperty Name="ParkingLotsFloorID" ColumnName="ParkingLotsFloorID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParkingLotsFloorLED">
+            <EntityTypeMapping TypeName="WbParkSystemModel.ParkingLotsFloorLED">
+              <MappingFragment StoreEntitySet="ParkingLotsFloorLED">
+                <ScalarProperty Name="CarLastGridRFID" ColumnName="CarLastGridRFID" />
+                <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
+                <ScalarProperty Name="Void" ColumnName="Void" />
+                <ScalarProperty Name="MotoLastGrid" ColumnName="MotoLastGrid" />
+                <ScalarProperty Name="MotoTotalGrid" ColumnName="MotoTotalGrid" />
+                <ScalarProperty Name="CarLastGrid" ColumnName="CarLastGrid" />
+                <ScalarProperty Name="CarTotalGrid" ColumnName="CarTotalGrid" />
+                <ScalarProperty Name="FloorName" ColumnName="FloorName" />
+                <ScalarProperty Name="FloorOrder" ColumnName="FloorOrder" />
+                <ScalarProperty Name="ParkingLotsID" ColumnName="ParkingLotsID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

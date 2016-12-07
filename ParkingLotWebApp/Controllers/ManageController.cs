@@ -420,7 +420,7 @@ namespace ParkingLotWebApp.Controllers
             return View(user);
         }
 
-        public async Task<ActionResult> UserProfileEdit(int id,string returnUrl)
+        public async Task<ActionResult> UserProfileEdit(int id, string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
             ApplicationUser user = await UserManager.FindByIdAsync(id);
@@ -607,7 +607,7 @@ namespace ParkingLotWebApp.Controllers
 
         [HttpPost, ActionName("DeleteRole")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteRoleConfirmed(int id,FormCollection collection)
+        public ActionResult DeleteRoleConfirmed(int id, FormCollection collection)
         {
             IApplicationRoleRepository _roleRepo = My.Core.Infrastructures.Implementations.Models.RepositoryHelper.GetApplicationRoleRepository();
 
@@ -619,7 +619,7 @@ namespace ParkingLotWebApp.Controllers
             _roleRepo.Commit();
             role = _roleRepo.Reload(role);
 
-            if (role!=null)
+            if (role != null)
             {
                 return RedirectToAction("AllRoles");
             }
@@ -786,7 +786,7 @@ namespace ParkingLotWebApp.Controllers
                 return HttpNotFound();
             }
 
-            return View(menu.ApplicationRole.Where(w=>w.Void==false).ToList());
+            return View(menu.ApplicationRole.Where(w => w.Void == false).ToList());
         }
 
         [HttpPost]
@@ -811,6 +811,28 @@ namespace ParkingLotWebApp.Controllers
                 IApplicationRoleRepository _roleRepo = My.Core.Infrastructures.Implementations.Models.RepositoryHelper.GetApplicationRoleRepository(_menuRepo.UnitOfWork);
 
                 ApplicationRole role = _roleRepo.Get(RoleId);
+
+                System_ControllerActions action = _actionRepo.Get(menu.System_ControllerActionsId ?? 0);
+
+                if (action != null)
+                {
+                    System_Controllers ctrl = _ctrlRepo.Get(action.ControllerId ?? 0);
+
+                    if (ctrl != null)
+                    {
+                        if (ctrl.System_ControllerActions.Any())
+                        {
+                            role.System_ControllerActions.Clear();
+
+                            foreach (var item in ctrl.System_ControllerActions)
+                            {
+                                role.System_ControllerActions.Add(item);
+                            }
+
+                        }
+                    }
+                }
+
                 menu.ApplicationRole.Add(role);
 
                 _menuRepo.UnitOfWork.Context.Entry(role).State = EntityState.Modified;
@@ -842,6 +864,21 @@ namespace ParkingLotWebApp.Controllers
             menu.LastUpdateUserId = User.Identity.GetUserId<int>();
             menu.LastUpdateTime = DateTime.Now;
             menu.ApplicationRole.Remove(role);
+
+            System_ControllerActions action = _actionRepo.Get(menu.System_ControllerActionsId ?? 0);
+
+            if (action != null)
+            {
+                System_Controllers ctrl = _ctrlRepo.Get(action.ControllerId ?? 0);
+
+                if (ctrl != null)
+                {
+                    if (ctrl.System_ControllerActions.Any())
+                    {
+                        role.System_ControllerActions.Clear();
+                    }
+                }
+            }
 
             _menuRepo.UnitOfWork.Context.Entry(role).State = EntityState.Modified;
             _menuRepo.UnitOfWork.Context.Entry(menu).State = EntityState.Modified;

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Threading.Tasks;
 
@@ -16,47 +15,12 @@ namespace ParkingLotWebApp.Models
 
 		public void Commit()
 		{
-            try
-            {
-                Context.SaveChanges();
-            }
-            catch(System.Data.Entity.Validation.DbEntityValidationException ex)
-            {
-                List<string> errmsg = new List<string>();
-
-                foreach(var vaerr in ex.EntityValidationErrors)
-                {
-                    foreach (var err in vaerr.ValidationErrors)
-                    {
-                        errmsg.Add(string.Format("{0} : {1}", err.PropertyName, err.ErrorMessage));
-                    }                    
-                }
-
-                throw new System.Exception(ex.Message + string.Concat(errmsg.ToArray()), ex);
-            }
-			
+			Context.SaveChanges();
 		}
 		
 		public async Task CommitAsync()
         {
-            try
-            {
-                await Context.SaveChangesAsync();
-            }
-            catch (System.Data.Entity.Validation.DbEntityValidationException ex)
-            {
-                List<string> errmsg = new List<string>();
-
-                foreach (var vaerr in ex.EntityValidationErrors)
-                {
-                    foreach (var err in vaerr.ValidationErrors)
-                    {
-                        errmsg.Add(string.Format("{0} : {1}", err.PropertyName, err.ErrorMessage));
-                    }
-                }
-
-                throw new System.Exception(ex.Message + string.Concat(errmsg.ToArray()), ex);
-            }
+            await Context.SaveChangesAsync();
         }
 
 		public bool LazyLoadingEnabled

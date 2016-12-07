@@ -25,7 +25,7 @@
     }
 
     <div class="row" style="margin-top:20px;" id="autorefresh">
-        <div class="col-xs-12 col-sm-4">
+        <div class="col-xs-12 col-md-4 left">
             <div class="panel panel-inverse" data-sortable-id="ui-widget-1">
                 <div class="panel-heading">
                     <div class="panel-heading-btn">
@@ -54,11 +54,14 @@
                     }
                 </div>
             </div>
-
         </div>
-        <div class="col-xs-12 col-sm-8" id="showFloors">
-            @{ Html.RenderPartial("Reload", Model);
-            }
+        <div class="col-xs-12 col-md-8 right" id="showFloors" >
+           @Html.Action("Reload")
+            @*<div class="row" >
+                @{ Html.RenderPartial("Reload", Model);
+                }
+            </div>*@
+ 
         </div>
     </div>
     <script>
@@ -77,12 +80,13 @@
             }
             function init() {
                 FormSliderSwitcher.init();
+                
                 $.ajaxSetup({ cache: false });
                 $('#selectlocationform').live('change', function () {
                    sharedAreaId= $('[name="areaId"]').val();
                     $('#selectlocationform').submit();
                 });
-                console.debug('event registered.');
+                //console.debug('event registered.');
                 autoReload();
             }
 

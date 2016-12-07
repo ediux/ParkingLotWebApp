@@ -39,6 +39,8 @@ namespace ParkingLotWebApp.Models
         public virtual DbSet<PushPhoneDetail> PushPhoneDetail { get; set; }
         public virtual DbSet<Cars> Cars { get; set; }
         public virtual DbSet<ETAs> ETAs { get; set; }
+        public virtual DbSet<AlterFloorLog> AlterFloorLog { get; set; }
+        public virtual DbSet<ParkingLotsFloorLED> ParkingLotsFloorLED { get; set; }
     
         public virtual int API_CancelPushPhone(string deviceID, string carID, string carType)
         {
